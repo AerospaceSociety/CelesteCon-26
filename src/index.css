@@ -18,6 +18,15 @@
   --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif;
 }
 
+:root[data-theme="light"] {
+  --color-ink: #E8E1CE;
+  --color-ink-2: #DDD4BC;
+  --color-ink-3: #BCAE91;
+  --color-bone: #161310;
+  --color-bone-hi: #000000;
+  --color-bone-dim: #33302A;
+}
+
 @layer base {
   body {
     background-color: var(--color-ink);
