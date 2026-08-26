@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CelesteCon 2026 Brochure</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<style>
+/* ============ CELESTECON 2026 — SPONSOR BROCHURE ============
+   Retro-futuristic editorial poster · ink on bone · single sheet
+   Committed single-theme print object: every color explicit. 
+   #C23A1E
+   #93290F
+   */
+:root{
+  --bone:#E8E1CE;
+  --bone-hi:#F2EDDD;
+  --bone-dim:#DDD4BC;
+  --ink:#161310;
+  --ink-2:#33302A;
+  --ink-3:#57534A;
+  --crimson:#C23A1E;
+  --crimson-deep:#93290F;
+  --hair:#161310;
+  --font-display:'Anton','Arial Narrow',Impact,sans-serif;
+  --font-label:'Oswald','Arial Narrow',Arial,sans-serif;
+  --font-mono:'IBM Plex Mono','Courier New',monospace;
+  --font-jp:'Noto Sans JP','Hiragino Kaku Gothic Pro',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:#100E0C;
+  color:var(--ink);
+  font-family:var(--font-label);
+  padding:clamp(8px,3vw,44px);
+  display:flex;justify-content:center;
+}
+a{color:inherit;text-decoration:none}
+/* ---------- the sheet ---------- */
+.sheet{
+  position:relative;
+  width:min(1020px,100%);
+  background:
+    radial-gradient(120% 70% at 50% 0%, var(--bone-hi) 0%, var(--bone) 55%, var(--bone-dim) 100%);
+  box-shadow:0 40px 90px rgba(0,0,0,.55), 0 4px 18px rgba(0,0,0,.4);
+  padding:clamp(18px,3.4vw,42px) clamp(16px,3.2vw,40px) clamp(20px,3vw,34px);
+  overflow:hidden;
+}
+/* film grain */
+.sheet::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:40;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity:.13;mix-blend-mode:multiply;
+}
+/* fold crease */
+.sheet::before{
+  content:"";position:absolute;left:0;right:0;top:51%;height:26px;z-index:39;pointer-events:none;
+  background:linear-gradient(180deg,rgba(22,19,16,0) 0%,rgba(22,19,16,.10) 46%,rgba(255,255,255,.16) 54%,rgba(22,19,16,0) 100%);
+}
+/* registration marks */
+.regmark{position:absolute;width:18px;height:18px;z-index:41;opacity:.75}
+.regmark::before,.regmark::after{content:"";position:absolute;background:var(--ink)}
+.regmark::before{left:50%;top:0;width:1px;height:100%}
+.regmark::after{top:50%;left:0;height:1px;width:100%}
+.regmark.tl{top:10px;left:10px}.regmark.tr{top:10px;right:10px}
+.regmark.bl{bottom:10px;left:10px}.regmark.br{bottom:10px;right:10px}
+
+/* ---------- shared utilities ---------- */
+.mono{font-family:var(--font-mono)}
+.jp{font-family:var(--font-jp)}
+.boxed{border:1.5px solid var(--ink);padding:.18em .55em;display:inline-block}
+.rule{border:none;border-top:1.5px solid var(--ink)}
+.rule.heavy{border-top-width:4px}
+.starglyph{font-size:15px;line-height:1}
+.tick-ruler{display:flex;justify-content:space-between;align-items:flex-end;height:9px;border-bottom:1.5px solid var(--ink)}
+.tick-ruler i{width:1px;background:var(--ink);height:5px}
+.tick-ruler i:nth-child(5n+1){height:9px}
+
+/* ---------- masthead ---------- */
+.topline{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  font-family:var(--font-mono);font-size:clamp(8px,1.05vw,10.5px);
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.topline .mid{flex:1;border-bottom:1.5px solid var(--ink);height:1px;opacity:.9}
+.masthead{margin-top:clamp(10px,1.6vw,18px)}
+.masthead h1{
+  font-family:var(--font-display);
+  font-size:clamp(42px,10.6vw,126px);
+  line-height:.88;letter-spacing:-0.004em;
+  text-transform:uppercase;color:var(--ink);
+  text-wrap:balance;
+}
+.mast-row{display:flex;align-items:stretch;gap:clamp(10px,2vw,22px);margin-top:clamp(8px,1.4vw,14px)}
+.mast-year{
+  font-family:var(--font-display);
+  font-size:clamp(44px,9.2vw,108px);line-height:.9;color:var(--crimson);
+}
+.mast-jp{
+  border-left:1.5px solid var(--ink);border-right:1.5px solid var(--ink);
+  padding:6px 5px;color:var(--ink);display:flex;align-items:center;justify-content:center;
+}
+.mast-jp span{
+  font-family:var(--font-jp);font-weight:900;font-size:13px;line-height:1.55;
+  width:1.15em;line-break:anywhere;word-break:break-all;text-align:center;display:block;
+}
+.mast-meta{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-width:0}
+.mast-meta .row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tagline-en{font-family:var(--font-label);font-weight:600;font-size:clamp(11px,1.5vw,15px);letter-spacing:.12em;text-transform:uppercase}
+.tagline-jp{font-family:var(--font-jp);font-weight:700;font-size:clamp(9px,1.2vw,12px);letter-spacing:.14em}
+.mast-meta .decl{
+  font-family:var(--font-label);font-weight:500;font-size:clamp(10px,1.25vw,13px);
+  letter-spacing:.06em;line-height:1.5;max-width:58ch;color:var(--ink-2)
+}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{
+  font-family:var(--font-mono);font-size:clamp(8px,1vw,10px);letter-spacing:.16em;
+  text-transform:uppercase;border:1.5px solid var(--ink);padding:4px 9px;white-space:nowrap;
+}
+.badge.fill{background:var(--ink);color:var(--bone)}
+.badge.hot{background:var(--crimson);border-color:var(--crimson);color:var(--bone-hi)}
+
+/* ---------- hero plate ---------- */
+.hero{display:grid;grid-template-columns:34px 1fr 34px;gap:clamp(8px,1.6vw,18px);margin-top:clamp(16px,2.6vw,30px)}
+.side-jp{
+  display:flex;flex-direction:column;justify-content:space-between;align-items:center;
+  text-transform:uppercase;overflow:hidden;gap:14px;
+}
+.side-jp .j{
+  font-family:var(--font-jp);font-weight:700;font-size:11.5px;line-height:1.75;
+  width:1.2em;line-break:anywhere;word-break:break-all;text-align:center;display:block;
+}
+.side-jp .e{
+  font-family:var(--font-mono);font-size:8px;opacity:.85;line-height:1.7;
+  width:1.4ch;word-break:break-all;text-align:center;display:block;
+}
+.plate{
+  position:relative;border:2px solid var(--ink);
+  background:#17130E;
+  aspect-ratio:16/10.6;
+  overflow:hidden;
+}
+.plate canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* halftone screen over the plate */
+.plate .screen{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(232,225,206,.16) .6px, transparent .9px);
+  background-size:4px 4px;
+  mix-blend-mode:overlay;
+}
+.plate .plate-tag{
+  position:absolute;left:10px;top:10px;z-index:5;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;color:#E8E1CE;
+  border:1px solid rgba(232,225,206,.75);padding:3px 7px;background:rgba(23,19,14,.55);
+  text-transform:uppercase;
+}
+.plate .plate-corner{
+  position:absolute;right:10px;bottom:8px;z-index:5;text-align:right;
+  font-family:var(--font-mono);font-size:8.5px;letter-spacing:.14em;color:rgba(232,225,206,.85);
+  text-transform:uppercase;line-height:1.6;
+}
+.plate-caption{
+  display:flex;justify-content:space-between;gap:10px;align-items:baseline;
+  font-family:var(--font-mono);font-size:clamp(8px,1vw,9.5px);
+  letter-spacing:.14em;text-transform:uppercase;margin-top:7px;color:var(--ink-2);
+  flex-wrap:wrap;
+}
+
+/* ---------- data band ---------- */
+.databand{display:grid;grid-template-columns:minmax(240px,300px) 1fr;gap:clamp(14px,2.4vw,26px);margin-top:clamp(18px,2.8vw,30px)}
+.datacard{border:2px solid var(--ink)}
+.datacard .dc-head{
+  background:var(--ink);color:var(--bone);font-family:var(--font-mono);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:6px 10px;
+  display:flex;justify-content:space-between;gap:8px;
+}
+.datacard .dc-head .jp{color:var(--bone-dim)}
+.datacard dl{padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.03em}
+.datacard dt{color:var(--crimson-deep);text-transform:uppercase;font-weight:600;white-space:nowrap}
+.datacard dd{color:var(--ink);border-bottom:1px dotted rgba(22,19,16,.4);padding-bottom:3px}
+.mission h3{
+  font-family:var(--font-label);font-weight:700;font-size:clamp(15px,2.1vw,21px);
+  letter-spacing:.05em;text-transform:uppercase;text-wrap:balance;
+}
+.mission h3 .hot{color:var(--crimson)}
+.mission p{
+  font-family:var(--font-label);font-weight:400;font-size:clamp(11.5px,1.45vw,14px);
+  line-height:1.62;color:var(--ink-2);margin-top:9px;max-width:64ch;
+}
+.mission .why{
+  margin-top:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+}
+.mission .why span{border-left:3px solid var(--crimson);padding-left:8px;line-height:1.7}
+.honour-line{
+  margin-top:14px;border:1.5px dashed var(--ink);padding:7px 12px;
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+}
+.honour-line b{color:var(--ink);font-weight:600}
+
+/* ---------- stat matrix ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:clamp(18px,2.8vw,30px);border:2px solid var(--ink)}
+.stat{
+  background:var(--ink);color:var(--bone);padding:clamp(12px,1.8vw,20px) clamp(10px,1.5vw,18px);
+  border-right:2px solid var(--bone);position:relative;min-width:0;
+}
+.stat:last-child{border-right:none}
+.stat .n{
+  font-family:var(--font-display);font-size:clamp(30px,5.2vw,58px);line-height:.95;color:var(--bone-hi);
+  font-variant-numeric:tabular-nums;
+}
+.stat .n em{font-style:normal;color:var(--crimson);}
+.stat .l{font-family:var(--font-label);font-weight:600;font-size:clamp(9px,1.15vw,12px);letter-spacing:.16em;text-transform:uppercase;margin-top:7px}
+.stat .j{font-family:var(--font-jp);font-weight:700;font-size:9px;letter-spacing:.2em;color:var(--bone-dim);margin-top:3px}
+.stat .idx{position:absolute;top:8px;right:9px;font-family:var(--font-mono);font-size:8.5px;color:var(--bone-dim);letter-spacing:.15em}
+.stats-foot{
+  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin-top:6px;
+}
+
+/* ---------- value band ---------- */
+.valueband{
+  margin:clamp(20px,3vw,34px) calc(clamp(16px,3.2vw,40px) * -1) 0;
+  background:var(--ink);color:var(--bone);
+  padding:clamp(20px,3.2vw,36px) clamp(16px,3.2vw,40px);
+  position:relative;
+}
+.valueband .vb-top{display:flex;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-dim);flex-wrap:wrap}
+.valueband h2{
+  font-family:var(--font-display);text-transform:uppercase;
+  font-size:clamp(26px,5vw,56px);line-height:1.02;letter-spacing:.01em;
+  margin-top:12px;color:var(--bone-hi);text-wrap:balance;
+}
+.valueband h2 .hot{color:var(--crimson);-webkit-text-stroke:0}
+.valueband .vb-sub{
+  margin-top:12px;font-family:var(--font-label);font-weight:300;
+  font-size:clamp(11.5px,1.5vw,14.5px);line-height:1.6;color:var(--bone-dim);max-width:70ch;
+}
+.valueband .vb-jp{margin-top:10px;font-family:var(--font-jp);font-weight:700;font-size:10.5px;letter-spacing:.3em;color:var(--crimson)}
+
+/* ---------- comps ---------- */
+.section-head{
+  display:flex;align-items:baseline;gap:14px;margin-top:clamp(22px,3.2vw,36px);
+  border-bottom:4px solid var(--ink);padding-bottom:6px;flex-wrap:wrap;
+}
+.section-head h2{font-family:var(--font-display);font-size:clamp(20px,3.4vw,34px);text-transform:uppercase;letter-spacing:.015em;line-height:1}
+.section-head .jp{font-family:var(--font-jp);font-weight:700;font-size:clamp(10px,1.3vw,13px);letter-spacing:.25em;color:var(--crimson)}
+.section-head .fill{flex:1}
+.section-head .ref{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.comps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(18px,3vw,34px);margin-top:6px}
+.comp{
+  display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid rgba(22,19,16,.55);
+}
+.comp .no{font-family:var(--font-mono);font-size:10px;color:var(--crimson);letter-spacing:.05em;font-weight:600}
+.comp .nm{font-family:var(--font-label);font-weight:600;font-size:clamp(12px,1.5vw,14.5px);letter-spacing:.08em;text-transform:uppercase}
+.comp .md{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.12em;border:1px solid var(--ink);padding:2px 6px;text-transform:uppercase;white-space:nowrap}
+.comp .md.on{background:var(--ink);color:var(--bone)}
+.comp .ds{grid-column:2 / 4;font-family:var(--font-label);font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:.02em}
+
+/* ---------- tiers ---------- */
+.tiers-wrap{overflow-x:auto;margin-top:8px;border:2px solid var(--ink)}
+table.tiers{width:100%;border-collapse:collapse;min-width:760px;background:var(--bone-hi)}
+.tiers th{
+  background:var(--ink);color:var(--bone);font-family:var(--font-mono);
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  padding:9px 12px;text-align:left;border-right:1px solid rgba(232,225,206,.25);
+}
+.tiers td{
+  padding:11px 12px;border-top:1.5px solid var(--ink);border-right:1px solid rgba(22,19,16,.28);
+  font-family:var(--font-label);font-size:12px;letter-spacing:.02em;vertical-align:top;color:var(--ink-2);
+}
+.tiers td:first-child{white-space:nowrap}
+.tiers .tname{font-family:var(--font-label);font-weight:700;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.tiers .tprice{font-family:var(--font-mono);font-weight:600;font-size:11.5px;white-space:nowrap;color:var(--ink)}
+.tiers tr.hot td{background:var(--crimson);color:var(--bone-hi);border-right-color:rgba(232,225,206,.4)}
+.tiers tr.hot .tname,.tiers tr.hot .tprice{color:var(--bone-hi)}
+.tiers tr.hot .tsub{color:#F3D9C8}
+.tiers .tsub{display:block;font-size:10px;letter-spacing:.06em;color:var(--ink-3);margin-top:2px;text-transform:uppercase;font-family:var(--font-mono)}
+.tier-notes{
+  display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+}
+.tier-notes span::before{content:"◆ ";color:var(--crimson)}
+
+/* ---------- partners ---------- */
+.partners{
+  margin-top:clamp(18px,2.6vw,28px);border-top:4px solid var(--ink);border-bottom:1.5px solid var(--ink);
+  padding:10px 0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+}
+.partners .lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--crimson-deep);font-weight:600;white-space:nowrap}
+.partners .list{font-family:var(--font-label);font-weight:600;font-size:clamp(11px,1.5vw,14px);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.partners .list i{font-style:normal;color:var(--crimson)}
+
+/* ---------- footer ---------- */
+.foot{display:grid;grid-template-columns:1fr auto auto;gap:clamp(14px,2.6vw,30px);margin-top:clamp(16px,2.4vw,26px);align-items:stretch}
+.contact{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-family:var(--font-mono);font-size:10.5px;align-content:start}
+.contact dt{color:var(--crimson-deep);text-transform:uppercase;font-weight:600;letter-spacing:.1em;white-space:nowrap}
+.contact dd{border-bottom:1px dotted rgba(22,19,16,.4);padding-bottom:2px;letter-spacing:.02em;overflow-wrap:anywhere}
+.qr{
+  width:118px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;
+}
+.qr .frame{
+  width:104px;height:104px;position:relative;border:1.5px dashed var(--ink);
+  display:flex;align-items:center;justify-content:center;
+}
+.qr .frame::before,.qr .frame::after,
+.qr .frame i::before,.qr .frame i::after{
+  content:"";position:absolute;width:16px;height:16px;border:2.5px solid var(--crimson);
+}
+.qr .frame::before{top:-2px;left:-2px;border-right:none;border-bottom:none}
+.qr .frame::after{top:-2px;right:-2px;border-left:none;border-bottom:none}
+.qr .frame i::before{bottom:-2px;left:-2px;border-right:none;border-top:none}
+.qr .frame i::after{bottom:-2px;right:-2px;border-left:none;border-top:none}
+.qr .frame span{font-family:var(--font-mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);line-height:1.8}
+.qr .cap{font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-2)}
+.insignia{
+  width:150px;border:2px solid var(--ink);padding:10px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;
+}
+.insignia .ring{
+  width:64px;height:64px;border:2px solid var(--ink);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.insignia .ring::after{content:"";position:absolute;inset:5px;border:1px solid var(--ink);border-radius:50%}
+.insignia .ring svg{width:30px;height:30px}
+.insignia .t1{font-family:var(--font-label);font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.insignia .t2{font-family:var(--font-mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);line-height:1.7}
+.bottomline{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  margin-top:clamp(14px,2.2vw,22px);border-top:1.5px solid var(--ink);padding-top:10px;
+}
+.moons{display:flex;gap:7px;align-items:center}
+.moons svg{width:13px;height:13px;display:block}
+.barcode{display:flex;align-items:flex-end;gap:2px;height:26px}
+.barcode i{background:var(--ink);width:2px;height:100%}
+.barcode i.w1{width:1px}.barcode i.w3{width:3.5px}.barcode i.h2{height:70%}
+.bottomline .txt{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------- responsive ---------- */
+@media (max-width:820px){
+  .databand{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(-n+2){border-bottom:2px solid var(--bone)}
+  .comps{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr;justify-items:start}
+  .qr{flex-direction:row;width:auto}
+  .hero{grid-template-columns:20px 1fr 20px}
+}
+@media (max-width:560px){
+  .mast-row{flex-wrap:wrap}
+  .mission .why{grid-template-columns:1fr}
+}
+/* ---------- print ---------- */
+@media print{
+  body{background:var(--bone);padding:0}
+  .sheet{box-shadow:none;width:100%}
+  .valueband,.stat,.tiers th,.badge.fill,.badge.hot,.comp .md.on,.tiers tr.hot td{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <span class="regmark tl"></span><span class="regmark tr"></span>
+  <span class="regmark bl"></span><span class="regmark br"></span>
+
+  <!-- ============ MASTHEAD ============ -->
+  <div class="topline mono">
+    <span class="starglyph">✳</span>
+    <span>DOSSIER № CC-VI-2026</span>
+    <span class="mid"></span>
+    <span>28.5645° N / 77.1815° E — NEW DELHI, IN</span>
+    <span class="starglyph">✦</span>
+  </div>
+
+  <header class="masthead">
+    <h1>Celestecon</h1>
+    <div class="mast-row">
+      <div class="mast-year">2026</div>
+      <div class="mast-jp jp"><span>第六回航空宇宙大会</span></div>
+      <div class="mast-meta">
+        <div class="row">
+          <span class="tagline-en">Mankind was born on Earth.</span>
+          <span class="tagline-jp jp">宇宙は待っている。</span>
+        </div>
+        <div class="row">
+          <span class="boxed tagline-en" style="border-width:1.5px">It was never meant to die here.</span>
+          <span class="tagline-en" style="color:var(--crimson)">Beyond school. Beyond sky.</span>
+        </div>
+        <p class="decl">The sixth-edition flagship aerospace &amp; STEM conclave of <b>AEROSS</b> — the Aerospace Society of Delhi Public School, R.K.&nbsp;Puram — returns to campus at full scale. This sheet is the sponsor's field guide.</p>
+        <div class="badge-row">
+          <span class="badge fill">Sponsorship Dossier</span>
+          <span class="badge">Round 1 — Nationwide Online</span>
+          <span class="badge">Round 2 — On-Campus Finale</span>
+          <span class="badge hot">Est. 2009 // AEROSS</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HERO PLATE ============ -->
+  <section class="hero" aria-label="Black hole study plate">
+    <div class="side-jp">
+      <span class="j jp">光さえも逃れられない。</span>
+      <span class="e">INTO DARKNESS</span>
+    </div>
+    <figure class="plate">
+      <canvas id="hole" aria-hidden="true"></canvas>
+      <div class="screen"></div>
+      <span class="plate-tag">FIG.01 — ACCRETION STUDY // GARGANTUA CLASS</span>
+      <div class="plate-corner">AEROSS VISUAL UNIT<br>EXPOSURE 1/60 · ISO 3200</div>
+    </figure>
+    <div class="side-jp">
+      <span class="j jp">未来の技術者たちへ。</span>
+      <span class="e">THE NEXT GENERATION</span>
+    </div>
+  </section>
+  <div class="plate-caption">
+    <span>OBJECT: EVENT HORIZON — THE POINT OF NO RETURN</span>
+    <span>PLATE PRINTED IN BONE / INK / SOLAR CRIMSON</span>
+    <span>SCALE: NOT TO SCALE</span>
+  </div>
+  <div class="tick-ruler" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <!-- ============ DATA BAND ============ -->
+  <section class="databand">
+    <div class="datacard">
+      <div class="dc-head"><span>EVENT DATA</span><span class="jp">大会データ</span></div>
+      <dl>
+        <dt>Event</dt><dd>CelesteCon 2026 — 6th Edition</dd>
+        <dt>Host</dt><dd>AEROSS · Aerospace Society, DPS R.K. Puram</dd>
+        <dt>Format</dt><dd>R1 online qualifiers → R2 campus finale</dd>
+        <dt>Comps</dt><dd>9 events · junior &amp; senior tracks</dd>
+        <dt>Cohort</dt><dd>Grades 6–12, nationwide</dd>
+        <dt>Faculty</dt><dd>Ms. Vibha Arora · Mr. Sanchit Chauhan (Physics)</dd>
+        <dt>Society</dt><dd>Est. 2009 · 30+ core · 100+ global alumni</dd>
+      </dl>
+    </div>
+    <div class="mission">
+      <h3>A national stage where India's sharpest school engineers <span class="hot">design, build &amp; defend</span> — and your brand stands over all of it.</h3>
+      <p>CelesteCon gathers the country's strongest student aerospace talent to engineer space settlements, fly UAV concepts, model in CAD, pitch ventures and battle through debates and buzzer finals. Sponsors take the stage, the arena, the kits and the national invite — in front of students, parents and educators from 180+ schools.</p>
+      <div class="why">
+        <span>Direct pipeline to ranked STEM talent</span>
+        <span>Stage, arena &amp; trophy branding</span>
+        <span>Kit &amp; software integration in play</span>
+        <span>CSR-ready school-outreach property</span>
+      </div>
+      <div class="honour-line">Delegations formally received &amp; commended by the <b>Hon'ble Prime Minister</b>, <b>Vice-President</b> &amp; <b>External Affairs Minister</b> of India · ISDC interactions with <b>Dr. A.P.J. Abdul Kalam</b> &amp; NASA astronaut <b>Christopher Ferguson</b></div>
+    </div>
+  </section>
+
+  <!-- ============ STAT MATRIX ============ -->
+  <section class="stats" aria-label="Track record">
+    <div class="stat"><span class="idx">A/01</span><div class="n">28<em>+</em></div><div class="l">NASA Ames / NSS Awards</div><div class="j jp">受賞歴・二〇一〇年以降</div></div>
+    <div class="stat"><span class="idx">A/02</span><div class="n">6<em>×</em></div><div class="l">RWDC Champions</div><div class="j jp">世界設計選手権</div></div>
+    <div class="stat"><span class="idx">A/03</span><div class="n">1,500<em>+</em></div><div class="l">Student Participants</div><div class="j jp">参加者・全国から</div></div>
+    <div class="stat"><span class="idx">A/04</span><div class="n">180<em>+</em></div><div class="l">Schools Represented</div><div class="j jp">参加校・インド全土</div></div>
+  </section>
+  <div class="stats-foot">
+    <span>+ 25× space settlement design titles</span>
+    <span>+ 12× Conrad Challenge wins</span>
+    <span>+ IRIS grand prize · ISEF 2nd</span>
+    <span>+ $50K ERAU scholarship</span>
+  </div>
+
+  <!-- ============ VALUE BAND ============ -->
+  <section class="valueband">
+    <div class="vb-top">
+      <span>◆ CORE VALUE PILLAR</span>
+      <span>SEC. 02 // WHY THIS EVENT MATTERS</span>
+    </div>
+    <h2>Empowering India's next generation of <span class="hot">aerospace pioneers.</span></h2>
+    <p class="vb-sub">Fifteen years of international titles. A society commended at the highest offices of the Republic. One flagship conclave, restored to its on-campus scale — and a sponsor roster built to be seen by every school on the route.</p>
+    <div class="vb-jp jp">闇の中に、宇宙の真実がある。— IN THE DARKNESS LIES THE TRUTH OF THE UNIVERSE</div>
+  </section>
+
+  <!-- ============ COMPETITIONS ============ -->
+  <div class="section-head">
+    <h2>The Competitions</h2>
+    <span class="jp">全九種目</span>
+    <span class="fill"></span>
+    <span class="ref">SEC. 03 // FIELD ROSTER</span>
+  </div>
+  <section class="comps">
+    <div class="comp"><span class="no">01</span><span class="nm">Settle-Me-This</span><span class="md">Hybrid</span><span class="ds">Space settlement design — 25/35-page proposals, on-stage defense &amp; injection challenge</span></div>
+    <div class="comp"><span class="no">02</span><span class="nm">Volatus</span><span class="md">Hybrid</span><span class="ds">UAV &amp; aeronautical design — case prompts, CFD-backed engineering, exhibit defense</span></div>
+    <div class="comp"><span class="no">03</span><span class="nm">Dimension III</span><span class="md">Hybrid</span><span class="ds">3D CAD &amp; rapid prototyping — junior physical builds, senior CAD/Blender precision</span></div>
+    <div class="comp"><span class="no">04</span><span class="nm">Business Power Pitch</span><span class="md">Hybrid</span><span class="ds">Aerospace venture challenge — business plans, financials, live investor panel</span></div>
+    <div class="comp"><span class="no">05</span><span class="nm">Cosmovate</span><span class="md">Hybrid</span><span class="ds">Applied concept engineering — eccentric prompts, radical creativity × feasibility</span></div>
+    <div class="comp"><span class="no">06</span><span class="nm">In Pursuit of Dispute</span><span class="md">Hybrid</span><span class="ds">Parliamentary debate — space law, militarisation, commercialisation, mining</span></div>
+    <div class="comp"><span class="no">07</span><span class="nm">Quizzitch</span><span class="md">Hybrid</span><span class="ds">Aerospace &amp; STEM quiz — written screening into the onsite buzzer showdown</span></div>
+    <div class="comp"><span class="no">08</span><span class="nm">GameJam</span><span class="md on">Onsite</span><span class="ds">Simulation &amp; game dev — time-boxed minigame sprint with room-wide peer review</span></div>
+    <div class="comp"><span class="no">09</span><span class="nm">AEROSS Theatre</span><span class="md">Hybrid</span><span class="ds">Creative commtrack — improv, standup, satire &amp; storytelling, live at the finale</span></div>
+    <div class="comp"><span class="no">10</span><span class="nm">Rocketry</span><span class="md on">Onsite</span><span class="ds">Engineer in the real world — make an actual model rocket</span></div>
+    <div class="comp"><span class="no">11</span><span class="nm"><img src="https://logos-world.net/wp-content/uploads/2023/12/F1-Logo-500x281.png" height="30px"></span><span class="md on">Onsite</span><span class="ds">Partnered with Formula 1 — make your F1 dream a reality</span></div>
+    <div class="comp"><span class="no">+</span><span class="nm">The Open Arena</span><span class="md on">Onsite</span><span class="ds">Aeromodelling · PlaneRush · SpaceDunk · SpaceArcade — branded minigames, all-day footfall</span></div>
+  </section>
+
+  <!-- ============ SPONSORSHIP MATRIX ============ -->
+  <div class="section-head">
+    <h2>Sponsorship Matrix</h2>
+    <span class="jp">協賛階層</span>
+    <span class="fill"></span>
+    <span class="ref">SEC. 04 // PARTNERSHIP TIERS</span>
+  </div>
+  <div class="tiers-wrap">
+    <table class="tiers">
+      <thead>
+        <tr>
+          <th>Tier</th><th>Investment</th><th>Naming Rights</th><th>On-Campus</th><th>Stage Time</th><th>National Invite</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hot">
+          <td><span class="tname">Diamond / Title</span><span class="tsub">Sole Tier-I — “Presented By”</span></td>
+          <td><span class="tprice">₹75K – 1L</span></td>
+          <td>Exclusive title lock-in</td>
+          <td>Prime central demo stall + prize-kit partner</td>
+          <td>10-min live keynote</td>
+          <td>Full page → 1,500+ schools</td>
+        </tr>
+        <tr>
+          <td><span class="tname">Platinum</span><span class="tsub">Category exclusive</span></td>
+          <td><span class="tprice">₹50,000</span></td>
+          <td>Category-exclusive partner</td>
+          <td>Dedicated tech booth + product distribution</td>
+          <td>5-min video feature</td>
+          <td>Half-page feature</td>
+        </tr>
+        <tr>
+          <td><span class="tname">Gold</span><span class="tsub">Multi-brand</span></td>
+          <td><span class="tprice">₹30,000</span></td>
+          <td>Multi-brand partner</td>
+          <td>Banner circuit + collateral in kits</td>
+          <td>3-min feature</td>
+          <td>Logo placement</td>
+        </tr>
+        <tr>
+          <td><span class="tname">Associate / In-Kind</span><span class="tsub">Supporting</span></td>
+          <td><span class="tprice">₹15K / kits</span></td>
+          <td>Supporting partner</td>
+          <td>Sampling &amp; kits desk</td>
+          <td>Formal mention</td>
+          <td>Logo placement</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tier-notes">
+    <span>One Title sponsor only — exclusivity is absolute</span>
+    <span>All tiers: social promotion + event-site logo</span>
+    <span>Trophy &amp; certificate logos scale by tier</span>
+    <span>In-kind: software, kits, F&amp;B welcome</span>
+  </div>
+
+  <!-- ============ PARTNERS ============ -->
+  <div class="partners">
+    <span class="lbl">Previously backed by //</span>
+    <span class="list">Dassault Systèmes <i>·</i> CADFEM <i>·</i> Athena Education <i>·</i> Charkos Group <i>·</i> Junio <i>·</i> Taskade <i>·</i> Replit <i>·</i> Wolfram</span>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <dl class="contact">
+      <dt>Mail</dt><dd>aeross@dpsrkp.net</dd>
+      <dt>Web</dt><dd>aeross.org · celestecon.aeross.org</dd>
+      <dt>IG</dt><dd>@aerospace_society</dd>
+      <dt>Social</dt><dd>LinkedIn — Aeross: Aerospace Society · FB /aerossdpsrkp</dd>
+      <dt>Post</dt><dd>Delhi Public School, R.K. Puram, New Delhi — 110022</dd>
+    </dl>
+    <div class="qr">
+      <div class="frame"><i></i><span>PLACE QR —<br>REGISTRATION +<br>FULL DOSSIER</span></div>
+      <span class="cap">SCAN // 登録はこちら</span>
+    </div>
+    <div class="insignia">
+      <div class="ring">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#161310" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+          <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+          <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+          <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+        </svg>
+      </div>
+      <span class="t1">AEROSS</span>
+      <span class="t2">Delhi Public School<br>R.K. Puram · Est. 2009<br>“Build rather than watch”</span>
+    </div>
+  </footer>
+
+  <div class="bottomline">
+    <div class="moons" id="moons" aria-hidden="true"></div>
+    <span class="txt">CELESTECON VI — SPONSOR EDITION // PRINTED IN NEW DELHI</span>
+    <div class="barcode" aria-hidden="true">
+      <i></i><i class="w3"></i><i class="w1"></i><i></i><i class="h2"></i><i class="w3"></i><i class="w1"></i><i class="w1"></i><i></i><i class="w3"></i><i class="h2"></i><i></i><i class="w1"></i><i class="w3"></i><i></i><i class="w1"></i><i class="h2"></i><i class="w3"></i><i></i><i class="w1"></i><i></i><i class="w3"></i><i class="w1"></i><i class="h2"></i><i></i>
+    </div>
+  </div>
+
+<script>
+(function(){
+  /* ---- moon phase row ---- */
+  try{
+    var m=document.getElementById('moons');
+    if(m){
+      var phases=[0,.18,.34,.5,.66,.82,1];
+      phases.forEach(function(p,ix){
+        var ns='http://www.w3.org/2000/svg';
+        var s=document.createElementNS(ns,'svg');s.setAttribute('viewBox','0 0 20 20');
+        var c=document.createElementNS(ns,'circle');
+        c.setAttribute('cx','10');c.setAttribute('cy','10');c.setAttribute('r','8.4');
+        c.setAttribute('fill', ix===phases.length-1 ? '#C23A1E' : 'none');
+        c.setAttribute('stroke','#161310');c.setAttribute('stroke-width','1.6');
+        s.appendChild(c);
+        if(p>0 && p<1){
+          var e=document.createElementNS(ns,'ellipse');
+          e.setAttribute('cx','10');e.setAttribute('cy','10');
+          e.setAttribute('rx',String(8.4*Math.abs(1-2*p)));e.setAttribute('ry','8.4');
+          e.setAttribute('fill','#161310');
+          var clip=document.createElementNS(ns,'path');
+          var d = p<.5 ? 'M10 1.6 a8.4 8.4 0 0 1 0 16.8 Z' : 'M10 1.6 a8.4 8.4 0 0 0 0 16.8 Z';
+          clip.setAttribute('d',d);clip.setAttribute('fill','#161310');
+          s.appendChild(clip);
+          if(Math.abs(p-.5)>0.02){ e.setAttribute('fill', p<.5 ? '#E8E1CE' : '#161310'); s.appendChild(e); }
+        } else if(p>=1){ /* full — crimson fill already set */ }
+        m.appendChild(s);
+      });
+    }
+  }catch(e){}
+
+  /* ---- black hole plate (canvas, halftone-ish streak field) ---- */
+  try{
+    var cv=document.getElementById('hole'); if(!cv) return;
+    var plate=cv.parentElement;
+    function draw(){
+      var w=plate.clientWidth, h=plate.clientHeight;
+      if(!w||!h) return;
+      var dpr=Math.min(2.5,(window.devicePixelRatio||1)*1.4);
+      cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+      var x=cv.getContext('2d'); x.scale(dpr,dpr);
+      var BONE='#E8E1CE', INK='#17130E', CRIM='#C2371F';
+      var cx=w*0.5, cy=h*0.54, R=Math.min(w,h)*0.21;   // event horizon radius
+      // seeded rand
+      var seed=20261023; function rnd(){seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;}
+      x.fillStyle=INK; x.fillRect(0,0,w,h);
+      // starfield
+      for(var i=0;i<420;i++){
+        var sx=rnd()*w, sy=rnd()*h, sa=rnd();
+        var dx=sx-cx, dy=(sy-cy)*2.2;
+        if(Math.sqrt(dx*dx+dy*dy) < R*2.1 && rnd()<0.8) continue;   // clear the disk zone a bit
+        x.globalAlpha=0.12+sa*0.5;
+        x.fillStyle=BONE;
+        var ss=rnd()<0.06?1.6:(rnd()<0.5?0.7:1);
+        x.fillRect(sx,sy,ss,ss);
+      }
+      // distant dust specks
+      for(var i2=0;i2<900;i2++){
+        x.globalAlpha=0.03+rnd()*0.07; x.fillStyle=BONE;
+        x.fillRect(rnd()*w,rnd()*h,0.6,0.6);
+      }
+      x.globalAlpha=1;
+      // accretion disk — flat elliptical streaks
+      var tilt=-0.10; // slight rotation
+      x.save(); x.translate(cx,cy); x.rotate(tilt);
+      var STREAKS=920;
+      for(var k=0;k<STREAKS;k++){
+        var rr=R*1.12 + Math.pow(rnd(),1.6)*R*2.55;
+        var squash=0.30+rnd()*0.05;
+        var a0=rnd()*Math.PI*2;
+        var len=0.25+rnd()*1.15;
+        var bright=Math.max(0,1.25-(rr/(R*2.6)));
+        var alpha=0.05+bright*0.5*rnd();
+        var crim = rnd()<0.085;
+        x.beginPath();
+        x.ellipse(0,0,rr,rr*squash,0,a0,a0+len);
+        x.strokeStyle=crim?CRIM:BONE;
+        x.globalAlpha=crim?alpha*0.85:alpha;
+        x.lineWidth=(rnd()<0.12?1.5:0.65)+bright*0.5;
+        x.stroke();
+      }
+      // inner hot rim of the disk
+      for(var k2=0;k2<130;k2++){
+        var rr2=R*1.02+rnd()*R*0.16;
+        var a02=rnd()*Math.PI*2, len2=0.5+rnd()*1.6;
+        x.beginPath();
+        x.ellipse(0,0,rr2,rr2*0.32,0,a02,a02+len2);
+        x.strokeStyle=BONE; x.globalAlpha=0.25+rnd()*0.5; x.lineWidth=0.8+rnd()*1.1;
+        x.stroke();
+      }
+      x.restore();
+      // gravitational lensing — vertical halo over/under the hole
+      x.save(); x.translate(cx,cy);
+      for(var k3=0;k3<150;k3++){
+        var rr3=R*(1.06+rnd()*0.5);
+        var up=rnd()<0.55;
+        var a03=up?(Math.PI*1.15+rnd()*0.7):(Math.PI*0.15+rnd()*0.7);
+        x.beginPath();
+        x.ellipse(0,0,rr3,rr3*(0.82+rnd()*0.2),0,a03,a03+0.5+rnd()*0.9);
+        x.strokeStyle=BONE; x.globalAlpha=0.05+rnd()*0.22; x.lineWidth=0.6+rnd()*0.9;
+        x.stroke();
+      }
+      x.restore();
+      // photon ring
+      x.beginPath(); x.arc(cx,cy,R*1.04,0,Math.PI*2);
+      x.strokeStyle=BONE; x.globalAlpha=0.9; x.lineWidth=1.6; x.stroke();
+      x.beginPath(); x.arc(cx,cy,R*1.10,0,Math.PI*2);
+      x.strokeStyle=CRIM; x.globalAlpha=0.35; x.lineWidth=0.8; x.stroke();
+      // event horizon
+      x.globalAlpha=1; x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2); x.fillStyle='#0C0A08'; x.fill();
+      // faint cross-hair + annotations
+      x.globalAlpha=0.5; x.strokeStyle=BONE; x.lineWidth=0.6;
+      x.setLineDash([2,4]);
+      x.beginPath(); x.moveTo(cx-R*3.1,cy); x.lineTo(cx-R*1.5,cy); x.stroke();
+      x.beginPath(); x.moveTo(cx+R*1.5,cy); x.lineTo(cx+R*3.1,cy); x.stroke();
+      x.setLineDash([]);
+      x.globalAlpha=0.85; x.font='9px "IBM Plex Mono", monospace'; x.fillStyle=BONE;
+      x.fillText('Rₛ = 2GM/c²', cx+R*1.62, cy-6);
+      x.fillText('ACCRETION DISK', cx-R*3.05, cy-6);
+      x.globalAlpha=1;
+    }
+    draw();
+    var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(draw,150);});
+  }catch(e){}
+})();
+</script>
+</main>
+</body>
+</html>

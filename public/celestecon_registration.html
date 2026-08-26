@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CelesteCon 2026 Registration - AEROSS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+  <style>
+    :root {
+      --bone: #E8E1CE;
+      --bone-hi: #F2EDDD;
+      --bone-dim: #DDD4BC;
+      --ink: #161310;
+      --ink-2: #33302A;
+      --ink-3: #57534A;
+      --crimson: #C23A1E;
+      --crimson-deep: #93290F;
+      --bg: #100E0C;
+      --surface: var(--bone-hi);
+      --surface-2: var(--bone);
+      --border-sub: rgba(22, 19, 16, 0.28);
+      --border: var(--ink);
+      --border-hover: var(--crimson);
+      --text: var(--ink);
+      --secondary: var(--ink-2);
+      --muted: var(--ink-3);
+      --button: var(--ink);
+      --button-hover: var(--crimson);
+      --error: var(--crimson);
+      --success: #047857;
+      --font-display: 'Anton', 'Arial Narrow', Impact, sans-serif;
+      --font-label: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+      --font-sans: var(--font-label);
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 56px;
+      background: color-mix(in srgb, var(--bg) 94%, transparent);
+      border-bottom: 1px solid var(--ink);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      color: var(--bone);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-note {
+      color: var(--bone-dim);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .wrap {
+      position: relative;
+      width: min(1020px, 100%);
+      margin: 20px auto 40px;
+      padding: clamp(18px, 3.4vw, 42px) clamp(16px, 3.2vw, 40px) 96px;
+      background: radial-gradient(120% 70% at 50% 0%, var(--bone-hi) 0%, var(--bone) 55%, var(--bone-dim) 100%);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 4px 18px rgba(0, 0, 0, .4);
+      overflow: hidden;
+    }
+
+    .wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      opacity: .13;
+      mix-blend-mode: multiply;
+    }
+
+    .hero {
+      max-width: 800px;
+      padding: 32px 0 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(42px, 9vw, 76px);
+      font-family: var(--font-display);
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 14px 0 0;
+      color: var(--secondary);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .hero-meta span:not(:last-child)::after {
+      content: '/';
+      margin-left: 10px;
+      color: var(--border-hover);
+    }
+
+    .divider {
+      border: 0;
+      border-top: 1px solid var(--border-sub);
+      margin: 36px 0 0;
+    }
+
+    .progress {
+      max-width: 680px;
+      display: grid;
+      gap: 12px;
+      margin: 0 0 48px;
+      padding: 0 0 28px;
+      border-bottom: 1px solid var(--border-sub);
+    }
+
+    .progress-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .progress-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      position: relative;
+      width: 320px;
+      max-width: 100%;
+    }
+
+    .progress-track:before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 50%;
+      height: 1px;
+      background: var(--border);
+      transform: translateY(-50%);
+    }
+
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--bg);
+      z-index: 1;
+    }
+
+    .progress-dot.active {
+      border-color: var(--text);
+    }
+
+    .progress-dot.active:after {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 4px;
+      margin: 2px;
+      border-radius: 50%;
+      background: var(--text);
+    }
+
+    .progress-count {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    section.card-section {
+      max-width: 680px;
+      margin: 0 0 72px;
+      scroll-margin-top: 32px;
+    }
+
+    .section-head {
+      margin-bottom: 22px;
+      border-bottom: 4px solid var(--ink);
+      padding-bottom: 6px;
+    }
+
+    .section-num {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--crimson);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .section-title {
+      display: block;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: clamp(20px, 3.4vw, 34px);
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: .015em;
+    }
+
+    .section-sub {
+      margin: -12px 0 26px;
+      color: var(--secondary);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .panel {
+      border-top: 1px solid var(--border-sub);
+      padding: 28px 0 0;
+    }
+
+    .grid2 {
+      display: block;
+    }
+
+    .field {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 8px;
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+
+    .compact label {
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=tel],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.45;
+      transition: border-color .15s, background-color .15s;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    select {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+      background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      padding-right: 34px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--muted);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--text);
+      background: var(--surface-2);
+      box-shadow: none;
+    }
+
+    input.has-error,
+    select.has-error,
+    textarea.has-error {
+      border-color: var(--error);
+    }
+
+    .helptext,
+    .field-error {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .field-error {
+      min-height: 18px;
+      color: var(--error);
+    }
+
+    .field-error:empty {
+      display: none;
+    }
+
+    .event-grid {
+      border-top: 1px solid var(--border-sub);
+    }
+
+    .event-card {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--border-sub);
+      background: transparent;
+      padding: 20px 0;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color .15s;
+    }
+
+    .event-card:hover {
+      background: var(--surface);
+    }
+
+    .event-card.on {
+      background: var(--surface);
+      box-shadow: none;
+    }
+
+    .event-card-inner {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .event-card h3 {
+      margin: 0;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    .tagline {
+      display: block;
+      margin-top: 5px;
+      color: var(--secondary);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .desc {
+      display: block;
+      max-width: 590px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .badge:not(:last-child):after {
+      content: '/';
+      margin-left: 10px;
+      color: var(--border);
+    }
+
+    .checkbox-box {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+    }
+
+    .event-card.on .checkbox-box {
+      background: var(--text);
+      border-color: var(--text);
+    }
+
+    .event-card.on .checkbox-box:after {
+      content: '';
+      width: 8px;
+      height: 4px;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+    .no-events {
+      padding: 22px 0;
+      border-top: 1px solid var(--border-sub);
+      border-bottom: 1px solid var(--border-sub);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .event-section {
+      margin-bottom: 48px;
+    }
+
+    .event-section-head {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-sub);
+    }
+
+    .event-section-head h3 {
+      margin: 0;
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .team-block {
+      padding: 22px;
+      border: 1px solid var(--border-sub);
+      border-radius: 4px;
+      background: var(--surface);
+      margin-bottom: 14px;
+    }
+
+    .team-block-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+    .team-main {
+      display: grid;
+      gap: 20px;
+    }
+
+    .team-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .btn-remove-team {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 2px 0;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn-remove-team:hover {
+      color: var(--error);
+    }
+
+    .member-row {
+      padding: 22px 0 0;
+    }
+
+    .member-title {
+      margin: 0 0 12px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .member-fields {
+      display: grid;
+      grid-template-columns: 1fr 150px 190px 32px;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .member-fields .field {
+      margin-bottom: 0;
+    }
+
+    .btn-x {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .btn-x:hover:not(:disabled) {
+      color: var(--error);
+    }
+
+    .btn-x:disabled {
+      opacity: .25;
+      cursor: not-allowed;
+    }
+
+    .row-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cap-note {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .cosmovate-confirm {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-top: 22px;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .cosmovate-confirm input {
+      width: 18px;
+      height: 18px;
+      margin: 3px 0 0;
+      accent-color: var(--text);
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--secondary);
+      padding: 8px 13px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background-color .15s, border-color .15s, color .15s;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+
+    .btn:disabled {
+      color: var(--muted);
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .btn.primary {
+      background: var(--button);
+      border-color: var(--button);
+      color: var(--bone-hi);
+      padding: 10px 16px;
+    }
+
+    .btn.primary:hover:not(:disabled) {
+      background: var(--button-hover);
+      border-color: var(--button-hover);
+      color: var(--bone-hi);
+    }
+
+    .btn.ghost {
+      color: var(--muted);
+    }
+
+    .btn.ghost:hover:not(:disabled) {
+      color: var(--text);
+    }
+
+    .btn.small {
+      font-size: 12px;
+    }
+
+    .review-box {
+      min-height: 160px;
+      white-space: pre-wrap;
+      color: var(--secondary);
+      border: 1px solid var(--border-sub);
+      border-radius: 4px;
+      background: var(--surface);
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .totals {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .total-chip .n {
+      color: var(--text);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 600;
+    }
+
+    .total-chip .l {
+      margin-top: 7px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .errors {
+      margin-bottom: 24px;
+      color: var(--error);
+      font-size: 13px;
+    }
+
+    .errors:empty {
+      display: none;
+    }
+
+    .status-banner {
+      display: none;
+      margin-bottom: 24px;
+      font-size: 13px;
+    }
+
+    .status-banner.show {
+      display: block;
+    }
+
+    .status-banner.ok {
+      color: var(--success);
+    }
+
+    .status-banner.warn,
+    .status-banner.err {
+      color: var(--error);
+    }
+
+    .review-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .secondary-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .success-page {
+      position: relative;
+      width: min(1020px, 100%);
+      margin: 20px auto 40px;
+      padding: 96px clamp(16px, 3.2vw, 40px) 120px;
+      background: radial-gradient(120% 70% at 50% 0%, var(--bone-hi) 0%, var(--bone) 55%, var(--bone-dim) 100%);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 4px 18px rgba(0, 0, 0, .4);
+    }
+
+    .success-mark {
+      margin: 0 0 22px;
+      color: var(--success);
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .success-page h1 {
+      margin-bottom: 20px;
+    }
+
+    .success-page p {
+      max-width: 560px;
+      color: var(--secondary);
+    }
+
+    .reference {
+      margin: 52px 0 34px;
+    }
+
+    .reference-label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .reference-id {
+      margin-top: 10px;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .text-link {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--secondary);
+      padding: 8px 13px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .text-link:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+
+    footer {
+      max-width: 680px;
+      border-top: 1px solid var(--border-sub);
+      padding-top: 22px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width:640px) {
+
+      .nav-inner,
+      .wrap,
+      .success-page {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero,
+      .progress,
+      section.card-section,
+      footer {
+        width: calc(100vw - 40px);
+        max-width: calc(100vw - 40px);
+      }
+
+      .hero p,
+      .section-sub,
+      .desc,
+      .helptext {
+        overflow-wrap: anywhere;
+      }
+
+      .hero,
+      .success-page {
+        padding-top: 54px;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(42px, 10.6vw, 86px);
+        font-family: var(--font-display);
+        line-height: .88;
+        letter-spacing: -0.004em;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+  </style>
+</head>
+
+<body>
+
+  <nav class="topnav" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="brand" href="#top">AEROSS</a>
+      <div class="nav-right">
+        <span class="nav-note">CelesteCon 2026 registration</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap" id="form-shell">
+    <header class="hero" id="top">
+      <p class="eyebrow">CelesteCon 2026</p>
+      <h1>School<br><span style="color:var(--crimson)">Registration</span></h1>
+      <p>Register your school for CelesteCon 2026. Complete the form below. You can return to edit before submitting.
+      </p>
+      <div class="hero-meta" aria-label="Registration details">
+        <span>08 events</span>
+        <span>Up to 2 entries per event</span>
+        <span>Validated before submission</span>
+      </div>
+      <hr class="divider">
+    </header>
+
+    <div class="progress" aria-label="Registration progress">
+      <div class="progress-title" id="progress-title">School Information</div>
+      <div class="progress-track" aria-hidden="true">
+        <span class="progress-dot active"></span>
+        <span class="progress-dot"></span>
+        <span class="progress-dot"></span>
+        <span class="progress-dot"></span>
+      </div>
+      <div class="progress-count" id="progress-count">1 of 4</div>
+    </div>
+
+    <section class="card-section" id="s-school" data-step-title="School Information">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <span class="section-title">School Information</span>
+      </div>
+      <div class="panel">
+        <div class="grid2">
+          <div class="field">
+            <label for="school-name">School Name</label>
+            <input type="text" id="school-name" oninput="CC.updateReview()" placeholder="Delhi Public School RK Puram">
+            <div class="field-error" data-error-for="school-name"></div>
+          </div>
+          <div class="field">
+            <label for="contact-name">Contact Person</label>
+            <input type="text" id="contact-name" oninput="CC.updateReview()"
+              placeholder="Teacher-in-charge or coordinator">
+            <div class="field-error" data-error-for="contact-name"></div>
+          </div>
+          <div class="field">
+            <label for="contact-phone">Contact Phone</label>
+            <input type="tel" id="contact-phone" oninput="CC.updateReview()" placeholder="10-digit mobile number">
+            <div class="field-error" data-error-for="contact-phone"></div>
+          </div>
+          <div class="field">
+            <label for="contact-email">Contact Email</label>
+            <input type="email" id="contact-email" oninput="CC.updateReview()" placeholder="coordinator@school.edu">
+            <div class="field-error" data-error-for="contact-email"></div>
+          </div>
+        </div>
+        <div class="helptext">This is the single point of contact for all teams entered through this registration.</div>
+      </div>
+    </section>
+
+    <section class="card-section" id="s-events" data-step-title="Event Selection">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <span class="section-title">Event Selection</span>
+      </div>
+      <div class="section-sub">Choose every event your school is entering. You can add up to two teams or entries per
+        event in this form.</div>
+      <div class="event-grid" id="event-grid"></div>
+      <div class="field-error" data-error-for="event-selection"></div>
+    </section>
+
+    <section class="card-section" id="s-teams" data-step-title="Teams and Members">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <span class="section-title">Teams and Members</span>
+      </div>
+      <div class="section-sub">Add each team's details and members. The member limit follows the selected event
+        automatically.</div>
+      <div id="team-details"></div>
+    </section>
+
+    <section class="card-section" id="s-review" data-step-title="Review Registration">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <span class="section-title">Review Registration</span>
+      </div>
+      <div class="panel">
+        <div id="errors-box" class="errors"></div>
+        <div id="status-box" class="status-banner"></div>
+        <div class="totals" id="totals-box"></div>
+        <div class="review-box" id="review-box">Fill in the sections above. A live summary will appear here.</div>
+        <div class="review-actions">
+          <div class="secondary-actions">
+            <button class="btn ghost small" type="button" onclick="CC.copyJSON()">Copy JSON</button>
+            <button class="btn ghost small" type="button" onclick="CC.downloadJSON()">Download JSON</button>
+          </div>
+          <button class="btn primary" type="button" id="submit-btn" onclick="CC.submitForm()">Submit
+            Registration</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>CelesteCon 2026 registration. Organised by AEROSS Aerospace Society.</footer>
+  </div>
+
+  <main class="success-page" id="success-page" hidden>
+    <p class="success-mark" aria-hidden="true">&#10003;</p>
+    <h1>Registration Submitted</h1>
+    <p>Thank you. Your registration has been received. Please keep the reference ID below for your records.</p>
+    <div class="reference">
+      <div class="reference-label">Reference ID</div>
+      <div class="reference-id" id="success-ref">CLT-2026-00000</div>
+    </div>
+    <button class="text-link" type="button" onclick="window.location.reload()">Return Home &rarr;</button>
+  </main>
+
+  <script>
+    (function () {
+
+      const CATEGORY = {
+        junior: { id: 'junior', label: 'Junior (Classes 6-8)', classMin: 6, classMax: 8 },
+        senior: { id: 'senior', label: 'Senior (Classes 9-12)', classMin: 9, classMax: 12 }
+      };
+
+      const EVENTS = {
+        volatus: {
+          name: "Volatus", tagline: "Prompt-Based Aviation Competition",
+          desc: "Two-round UAV, rotorcraft and fixed-wing design challenge with a written study followed by a live panel pitch and Q&A.",
+          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 6, categories: null, restricted: false
+        },
+        dimension3: {
+          name: "Dimension III", tagline: "3D Modeling Competition",
+          desc: "Model and render an aviation or spacecraft concept across two prompt rounds using Blender, Maya or AutoCAD, with a short write-up.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, categories: null, restricted: false
+        },
+        quizzitch: {
+          name: "Quizzitch", tagline: "STEM Quiz - Individual",
+          desc: "Live-Zoom quiz on aerospace, aviation and STEM with rapid MCQ and short-answer rounds, preliminary and final.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 1, categories: ['junior', 'senior'], restricted: false, individual: true
+        },
+        settle: {
+          name: "Settle-me-this", tagline: "Space Settlement Design",
+          desc: "Design a functional space settlement through a theoretical proposal followed by a 15-20 minute live presentation to judges.",
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 5, categories: ['junior', 'senior'], restricted: false
+        },
+        bpp: {
+          name: "Business Power Pitch", tagline: "Innovation and Entrepreneurship",
+          desc: "Build a product or service around a UN Sustainable Development Goal, then submit a pitch deck and present a 10-minute live pitch.",
+          classMin: 9, classMax: 12, minMembers: 1, maxMembers: 4, categories: null, restricted: false
+        },
+        cosmovate: {
+          name: "Cosmovate", tagline: "Intra-school Innovation Challenge",
+          desc: "A 3-4 day sprint to solve a modern problem, followed by a 7-minute live pitch and 4-5 minute Q&A. DPS R.K. Puram students only.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 4, categories: ['junior', 'senior'], restricted: true
+        },
+        dispute: {
+          name: "In Pursuit of Dispute", tagline: "Aerospace Debate",
+          desc: "Three rounds of aerospace-themed debate with a recorded submission, then live semi-final and final matchups.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 2, categories: ['junior', 'senior'], restricted: false
+        },
+        surprise: {
+          name: "Surprise Event", tagline: "Mystery Event",
+          desc: "The challenge stays under wraps until the last moment across three rounds. Quick thinking required.",
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 2, categories: null, restricted: false
+        }
+      };
+
+      const MAX_TEAMS_PER_EVENT = 2;
+      const state = { selected: new Set(), data: {} };
+      const stepIds = ['s-school', 's-events', 's-teams', 's-review'];
+
+      function makeMember() { return { name: '', cls: '', gender: '' }; }
+      function makeTeam(evId) {
+        const ev = EVENTS[evId];
+        return {
+          name: '',
+          category: ev.categories ? ev.categories[0] : null,
+          cosmovateConfirmed: false,
+          members: Array.from({ length: ev.minMembers }, makeMember)
+        };
+      }
+      function ensureEvent(evId) { if (!state.data[evId]) state.data[evId] = [makeTeam(evId)]; }
+
+      function escapeHTML(value) {
+        return String(value ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+      function classOptions(min, max, selected) {
+        let out = '<option value="">Class</option>';
+        for (let c = min; c <= max; c++) out += `<option value="${c}" ${String(c) === String(selected) ? 'selected' : ''}>Class ${c}</option>`;
+        return out;
+      }
+      function genderOptions(selected) {
+        const opts = ['', 'Male', 'Female', 'Prefer not to say'];
+        return opts.map(o => `<option value="${escapeHTML(o)}" ${o === selected ? 'selected' : ''}>${o || 'Gender'}</option>`).join('');
+      }
+      function categoryOptions(catIds, selected) {
+        return catIds.map(id => `<option value="${id}" ${id === selected ? 'selected' : ''}>${CATEGORY[id].label}</option>`).join('');
+      }
+
+      // ---------- rendering ----------
+      function renderEventGrid() {
+        const grid = document.getElementById('event-grid');
+        grid.innerHTML = Object.keys(EVENTS).map(id => {
+          const ev = EVENTS[id];
+          const on = state.selected.has(id);
+          return `
+      <button class="event-card ${on ? 'on' : ''}" type="button" aria-pressed="${on}" onclick="CC.toggleEvent('${id}')">
+        <span class="event-card-inner">
+          <span class="checkbox-box" aria-hidden="true"></span>
+          <span>
+            <h3>${ev.name}</h3>
+            <span class="tagline">${ev.tagline}</span>
+            <span class="desc">${ev.desc}</span>
+            <span class="badges">
+              <span class="badge">Classes ${ev.classMin}-${ev.classMax}</span>
+              <span class="badge">${ev.individual ? 'Individual' : (ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team ${ev.minMembers}-${ev.maxMembers}`)}</span>
+              ${ev.restricted ? '<span class="badge">DPS RKP only</span>' : ''}
+            </span>
+          </span>
+        </span>
+      </button>`;
+        }).join('');
+      }
+
+      function syncEventFromDOM(evId) {
+        const teams = state.data[evId];
+        if (!teams) return;
+        teams.forEach((team, i) => {
+          const nameEl = document.getElementById(`team-${evId}-${i}-name`);
+          if (nameEl) team.name = nameEl.value;
+          const catEl = document.getElementById(`team-${evId}-${i}-cat`);
+          if (catEl) team.category = catEl.value;
+          const cosEl = document.getElementById(`team-${evId}-${i}-cosmovate`);
+          if (cosEl) team.cosmovateConfirmed = cosEl.checked;
+          team.members.forEach((m, j) => {
+            const n = document.getElementById(`m-${evId}-${i}-${j}-name`);
+            const c = document.getElementById(`m-${evId}-${i}-${j}-cls`);
+            const g = document.getElementById(`m-${evId}-${i}-${j}-gender`);
+            if (n) m.name = n.value;
+            if (c) m.cls = c.value;
+            if (g) m.gender = g.value;
+          });
+        });
+      }
+
+      function renderTeamDetails() {
+        const host = document.getElementById('team-details');
+        if (state.selected.size === 0) {
+          host.innerHTML = `<div class="no-events">No events selected yet. Choose one or more events above to build your teams.</div>`;
+          return;
+        }
+        host.innerHTML = Object.keys(EVENTS).filter(id => state.selected.has(id)).map(id => renderEventSectionHTML(id)).join('');
+      }
+
+      function renderEventSectionHTML(evId) {
+        const ev = EVENTS[evId];
+        ensureEvent(evId);
+        const teams = state.data[evId];
+        const unit = ev.individual ? 'Participant' : 'Team';
+        const teamsHTML = teams.map((team, i) => renderTeamBlockHTML(evId, team, i)).join('');
+        const atMax = teams.length >= MAX_TEAMS_PER_EVENT;
+        return `
+    <div class="event-section" id="section-${evId}">
+      <div class="event-section-head">
+        <h3>${ev.name}</h3>
+        <span class="meta">${ev.individual ? 'Individual entry / ' : `Team size ${ev.minMembers}-${ev.maxMembers} / `}Classes ${ev.classMin}-${ev.classMax}${ev.restricted ? ' / DPS R.K. Puram only' : ''}</span>
+      </div>
+      ${teamsHTML}
+      <div class="row-actions">
+        <button class="btn small" type="button" ${atMax ? 'disabled' : ''} onclick="CC.addTeam('${evId}')">+ Add another ${unit.toLowerCase()}</button>
+        <span class="cap-note">${teams.length} of ${MAX_TEAMS_PER_EVENT} ${unit.toLowerCase()}${MAX_TEAMS_PER_EVENT > 1 ? 's' : ''} used${atMax ? '. Submit a new form for more.' : ''}</span>
+      </div>
+    </div>`;
+      }
+
+      function renderTeamBlockHTML(evId, team, i) {
+        const ev = EVENTS[evId];
+        const canRemoveTeam = state.data[evId].length > 1;
+        const atMaxMembers = team.members.length >= ev.maxMembers;
+        const atMinMembers = team.members.length <= ev.minMembers;
+        const fixedSize = ev.minMembers === ev.maxMembers;
+        const teamLabel = ev.individual ? `Participant ${i + 1}` : `Team ${i + 1}`;
+        const membersHTML = team.members.map((m, j) => `
+      <div class="member-row">
+        <p class="member-title">Member ${j + 1}</p>
+        <div class="member-fields">
+          <div class="field compact">
+            <label for="m-${evId}-${i}-${j}-name">Name</label>
+            <input type="text" id="m-${evId}-${i}-${j}-name" placeholder="Full name" value="${escapeHTML(m.name)}" oninput="CC.updateReview()">
+            <div class="field-error" data-error-for="m-${evId}-${i}-${j}-name"></div>
+          </div>
+          <div class="field compact">
+            <label for="m-${evId}-${i}-${j}-cls">Class</label>
+            <select id="m-${evId}-${i}-${j}-cls" onchange="CC.updateReview()">${classOptions(ev.classMin, ev.classMax, m.cls)}</select>
+            <div class="field-error" data-error-for="m-${evId}-${i}-${j}-cls"></div>
+          </div>
+          <div class="field compact">
+            <label for="m-${evId}-${i}-${j}-gender">Gender</label>
+            <select id="m-${evId}-${i}-${j}-gender" onchange="CC.updateReview()">${genderOptions(m.gender)}</select>
+            <div class="field-error" data-error-for="m-${evId}-${i}-${j}-gender"></div>
+          </div>
+          <button class="btn-x" type="button" ${atMinMembers ? 'disabled' : ''} onclick="CC.removeMember('${evId}',${i},${j})" aria-label="Remove member">&times;</button>
+        </div>
+      </div>`).join('');
+
+        return `
+    <div class="team-block">
+      <div class="team-block-head">
+        <div class="team-main">
+          <p class="team-title">${teamLabel}</p>
+          ${ev.individual ? '' : `
+          <div class="field">
+            <label for="team-${evId}-${i}-name">Team Name</label>
+            <input type="text" id="team-${evId}-${i}-name" value="${escapeHTML(team.name)}" placeholder="Team name" oninput="CC.updateReview()">
+            <div class="field-error" data-error-for="team-${evId}-${i}-name"></div>
+          </div>`}
+          ${ev.categories ? `
+          <div class="field">
+            <label for="team-${evId}-${i}-cat">Category</label>
+            <select id="team-${evId}-${i}-cat" onchange="CC.updateReview()">${categoryOptions(ev.categories, team.category)}</select>
+            <div class="field-error" data-error-for="team-${evId}-${i}-cat"></div>
+          </div>` : ''}
+        </div>
+        ${canRemoveTeam ? `<button class="btn-remove-team" type="button" onclick="CC.removeTeam('${evId}',${i})">Remove ${ev.individual ? 'participant' : 'team'}</button>` : ''}
+      </div>
+      ${membersHTML}
+      <div class="field-error" data-error-for="team-${evId}-${i}-members"></div>
+      ${!fixedSize ? `
+      <div class="row-actions">
+        <button class="btn small ghost" type="button" ${atMaxMembers ? 'disabled' : ''} onclick="CC.addMember('${evId}',${i})">+ Add Member</button>
+        <span class="cap-note">${team.members.length} of ${ev.maxMembers} members${atMaxMembers ? '. Cap reached.' : ''}</span>
+      </div>` : ''}
+      ${ev.restricted ? `
+      <label class="cosmovate-confirm" for="team-${evId}-${i}-cosmovate">
+        <input type="checkbox" id="team-${evId}-${i}-cosmovate" ${team.cosmovateConfirmed ? 'checked' : ''} onchange="CC.updateReview()">
+        <span>I confirm all members of this ${ev.individual ? 'entry' : 'team'} are enrolled at DPS R.K. Puram.</span>
+      </label>
+      <div class="field-error" data-error-for="team-${evId}-${i}-cosmovate"></div>` : ''}
+    </div>`;
+      }
+
+      // ---------- structural mutations ----------
+      function toggleEvent(evId) {
+        if (state.selected.has(evId)) state.selected.delete(evId);
+        else { state.selected.add(evId); ensureEvent(evId); }
+        clearValidationUI();
+        renderEventGrid();
+        renderTeamDetails();
+        updateReview();
+      }
+      function addTeam(evId) {
+        syncEventFromDOM(evId);
+        if (state.data[evId].length < MAX_TEAMS_PER_EVENT) {
+          state.data[evId].push(makeTeam(evId));
+          clearValidationUI();
+          renderTeamDetails();
+          updateReview();
+        }
+      }
+      function removeTeam(evId, i) {
+        syncEventFromDOM(evId);
+        if (state.data[evId].length > 1) {
+          state.data[evId].splice(i, 1);
+          clearValidationUI();
+          renderTeamDetails();
+          updateReview();
+        }
+      }
+      function addMember(evId, i) {
+        syncEventFromDOM(evId);
+        const team = state.data[evId][i];
+        const ev = EVENTS[evId];
+        if (team.members.length < ev.maxMembers) {
+          team.members.push(makeMember());
+          clearValidationUI();
+          renderTeamDetails();
+          updateReview();
+        }
+      }
+      function removeMember(evId, i, j) {
+        syncEventFromDOM(evId);
+        const team = state.data[evId][i];
+        const ev = EVENTS[evId];
+        if (team.members.length > ev.minMembers) {
+          team.members.splice(j, 1);
+          clearValidationUI();
+          renderTeamDetails();
+          updateReview();
+        }
+      }
+
+      // ---------- validation / payload ----------
+      function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+      function syncAllFromDOM() {
+        Object.keys(EVENTS).filter(id => state.selected.has(id)).forEach(syncEventFromDOM);
+      }
+
+      function validateAll() {
+        const errors = [];
+        const fieldErrors = {};
+        const addError = (message, fieldId) => {
+          errors.push(message);
+          if (fieldId && !fieldErrors[fieldId]) fieldErrors[fieldId] = message;
+        };
+        const school = {
+          name: val('school-name'),
+          contact: val('contact-name'),
+          phone: val('contact-phone'),
+          email: val('contact-email')
+        };
+        if (!school.name) addError('Please enter your school name.', 'school-name');
+        if (!school.contact) addError('Please enter the contact person.', 'contact-name');
+        if (!school.phone) addError('Please enter a contact phone number.', 'contact-phone');
+        if (!school.email) addError('Please enter a contact email.', 'contact-email');
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(school.email)) addError('Please enter a valid email address.', 'contact-email');
+
+        if (state.selected.size === 0) addError('Please select at least one event.', 'event-selection');
+
+        syncAllFromDOM();
+
+        Object.keys(EVENTS).filter(id => state.selected.has(id)).forEach(evId => {
+          const ev = EVENTS[evId];
+          const teams = state.data[evId] || [];
+          teams.forEach((team, i) => {
+            const label = `${ev.name} ${ev.individual ? 'Participant' : 'Team'} ${i + 1}`;
+            if (!ev.individual && !team.name) addError(`${label}: please enter a team name.`, `team-${evId}-${i}-name`);
+            let clsMin = ev.classMin, clsMax = ev.classMax;
+            if (ev.categories) {
+              if (!team.category) addError(`${label}: please choose a category.`, `team-${evId}-${i}-cat`);
+              else { clsMin = CATEGORY[team.category].classMin; clsMax = CATEGORY[team.category].classMax; }
+            }
+            if (ev.restricted && !team.cosmovateConfirmed) addError(`${label}: please confirm DPS R.K. Puram eligibility.`, `team-${evId}-${i}-cosmovate`);
+            if (team.members.length < ev.minMembers || team.members.length > ev.maxMembers) {
+              addError(`${label}: enter between ${ev.minMembers} and ${ev.maxMembers} member(s).`, `team-${evId}-${i}-members`);
+            }
+            team.members.forEach((m, j) => {
+              const mLabel = `${label}, Member ${j + 1}`;
+              if (!m.name) addError(`${mLabel}: please enter a name.`, `m-${evId}-${i}-${j}-name`);
+              if (!m.cls) addError(`${mLabel}: please choose a class.`, `m-${evId}-${i}-${j}-cls`);
+              else if (Number(m.cls) < clsMin || Number(m.cls) > clsMax) addError(`${mLabel}: class must be between ${clsMin} and ${clsMax}.`, `m-${evId}-${i}-${j}-cls`);
+              if (!m.gender) addError(`${mLabel}: please choose a gender.`, `m-${evId}-${i}-${j}-gender`);
+            });
+          });
+        });
+        return { errors, fieldErrors, school };
+      }
+
+      function buildPayload() {
+        const { school } = validateAll();
+        const events = Object.keys(EVENTS).filter(id => state.selected.has(id)).map(evId => {
+          const ev = EVENTS[evId];
+          return {
+            id: evId,
+            name: ev.name,
+            teams: (state.data[evId] || []).map(team => ({
+              teamName: ev.individual ? null : team.name,
+              category: team.category ? CATEGORY[team.category].label : null,
+              cosmovateConfirmed: ev.restricted ? !!team.cosmovateConfirmed : undefined,
+              members: team.members.map(m => ({ name: m.name, class: m.cls, gender: m.gender }))
+            }))
+          };
+        });
+        const totalTeams = events.reduce((s, e) => s + e.teams.length, 0);
+        const totalParticipants = events.reduce((s, e) => s + e.teams.reduce((s2, t) => s2 + t.members.length, 0), 0);
+        return {
+          school,
+          submittedAt: new Date().toISOString(),
+          events,
+          totals: { totalEvents: events.length, totalTeams, totalParticipants },
+          summary: generateSummary(events)
+        };
+      }
+
+      function generateSummary(events) {
+        if (events.length === 0) return '(no events selected yet)';
+        return events.map(e => {
+          const teamLines = e.teams.map((t, i) => {
+            const header = `  ${t.teamName ? `Team: ${t.teamName}` : `Participant ${i + 1}`}${t.category ? ' / ' + t.category : ''}`;
+            const members = t.members.map((m, j) => `    ${j + 1}. ${m.name || '-'} (Class ${m.class || '-'}, ${m.gender || '-'})`).join('\n');
+            return header + '\n' + members;
+          }).join('\n');
+          return `${e.name}\n${teamLines}`;
+        }).join('\n\n');
+      }
+
+      // ---------- review / status ----------
+      function clearValidationUI() {
+        document.querySelectorAll('[data-error-for]').forEach(el => { el.textContent = ''; });
+        document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+        const box = document.getElementById('errors-box');
+        if (box) box.textContent = '';
+      }
+
+      function updateReview() {
+        clearValidationUI();
+        const payload = buildPayload();
+        document.getElementById('totals-box').innerHTML = `
+      <div class="total-chip"><div class="n">${payload.totals.totalEvents}</div><div class="l">Events</div></div>
+      <div class="total-chip"><div class="n">${payload.totals.totalTeams}</div><div class="l">Teams / Entries</div></div>
+      <div class="total-chip"><div class="n">${payload.totals.totalParticipants}</div><div class="l">Participants</div></div>
+    `;
+        document.getElementById('review-box').textContent = payload.summary;
+      }
+
+      function showErrors(errors, fieldErrors) {
+        clearValidationUI();
+        Object.keys(fieldErrors || {}).forEach(fieldId => {
+          const message = fieldErrors[fieldId];
+          const target = document.querySelector(`[data-error-for="${fieldId}"]`);
+          if (target) target.textContent = message;
+          const control = document.getElementById(fieldId);
+          if (control) control.classList.add('has-error');
+        });
+        const box = document.getElementById('errors-box');
+        box.textContent = errors.length ? 'Please review the highlighted fields before submitting.' : '';
+      }
+      function setStatus(kind, msg) {
+        const el = document.getElementById('status-box');
+        el.className = `status-banner show ${kind}`;
+        el.textContent = msg;
+      }
+      function clearStatus() {
+        const el = document.getElementById('status-box');
+        el.className = 'status-banner';
+        el.textContent = '';
+      }
+
+      function referenceFromSubmission(submissionID) {
+        if (submissionID) {
+          const digits = String(submissionID).replace(/\D/g, '').slice(-5).padStart(5, '0');
+          return `CLT-2026-${digits}`;
+        }
+        return `CLT-2026-${String(Date.now()).slice(-5)}`;
+      }
+
+      function showSuccess(submissionID) {
+        document.getElementById('success-ref').textContent = referenceFromSubmission(submissionID);
+        document.getElementById('form-shell').hidden = true;
+        document.getElementById('success-page').hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function refreshProgress() {
+        let activeIndex = 0;
+        stepIds.forEach((id, index) => {
+          const section = document.getElementById(id);
+          if (section && section.getBoundingClientRect().top <= window.innerHeight * 0.45) {
+            activeIndex = index;
+          }
+        });
+        const activeSection = document.getElementById(stepIds[activeIndex]);
+        document.getElementById('progress-title').textContent = activeSection.dataset.stepTitle;
+        document.getElementById('progress-count').textContent = `${activeIndex + 1} of ${stepIds.length}`;
+        document.querySelectorAll('.progress-dot').forEach((dot, index) => {
+          dot.classList.toggle('active', index === activeIndex);
+        });
+      }
+
+      // ---------- submit / export ----------
+      async function submitForm() {
+        const validation = validateAll();
+        showErrors(validation.errors, validation.fieldErrors);
+        if (validation.errors.length > 0) {
+          clearStatus();
+          const firstField = Object.keys(validation.fieldErrors)[0];
+          const target = document.getElementById(firstField) || document.querySelector(`[data-error-for="${firstField}"]`) || document.getElementById('s-review');
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        const payload = buildPayload();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true; btn.textContent = 'Submitting...';
+        try {
+          const res = await fetch('/api/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (!res.ok) throw new Error('proxy responded with ' + res.status);
+          const data = await res.json();
+          showSuccess(data.submissionID);
+        } catch (err) {
+          setStatus('warn', `Could not reach the JotForm proxy (${err.message}). If you are previewing the HTML standalone, use Download JSON or Copy JSON for now.`);
+        } finally {
+          btn.disabled = false; btn.textContent = 'Submit Registration';
+        }
+      }
+
+      function downloadJSON() {
+        const payload = buildPayload();
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const schoolSlug = (payload.school.name || 'school').replace(/[^a-z0-9]/gi, '_');
+        a.href = url; a.download = `celestecon26_${schoolSlug}_${Date.now()}.json`;
+        a.click(); URL.revokeObjectURL(url);
+      }
+      async function copyJSON() {
+        const payload = buildPayload();
+        try {
+          await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+          setStatus('ok', 'Registration JSON copied to clipboard.');
+        } catch (e) {
+          setStatus('warn', 'Clipboard access was blocked by the browser. Use Download JSON instead.');
+        }
+      }
+
+      window.CC = { toggleEvent, addTeam, removeTeam, addMember, removeMember, updateReview, submitForm, downloadJSON, copyJSON };
+
+      renderEventGrid();
+      renderTeamDetails();
+      updateReview();
+      refreshProgress();
+      window.addEventListener('scroll', refreshProgress, { passive: true });
+      window.addEventListener('resize', refreshProgress);
+    })();
+  </script>
+</body>
+
+</html>

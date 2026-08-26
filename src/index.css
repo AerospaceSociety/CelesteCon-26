@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #161310;
+  --color-ink-2: #33302A;
+  --color-ink-3: #57534A;
+  --color-bone: #E8E1CE;
+  --color-bone-hi: #F2EDDD;
+  --color-bone-dim: #DDD4BC;
+  --color-crimson: #C23A1E;
+  --color-crimson-deep: #93290F;
+  
+  --font-display: 'Anton', 'Arial Narrow', Impact, sans-serif;
+  --font-label: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+  --font-body: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-label);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.bg-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: .13;
+  mix-blend-mode: multiply;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.starglyph {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* Halftone screen */
+.screen {
+  background-image: radial-gradient(rgba(232,225,206,.16) .6px, transparent .9px);
+  background-size: 4px 4px;
+  mix-blend-mode: overlay;
+}
