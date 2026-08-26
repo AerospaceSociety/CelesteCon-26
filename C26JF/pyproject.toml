@@ -1,0 +1,13 @@
+[project]
+name = "celestecon-registration"
+version = "0.1.0"
+description = "CelesteCon 2026 registration form and JotForm proxy"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.117.1",
+  "requests>=2.32.0",
+  "uvicorn>=0.30.0",
+]
+
+[tool.vercel]
+entrypoint = "api.index:app"
