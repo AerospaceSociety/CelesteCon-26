@@ -166,7 +166,7 @@ const Home = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,3vw,34px)] gap-y-0">
-          {events.slice(0, 8).map((event, i) => (
+          {events.slice(0, 11).map((event, i) => (
             <Link 
               key={event.id} 
               to="/comps" 
