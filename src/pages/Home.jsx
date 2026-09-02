@@ -122,7 +122,7 @@ const Home = () => {
       </section>
 
       {/* Stat Matrix */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-0 border-2 border-bone mb-3" aria-label="Track record">
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-0 border-2 border-bone mb-3" aria-label="Key Statistics">
         <div className="bg-bone text-ink p-[clamp(12px,1.8vw,20px)] relative border-r-2 border-b-2 md:border-b-0 border-ink min-w-0">
           <span className="absolute top-2 right-2.5 font-mono text-[8.5px] text-ink-3 tracking-[0.15em] font-bold">A/01</span>
           <div className="font-display text-[clamp(30px,5.2vw,58px)] leading-[0.95] tracking-wide text-ink">28<em className="not-italic text-crimson">+</em></div>
@@ -160,13 +160,13 @@ const Home = () => {
       <section className="mb-24">
         <div className="flex items-baseline gap-3 mt-8 mb-2 pb-1.5 border-b-4 border-bone flex-wrap">
           <h2 className="font-display text-[clamp(20px,3.4vw,34px)] text-bone uppercase tracking-wide leading-none">The Competitions</h2>
-          <span className="font-jp font-bold text-[clamp(10px,1.3vw,13px)] tracking-[0.25em] text-crimson">全九種目</span>
+          <span className="font-jp font-bold text-[clamp(10px,1.3vw,13px)] tracking-[0.25em] text-crimson">全十一種目</span>
           <span className="flex-1 min-w-[20px]"></span>
-          <span className="font-mono text-[9.5px] tracking-[0.16em] uppercase text-bone-dim font-bold">SEC. 03 // FIELD ROSTER</span>
+          <span className="font-mono text-[9.5px] tracking-[0.16em] uppercase text-bone-dim font-bold">SEC. 03 // FIELD ROSTER (11 EVENTS)</span>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,3vw,34px)] gap-y-0">
-          {events.slice(0, 11).map((event, i) => (
+          {events.map((event, i) => (
             <Link 
               key={event.id} 
               to="/comps" 
@@ -182,12 +182,15 @@ const Home = () => {
               </span>
             </Link>
           ))}
-          <Link to="/comps" className="grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-1 items-baseline py-2.5 border-b-[1.5px] border-bone/40 hover:border-crimson group transition-colors">
-            <span className="font-mono text-[11px] text-crimson tracking-[0.05em] font-bold">+</span>
-            <span className="font-label font-bold text-[clamp(12px,1.5vw,14.5px)] tracking-[0.08em] uppercase text-bone group-hover:text-crimson transition-colors">View full roster</span>
-            <span className="font-mono text-[8.5px] tracking-[0.12em] px-1.5 py-0.5 uppercase whitespace-nowrap font-bold border bg-ink text-bone border-bone">
-              11 Events
-            </span>
+        </div>
+        
+        <div className="mt-6 flex justify-end">
+          <Link
+            to="/comps"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-crimson font-bold border-b border-crimson hover:text-bone hover:border-bone transition-colors py-1"
+          >
+            <span>Explore Full Guidelines & Round Structures for All 11 Events</span>
+            <span>→</span>
           </Link>
         </div>
       </section>
