@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { awards } from '../data/awards';
 
 const About = () => {
-  const [showFullAwards, setShowFullAwards] = useState(false);
-
   return (
     <div className="max-w-4xl">
       <SectionHeader section="01" title="About AEROSS" jp="アエロスについて" />
@@ -56,47 +53,6 @@ const About = () => {
               </div>
             </dl>
           </div>
-        </div>
-      </div>
-
-      {/* Awards Section */}
-      <div className="mt-16">
-        <h3 className="font-display text-2xl text-bone uppercase tracking-widest mb-4">Track Record</h3>
-        
-        {/* Top Awards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          {awards.filter(a => a.featured).map(award => (
-            <div key={award.id} className="border-2 border-bone/50 p-4 hover:border-crimson transition-colors">
-              <div className="font-mono text-xs text-crimson font-bold mb-1 uppercase">{award.year}</div>
-              <h4 className="font-label font-bold text-lg text-bone uppercase tracking-wide leading-tight mb-2">{award.title}</h4>
-              <p className="font-label text-sm text-bone-dim">{award.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Full Record Toggle */}
-        <div className="border-t-2 border-bone/30 pt-4">
-          <button 
-            onClick={() => setShowFullAwards(!showFullAwards)}
-            className="flex items-center justify-between w-full text-left font-mono text-[11px] font-bold text-bone uppercase tracking-[0.15em] hover:text-crimson transition-colors py-2"
-          >
-            <span>{showFullAwards ? '[-]' : '[+]'} View Complete Record Archive (2010 - Present)</span>
-            <span>{showFullAwards ? 'COLLAPSE' : 'EXPAND'}</span>
-          </button>
-          
-          {showFullAwards && (
-            <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4 font-label text-sm text-bone-dim">
-              {awards.filter(a => !a.featured).map(award => (
-                <div key={award.id} className="flex gap-4 border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs text-crimson font-bold shrink-0">{award.year}</span>
-                  <div>
-                    <span className="text-bone font-bold block">{award.title}</span>
-                    <span>{award.desc}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </div>

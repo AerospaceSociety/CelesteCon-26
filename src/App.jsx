@@ -43,20 +43,19 @@ const Navbar = () => {
           </div>
           <div className="hidden md:flex space-x-6">
             {navLinks.map(link => (
-              <Link 
-                key={link.path} 
+              <Link
+                key={link.path}
                 to={link.path}
-                className={`text-sm font-label uppercase tracking-widest transition-colors hover:text-crimson ${
-                  location.pathname === link.path ? 'text-crimson' : 'text-bone-dim'
-                }`}
+                className={`text-sm font-label uppercase tracking-widest transition-colors hover:text-crimson ${location.pathname === link.path ? 'text-crimson' : 'text-bone-dim'
+                  }`}
               >
                 {link.label}
               </Link>
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <a 
-              href="/celestecon_registration.html" 
+            <a
+              href="/celestecon_registration.html"
               className="px-4 py-1.5 bg-crimson text-bone-hi font-label text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
             >
               Register
@@ -67,9 +66,9 @@ const Navbar = () => {
               aria-label="Toggle theme"
             >
               {isLight ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" /></svg>
               )}
             </button>
           </div>
@@ -86,7 +85,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
             <h3 className="font-display font-bold text-2xl mb-2 text-ink uppercase tracking-wider">AEROSS</h3>
-            <p className="font-mono text-xs text-ink-3 uppercase tracking-widest font-bold">"Build rather than watch"</p>
+            <p className="font-mono text-xs text-ink-3 uppercase tracking-widest font-bold">"Sky is not the Limit"</p>
           </div>
           <div>
             <h4 className="font-mono text-[10px] text-crimson-deep mb-3 tracking-[0.2em] font-bold uppercase">Quick Links</h4>
@@ -114,7 +113,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-12 pt-6 border-t-2 border-ink flex flex-col md:flex-row justify-between items-center">
-          <p className="font-mono text-[10px] text-ink-3 font-bold tracking-widest uppercase">DOSSIER № CC-VI-2026</p>
+          <p className="font-mono text-[10px] text-ink-3 font-bold tracking-widest uppercase">№ CC-VI-2026</p>
           <div className="flex items-center gap-2 mt-4 md:mt-0">
             <span className="font-jp text-[10px] text-crimson font-bold tracking-widest">第六回航空宇宙大会</span>
             <span className="font-mono text-[10px] text-ink-3 font-bold tracking-widest uppercase">&copy; {new Date().getFullYear()} AEROSS</span>
