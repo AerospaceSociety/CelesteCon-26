@@ -7,6 +7,8 @@ import Format from './pages/Format';
 import Sponsors from './pages/Sponsors';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import Prompts from './pages/Prompts';
+import Submissions from './pages/Submissions';
 
 const Navbar = () => {
   const location = useLocation();
@@ -180,6 +182,8 @@ function App() {
             {/*<Route path="/sponsors" element={<Sponsors />} />*/}
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/prompts" element={<Prompts />} />
+            <Route path="/submissions" element={<Submissions />} />
           </Routes>
         </main>
         <Footer />

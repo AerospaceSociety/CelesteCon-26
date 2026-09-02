@@ -63,14 +63,17 @@ CATEGORY_RANGES = {
 }
 
 EVENTS = {
-    "Volatus": {"classMin": 9, "classMax": 12, "min": 2, "max": 6, "categories": False, "restricted": False},
-    "Dimension III": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
-    "Quizzitch": {"classMin": 6, "classMax": 12, "min": 1, "max": 1, "categories": True, "restricted": False},
-    "Settle-me-this": {"classMin": 6, "classMax": 12, "min": 2, "max": 5, "categories": True, "restricted": False},
-    "Business Power Pitch": {"classMin": 9, "classMax": 12, "min": 1, "max": 4, "categories": False, "restricted": False},
-    "Cosmovate": {"classMin": 6, "classMax": 12, "min": 1, "max": 4, "categories": True, "restricted": True},
-    "In Pursuit of Dispute": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": False},
-    "Surprise Event": {"classMin": 6, "classMax": 12, "min": 2, "max": 2, "categories": False, "restricted": False},
+    "In Pursuit of Dispute (Debate)": {"classMin": 9, "classMax": 12, "min": 2, "max": 2, "maxTeams": 1, "categories": False, "restricted": False},
+    "Quizzitch": {"classMin": 6, "classMax": 12, "min": 2, "max": 2, "categories": False, "restricted": False},
+    "Settle-me-this (Space Settlement)": {"classMin": 6, "classMax": 12, "min": 3, "max": 5, "categories": True, "restricted": False},
+    "Business Power Pitch": {"classMin": 6, "classMax": 12, "min": 3, "max": 3, "categories": False, "restricted": False},
+    "Volatus": {"classMin": 6, "classMax": 12, "min": 2, "max": 4, "categories": False, "restricted": False},
+    "Cosmovate": {"classMin": 6, "classMax": 12, "min": 2, "max": 3, "categories": False, "restricted": False},
+    "Surprise (AEROSS Theatre)": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
+    "Dimension III (3D Design & CAD)": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": False},
+    "GameJam": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
+    "AEROSS Foundry": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": True},
+    "F1 (F1 in Schools)": {"classMin": 9, "classMax": 12, "min": 3, "max": 5, "categories": False, "restricted": False},
 }
 MAX_TEAMS_PER_EVENT = 2
 

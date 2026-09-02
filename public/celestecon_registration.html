@@ -1013,45 +1013,71 @@
       };
 
       const EVENTS = {
-        volatus: {
-          name: "Volatus", tagline: "Prompt-Based Aviation Competition",
-          desc: "Two-round UAV, rotorcraft and fixed-wing design challenge with a written study followed by a live panel pitch and Q&A.",
-          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 6, categories: null, restricted: false
-        },
-        dimension3: {
-          name: "Dimension III", tagline: "3D Modeling Competition",
-          desc: "Model and render an aviation or spacecraft concept across two prompt rounds using Blender, Maya or AutoCAD, with a short write-up.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, categories: null, restricted: false
+        dispute: {
+          name: "In Pursuit of Dispute (Debate)",
+          tagline: "Aerospace & Aviation Parliamentary Debate",
+          desc: "Two-round debate on space and aviation frontiers. Video qualifier followed by onsite motion clashes, cross-questioning, and POIs.",
+          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
         },
         quizzitch: {
-          name: "Quizzitch", tagline: "STEM Quiz - Individual",
-          desc: "Live-Zoom quiz on aerospace, aviation and STEM with rapid MCQ and short-answer rounds, preliminary and final.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 1, categories: ['junior', 'senior'], restricted: false, individual: true
+          name: "Quizzitch",
+          tagline: "Aerospace, Aviation & STEM Quiz",
+          desc: "Online preliminary test mixing aerospace trivia, mission developments, and logical problem solving, followed by an onsite written paper and buzzer final.",
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 2, mode: "Hybrid", categories: null, restricted: false
         },
         settle: {
-          name: "Settle-me-this", tagline: "Space Settlement Design",
-          desc: "Design a functional space settlement through a theoretical proposal followed by a 15-20 minute live presentation to judges.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 5, categories: ['junior', 'senior'], restricted: false
+          name: "Settle-me-this (Space Settlement)",
+          tagline: "Habitable Free-Space Settlement Design",
+          desc: "Design a comprehensive proposal for a permanent free-space settlement. Junior (6th–8th) and Senior (9th–12th) tracks, evaluated separately.",
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
         },
         bpp: {
-          name: "Business Power Pitch", tagline: "Innovation and Entrepreneurship",
-          desc: "Build a product or service around a UN Sustainable Development Goal, then submit a pitch deck and present a 10-minute live pitch.",
-          classMin: 9, classMax: 12, minMembers: 1, maxMembers: 4, categories: null, restricted: false
+          name: "Business Power Pitch",
+          tagline: "Commercial Aerospace Venture & Pitch",
+          desc: "Propose an innovative product or service solution to a chosen aerospace track, submit proposal + pitch video, and pitch live to angel investors.",
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 3, mode: "Hybrid", categories: null, restricted: false
+        },
+        volatus: {
+          name: "Volatus",
+          tagline: "Case-Based Aviation Engineering Solution",
+          desc: "Select from 3 case-based engineering prompts, submit a project proposal, and defend a full project exhibit in science-fair format.",
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 4, mode: "Hybrid", categories: null, restricted: false
         },
         cosmovate: {
-          name: "Cosmovate", tagline: "Intra-school Innovation Challenge",
-          desc: "A 3-4 day sprint to solve a modern problem, followed by a 7-minute live pitch and 4-5 minute Q&A. DPS R.K. Puram students only.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 4, categories: ['junior', 'senior'], restricted: true
+          name: "Cosmovate",
+          tagline: "Quirky Aerospace Creative Engineering",
+          desc: "Turn a deliberately quirky prompt into a technically sound aerospace idea via creative media (video, poster, write-up) and live panel pitch.",
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 3, mode: "Hybrid", categories: null, restricted: false
         },
-        dispute: {
-          name: "In Pursuit of Dispute", tagline: "Aerospace Debate",
-          desc: "Three rounds of aerospace-themed debate with a recorded submission, then live semi-final and final matchups.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 2, categories: ['junior', 'senior'], restricted: false
+        theatre: {
+          name: "Surprise (AEROSS Theatre)",
+          tagline: "Space Theatrical Arts & Educational Comedy",
+          desc: "Translate aerospace into stand-up, comedic skits, improv, or educational performance. Online video round followed by live AVH improv.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, mode: "Hybrid", categories: null, restricted: false
         },
-        surprise: {
-          name: "Surprise Event", tagline: "Mystery Event",
-          desc: "The challenge stays under wraps until the last moment across three rounds. Quick thinking required.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 2, categories: null, restricted: false
+        dimension3: {
+          name: "Dimension III (3D Design & CAD)",
+          tagline: "3D Modeling (CAD/Blender) & Structural Crafting",
+          desc: "Translate aerospace concepts into three-dimensional form. CAD/Blender for Seniors (9th–12th) and hands-on physical material modeling for Juniors (6th–8th).",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 2, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+        },
+        gamejam: {
+          name: "GameJam",
+          tagline: "Aerospace Minigame Build & Play Challenge",
+          desc: "Build a working minigame based on an online released theme beforehand, then compete on campus in live peer review playtesting and jury scoring.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, mode: "Onsite", categories: null, restricted: false
+        },
+        foundry: {
+          name: "AEROSS Foundry",
+          tagline: "Model-Making & RC Flight Challenge (Intraschool)",
+          desc: "Design and construct scale static display models (Track A, Jr/Sr) or functional RC/motorized test-flight models (Track B, Sr with live demos). Open to DPS R.K. Puram students.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 2, mode: "Onsite", categories: ['junior', 'senior'], restricted: true
+        },
+        f1: {
+          name: "F1 (F1 in Schools)",
+          tagline: "Miniature Formula 1 Engineering & Track Racing",
+          desc: "CAD design, aerodynamic testing, manufacturing, pit display branding, technical scrutiny, and live racetrack racing on campus.",
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 5, mode: "Onsite", categories: null, restricted: false
         }
       };
 
@@ -1107,8 +1133,10 @@
             <span class="tagline">${ev.tagline}</span>
             <span class="desc">${ev.desc}</span>
             <span class="badges">
+              <span class="badge">${ev.mode}</span>
               <span class="badge">Classes ${ev.classMin}-${ev.classMax}</span>
               <span class="badge">${ev.individual ? 'Individual' : (ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team ${ev.minMembers}-${ev.maxMembers}`)}</span>
+              ${ev.maxTeams === 1 ? '<span class="badge">Max 1 Team/School</span>' : ''}
               ${ev.restricted ? '<span class="badge">DPS RKP only</span>' : ''}
             </span>
           </span>
@@ -1125,8 +1153,8 @@
           if (nameEl) team.name = nameEl.value;
           const catEl = document.getElementById(`team-${evId}-${i}-cat`);
           if (catEl) team.category = catEl.value;
-          const cosEl = document.getElementById(`team-${evId}-${i}-cosmovate`);
-          if (cosEl) team.cosmovateConfirmed = cosEl.checked;
+          const resEl = document.getElementById(`team-${evId}-${i}-restricted`);
+          if (resEl) team.restrictedConfirmed = resEl.checked;
           team.members.forEach((m, j) => {
             const n = document.getElementById(`m-${evId}-${i}-${j}-name`);
             const c = document.getElementById(`m-${evId}-${i}-${j}-cls`);
@@ -1153,17 +1181,18 @@
         const teams = state.data[evId];
         const unit = ev.individual ? 'Participant' : 'Team';
         const teamsHTML = teams.map((team, i) => renderTeamBlockHTML(evId, team, i)).join('');
-        const atMax = teams.length >= MAX_TEAMS_PER_EVENT;
+        const teamLimit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
+        const atMax = teams.length >= teamLimit;
         return `
     <div class="event-section" id="section-${evId}">
       <div class="event-section-head">
         <h3>${ev.name}</h3>
-        <span class="meta">${ev.individual ? 'Individual entry / ' : `Team size ${ev.minMembers}-${ev.maxMembers} / `}Classes ${ev.classMin}-${ev.classMax}${ev.restricted ? ' / DPS R.K. Puram only' : ''}</span>
+        <span class="meta">[${ev.mode}] ${ev.individual ? 'Individual entry / ' : `Team size ${ev.minMembers}-${ev.maxMembers} / `}Classes ${ev.classMin}-${ev.classMax}${ev.maxTeams === 1 ? ' / Max 1 team per school' : ''}${ev.restricted ? ' / DPS R.K. Puram only' : ''}</span>
       </div>
       ${teamsHTML}
       <div class="row-actions">
         <button class="btn small" type="button" ${atMax ? 'disabled' : ''} onclick="CC.addTeam('${evId}')">+ Add another ${unit.toLowerCase()}</button>
-        <span class="cap-note">${teams.length} of ${MAX_TEAMS_PER_EVENT} ${unit.toLowerCase()}${MAX_TEAMS_PER_EVENT > 1 ? 's' : ''} used${atMax ? '. Submit a new form for more.' : ''}</span>
+        <span class="cap-note">${teams.length} of ${teamLimit} ${unit.toLowerCase()}${teamLimit > 1 ? 's' : ''} used${atMax ? '. Cap reached for this school.' : ''}</span>
       </div>
     </div>`;
       }
@@ -1226,11 +1255,11 @@
         <span class="cap-note">${team.members.length} of ${ev.maxMembers} members${atMaxMembers ? '. Cap reached.' : ''}</span>
       </div>` : ''}
       ${ev.restricted ? `
-      <label class="cosmovate-confirm" for="team-${evId}-${i}-cosmovate">
-        <input type="checkbox" id="team-${evId}-${i}-cosmovate" ${team.cosmovateConfirmed ? 'checked' : ''} onchange="CC.updateReview()">
-        <span>I confirm all members of this ${ev.individual ? 'entry' : 'team'} are enrolled at DPS R.K. Puram.</span>
+      <label class="cosmovate-confirm" for="team-${evId}-${i}-restricted">
+        <input type="checkbox" id="team-${evId}-${i}-restricted" ${team.restrictedConfirmed ? 'checked' : ''} onchange="CC.updateReview()">
+        <span>I confirm all members of this ${ev.individual ? 'entry' : 'team'} are enrolled at DPS R.K. Puram (intraschool requirement).</span>
       </label>
-      <div class="field-error" data-error-for="team-${evId}-${i}-cosmovate"></div>` : ''}
+      <div class="field-error" data-error-for="team-${evId}-${i}-restricted"></div>` : ''}
     </div>`;
       }
 
@@ -1245,7 +1274,9 @@
       }
       function addTeam(evId) {
         syncEventFromDOM(evId);
-        if (state.data[evId].length < MAX_TEAMS_PER_EVENT) {
+        const ev = EVENTS[evId];
+        const teamLimit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
+        if (state.data[evId].length < teamLimit) {
           state.data[evId].push(makeTeam(evId));
           clearValidationUI();
           renderTeamDetails();
@@ -1325,7 +1356,7 @@
               if (!team.category) addError(`${label}: please choose a category.`, `team-${evId}-${i}-cat`);
               else { clsMin = CATEGORY[team.category].classMin; clsMax = CATEGORY[team.category].classMax; }
             }
-            if (ev.restricted && !team.cosmovateConfirmed) addError(`${label}: please confirm DPS R.K. Puram eligibility.`, `team-${evId}-${i}-cosmovate`);
+            if (ev.restricted && !team.restrictedConfirmed) addError(`${label}: please confirm DPS R.K. Puram eligibility.`, `team-${evId}-${i}-restricted`);
             if (team.members.length < ev.minMembers || team.members.length > ev.maxMembers) {
               addError(`${label}: enter between ${ev.minMembers} and ${ev.maxMembers} member(s).`, `team-${evId}-${i}-members`);
             }
@@ -1351,7 +1382,7 @@
             teams: (state.data[evId] || []).map(team => ({
               teamName: ev.individual ? null : team.name,
               category: team.category ? CATEGORY[team.category].label : null,
-              cosmovateConfirmed: ev.restricted ? !!team.cosmovateConfirmed : undefined,
+              restrictedConfirmed: ev.restricted ? !!team.restrictedConfirmed : undefined,
               members: team.members.map(m => ({ name: m.name, class: m.cls, gender: m.gender }))
             }))
           };

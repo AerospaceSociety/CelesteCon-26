@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 import { events, eventOutline } from '../data/events';
 
@@ -200,17 +201,35 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
             )}
           </div>
 
-          {/* Registration CTA Footer inside card */}
+          {/* Action Footer inside card */}
           <div className="pt-3 border-t border-bone/20 flex justify-between items-center flex-wrap gap-3">
             <span className="font-mono text-[10px] tracking-widest uppercase text-bone-dim">
               Event ID: CC26-E{event.id}
             </span>
-            <a
-              href="/celestecon_registration.html"
-              className="px-4 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
-            >
-              Register For Event ↗
-            </a>
+            <div className="flex items-center gap-2 flex-wrap">
+              {event.mode === 'Hybrid' && (
+                <>
+                  <Link
+                    to="/prompts"
+                    className="px-3 py-1.5 border border-bone/40 text-bone font-label font-bold text-xs uppercase tracking-widest hover:border-crimson hover:text-crimson transition-colors"
+                  >
+                    View Prompt Brief
+                  </Link>
+                  <Link
+                    to="/submissions"
+                    className="px-3 py-1.5 border border-crimson text-crimson font-label font-bold text-xs uppercase tracking-widest hover:bg-crimson hover:text-bone transition-colors"
+                  >
+                    Submit Entry
+                  </Link>
+                </>
+              )}
+              <a
+                href="/celestecon_registration.html"
+                className="px-4 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
+              >
+                Register For Event ↗
+              </a>
+            </div>
           </div>
 
         </div>
@@ -242,13 +261,39 @@ const Comps = () => {
       <SectionHeader section="03" title="The Comps" jp="競技一覧" />
 
       {/* Event Outline Masthead */}
-      <div className="mt-8 mb-10 border-2 border-bone p-6 sm:p-8 bg-bone/[0.03]">
+      <div className="mt-8 mb-6 border-2 border-bone p-6 sm:p-8 bg-bone/[0.03]">
         <div className="font-mono text-xs tracking-[0.2em] text-crimson font-bold uppercase mb-2">
           {eventOutline.title}
         </div>
         <p className="font-label text-base sm:text-lg text-bone leading-relaxed">
           {eventOutline.description}
         </p>
+      </div>
+
+      {/* Portals Quick Access Banner for Hybrid Events */}
+      <div className="mb-8 p-4 border border-crimson/60 bg-crimson/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+          <span className="font-mono text-xs text-crimson font-bold uppercase tracking-wider block">
+            HYBRID EVENTS // ROUND 1 QUALIFIERS
+          </span>
+          <span className="font-label text-xs sm:text-sm text-bone-dim">
+            Access challenge briefs or submit your Google Drive entry for the 8 Hybrid competitions.
+          </span>
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <Link
+            to="/prompts"
+            className="px-3 py-1.5 border border-bone/60 text-bone font-mono text-xs uppercase tracking-wider hover:bg-bone hover:text-ink transition-colors"
+          >
+            Prompt Portal →
+          </Link>
+          <Link
+            to="/submissions"
+            className="px-3 py-1.5 bg-crimson border border-crimson text-bone font-mono text-xs uppercase tracking-wider hover:bg-ink hover:text-crimson transition-colors"
+          >
+            Submission Portal →
+          </Link>
+        </div>
       </div>
 
       {/* Controls & Filter Bar */}

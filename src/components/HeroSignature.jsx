@@ -10,13 +10,17 @@ const HeroSignature = () => {
     if (!cv || !plate) return;
 
     let timeoutId;
+    let lastW = 0;
+    let lastH = 0;
 
     const draw = () => {
       const w = plate.clientWidth;
       const h = plate.clientHeight;
-      if (!w || !h) return;
+      if (!w || !h || (w === lastW && h === lastH)) return;
+      lastW = w;
+      lastH = h;
       
-      const dpr = Math.min(2.5, (window.devicePixelRatio || 1) * 1.4);
+      const dpr = Math.min(2.0, window.devicePixelRatio || 1);
       cv.width = Math.round(w * dpr);
       cv.height = Math.round(h * dpr);
       const x = cv.getContext('2d');
