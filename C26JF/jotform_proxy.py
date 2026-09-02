@@ -72,7 +72,6 @@ EVENTS = {
     "Surprise (AEROSS Theatre)": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
     "Dimension III (3D Design & CAD)": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": False},
     "GameJam": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
-    "AEROSS Foundry": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": True},
     "F1 (F1 in Schools)": {"classMin": 9, "classMax": 12, "min": 3, "max": 5, "categories": False, "restricted": False},
 }
 MAX_TEAMS_PER_EVENT = 2
