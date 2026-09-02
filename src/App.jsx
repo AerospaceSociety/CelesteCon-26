@@ -10,6 +10,7 @@ import Contact from './pages/Contact';
 
 const Navbar = () => {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLight, setIsLight] = useState(() => {
     return localStorage.getItem('theme') === 'light';
   });
@@ -23,6 +24,11 @@ const Navbar = () => {
       localStorage.setItem('theme', 'dark');
     }
   }, [isLight]);
+
+  // Close mobile menu whenever the route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -38,9 +44,9 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-ink border-b-2 border-bone">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
-          <div className="flex-shrink-0 flex items-center font-display font-bold text-2xl text-bone tracking-widest uppercase">
+          <Link to="/" className="flex-shrink-0 flex items-center font-display font-bold text-2xl text-bone tracking-widest uppercase hover:text-crimson transition-colors">
             CELESTECON
-          </div>
+          </Link>
           <div className="hidden md:flex space-x-6">
             {navLinks.map(link => (
               <Link
@@ -53,10 +59,10 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <a
               href="/celestecon_registration.html"
-              className="px-4 py-1.5 bg-crimson text-bone-hi font-label text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+              className="px-3 sm:px-4 py-1.5 bg-crimson text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
             >
               Register
             </a>
@@ -71,8 +77,43 @@ const Navbar = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" /></svg>
               )}
             </button>
+            {/* Mobile Hamburger Menu Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-1.5 text-bone hover:text-crimson transition-colors md:hidden border border-bone/40"
+              aria-label="Toggle Menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t-2 border-bone/40 bg-ink py-4 px-2">
+            <div className="flex flex-col space-y-2">
+              {navLinks.map(link => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-base font-label uppercase tracking-widest py-2 px-3 border-l-2 transition-colors ${
+                    location.pathname === link.path
+                      ? 'border-crimson text-crimson font-bold bg-bone/5'
+                      : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/50'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

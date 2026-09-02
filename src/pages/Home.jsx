@@ -8,33 +8,36 @@ const Home = () => {
     <div className="relative">
       
       {/* Hero Section / Masthead */}
-      <section className="mt-4 md:mt-8 mb-12">
+      <section className="mt-2 sm:mt-4 md:mt-8 mb-6 sm:mb-12">
         <h1 className="font-display text-[clamp(42px,10vw,120px)] leading-[0.88] tracking-[-0.01em] uppercase text-bone text-balance mb-4">
           Celestecon
         </h1>
         
-        <div className="flex flex-col sm:flex-row items-stretch gap-[clamp(10px,2vw,22px)]">
-          <div className="font-display text-[clamp(44px,9vw,108px)] leading-[0.9] text-crimson">
-            2026
+        <div className="flex flex-col sm:flex-row items-start sm:items-stretch gap-4 sm:gap-[clamp(10px,2vw,22px)]">
+          {/* Year & Japanese Badge / Strip */}
+          <div className="flex items-center sm:items-stretch gap-3 sm:gap-4 shrink-0">
+            <div className="font-display text-5xl sm:text-[clamp(44px,9vw,108px)] leading-none sm:leading-[0.9] text-crimson">
+              2026
+            </div>
+            
+            <div className="border-x-2 border-bone px-2.5 sm:px-2 py-1 flex items-center justify-center shrink-0 self-stretch">
+              <span className="font-jp font-bold sm:font-black text-xs sm:text-sm tracking-widest sm:tracking-normal sm:leading-relaxed sm:w-[1.15em] sm:break-all text-center text-bone">
+                第六回航空宇宙大会
+              </span>
+            </div>
           </div>
           
-          <div className="border-x-2 border-bone px-2 py-1 flex items-center justify-center shrink-0">
-            <span className="font-jp font-black text-xs md:text-sm leading-relaxed w-[1.15em] break-all text-center text-bone">
-              第六回航空宇宙大会
-            </span>
-          </div>
-          
-          <div className="flex-1 flex flex-col justify-between min-w-0 gap-3">
-            <div className="flex justify-between gap-2 flex-wrap text-bone">
+          <div className="flex-1 flex flex-col justify-between min-w-0 gap-3 w-full">
+            <div className="flex justify-between items-baseline gap-2 flex-wrap text-bone">
               <span className="font-label font-semibold text-[clamp(11px,1.5vw,15px)] tracking-[0.12em] uppercase">Mankind was born on Earth.</span>
               <span className="font-jp font-bold text-[clamp(9px,1.2vw,12px)] tracking-[0.14em]">宇宙は待っている。</span>
             </div>
             
-            <div className="flex justify-between gap-2 flex-wrap">
+            <div className="flex justify-between items-center gap-2 flex-wrap">
               <span className="border-2 border-bone px-2 py-0.5 font-label font-semibold text-[clamp(11px,1.5vw,15px)] tracking-[0.12em] uppercase text-bone">
                 It was never meant to die here.
               </span>
-              <span className="font-label font-semibold text-[clamp(11px,1.5vw,15px)] tracking-[0.12em] uppercase text-crimson self-center">
+              <span className="font-label font-semibold text-[clamp(11px,1.5vw,15px)] tracking-[0.12em] uppercase text-crimson">
                 Beyond school. Beyond sky.
               </span>
             </div>
@@ -63,20 +66,20 @@ const Home = () => {
 
       <HeroSignature />
 
-      <div className="flex justify-between gap-2.5 items-baseline font-mono text-[clamp(8px,1vw,9.5px)] tracking-[0.14em] uppercase mt-3 mb-10 text-bone-dim flex-wrap">
+      <div className="flex justify-between gap-2.5 items-baseline font-mono text-[clamp(8px,1vw,9.5px)] tracking-[0.14em] uppercase mt-2 sm:mt-3 mb-6 sm:mb-10 text-bone-dim flex-wrap">
         <span>OBJECT: EVENT HORIZON — THE POINT OF NO RETURN</span>
         <span>PLATE PRINTED IN BONE / INK / SOLAR CRIMSON</span>
         <span>SCALE: NOT TO SCALE</span>
       </div>
 
-      <div className="flex justify-between items-end h-[9px] border-b-2 border-bone opacity-50 mb-12" aria-hidden="true">
+      <div className="flex justify-between items-end h-[9px] border-b-2 border-bone opacity-50 mb-6 sm:mb-12" aria-hidden="true">
         {Array.from({ length: 40 }).map((_, i) => (
           <i key={i} className={`w-[1.5px] bg-bone ${i % 5 === 0 ? 'h-[9px]' : 'h-[5px]'}`}></i>
         ))}
       </div>
 
       {/* Data Band */}
-      <section className="grid grid-cols-1 md:grid-cols-[minmax(240px,300px)_1fr] gap-[clamp(14px,2.4vw,26px)] mb-16">
+      <section className="grid grid-cols-1 md:grid-cols-[minmax(240px,300px)_1fr] gap-[clamp(14px,2.4vw,26px)] mb-8 sm:mb-16">
         <div className="border-2 border-bone">
           <div className="bg-bone text-ink font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 flex justify-between font-bold">
             <span>Event Data</span>

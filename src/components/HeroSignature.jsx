@@ -168,9 +168,10 @@ const HeroSignature = () => {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="grid grid-cols-[20px_1fr_20px] md:grid-cols-[34px_1fr_34px] gap-2 md:gap-4 lg:gap-6 mt-4 w-full">
-        <div className="flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
-          <span className="font-jp font-bold text-[10px] md:text-[11.5px] leading-relaxed w-[1.2em] text-center" style={{ lineBreak: 'anywhere', wordBreak: 'break-all' }}>
+      <div className="grid grid-cols-1 md:grid-cols-[34px_1fr_34px] gap-2 md:gap-4 lg:gap-6 mt-4 w-full">
+        {/* Left Japanese Vertical Text - visible on desktop */}
+        <div className="hidden md:flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
+          <span className="font-jp font-bold text-[11.5px] leading-relaxed w-[1.2em] text-center" style={{ lineBreak: 'anywhere', wordBreak: 'break-all' }}>
             光さえも逃れられない。
           </span>
           <span className="font-mono text-[8px] opacity-85 leading-relaxed w-[1.4ch] text-center break-all text-bone-dim">
@@ -189,8 +190,9 @@ const HeroSignature = () => {
           </div>
         </figure>
         
-        <div className="flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
-          <span className="font-jp font-bold text-[10px] md:text-[11.5px] leading-relaxed w-[1.2em] text-center" style={{ lineBreak: 'anywhere', wordBreak: 'break-all' }}>
+        {/* Right Japanese Vertical Text - visible on desktop */}
+        <div className="hidden md:flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
+          <span className="font-jp font-bold text-[11.5px] leading-relaxed w-[1.2em] text-center" style={{ lineBreak: 'anywhere', wordBreak: 'break-all' }}>
             未来の技術者たちへ。
           </span>
           <span className="font-mono text-[8px] opacity-85 leading-relaxed w-[1.4ch] text-center break-all text-bone-dim">
