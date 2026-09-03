@@ -32,7 +32,8 @@ JOTFORM_API_KEY=your_jotform_api_key
 Optional variables:
 
 ```text
-JOTFORM_FORM_ID=261896133006456
+JOTFORM_FORM_ID=261896133006456          # Registration Form ID
+JOTFORM_SUBMISSION_FORM_ID=262451061688056 # Qualifier Deliverables Submission Form ID
 JOTFORM_API_BASE=https://api.jotform.com
 ALLOWED_ORIGINS=*
 SMTP_HOST=
@@ -42,7 +43,8 @@ SMTP_PASS=
 SMTP_FROM=
 ```
 
-`JOTFORM_FORM_ID` is optional because the proxy reads it from `field_map.json`
+`JOTFORM_FORM_ID` is optional for registration because the proxy reads it from `field_map.json`.
+`JOTFORM_SUBMISSION_FORM_ID` defaults to `262451061688056` (Round 1 qualifier deliverables).
 when the environment variable is not set.
 
 ## 3. Deploy From GitHub

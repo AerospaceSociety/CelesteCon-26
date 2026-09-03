@@ -1455,9 +1455,31 @@
       }
 
       function showSuccess(submissionID) {
-        document.getElementById('success-ref').textContent = referenceFromSubmission(submissionID);
+        const uid = referenceFromSubmission(submissionID);
+        document.getElementById('success-ref').textContent = uid;
         document.getElementById('form-shell').hidden = true;
         document.getElementById('success-page').hidden = false;
+
+        try {
+          const payload = buildPayload();
+          const regRecord = {
+            uid: uid,
+            submissionID: submissionID || uid,
+            school: payload.school,
+            events: payload.events,
+            totals: payload.totals,
+            submittedAt: payload.submittedAt || new Date().toISOString()
+          };
+          const raw = localStorage.getItem('c26_registrations');
+          const store = raw ? JSON.parse(raw) : {};
+          store[uid.toUpperCase()] = regRecord;
+          if (submissionID) store[String(submissionID).toUpperCase()] = regRecord;
+          localStorage.setItem('c26_registrations', JSON.stringify(store));
+          localStorage.setItem('c26_active_uid', uid.toUpperCase());
+        } catch (e) {
+          console.warn('Could not persist registration locally', e);
+        }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 

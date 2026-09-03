@@ -20,7 +20,9 @@ page's fetch('/api/submit') works without exposing the JotForm API key.
 
 import json
 import os
+import re
 import smtplib
+from datetime import datetime
 from email.mime.text import MIMEText
 from pathlib import Path
 from typing import Optional
@@ -36,6 +38,7 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 API_KEY = os.environ.get("JOTFORM_API_KEY")
 FORM_ID = os.environ.get("JOTFORM_FORM_ID")
+SUBMISSION_FORM_ID = os.environ.get("JOTFORM_SUBMISSION_FORM_ID", "262451061688056")
 API_BASE = os.environ.get("JOTFORM_API_BASE", "https://api.jotform.com")
 ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "*").split(",")
 
@@ -112,6 +115,32 @@ class Registration(BaseModel):
     events: list[EventEntry]
     totals: dict
     summary: str
+
+
+class DeliverableContact(BaseModel):
+    name: str
+    email: str
+    phone: str
+
+
+class EventPrompt(BaseModel):
+    id: str
+    code: str
+    name: str
+
+
+class DeliverableSubmission(BaseModel):
+    formID: Optional[str] = None
+    submissionID: Optional[str] = None
+    submittedAt: str
+    event: EventPrompt
+    school: str
+    team: str
+    contact: DeliverableContact
+    category: Optional[str] = None
+    projectTitle: Optional[str] = None
+    googleDriveUrl: str
+    notes: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -203,6 +232,38 @@ def submit_to_jotform(reg: Registration) -> dict:
     return body["content"]
 
 
+def submit_deliverable_to_jotform(sub: DeliverableSubmission) -> dict:
+    target_form_id = sub.formID or SUBMISSION_FORM_ID
+    if not API_KEY:
+        return {"submissionID": sub.submissionID or "SUB-LOCAL"}
+
+    params = {
+        "submission[school]": sub.school,
+        "submission[team]": sub.team,
+        "submission[contact_name]": sub.contact.name,
+        "submission[contact_email]": sub.contact.email,
+        "submission[contact_phone]": sub.contact.phone,
+        "submission[event]": f"{sub.event.name} ({sub.event.code})",
+        "submission[category]": sub.category or "",
+        "submission[project_title]": sub.projectTitle or "",
+        "submission[drive_link]": sub.googleDriveUrl,
+        "submission[notes]": sub.notes or "",
+    }
+    resp = requests.post(
+        f"{API_BASE}/form/{target_form_id}/submissions",
+        params={"apiKey": API_KEY},
+        data=list(params.items()),
+        timeout=30,
+    )
+    try:
+        body = resp.json()
+        if body.get("responseCode") in (200, 201):
+            return body.get("content", {})
+    except Exception:
+        pass
+    return {"submissionID": sub.submissionID}
+
+
 def send_confirmation_email(reg: Registration):
     if not SMTP_HOST:
         return  # email confirmation not configured — skip silently
@@ -221,7 +282,7 @@ def send_confirmation_email(reg: Registration):
 # ---------------------------------------------------------------------------
 # App
 # ---------------------------------------------------------------------------
-app = FastAPI(title="CelesteCon 2026 Registration Proxy")
+app = FastAPI(title="CelesteCon 2026 Registration & Submissions Proxy")
 
 app.add_middleware(
     CORSMiddleware,
@@ -231,20 +292,140 @@ app.add_middleware(
 )
 
 
+
+# ---------------------------------------------------------------------------
+# Local Registration & Submission Persistence
+# ---------------------------------------------------------------------------
+REG_DB_FILE = Path(__file__).parent / "registrations_db.json"
+SUB_DB_FILE = Path(__file__).parent / "submissions_db.json"
+
+def _load_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def _save_json(path: Path, data: dict):
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"[DB] Error saving {path}: {e}")
+
+def save_registration_record(reg: Registration, submission_id: str) -> str:
+    db = _load_json(REG_DB_FILE)
+    digits = re.sub(r"\D", "", str(submission_id))[-5:].zfill(5)
+    uid = f"CLT-2026-{digits}"
+    record = {
+        "uid": uid,
+        "submissionID": submission_id,
+        "school": reg.school.model_dump(),
+        "events": [ev.model_dump() for ev in reg.events],
+        "totals": reg.totals,
+        "summary": reg.summary,
+        "submittedAt": datetime.now().isoformat(),
+    }
+    db[uid.upper()] = record
+    if submission_id:
+        db[str(submission_id).upper()] = record
+    _save_json(REG_DB_FILE, db)
+    return uid
+
+def get_registration_by_uid(uid: str) -> Optional[dict]:
+    clean = uid.strip().upper()
+    if clean in ("CLT-2026-DEMO", "DEMO"):
+        return {
+            "uid": "CLT-2026-DEMO",
+            "submissionID": "DEMO-98765",
+            "school": {
+                "name": "Delhi Public School, R.K. Puram",
+                "contact": "Aditya Mathur",
+                "email": "celestecon@dpsrkp.net",
+                "phone": "+91 98100 12345"
+            },
+            "events": [
+                {
+                    "id": "dispute",
+                    "name": "In Pursuit of Dispute (Debate)",
+                    "teams": [{"teamName": "Team Veritas", "category": "Senior (Classes 9-12)", "members": []}]
+                },
+                {
+                    "id": "settle",
+                    "name": "Settle-me-this (Space Settlement)",
+                    "teams": [
+                        {"teamName": "Habitat Sol Invictus", "category": "Senior (Classes 9-12)", "members": []},
+                        {"teamName": "Lunar Pioneer Alpha", "category": "Junior (Classes 6-8)", "members": []}
+                    ]
+                }
+            ],
+            "totals": {"totalEvents": 2, "totalTeams": 3, "totalParticipants": 8}
+        }
+    db = _load_json(REG_DB_FILE)
+    if clean in db:
+        return db[clean]
+    digits = re.sub(r"\D", "", clean)
+    for k, v in db.items():
+        if clean in k or (len(digits) >= 4 and digits in k):
+            return v
+    return None
+
+def save_submission_record(sub_data: dict, uid: str = ""):
+    db = _load_json(SUB_DB_FILE)
+    clean_uid = (uid or sub_data.get("uid") or "UNKNOWN").strip().upper()
+    if clean_uid not in db:
+        db[clean_uid] = []
+    db[clean_uid].append({
+        **sub_data,
+        "savedAt": datetime.now().isoformat()
+    })
+    _save_json(SUB_DB_FILE, db)
+
+def get_submissions_for_uid(uid: str) -> list[dict]:
+    clean = uid.strip().upper()
+    db = _load_json(SUB_DB_FILE)
+    return db.get(clean, [])
+
+@app.post("/api/submission")
+def submit_deliverable(sub: DeliverableSubmission):
+    result = submit_deliverable_to_jotform(sub)
+    save_submission_record(sub.model_dump(), "")
+    return {"submissionID": result.get("submissionID") or sub.submissionID, "jotform": result}
+
+
 @app.post("/api/submit")
-def submit(reg: Registration):
+def submit(payload: dict):
+    # Route deliverable submissions (from /submissions)
+    if "googleDriveUrl" in payload or payload.get("formID") == SUBMISSION_FORM_ID:
+        try:
+            sub = DeliverableSubmission.model_validate(payload)
+            result = submit_deliverable_to_jotform(sub)
+            return {"submissionID": result.get("submissionID") or sub.submissionID, "jotform": result}
+        except Exception as err:
+            raise HTTPException(422, {"detail": str(err)})
+
+    # Otherwise route general school registrations
+    try:
+        reg = Registration.model_validate(payload)
+    except Exception as err:
+        raise HTTPException(422, {"detail": str(err)})
+
     errors = validate_registration(reg)
     if errors:
         raise HTTPException(422, {"errors": errors})
 
     result = submit_to_jotform(reg)
+    sub_id = result.get("submissionID") or f"LOCAL-{int(datetime.now().timestamp())}"
+    uid = save_registration_record(reg, sub_id)
 
     try:
         send_confirmation_email(reg)
     except Exception:
         pass  # never fail the registration just because the receipt email failed
 
-    return {"submissionID": result.get("submissionID"), "jotform": result}
+    return {"submissionID": result.get("submissionID") or sub_id, "uid": uid, "jotform": result}
 
 
 @app.get("/api/health")
@@ -261,3 +442,15 @@ def registration_page():
     if not page.exists():
         raise HTTPException(404, "celestecon_registration.html not found.")
     return FileResponse(page)
+
+
+@app.get("/api/registration/{uid}")
+def lookup_reg(uid: str):
+    reg = get_registration_by_uid(uid)
+    if not reg:
+        raise HTTPException(404, "Registration UID not found.")
+    return reg
+
+@app.get("/api/submissions/{uid}")
+def list_submissions(uid: str):
+    return get_submissions_for_uid(uid)
