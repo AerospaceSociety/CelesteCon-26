@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400" fill="none">
+  <defs>
+    <linearGradient id="gradSilhouette" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E84A36" stop-opacity="0.25" />
+      <stop offset="60%" stop-color="#E5E0D8" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#E5E0D8" stop-opacity="0.05" />
+    </linearGradient>
+    <radialGradient id="gradGlow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#E84A36" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#0A0A0B" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient Glow -->
+  <circle cx="150" cy="130" r="110" fill="url(#gradGlow)" />
+
+  <!-- Background Technical Reticle -->
+  <circle cx="150" cy="130" r="85" stroke="#E5E0D8" stroke-opacity="0.15" stroke-dasharray="3 4" stroke-width="1" />
+  <circle cx="150" cy="130" r="50" stroke="#E84A36" stroke-opacity="0.2" stroke-dasharray="2 3" stroke-width="1" />
+  <line x1="150" y1="30" x2="150" y2="230" stroke="#E5E0D8" stroke-opacity="0.1" stroke-width="1" stroke-dasharray="4 4" />
+  <line x1="50" y1="130" x2="250" y2="130" stroke="#E5E0D8" stroke-opacity="0.1" stroke-width="1" stroke-dasharray="4 4" />
+
+  <!-- Silhouette Cutout (Head & Shoulders) -->
+  <g fill="url(#gradSilhouette)" stroke="#E5E0D8" stroke-opacity="0.3" stroke-width="1.5">
+    <!-- Head -->
+    <path d="M 150 70 C 122 70 108 92 108 122 C 108 152 122 174 150 174 C 178 174 192 152 192 122 C 192 92 178 70 150 70 Z" />
+    <!-- Neck -->
+    <path d="M 136 168 L 132 196 L 168 196 L 164 168 Z" />
+    <!-- Shoulders & Torso -->
+    <path d="M 132 196 C 100 204 60 230 46 270 C 38 290 32 320 30 380 L 270 380 C 268 320 262 290 254 270 C 240 230 200 204 168 196 Z" />
+  </g>
+
+  <!-- Aerospace Collar / Badge Accents -->
+  <path d="M 125 210 L 150 250 L 175 210" stroke="#E84A36" stroke-width="1.5" stroke-opacity="0.6" fill="none" />
+  <circle cx="150" cy="270" r="3" fill="#E84A36" fill-opacity="0.7" />
+
+  <!-- Cutout Placeholder Label -->
+  <rect x="65" y="320" width="170" height="22" rx="2" fill="#0A0A0B" fill-opacity="0.8" stroke="#E84A36" stroke-opacity="0.4" stroke-width="1" />
+  <text x="150" y="334" font-family="'IBM Plex Mono', monospace" font-size="8" fill="#E5E0D8" fill-opacity="0.7" text-anchor="middle" letter-spacing="1">PHOTO PLACEHOLDER</text>
+  <text x="150" y="356" font-family="'IBM Plex Mono', monospace" font-size="7" fill="#E84A36" fill-opacity="0.8" text-anchor="middle" letter-spacing="0.5">TRANSPARENT PNG READY</text>
+</svg>

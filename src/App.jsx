@@ -37,7 +37,7 @@ const Navbar = () => {
     { path: '/about', label: 'About AEROSS' },
     { path: '/comps', label: 'The Comps' },
     { path: '/format', label: 'Format & Dates' },
-    //{ path: '/sponsors', label: 'Sponsors' },
+    { path: '/sponsors', label: 'Sponsors' },
     { path: '/gallery', label: 'Gallery' },
     { path: '/contact', label: 'Contact' }
   ];
@@ -136,7 +136,7 @@ const Footer = () => {
               <li><Link to="/about" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">About AEROSS</Link></li>
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
               <li><Link to="/format" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Format & Dates</Link></li>
-              {/* <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors</Link></li>*/}
+              <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors</Link></li>
             </ul>
           </div>
           <div>
@@ -179,7 +179,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/comps" element={<Comps />} />
             <Route path="/format" element={<Format />} />
-            {/*<Route path="/sponsors" element={<Sponsors />} />*/}
+            <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/prompts" element={<Prompts />} />

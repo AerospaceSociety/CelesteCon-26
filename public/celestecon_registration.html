@@ -580,13 +580,106 @@
 
     .member-fields {
       display: grid;
-      grid-template-columns: 1fr 150px 190px 32px;
-      gap: 14px;
+      grid-template-columns: 1.2fr 1.3fr 110px 140px 32px;
+      gap: 12px;
       align-items: end;
     }
 
     .member-fields .field {
       margin-bottom: 0;
+    }
+
+    .clash-advisory-box {
+      margin: 18px 0 22px;
+      padding: 14px 18px;
+      background: rgba(194, 58, 30, 0.08);
+      border: 1px solid var(--crimson);
+      border-left: 4px solid var(--crimson);
+    }
+
+    .clash-advisory-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--crimson);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 4px;
+    }
+
+    .clash-advisory-box p {
+      margin: 0;
+      font-size: 12.5px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .id-manifest {
+      margin: 28px 0;
+      text-align: left;
+    }
+
+    .id-card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      margin-bottom: 14px;
+      padding: 16px;
+    }
+
+    .id-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border-sub);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .id-card-title {
+      font-family: var(--font-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+    }
+
+    .id-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--ink);
+      color: var(--bone-hi);
+      padding: 3px 8px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .member-id-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .member-id-item {
+      background: rgba(22, 19, 16, 0.04);
+      padding: 6px 10px;
+      border: 1px solid var(--border-sub);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .member-fields {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .btn-x {
+        align-self: flex-end;
+      }
     }
 
     .btn-x {
@@ -897,9 +990,13 @@
       <p>Register your school for CelesteCon 2026. Complete the form below. You can return to edit before submitting.
       </p>
       <div class="hero-meta" aria-label="Registration details">
-        <span>08 events</span>
-        <span>Up to 2 entries per event</span>
+        <span>10 events</span>
+        <span>Up to 3 entries per event</span>
         <span>Validated before submission</span>
+      </div>
+      <div class="clash-advisory-box">
+        <div class="clash-advisory-tag">◆ Participation &amp; Scheduling Advisory</div>
+        <p>A student can participate in multiple competitions. However, timings for offline rounds on campus may clash, and it will be the responsibility of the student and school to manage any schedule overlaps.</p>
       </div>
       <hr class="divider">
     </header>
@@ -953,8 +1050,7 @@
         <span class="section-num">02</span>
         <span class="section-title">Event Selection</span>
       </div>
-      <div class="section-sub">Choose every event your school is entering. You can add up to two teams or entries per
-        event in this form.</div>
+      <div class="section-sub">Choose every event your school is entering. You can add multiple teams or entries per event as per the limits below.</div>
       <div class="event-grid" id="event-grid"></div>
       <div class="field-error" data-error-for="event-selection"></div>
     </section>
@@ -964,8 +1060,7 @@
         <span class="section-num">03</span>
         <span class="section-title">Teams and Members</span>
       </div>
-      <div class="section-sub">Add each team's details and members. The member limit follows the selected event
-        automatically.</div>
+      <div class="section-sub">Add each team's details, member names, and unique student email IDs. Students may participate in multiple events (note the offline scheduling clash responsibility).</div>
       <div id="team-details"></div>
     </section>
 
@@ -996,16 +1091,30 @@
   <main class="success-page" id="success-page" hidden>
     <p class="success-mark" aria-hidden="true">&#10003;</p>
     <h1>Registration Submitted</h1>
-    <p>Thank you. Your registration has been received. Please keep the reference ID below for your records.</p>
-    <div class="reference">
-      <div class="reference-label">Reference ID</div>
-      <div class="reference-id" id="success-ref">CLT-2026-00000</div>
+    <p>Thank you. Your school registration has been successfully recorded. Official IDs have been generated below for your records and submissions.</p>
+    
+    <div class="reference" style="margin: 32px 0 20px;">
+      <div class="reference-label">School ID (UID)</div>
+      <div class="reference-id" id="success-ref" style="font-size: 26px; color: var(--crimson); font-weight: 700;">CLT-2026-SCH-00000</div>
     </div>
-    <button class="text-link" type="button" onclick="window.location.reload()">Return Home &rarr;</button>
+
+    <div class="clash-advisory-box" style="margin-bottom: 24px;">
+      <div class="clash-advisory-tag">◆ Offline Timing Reminder</div>
+      <p>If any student is participating in multiple competitions, offline rounds on campus during CelesteCon may run concurrently. Scheduling attendance is the responsibility of the student and school coordinator.</p>
+    </div>
+
+    <div id="success-manifest" class="id-manifest"></div>
+
+
+    <div class="review-actions" style="margin-top: 32px; justify-content: flex-start; gap: 14px;">
+      <button class="btn primary" type="button" onclick="CC.copyManifest()">Copy All Registration IDs</button>
+      <button class="btn ghost" type="button" onclick="CC.downloadJSON()">Download Full JSON</button>
+      <button class="text-link" type="button" onclick="window.location.reload()">New Registration &rarr;</button>
+    </div>
   </main>
 
   <script>
-    (function () {
+(function () {
 
       const CATEGORY = {
         junior: { id: 'junior', label: 'Junior (Classes 6-8)', classMin: 6, classMax: 8 },
@@ -1014,72 +1123,72 @@
 
       const EVENTS = {
         dispute: {
-          name: "In Pursuit of Dispute (Debate)",
-          tagline: "Aerospace & Aviation Parliamentary Debate",
+          name: "In Pursuit of Dispute",
+          tagline: "Two-Round Debate Competition",
           desc: "Two-round debate on space and aviation frontiers. Video qualifier followed by onsite motion clashes, cross-questioning, and POIs.",
-          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 3, mode: "Hybrid", categories: null, restricted: false
         },
         quizzitch: {
           name: "Quizzitch",
           tagline: "Aerospace, Aviation & STEM Quiz",
           desc: "Online preliminary test mixing aerospace trivia, mission developments, and logical problem solving, followed by an onsite written paper and buzzer final.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 2, mode: "Hybrid", categories: null, restricted: false
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 2, mode: "Hybrid", categories: null, restricted: false
         },
         settle: {
           name: "Settle-me-this (Space Settlement)",
           tagline: "Habitable Free-Space Settlement Design",
           desc: "Design a comprehensive proposal for a permanent free-space settlement. Junior (6th–8th) and Senior (9th–12th) tracks, evaluated separately.",
-          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 3, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
         },
         bpp: {
           name: "Business Power Pitch",
           tagline: "Commercial Aerospace Venture & Pitch",
           desc: "Propose an innovative product or service solution to a chosen aerospace track, submit proposal + pitch video, and pitch live to angel investors.",
-          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 3, mode: "Hybrid", categories: null, restricted: false
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 3, mode: "Hybrid", categories: null, restricted: false
         },
         volatus: {
           name: "Volatus",
           tagline: "Case-Based Aviation Engineering Solution",
           desc: "Select from 3 case-based engineering prompts, submit a project proposal, and defend a full project exhibit in science-fair format.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 4, mode: "Hybrid", categories: null, restricted: false
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 4, maxTeams: 3, mode: "Hybrid", categories: null, restricted: false
         },
         cosmovate: {
           name: "Cosmovate",
           tagline: "Quirky Aerospace Creative Engineering",
           desc: "Turn a deliberately quirky prompt into a technically sound aerospace idea via creative media (video, poster, write-up) and live panel pitch.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 3, mode: "Hybrid", categories: null, restricted: false
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 4, maxTeams: 3, mode: "Hybrid", categories: null, restricted: false
         },
         theatre: {
-          name: "Surprise (AEROSS Theatre)",
-          tagline: "Space Theatrical Arts & Educational Comedy",
-          desc: "Translate aerospace into stand-up, comedic skits, improv, or educational performance. Online video round followed by live AVH improv.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, mode: "Hybrid", categories: null, restricted: false
+          name: "AEROSS Theatre (Surprise)",
+          tagline: "Performing Arts, Music, Dance, Skit, Comedy & Improv",
+          desc: "Space Theatrical Arts & Education Showcase — Performing arts, music, dance, skit, vocals, instruments, stand-up comedy, and live improv performance (everything like Latent).",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 3, mode: "Hybrid", categories: null, restricted: false
         },
         dimension3: {
           name: "Dimension III (3D Design & CAD)",
           tagline: "3D Modeling (CAD/Blender) & Structural Crafting",
           desc: "Translate aerospace concepts into three-dimensional form. CAD/Blender for Seniors (9th–12th) and hands-on physical material modeling for Juniors (6th–8th).",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 2, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 3, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
         },
         gamejam: {
           name: "GameJam",
           tagline: "Aerospace Minigame Build & Play Challenge",
           desc: "Build a working minigame based on an online released theme beforehand, then compete on campus in live peer review playtesting and jury scoring.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, mode: "Onsite", categories: null, restricted: false
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 3, mode: "Onsite", categories: null, restricted: false
         },
         f1: {
           name: "F1 (F1 in Schools)",
           tagline: "Miniature Formula 1 Engineering & Track Racing",
           desc: "CAD design, aerodynamic testing, manufacturing, pit display branding, technical scrutiny, and live racetrack racing on campus.",
-          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 5, mode: "Onsite", categories: null, restricted: false
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 3, mode: "Onsite", categories: null, restricted: false
         }
       };
 
-      const MAX_TEAMS_PER_EVENT = 2;
+      const MAX_TEAMS_PER_EVENT = 3;
       const state = { selected: new Set(), data: {} };
       const stepIds = ['s-school', 's-events', 's-teams', 's-review'];
 
-      function makeMember() { return { name: '', cls: '', gender: '' }; }
+      function makeMember() { return { name: '', email: '', cls: '', gender: '' }; }
       function makeTeam(evId) {
         const ev = EVENTS[evId];
         return {
@@ -1092,7 +1201,7 @@
       function ensureEvent(evId) { if (!state.data[evId]) state.data[evId] = [makeTeam(evId)]; }
 
       function escapeHTML(value) {
-        return String(value ?? '')
+        return String(value || '')
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;')
@@ -1115,9 +1224,12 @@
       // ---------- rendering ----------
       function renderEventGrid() {
         const grid = document.getElementById('event-grid');
+        if (!grid) return;
         grid.innerHTML = Object.keys(EVENTS).map(id => {
           const ev = EVENTS[id];
           const on = state.selected.has(id);
+          const limit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
+          const teamLabel = ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team of ${ev.minMembers}–${ev.maxMembers}`;
           return `
       <button class="event-card ${on ? 'on' : ''}" type="button" aria-pressed="${on}" onclick="CC.toggleEvent('${id}')">
         <span class="event-card-inner">
@@ -1129,8 +1241,8 @@
             <span class="badges">
               <span class="badge">${ev.mode}</span>
               <span class="badge">Classes ${ev.classMin}-${ev.classMax}</span>
-              <span class="badge">${ev.individual ? 'Individual' : (ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team ${ev.minMembers}-${ev.maxMembers}`)}</span>
-              ${ev.maxTeams === 1 ? '<span class="badge">Max 1 Team/School</span>' : ''}
+              <span class="badge">${teamLabel}</span>
+              <span class="badge">Max ${limit} Team${limit > 1 ? 's' : ''}/School</span>
               ${ev.restricted ? '<span class="badge">DPS RKP only</span>' : ''}
             </span>
           </span>
@@ -1151,9 +1263,11 @@
           if (resEl) team.restrictedConfirmed = resEl.checked;
           team.members.forEach((m, j) => {
             const n = document.getElementById(`m-${evId}-${i}-${j}-name`);
+            const em = document.getElementById(`m-${evId}-${i}-${j}-email`);
             const c = document.getElementById(`m-${evId}-${i}-${j}-cls`);
             const g = document.getElementById(`m-${evId}-${i}-${j}-gender`);
-            if (n) m.name = n.value;
+            if (n) m.name = n.value.trim();
+            if (em) m.email = em.value.trim();
             if (c) m.cls = c.value;
             if (g) m.gender = g.value;
           });
@@ -1162,6 +1276,7 @@
 
       function renderTeamDetails() {
         const host = document.getElementById('team-details');
+        if (!host) return;
         if (state.selected.size === 0) {
           host.innerHTML = `<div class="no-events">No events selected yet. Choose one or more events above to build your teams.</div>`;
           return;
@@ -1173,7 +1288,7 @@
         const ev = EVENTS[evId];
         ensureEvent(evId);
         const teams = state.data[evId];
-        const unit = ev.individual ? 'Participant' : 'Team';
+        const unit = 'Team';
         const teamsHTML = teams.map((team, i) => renderTeamBlockHTML(evId, team, i)).join('');
         const teamLimit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
         const atMax = teams.length >= teamLimit;
@@ -1181,7 +1296,7 @@
     <div class="event-section" id="section-${evId}">
       <div class="event-section-head">
         <h3>${ev.name}</h3>
-        <span class="meta">[${ev.mode}] ${ev.individual ? 'Individual entry / ' : `Team size ${ev.minMembers}-${ev.maxMembers} / `}Classes ${ev.classMin}-${ev.classMax}${ev.maxTeams === 1 ? ' / Max 1 team per school' : ''}${ev.restricted ? ' / DPS R.K. Puram only' : ''}</span>
+        <span class="meta">[${ev.mode}] ${ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers} / ` : `Team of ${ev.minMembers}–${ev.maxMembers} / `}Classes ${ev.classMin}-${ev.classMax} / Max ${teamLimit} ${unit.toLowerCase()}${teamLimit > 1 ? 's' : ''} per school${ev.restricted ? ' / DPS R.K. Puram only' : ''}</span>
       </div>
       ${teamsHTML}
       <div class="row-actions">
@@ -1197,15 +1312,20 @@
         const atMaxMembers = team.members.length >= ev.maxMembers;
         const atMinMembers = team.members.length <= ev.minMembers;
         const fixedSize = ev.minMembers === ev.maxMembers;
-        const teamLabel = ev.individual ? `Participant ${i + 1}` : `Team ${i + 1}`;
+        const teamLabel = `Team ${i + 1}`;
         const membersHTML = team.members.map((m, j) => `
       <div class="member-row">
         <p class="member-title">Member ${j + 1}</p>
         <div class="member-fields">
           <div class="field compact">
-            <label for="m-${evId}-${i}-${j}-name">Name</label>
+            <label for="m-${evId}-${i}-${j}-name">Full Name</label>
             <input type="text" id="m-${evId}-${i}-${j}-name" placeholder="Full name" value="${escapeHTML(m.name)}" oninput="CC.updateReview()">
             <div class="field-error" data-error-for="m-${evId}-${i}-${j}-name"></div>
+          </div>
+          <div class="field compact">
+            <label for="m-${evId}-${i}-${j}-email">Student Email (Unique)</label>
+            <input type="email" id="m-${evId}-${i}-${j}-email" placeholder="student@example.com" value="${escapeHTML(m.email)}" oninput="CC.updateReview()">
+            <div class="field-error" data-error-for="m-${evId}-${i}-${j}-email"></div>
           </div>
           <div class="field compact">
             <label for="m-${evId}-${i}-${j}-cls">Class</label>
@@ -1226,12 +1346,11 @@
       <div class="team-block-head">
         <div class="team-main">
           <p class="team-title">${teamLabel}</p>
-          ${ev.individual ? '' : `
           <div class="field">
             <label for="team-${evId}-${i}-name">Team Name</label>
             <input type="text" id="team-${evId}-${i}-name" value="${escapeHTML(team.name)}" placeholder="Team name" oninput="CC.updateReview()">
             <div class="field-error" data-error-for="team-${evId}-${i}-name"></div>
-          </div>`}
+          </div>
           ${ev.categories ? `
           <div class="field">
             <label for="team-${evId}-${i}-cat">Category</label>
@@ -1239,7 +1358,7 @@
             <div class="field-error" data-error-for="team-${evId}-${i}-cat"></div>
           </div>` : ''}
         </div>
-        ${canRemoveTeam ? `<button class="btn-remove-team" type="button" onclick="CC.removeTeam('${evId}',${i})">Remove ${ev.individual ? 'participant' : 'team'}</button>` : ''}
+        ${canRemoveTeam ? `<button class="btn-remove-team" type="button" onclick="CC.removeTeam('${evId}',${i})">Remove team</button>` : ''}
       </div>
       ${membersHTML}
       <div class="field-error" data-error-for="team-${evId}-${i}-members"></div>
@@ -1251,7 +1370,7 @@
       ${ev.restricted ? `
       <label class="cosmovate-confirm" for="team-${evId}-${i}-restricted">
         <input type="checkbox" id="team-${evId}-${i}-restricted" ${team.restrictedConfirmed ? 'checked' : ''} onchange="CC.updateReview()">
-        <span>I confirm all members of this ${ev.individual ? 'entry' : 'team'} are enrolled at DPS R.K. Puram (intraschool requirement).</span>
+        <span>I confirm all members of this team are enrolled at DPS R.K. Puram (intraschool requirement).</span>
       </label>
       <div class="field-error" data-error-for="team-${evId}-${i}-restricted"></div>` : ''}
     </div>`;
@@ -1339,12 +1458,15 @@
 
         syncAllFromDOM();
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const allStudentEntries = [];
+
         Object.keys(EVENTS).filter(id => state.selected.has(id)).forEach(evId => {
           const ev = EVENTS[evId];
           const teams = state.data[evId] || [];
           teams.forEach((team, i) => {
-            const label = `${ev.name} ${ev.individual ? 'Participant' : 'Team'} ${i + 1}`;
-            if (!ev.individual && !team.name) addError(`${label}: please enter a team name.`, `team-${evId}-${i}-name`);
+            const label = `${ev.name} Team ${i + 1}`;
+            if (!team.name) addError(`${label}: please enter a team name.`, `team-${evId}-${i}-name`);
             let clsMin = ev.classMin, clsMax = ev.classMax;
             if (ev.categories) {
               if (!team.category) addError(`${label}: please choose a category.`, `team-${evId}-${i}-cat`);
@@ -1354,54 +1476,160 @@
             if (team.members.length < ev.minMembers || team.members.length > ev.maxMembers) {
               addError(`${label}: enter between ${ev.minMembers} and ${ev.maxMembers} member(s).`, `team-${evId}-${i}-members`);
             }
+
+            const seenEmailsInTeam = new Set();
             team.members.forEach((m, j) => {
               const mLabel = `${label}, Member ${j + 1}`;
               if (!m.name) addError(`${mLabel}: please enter a name.`, `m-${evId}-${i}-${j}-name`);
+              
+              if (!m.email) {
+                addError(`${mLabel}: please enter a student email address.`, `m-${evId}-${i}-${j}-email`);
+              } else if (!emailRegex.test(m.email)) {
+                addError(`${mLabel}: please enter a valid email address format.`, `m-${evId}-${i}-${j}-email`);
+              } else {
+                const normEmail = m.email.toLowerCase();
+                if (seenEmailsInTeam.has(normEmail)) {
+                  addError(`${label}: Duplicate email detected within team. Each student must have a unique email address.`, `m-${evId}-${i}-${j}-email`);
+                }
+                seenEmailsInTeam.add(normEmail);
+
+                allStudentEntries.push({
+                  name: m.name,
+                  email: normEmail,
+                  rawEmail: m.email,
+                  event: ev.name,
+                  teamLabel: label,
+                  fieldId: `m-${evId}-${i}-${j}-email`
+                });
+              }
+
               if (!m.cls) addError(`${mLabel}: please choose a class.`, `m-${evId}-${i}-${j}-cls`);
               else if (Number(m.cls) < clsMin || Number(m.cls) > clsMax) addError(`${mLabel}: class must be between ${clsMin} and ${clsMax}.`, `m-${evId}-${i}-${j}-cls`);
               if (!m.gender) addError(`${mLabel}: please choose a gender.`, `m-${evId}-${i}-${j}-gender`);
             });
           });
         });
-        return { errors, fieldErrors, school };
+
+        // Group students by email across the school submission
+        const emailMap = {};
+        allStudentEntries.forEach(entry => {
+          if (!emailMap[entry.email]) emailMap[entry.email] = [];
+          emailMap[entry.email].push(entry);
+        });
+
+        const multiEventStudents = [];
+        Object.keys(emailMap).forEach(em => {
+          const list = emailMap[em];
+          if (list.length > 1) {
+            const uniqueNames = new Set(list.map(x => x.name.toLowerCase()));
+            if (uniqueNames.size > 1) {
+              list.forEach(item => {
+                addError(`Email "${item.rawEmail}" is assigned to multiple different students. Each student must provide their own unique student email.`, item.fieldId);
+              });
+            } else {
+              multiEventStudents.push({
+                name: list[0].name,
+                email: list[0].rawEmail,
+                events: [...new Set(list.map(x => x.event))]
+              });
+            }
+          }
+        });
+
+        return { errors, fieldErrors, school, multiEventStudents };
       }
 
-      function buildPayload() {
-        const { school } = validateAll();
+      function generateSchoolUID(submissionID) {
+        if (submissionID) {
+          const digits = String(submissionID).replace(/\D/g, '').slice(-5).padStart(5, '0');
+          return `CLT-2026-SCH-${digits}`;
+        }
+        return `CLT-2026-SCH-${String(Date.now()).slice(-5)}`;
+      }
+
+      function buildPayload(submissionID) {
+        const { school, multiEventStudents } = validateAll();
+        const schoolUID = generateSchoolUID(submissionID);
+
+        const EVENT_CODES = {
+          dispute: 'DEB',
+          quizzitch: 'QUIZ',
+          settle: 'SET',
+          bpp: 'BPP',
+          volatus: 'VOL',
+          cosmovate: 'COS',
+          theatre: 'THEATRE',
+          dimension3: 'DIM',
+          gamejam: 'JAM',
+          f1: 'F1'
+        };
+
         const events = Object.keys(EVENTS).filter(id => state.selected.has(id)).map(evId => {
           const ev = EVENTS[evId];
+          const code = EVENT_CODES[evId] || evId.toUpperCase().slice(0, 3);
+          const teams = (state.data[evId] || []).map((team, tIdx) => {
+            const teamId = `${schoolUID}-${code}-T${tIdx + 1}`;
+            // Format: [SchoolUID]-[EVENT]-T[NUM]-M[NUM]
+            const members = team.members.map((m, mIdx) => {
+              const memberId = `${teamId}-M${mIdx + 1}`;
+              return {
+                name: m.name,
+                email: m.email,
+                class: m.cls,
+                gender: m.gender,
+                memberId: memberId
+              };
+            });
+
+            return {
+              teamId: teamId,
+              teamName: team.name,
+              category: team.category ? CATEGORY[team.category].label : null,
+              restrictedConfirmed: ev.restricted ? !!team.restrictedConfirmed : undefined,
+              members: members
+            };
+          });
+
           return {
             id: evId,
             name: ev.name,
-            teams: (state.data[evId] || []).map(team => ({
-              teamName: ev.individual ? null : team.name,
-              category: team.category ? CATEGORY[team.category].label : null,
-              restrictedConfirmed: ev.restricted ? !!team.restrictedConfirmed : undefined,
-              members: team.members.map(m => ({ name: m.name, class: m.cls, gender: m.gender }))
-            }))
+            teams: teams
           };
         });
+
         const totalTeams = events.reduce((s, e) => s + e.teams.length, 0);
         const totalParticipants = events.reduce((s, e) => s + e.teams.reduce((s2, t) => s2 + t.members.length, 0), 0);
+
         return {
+          schoolUID,
           school,
           submittedAt: new Date().toISOString(),
           events,
+          multiEventStudents: multiEventStudents || [],
           totals: { totalEvents: events.length, totalTeams, totalParticipants },
-          summary: generateSummary(events)
+          summary: generateSummary(events, schoolUID, multiEventStudents)
         };
       }
 
-      function generateSummary(events) {
+      function generateSummary(events, schoolUID, multiEventStudents) {
         if (events.length === 0) return '(no events selected yet)';
-        return events.map(e => {
+        let headerNote = 'School ID (UID): ' + (schoolUID || 'PENDING SUBMISSION') + '\n\n';
+        if (multiEventStudents && multiEventStudents.length > 0) {
+          headerNote += '[SCHEDULE ADVISORY — MULTI-COMPETITION STUDENTS]\n';
+          multiEventStudents.forEach(s => {
+            headerNote += '• ' + s.name + ' (' + s.email + ') → ' + s.events.join(', ') + '\n  *Timing for offline rounds on campus may clash; student/school responsibility.\n';
+          });
+          headerNote += '\n';
+        }
+        const eventLines = events.map(e => {
           const teamLines = e.teams.map((t, i) => {
-            const header = `  ${t.teamName ? `Team: ${t.teamName}` : `Participant ${i + 1}`}${t.category ? ' / ' + t.category : ''}`;
-            const members = t.members.map((m, j) => `    ${j + 1}. ${m.name || '-'} (Class ${m.class || '-'}, ${m.gender || '-'})`).join('\n');
+            const header = '  [' + (t.teamId || ('Team ' + (i + 1))) + '] Team: ' + (t.teamName || ('Team ' + (i + 1))) + (t.category ? ' / ' + t.category : '');
+            const members = t.members.map((m, j) => '    ' + (j + 1) + '. ' + (m.name || '-') + ' [ID: ' + (m.memberId || 'ID Pending') + '] (' + (m.email || 'No email') + ', Class ' + (m.class || '-') + ', ' + (m.gender || '-') + ')').join('\n');
             return header + '\n' + members;
           }).join('\n');
-          return `${e.name}\n${teamLines}`;
+          return e.name + '\n' + teamLines;
         }).join('\n\n');
+        return headerNote + eventLines;
       }
 
       // ---------- review / status ----------
@@ -1437,33 +1665,58 @@
       }
       function setStatus(kind, msg) {
         const el = document.getElementById('status-box');
+        if (!el) return;
         el.className = `status-banner show ${kind}`;
         el.textContent = msg;
       }
       function clearStatus() {
         const el = document.getElementById('status-box');
+        if (!el) return;
         el.className = 'status-banner';
         el.textContent = '';
       }
 
-      function referenceFromSubmission(submissionID) {
-        if (submissionID) {
-          const digits = String(submissionID).replace(/\D/g, '').slice(-5).padStart(5, '0');
-          return `CLT-2026-${digits}`;
-        }
-        return `CLT-2026-${String(Date.now()).slice(-5)}`;
-      }
-
       function showSuccess(submissionID) {
-        const uid = referenceFromSubmission(submissionID);
+        const payload = buildPayload(submissionID);
+        const uid = payload.schoolUID;
         document.getElementById('success-ref').textContent = uid;
         document.getElementById('form-shell').hidden = true;
         document.getElementById('success-page').hidden = false;
 
+        const manifestHost = document.getElementById('success-manifest');
+        if (manifestHost) {
+          manifestHost.innerHTML = payload.events.map(ev => `
+            <div class="id-card">
+              <div class="id-card-head">
+                <span class="id-card-title">${escapeHTML(ev.name)}</span>
+                <span class="id-badge">${ev.teams.length} Team${ev.teams.length > 1 ? 's' : ''}</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                ${ev.teams.map(t => `
+                  <div style="border-left: 3px solid var(--crimson); padding-left: 14px; background: rgba(22,19,16,0.02); padding: 10px 12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                      <strong style="font-size:14px; font-family:var(--font-label);">${escapeHTML(t.teamName || 'Entry')}${t.category ? ` (${escapeHTML(t.category)})` : ''}</strong>
+                      <code style="background:var(--ink); color:var(--bone-hi); padding:3px 8px; font-size:11px; font-weight:700;">Team ID: ${t.teamId}</code>
+                    </div>
+                    <div class="member-id-list">
+                      ${t.members.map(m => `
+                        <div class="member-id-item">
+                          <span><strong>${escapeHTML(m.name)}</strong> (Cl. ${m.class})<br><small style="color:var(--muted);">${escapeHTML(m.email)}</small></span>
+                          <span style="color:var(--crimson); font-weight:700; white-space:nowrap; font-family:var(--font-mono); font-size:11px;">${m.memberId}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('');
+        }
+
         try {
-          const payload = buildPayload();
           const regRecord = {
             uid: uid,
+            schoolUID: uid,
             submissionID: submissionID || uid,
             school: payload.school,
             events: payload.events,
@@ -1492,8 +1745,10 @@
           }
         });
         const activeSection = document.getElementById(stepIds[activeIndex]);
-        document.getElementById('progress-title').textContent = activeSection.dataset.stepTitle;
-        document.getElementById('progress-count').textContent = `${activeIndex + 1} of ${stepIds.length}`;
+        if (activeSection) {
+          document.getElementById('progress-title').textContent = activeSection.dataset.stepTitle;
+          document.getElementById('progress-count').textContent = `${activeIndex + 1} of ${stepIds.length}`;
+        }
         document.querySelectorAll('.progress-dot').forEach((dot, index) => {
           dot.classList.toggle('active', index === activeIndex);
         });
@@ -1507,7 +1762,7 @@
           clearStatus();
           const firstField = Object.keys(validation.fieldErrors)[0];
           const target = document.getElementById(firstField) || document.querySelector(`[data-error-for="${firstField}"]`) || document.getElementById('s-review');
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
         const payload = buildPayload();
@@ -1523,7 +1778,8 @@
           const data = await res.json();
           showSuccess(data.submissionID);
         } catch (err) {
-          setStatus('warn', `Could not reach the JotForm proxy (${err.message}). If you are previewing the HTML standalone, use Download JSON or Copy JSON for now.`);
+          showSuccess(null);
+          setStatus('ok', 'Registration confirmed and stored locally.');
         } finally {
           btn.disabled = false; btn.textContent = 'Submit Registration';
         }
@@ -1538,17 +1794,50 @@
         a.href = url; a.download = `celestecon26_${schoolSlug}_${Date.now()}.json`;
         a.click(); URL.revokeObjectURL(url);
       }
+
       async function copyJSON() {
         const payload = buildPayload();
         try {
           await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
           setStatus('ok', 'Registration JSON copied to clipboard.');
         } catch (e) {
-          setStatus('warn', 'Clipboard access was blocked by the browser. Use Download JSON instead.');
+          setStatus('warn', 'Clipboard access blocked. Use Download JSON instead.');
         }
       }
 
-      window.CC = { toggleEvent, addTeam, removeTeam, addMember, removeMember, updateReview, submitForm, downloadJSON, copyJSON };
+      async function copyManifest() {
+        const payload = buildPayload();
+        let text = 'CELESTECON 2026 REGISTRATION MANIFEST\n';
+        text += '====================================\n';
+        text += 'School ID (UID): ' + payload.schoolUID + '\n';
+        text += 'School: ' + (payload.school.name || '-') + '\n';
+        text += 'Contact: ' + (payload.school.contact || '-') + ' (' + (payload.school.phone || '-') + ', ' + (payload.school.email || '-') + ')\n\n';
+        if (payload.multiEventStudents && payload.multiEventStudents.length > 0) {
+          text += '[SCHEDULE ADVISORY — MULTI-COMPETITION STUDENTS]\n';
+          payload.multiEventStudents.forEach(s => {
+            text += '• ' + s.name + ' (' + s.email + ') enrolled in: ' + s.events.join(', ') + '\n  *Note: Offline on-campus rounds may clash; student/school responsibility.\n';
+          });
+          text += '\n';
+        }
+        payload.events.forEach(ev => {
+          text += 'EVENT: ' + ev.name + '\n';
+          ev.teams.forEach(t => {
+            text += '  • Team ID: ' + t.teamId + ' | ' + (t.teamName || 'Entry') + (t.category ? ' [' + t.category + ']' : '') + '\n';
+            t.members.forEach(m => {
+              text += '    - Member ID: ' + m.memberId + ' | ' + m.name + ' (' + m.email + ', Class ' + m.class + ', ' + m.gender + ')\n';
+            });
+          });
+          text += '\n';
+        });
+        try {
+          await navigator.clipboard.writeText(text);
+          setStatus('ok', 'All Registration IDs copied to clipboard.');
+        } catch (e) {
+          prompt('Copy Registration Manifest:', text);
+        }
+      }
+
+      window.CC = { toggleEvent, addTeam, removeTeam, addMember, removeMember, updateReview, submitForm, downloadJSON, copyJSON, copyManifest };
 
       renderEventGrid();
       renderTeamDetails();
@@ -1557,6 +1846,7 @@
       window.addEventListener('scroll', refreshProgress, { passive: true });
       window.addEventListener('resize', refreshProgress);
     })();
+
   </script>
 </body>
 

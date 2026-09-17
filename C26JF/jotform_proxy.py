@@ -66,18 +66,20 @@ CATEGORY_RANGES = {
 }
 
 EVENTS = {
-    "In Pursuit of Dispute (Debate)": {"classMin": 9, "classMax": 12, "min": 2, "max": 2, "maxTeams": 1, "categories": False, "restricted": False},
-    "Quizzitch": {"classMin": 6, "classMax": 12, "min": 2, "max": 2, "categories": False, "restricted": False},
-    "Settle-me-this (Space Settlement)": {"classMin": 6, "classMax": 12, "min": 3, "max": 5, "categories": True, "restricted": False},
-    "Business Power Pitch": {"classMin": 6, "classMax": 12, "min": 3, "max": 3, "categories": False, "restricted": False},
-    "Volatus": {"classMin": 6, "classMax": 12, "min": 2, "max": 4, "categories": False, "restricted": False},
-    "Cosmovate": {"classMin": 6, "classMax": 12, "min": 2, "max": 3, "categories": False, "restricted": False},
-    "Surprise (AEROSS Theatre)": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
-    "Dimension III (3D Design & CAD)": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": False},
-    "GameJam": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
-    "F1 (F1 in Schools)": {"classMin": 9, "classMax": 12, "min": 3, "max": 5, "categories": False, "restricted": False},
+    "In Pursuit of Dispute": {"classMin": 9, "classMax": 12, "min": 3, "max": 3, "maxTeams": 3, "categories": False, "restricted": False},
+    "In Pursuit of Dispute (Debate)": {"classMin": 9, "classMax": 12, "min": 3, "max": 3, "maxTeams": 3, "categories": False, "restricted": False},
+    "Quizzitch": {"classMin": 6, "classMax": 12, "min": 2, "max": 2, "maxTeams": 2, "categories": False, "restricted": False},
+    "Settle-me-this (Space Settlement)": {"classMin": 6, "classMax": 12, "min": 3, "max": 5, "maxTeams": 3, "categories": True, "restricted": False},
+    "Business Power Pitch": {"classMin": 6, "classMax": 12, "min": 3, "max": 3, "maxTeams": 3, "categories": False, "restricted": False},
+    "Volatus": {"classMin": 6, "classMax": 12, "min": 2, "max": 4, "maxTeams": 3, "categories": False, "restricted": False},
+    "Cosmovate": {"classMin": 6, "classMax": 12, "min": 2, "max": 4, "maxTeams": 3, "categories": False, "restricted": False},
+    "AEROSS Theatre (Surprise)": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "maxTeams": 3, "categories": False, "restricted": False},
+    "Surprise (AEROSS Theatre)": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "maxTeams": 3, "categories": False, "restricted": False},
+    "Dimension III (3D Design & CAD)": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "maxTeams": 3, "categories": True, "restricted": False},
+    "GameJam": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "maxTeams": 3, "categories": False, "restricted": False},
+    "F1 (F1 in Schools)": {"classMin": 9, "classMax": 12, "min": 3, "max": 5, "maxTeams": 3, "categories": False, "restricted": False},
 }
-MAX_TEAMS_PER_EVENT = 2
+MAX_TEAMS_PER_EVENT = 3
 
 # ---------------------------------------------------------------------------
 # Payload schema (must match the JSON built by celestecon_registration.html)
@@ -86,6 +88,8 @@ class Member(BaseModel):
     name: str
     cls: str = Field(alias="class")
     gender: str
+    email: Optional[str] = None
+    memberId: Optional[str] = None
     model_config = {"populate_by_name": True}
 
 

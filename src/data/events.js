@@ -7,14 +7,14 @@ export const eventOutline = {
 export const events = [
   {
     id: '01',
-    name: 'In Pursuit of Dispute (Debate)',
+    name: 'In Pursuit of Dispute',
     mode: 'Hybrid',
     eligibility: 'Grades 9–12',
-    team: 'Team of 2 (max 1 team per school)',
+    team: 'Team of 3 (max 3 teams per school)',
     quote: "“It’s better to debate a question without settling it than to settle a question without debating it.”",
     overview:
-      'This event is for all those space and aviation enthusiasts who not only love to research, but also to discuss, deliberate and voice their opinions and ideas. This two-round event invites a team of two participants per school to participate in high-energy debates on relevant space and aviation frontiers.',
-    hook: 'High-energy parliamentary-style debates on relevant space and aviation frontiers.',
+      'This event is for all those space and aviation enthusiasts who not only love to research, but also to discuss, deliberate and voice their opinions and ideas. This two-round event invites teams of three participants per school to participate in high-energy debates on relevant space and aviation frontiers.',
+    hook: 'High-energy debates on relevant space and aviation frontiers.',
     rounds: [
       {
         title: 'Round 1 (Online Qualifier)',
@@ -39,7 +39,7 @@ export const events = [
     name: 'Quizzitch',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12 (Open)',
-    team: 'Team of 2',
+    team: 'Team of 2 (max 2 teams per school)',
     quote: '“Somewhere, something incredible is waiting to be known.” — Carl Sagan',
     overview:
       'This competition is designed for all those students who get excited to learn a new solar system fact, love keeping up with the latest space missions, and genuinely enjoy a good brain teaser. This event challenges students to not only bring scientific knowledge, but also their logical approach and problem-solving skills.',
@@ -67,7 +67,7 @@ export const events = [
     name: 'Settle-Me-This (Space Settlement)',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
-    team: 'Team of 3–5 members',
+    team: 'Team of 3–5 members (max 3 teams per school)',
     quote: '“Earth is the cradle of humanity, but one cannot live in the cradle forever.” — Konstantin Tsiolkovsky',
     overview:
       'Space colonisation has come far beyond trying to find a second home on the moon or viewing Mars as the only suitable alternate habitat. With advancements in science and technology, the concept of space settlements has gained immense traction. This event invites participants to create their own proposal for a fully functioning, habitable free-space settlement.',
@@ -106,7 +106,7 @@ export const events = [
     name: 'Business Power Pitch',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
-    team: 'Team of 3 members',
+    team: 'Team of 3 members (max 3 teams per school)',
     quote: '“The most powerful person in the world is the storyteller.” — Steve Jobs',
     overview:
       'Real-world innovation requires more than just a good idea—it demands execution and compelling communication. This event challenges you to move from concept to pitch. You and your team must detail an innovative product or service based on the theme and provided sub-tracks, then strategically market and pitch it. Success relies equally on the strength of your idea and your ability to sell it.',
@@ -139,7 +139,7 @@ export const events = [
     name: 'Volatus',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
-    team: 'Team of 2–4 members',
+    team: 'Team of 2–4 members (max 3 teams per school)',
     quote: '“Once you have tasted flight, you will forever walk the earth with your eyes turned skyward.” — Leonardo da Vinci',
     overview:
       'Volatus (Latin for "flight") is built for the engineers and problem-solvers of the aerospace world—those who don\'t just imagine a solution, but are willing to research, design and defend it. This event pushes participants to take a case-based aerospace or aviation problem and develop it into a genuine engineering solution, backed by sound reasoning and technical depth.',
@@ -168,7 +168,7 @@ export const events = [
     name: 'Cosmovate',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
-    team: 'Team of 2–3 members',
+    team: 'Team of 2–4 members (max 3 teams per school)',
     quote: '“Logic will get you from A to B. Imagination will take you everywhere.” — Albert Einstein',
     overview:
       'Cosmovate is where creativity meets engineering. Participants are handed a single, deliberately quirky prompt and challenged to turn it into a real, technically grounded aerospace-themed idea. The event rewards teams who can balance imaginative thinking with the discipline of sound technical reasoning, because a good idea is only as strong as the science behind it.',
@@ -194,18 +194,18 @@ export const events = [
   },
   {
     id: '07',
-    name: 'Surprise (AEROSS Theatre)',
+    name: 'AEROSS Theatre (Surprise)',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
-    team: 'Individual or Team of up to 3',
+    team: 'Team of 1–3 members (max 3 teams per school)',
     quote: '“If you want to tell people the truth, make them laugh, otherwise they\'ll kill you.” — Oscar Wilde',
     overview:
-      'AEROSS Theatre brings the stage to the space enthusiast. This event is for the performers, storytellers and comedians who can take the vastness of aerospace and aviation and turn it into something fun, sharp and genuinely entertaining. Whether it\'s stand-up, a skit or an educational bit aimed at a younger audience, the goal is the same: make space engaging.',
-    hook: 'Stand-up, skits, improv, and entertaining theatrical performances on space and aviation.',
+      'AEROSS Theatre brings the stage to the space enthusiast. This event is for the performers, storytellers, comedians, and artists who can take the vastness of aerospace and aviation and turn it into something engaging and entertaining — featuring performing arts, music, dance, skit, vocals, instruments, stand-up comedy, and live improv (everything like Latent).',
+    hook: 'Performing arts, music, dance, skit, vocals, instruments, comedy & live improv (like Latent).',
     rounds: [
       {
         title: 'Round 1 (Online Video Submission)',
-        desc: 'Participants submit a video performance built around an aerospace or aviation theme—this may take the form of stand-up comedy, a skit, improv, or an engaging educational video.'
+        desc: 'Participants submit a video performance built around an aerospace or aviation theme—this may take the form of stand-up comedy, a skit, improv, musical performance, or an engaging educational video.'
       },
       {
         title: 'Round 2 (Live Improv at AVH)',
@@ -226,7 +226,7 @@ export const events = [
     name: 'Dimension III (3D Design & CAD)',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
-    team: 'Individual or Team of 2',
+    team: 'Team of 1–3 members (max 3 teams per school)',
     quote: '“Design is not just what it looks like and feels like. Design is how it works.” — Steve Jobs',
     overview:
       'Dimension III challenges participants to bring their aerospace concepts into three-dimensional form. For the senior category, this means modelling with precision using industry CAD/3D software; for the junior category, it means building hands-on physical models with real materials. Either way, the goal is the same—translate an idea into a tangible, well-constructed model.',
@@ -265,7 +265,7 @@ export const events = [
     name: 'GameJam',
     mode: 'Onsite',
     eligibility: 'Grades 6–12',
-    team: 'Individual or Team of up to 3',
+    team: 'Team of 1–3 members (max 3 teams per school)',
     quote: '“You can discover more about a person in an hour of play than in a year of conversation.” — Plato',
     overview:
       'GameJam is a build-and-play challenge for participants who\'d rather create than compete in the traditional sense. Teams are given a theme ahead of time to design, build and polish a working minigame from scratch, then open it up to peer review and judge evaluation.',
@@ -345,7 +345,7 @@ export const events = [
     name: 'F1 (F1 in Schools)',
     mode: 'Onsite',
     eligibility: 'Grades 9–12 (Senior)',
-    team: 'Team of up to 5 members',
+    team: 'Team of 3–5 members (max 3 teams per school)',
     quote: '“Simplify, then add lightness.” — Colin Chapman',
     overview:
       'F1 in Schools is a miniature Formula 1 engineering and racing competition hosted by AEROSS as part of CelesteCon 2026. Teams of students design, develop, and build their own miniature F1-style racing car, combining engineering, aerodynamics, manufacturing, teamwork, branding, and racing. The competition challenges participants to take a car from an initial concept through CAD design and construction to the racetrack, evaluated on performance, engineering decisions, design process, presentation, and team identity.',
