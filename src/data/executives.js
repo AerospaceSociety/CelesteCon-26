@@ -1,13 +1,13 @@
 export const EXECUTIVES = [
   {
     id: 'siddhartha',
-    name: 'Siddhartha Srivastava',
+    name: 'Siddharth Srivastava',
     role: 'Executive Leadership',
     division: 'Secretariat & General Operations',
     phone: '+91 89290 20721',
     phoneRaw: '+918929020721',
     email: 'aeross@dpsrkp.net',
-    image: null,
+    image: '/execs/siddharth.png?v=6',
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Primary POC, General Inquiries & Operations'
   },
@@ -17,7 +17,7 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Event Operations & Logistics',
     email: 'aeross@dpsrkp.net',
-    image: null,
+    image: '/execs/anant.png?v=6',
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'On-ground Execution & Logistics'
   },
@@ -27,7 +27,7 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Technical Competitions',
     email: 'aeross@dpsrkp.net',
-    image: null,
+    image: '/execs/farzooque.png?v=8',
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Competition Scrutiny & Tech Infrastructure'
   },
@@ -37,7 +37,7 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Outreach & Public Relations',
     email: 'aeross@dpsrkp.net',
-    image: null,
+    image: '/execs/tarushi.png?v=6',
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Institutional Outreach & Communications'
   },
@@ -47,7 +47,7 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Delegate Relations & Hospitality',
     email: 'aeross@dpsrkp.net',
-    image: null,
+    image: '/execs/ryaan.png?v=1',
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Delegate Experience & Venue Coordination'
   }

@@ -24,61 +24,71 @@ const ExecCard = ({ exec, index }) => {
     }
   };
 
+  const isCustomPhoto = !!exec.image && !hasError;
+
   return (
-    <div className="border-2 border-bone/80 bg-ink/70 flex flex-col justify-between hover:border-crimson transition-all duration-300 group">
+    <div className="relative border-2 border-[#161310]/70 bg-[#ECE5D6] text-[#161310] flex flex-col justify-between hover:border-crimson hover:shadow-2xl transition-all duration-300 group hover:z-30">
       <div>
         {/* Top Header Tag */}
-        <div className="bg-bone/10 border-b border-bone/30 px-3 py-1.5 flex items-center justify-between font-mono text-[9.5px] uppercase tracking-widest text-bone-dim">
+        <div className="border-b border-[#161310]/20 px-3.5 py-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest bg-[#E3DCC9]/70 z-10 relative">
           <span className="text-crimson font-bold">EXEC // 0{index + 1}</span>
-          <span className="truncate max-w-[110px]">{exec.division.split(' ')[0]}</span>
+          <span className="text-[#161310]/80 font-bold tracking-wider truncate max-w-[110px]">{exec.division.split(' ')[0]}</span>
         </div>
 
-        {/* Photo Container - Specifically engineered for background-less PNG cutouts */}
-        <div className="relative h-64 sm:h-72 w-full bg-gradient-to-t from-ink via-ink/40 to-bone/5 border-b border-bone/20 flex items-end justify-center overflow-hidden">
-          {/* Subtle Technical Crosshair Markings */}
-          <span className="absolute top-2 left-2 font-mono text-[9px] text-bone/25 select-none">+</span>
-          <span className="absolute top-2 right-2 font-mono text-[9px] text-bone/25 select-none">+</span>
-          <span className="absolute bottom-2 left-2 font-mono text-[9px] text-bone/25 select-none">+</span>
-          <span className="absolute bottom-2 right-2 font-mono text-[9px] text-bone/25 select-none">+</span>
+        {/* Photo Container with Out-of-Frame Pop Effect */}
+        <div className="relative h-80 sm:h-72 w-full border-b border-[#161310]/20 bg-[#ECE5D6] flex items-end justify-center overflow-visible md:overflow-hidden md:group-hover:overflow-visible transition-all duration-300">
+          {/* Corner Technical Reticles (+) */}
+          <span className="absolute top-2 left-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
+          <span className="absolute top-2 right-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
+          <span className="absolute bottom-2 left-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
+          <span className="absolute bottom-2 right-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
 
-          {/* Cutout / Placeholder Image */}
-          <img
-            src={imgSrc}
-            alt={exec.name}
-            onError={handleImageError}
-            className={`max-h-full max-w-full object-contain object-bottom relative z-10 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-transform duration-300 group-hover:scale-105 ${
-              hasError ? 'opacity-80' : 'opacity-100'
-            }`}
-          />
+          {/* Warm Ambient Halo Glow behind person */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 sm:w-48 sm:h-48 rounded-full bg-gradient-to-br from-crimson/25 via-crimson/10 to-transparent blur-xl pointer-events-none transition-all duration-500 group-hover:scale-125 group-hover:opacity-100 opacity-75 z-0" />
 
-          {/* Bottom subtle shadow ramp */}
-          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink to-transparent z-10 pointer-events-none" />
+          {/* Cutout Subject - Components (guitar neck, hands, bouquet, bottom) break OUT OF FRAME */}
+          <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-20 overflow-visible">
+            <img
+              src={imgSrc}
+              alt={exec.name}
+              onError={handleImageError}
+              className={`transition-all duration-300 ease-out pointer-events-none ${
+                isCustomPhoto
+                  ? 'h-full w-auto max-w-none left-1/2 -translate-x-1/2 bottom-0 absolute object-contain object-bottom origin-bottom ' +
+                    'scale-120 translate-y-5 drop-shadow-[0_12px_22px_rgba(194,58,30,0.35)] ' +
+                    'md:origin-center md:scale-95 md:translate-y-0 md:drop-shadow-[0_4px_10px_rgba(0,0,0,0.18)] ' +
+                    'md:group-hover:scale-110 md:group-hover:translate-y-5 md:group-hover:drop-shadow-[0_16px_30px_rgba(194,58,30,0.5)]'
+                  : 'w-full h-full object-contain object-bottom invert opacity-75 p-3 group-hover:scale-105 transition-transform'
+              }`}
+            />
+          </div>
         </div>
 
         {/* Executive Info */}
-        <div className="p-4 space-y-2">
-          <div className="font-mono text-[9px] text-crimson font-bold uppercase tracking-wider">
+        <div className="p-4 pt-8 sm:pt-7 space-y-2 relative z-10">
+          <div className="font-mono text-[9.5px] text-crimson font-bold uppercase tracking-[0.16em]">
             {exec.role}
           </div>
-          <h4 className="font-display text-xl text-bone uppercase leading-none tracking-wide group-hover:text-crimson transition-colors">
+          <h4 className="font-display text-xl sm:text-[22px] text-[#161310] uppercase font-bold leading-none tracking-wide group-hover:text-crimson transition-colors">
             {exec.name}
           </h4>
-          <div className="font-mono text-[10px] text-bone-dim border-b border-dotted border-bone/30 pb-2">
+          <div className="font-mono text-[10.5px] text-[#161310]/75 tracking-wide font-medium">
             {exec.division}
           </div>
-          <p className="font-label text-[11px] text-bone/80 leading-snug">
+          <div className="border-b border-dotted border-[#161310]/25 my-2" />
+          <p className="font-label text-[11px] text-[#161310]/80 leading-relaxed">
             {exec.focus}
           </p>
         </div>
       </div>
 
       {/* Action / Contact Footer */}
-      <div className="p-4 pt-0 space-y-2 font-mono text-[10px]">
+      <div className="p-4 pt-0 space-y-2 font-mono text-[10.5px]">
         {exec.phone && (
           <div className="flex items-center gap-1.5">
             <a
               href={`tel:${exec.phoneRaw}`}
-              className="flex-1 flex items-center justify-center gap-1.5 border border-crimson/80 bg-crimson/15 hover:bg-crimson hover:text-bone text-crimson py-1.5 px-2 font-bold transition-colors"
+              className="flex-1 flex items-center justify-center gap-1.5 border border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson py-1.5 px-2 font-bold transition-colors"
               title={`Call ${exec.name}`}
             >
               <Phone size={11} />
@@ -86,10 +96,10 @@ const ExecCard = ({ exec, index }) => {
             </a>
             <button
               onClick={handleCopyPhone}
-              className="p-1.5 border border-bone/30 text-bone hover:border-bone hover:text-crimson transition-colors"
+              className="p-1.5 border border-[#161310]/30 text-[#161310] hover:border-crimson hover:text-crimson transition-colors bg-[#E3DCC9]/40"
               title="Copy phone number"
             >
-              {copiedPhone ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
+              {copiedPhone ? <Check size={12} className="text-emerald-700" /> : <Copy size={12} />}
             </button>
           </div>
         )}
@@ -98,8 +108,8 @@ const ExecCard = ({ exec, index }) => {
           href={`mailto:${exec.email}?subject=%5BCelesteCon%2026%5D%20Attn:%20${encodeURIComponent(exec.name)}`}
           className={`w-full flex items-center justify-center gap-1.5 border py-1.5 px-2 font-bold transition-colors ${
             exec.phone
-              ? 'border-bone/30 text-bone hover:border-bone hover:text-crimson'
-              : 'border-crimson/80 bg-crimson/15 hover:bg-crimson hover:text-bone text-crimson'
+              ? 'border-[#161310]/30 text-[#161310] hover:border-[#161310] hover:bg-[#161310] hover:text-white bg-[#E3DCC9]/40'
+              : 'border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson'
           }`}
         >
           <Mail size={11} />
@@ -132,7 +142,7 @@ const Contact = () => {
         </div>
 
         {/* 5 Exec Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 sm:gap-6 pt-3 px-1 sm:px-2">
           {EXECUTIVES.map((exec, idx) => (
             <ExecCard key={exec.id} exec={exec} index={idx} />
           ))}
