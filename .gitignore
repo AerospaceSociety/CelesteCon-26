@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Media & Promotional Assets
+/Promotional Videos/
+Promotional Videos/
+*.mp4
+*.mov
+*.wav

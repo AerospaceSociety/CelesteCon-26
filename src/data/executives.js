@@ -7,7 +7,7 @@ export const EXECUTIVES = [
     phone: '+91 89290 20721',
     phoneRaw: '+918929020721',
     email: 'aeross@dpsrkp.net',
-    image: '/execs/siddhartha.png',
+    image: null,
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Primary POC, General Inquiries & Operations'
   },
@@ -17,7 +17,7 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Event Operations & Logistics',
     email: 'aeross@dpsrkp.net',
-    image: '/execs/anant.png',
+    image: null,
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'On-ground Execution & Logistics'
   },
@@ -27,7 +27,7 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Technical Competitions',
     email: 'aeross@dpsrkp.net',
-    image: '/execs/farzooque.png',
+    image: null,
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Competition Scrutiny & Tech Infrastructure'
   },
@@ -37,17 +37,17 @@ export const EXECUTIVES = [
     role: 'Executive Leadership',
     division: 'Outreach & Public Relations',
     email: 'aeross@dpsrkp.net',
-    image: '/execs/tarushi.png',
+    image: null,
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Institutional Outreach & Communications'
   },
   {
     id: 'ryaan',
-    name: 'Ryaan Namit Jha',
+    name: 'Ryaan Namit Jain',
     role: 'Executive Leadership',
     division: 'Delegate Relations & Hospitality',
     email: 'aeross@dpsrkp.net',
-    image: '/execs/ryaan.png',
+    image: null,
     placeholder: '/execs/placeholder_silhouette.svg',
     focus: 'Delegate Experience & Venue Coordination'
   }

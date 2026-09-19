@@ -13,6 +13,7 @@ import Submissions from './pages/Submissions';
 const Navbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [registerDropdownOpen, setRegisterDropdownOpen] = useState(false);
   const [isLight, setIsLight] = useState(() => {
     return localStorage.getItem('theme') === 'light';
   });
@@ -27,9 +28,10 @@ const Navbar = () => {
     }
   }, [isLight]);
 
-  // Close mobile menu whenever the route changes
+  // Close mobile menu and dropdown whenever the route changes
   useEffect(() => {
     setMobileMenuOpen(false);
+    setRegisterDropdownOpen(false);
   }, [location.pathname]);
 
   const navLinks = [
@@ -62,12 +64,47 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <a
-              href="/celestecon_registration.html"
-              className="px-3 sm:px-4 py-1.5 bg-crimson text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
-            >
-              Register
-            </a>
+            {/* Desktop Registration Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
+                className="px-3 sm:px-4 py-1.5 bg-crimson text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer"
+                aria-haspopup="true"
+                aria-expanded={registerDropdownOpen}
+              >
+                <span>Register</span>
+                <svg className={`w-3.5 h-3.5 transition-transform ${registerDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {registerDropdownOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-72 bg-ink border-2 border-bone shadow-2xl p-2 z-50"
+                  onMouseLeave={() => setRegisterDropdownOpen(false)}
+                >
+                  <a
+                    href="/celestecon_registration.html"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
+                  >
+                    <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
+                      School Contingent
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Official school registration.</p>
+                  </a>
+                  <a
+                    href="/celestecon_individual_registration.html"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors text-left"
+                  >
+                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider">
+                      Individual Entry
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Direct student registration.</p>
+                  </a>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setIsLight(!isLight)}
               className="p-1.5 text-bone hover:text-crimson transition-colors"
@@ -113,6 +150,21 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
+              <div className="pt-3 border-t border-bone/20 mt-2 flex flex-col gap-2">
+                <div className="font-mono text-[10px] text-bone-dim uppercase tracking-widest px-3">Registration Portals</div>
+                <a
+                  href="/celestecon_registration.html"
+                  className="text-sm font-label uppercase tracking-widest py-2 px-3 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center"
+                >
+                  <span>School Registration</span>
+                </a>
+                <a
+                  href="/celestecon_individual_registration.html"
+                  className="text-sm font-label uppercase tracking-widest py-2 px-3 bg-crimson text-bone-hi font-bold border border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
+                >
+                  <span>Individual Registration</span>
+                </a>
+              </div>
             </div>
           </div>
         )}
@@ -167,6 +219,17 @@ const Footer = () => {
   );
 };
 
+const RedirectTo = ({ to }) => {
+  useEffect(() => {
+    window.location.href = to;
+  }, [to]);
+  return (
+    <div className="py-20 text-center font-mono text-sm text-bone">
+      Redirecting to registration portal...
+    </div>
+  );
+};
+
 function App() {
   return (
     <BrowserRouter>
@@ -184,6 +247,10 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/prompts" element={<Prompts />} />
             <Route path="/submissions" element={<Submissions />} />
+            <Route path="/register" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/register-school" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/register-individual" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
+            <Route path="/individual-registration" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
           </Routes>
         </main>
         <Footer />

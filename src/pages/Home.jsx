@@ -208,12 +208,18 @@ const Home = () => {
           <h2 className="font-display uppercase text-[clamp(26px,5vw,56px)] leading-[1.02] tracking-[0.01em] mt-3 text-ink text-balance">
             The grid is open. <span className="text-crimson [-webkit-text-stroke:0]">Assemble your team.</span>
           </h2>
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-start items-stretch sm:items-center">
             <a 
               href="/celestecon_registration.html" 
-              className="inline-block px-10 py-4 bg-crimson text-bone-hi font-label font-bold text-lg uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+              className="px-8 py-4 bg-crimson text-bone-hi font-label font-bold text-base md:text-lg uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center"
             >
-              Initialize Registration
+              School Contingent &rarr;
+            </a>
+            <a 
+              href="/celestecon_individual_registration.html" 
+              className="px-8 py-4 bg-ink text-bone font-label font-bold text-base md:text-lg uppercase tracking-widest border border-ink hover:bg-crimson hover:text-bone hover:border-crimson transition-colors text-center"
+            >
+              Individual Entry  &rarr;
             </a>
           </div>
         </div>

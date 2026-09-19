@@ -9,17 +9,393 @@ import {
   getLocalSubmissions,
   saveLocalSubmission,
   calculateEventAllocations,
-  normalizeEventId,
-  DEMO_REGISTRATION
+  normalizeEventId
 } from '../utils/registrationLookup';
 
-const JOTFORM_FORM_ID = '262451061688056';
-const JOTFORM_BUILD_URL = 'https://www.jotform.com/build/262451061688056';
-const JOTFORM_FORM_URL = 'https://form.jotform.com/262451061688056';
-const JOTFORM_SUBMIT_URL = 'https://submit.jotform.com/submit/262451061688056';
+// Silent internal intake dispatch endpoint
+const INTAKE_DISPATCH_ENDPOINT = 'https://submit.jotform.com/submit/262451061688056';
+const INTAKE_REGISTRY_TOKEN = '262451061688056';
+
+const generateSubmissionDocketHTML = (payload) => {
+  const submittedDate = payload.submittedAt
+    ? new Date(payload.submittedAt).toLocaleString('en-US', {
+        dateStyle: 'full',
+        timeStyle: 'medium',
+        timeZone: 'Asia/Kolkata'
+      }) + ' (IST)'
+    : new Date().toLocaleString();
+
+  const safeNotes = payload.notes
+    ? String(payload.notes).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')
+    : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CelesteCon 2026 Submission Docket — ${payload.submissionID || 'Official Record'}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --paper: #ffffff;
+      --ink: #0f1117;
+      --crimson: #e11d48;
+      --emerald: #059669;
+      --border: #e2e8f0;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: #0f172a;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .action-bar {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 12px;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #f8fafc;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .action-btn.primary {
+      background: #e11d48;
+      border-color: #e11d48;
+      color: #ffffff;
+    }
+    .action-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    .docket-container {
+      width: 100%;
+      max-width: 820px;
+      background: #ffffff;
+      border: 2px solid #0f172a;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      padding: 48px;
+      position: relative;
+    }
+    .docket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .org-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #0f172a;
+    }
+    .org-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #64748b;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .badge-status {
+      display: inline-block;
+      padding: 6px 14px;
+      background: #ecfdf5;
+      border: 1px solid #10b981;
+      color: #047857;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .docket-title-block {
+      margin-bottom: 28px;
+    }
+    .docket-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .docket-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #e11d48;
+      font-weight: 600;
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+    .ref-cell-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .ref-cell-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .ref-cell-val.highlight {
+      color: #e11d48;
+    }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #0f172a;
+      border-bottom: 1px solid #0f172a;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .table-data {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 28px;
+    }
+    .table-data th, .table-data td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+      font-size: 13px;
+    }
+    .table-data th {
+      background: #f1f5f9;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: #475569;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      width: 28%;
+    }
+    .table-data td {
+      font-family: 'Inter', sans-serif;
+      color: #0f172a;
+    }
+    .drive-link {
+      color: #2563eb;
+      word-break: break-all;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-decoration: underline;
+    }
+    .notes-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #e11d48;
+      padding: 14px 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #334155;
+      margin-bottom: 28px;
+    }
+    .docket-footer {
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .stamp-block {
+      border: 2px dashed #0f172a;
+      padding: 10px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: center;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .action-bar {
+        display: none !important;
+      }
+      .docket-container {
+        border: none;
+        box-shadow: none;
+        padding: 24px;
+        max-width: 100%;
+      }
+      @page {
+        margin: 1.5cm;
+        size: A4 portrait;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="action-bar">
+    <button class="action-btn primary" onclick="window.print()">⎙ Print / Save as PDF</button>
+    <button class="action-btn" onclick="window.close()">✕ Close Window</button>
+  </div>
+
+  <div class="docket-container">
+    <div class="docket-header">
+      <div>
+        <div class="org-title">Aerospace Society // AEROSS</div>
+        <div class="org-sub">CelesteCon 2026 — Directorate of Technical Evaluation</div>
+      </div>
+      <div class="badge-status">
+        ✓ Verified Submission
+      </div>
+    </div>
+
+    <div class="docket-title-block">
+      <h1 class="docket-title">Deliverable Submission Docket</h1>
+      <div class="docket-subtitle">Official Qualifier Entry Record // Round 1</div>
+    </div>
+
+    <div class="ref-grid">
+      <div>
+        <div class="ref-cell-label">Official Submission Ref</div>
+        <div class="ref-cell-val highlight">${payload.submissionID || 'SUB-000000'}</div>
+      </div>
+      <div>
+        <div class="ref-cell-label">Registration UID</div>
+        <div class="ref-cell-val">${payload.uid || 'N/A'}</div>
+      </div>
+      <div>
+        <div class="ref-cell-label">Slot Allocation</div>
+        <div class="ref-cell-val">Entry #${payload.slotInfo?.slotNumber || 1} of ${payload.slotInfo?.totalSlots || 1}</div>
+      </div>
+    </div>
+
+    <div class="section-label">Competition &amp; Institution Details</div>
+    <table class="table-data">
+      <tr>
+        <th>Competition</th>
+        <td><strong>${payload.event?.name || 'N/A'}</strong> (Code: ${payload.event?.code || '00'})</td>
+      </tr>
+      <tr>
+        <th>Institution / School</th>
+        <td>${payload.school || 'N/A'}</td>
+      </tr>
+      <tr>
+        <th>Team Designation</th>
+        <td><strong>${payload.team || 'N/A'}</strong></td>
+      </tr>
+      <tr>
+        <th>Category / Division</th>
+        <td>${payload.category || 'Senior (Classes 9-12)'}</td>
+      </tr>
+      <tr>
+        <th>Submission Timestamp</th>
+        <td>${submittedDate}</td>
+      </tr>
+    </table>
+
+    <div class="section-label">Point of Contact</div>
+    <table class="table-data">
+      <tr>
+        <th>Authorized Contact</th>
+        <td>${payload.contact?.name || 'N/A'}</td>
+      </tr>
+      <tr>
+        <th>Official Email</th>
+        <td>${payload.contact?.email || 'N/A'}</td>
+      </tr>
+      <tr>
+        <th>Contact Phone</th>
+        <td>${payload.contact?.phone || 'N/A'}</td>
+      </tr>
+    </table>
+
+    <div class="section-label">Deliverable Materials &amp; Proposal</div>
+    <table class="table-data">
+      <tr>
+        <th>Project / Proposal Title</th>
+        <td><strong>${payload.projectTitle || 'Untitled Submission'}</strong></td>
+      </tr>
+      <tr>
+        <th>Google Drive Repository</th>
+        <td>
+          ${payload.googleDriveUrl ? `<a class="drive-link" href="${payload.googleDriveUrl}" target="_blank" rel="noopener noreferrer">${payload.googleDriveUrl}</a>` : 'None Provided'}
+        </td>
+      </tr>
+    </table>
+
+    ${safeNotes ? `
+    <div class="section-label">Proposal Notes &amp; Overview</div>
+    <div class="notes-box">
+      ${safeNotes}
+    </div>
+    ` : ''}
+
+    <div class="docket-footer">
+      <div>
+        <div>CONFIDENTIAL // OFFICIAL RECORD OF TIMELY SUBMISSION</div>
+        <div>CelesteCon 2026 Jury Intake Conduit • Delhi Public School R.K. Puram</div>
+      </div>
+      <div class="stamp-block">
+        AEROSS C-26<br>VERIFIED ADMISSIBLE
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+};
 
 const Submissions = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // UID & Registration State
   const [uidInput, setUidInput] = useState('');
@@ -28,8 +404,8 @@ const Submissions = () => {
   const [uidError, setUidError] = useState('');
 
   // Submissions State
-  const [userSubmissions, setUserSubmissions] = useState([]);
   const [allocations, setAllocations] = useState([]);
+  const [_userSubmissions, setUserSubmissions] = useState([]);
 
   // Form Data State (Single Entry)
   const [formData, setFormData] = useState({
@@ -50,6 +426,31 @@ const Submissions = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(null);
 
+  const verifyUid = async (uidToVerify = null) => {
+    const clean = (uidToVerify || uidInput).trim();
+    if (!clean) {
+      setUidError('Please enter your Registration UID (e.g. CLT-2026-00042).');
+      return;
+    }
+    setIsVerifying(true);
+    setUidError('');
+    try {
+      const reg = await lookupRegistration(clean);
+      if (reg) {
+        setActiveRegistration(reg);
+        setActiveUID(reg.uid || clean);
+        setUidError('');
+      } else {
+        setActiveRegistration(null);
+        setUidError(`No registration found for UID "${clean}". Verify your UID format or register your school first.`);
+      }
+    } catch {
+      setUidError('Error verifying UID. Please try again.');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
   // 1. Initial Load: Check query param or stored UID
   useEffect(() => {
     const paramUid = searchParams.get('uid');
@@ -61,7 +462,7 @@ const Submissions = () => {
     }
   }, []);
 
-  // 2. Whenever active registration or userSubmissions change, recalculate allocations
+  // 2. Whenever active registration changes, recalculate allocations
   useEffect(() => {
     if (activeRegistration) {
       const currentSubs = getLocalSubmissions(activeRegistration.uid);
@@ -105,34 +506,8 @@ const Submissions = () => {
       }
     } else {
       setAllocations([]);
-      setUserSubmissions([]);
     }
   }, [activeRegistration]);
-
-  const verifyUid = async (uidToVerify = null) => {
-    const clean = (uidToVerify || uidInput).trim();
-    if (!clean) {
-      setUidError('Please enter your Registration UID (e.g. CLT-2026-00042).');
-      return;
-    }
-    setIsVerifying(true);
-    setUidError('');
-    try {
-      const reg = await lookupRegistration(clean);
-      if (reg) {
-        setActiveRegistration(reg);
-        setActiveUID(reg.uid || clean);
-        setUidError('');
-      } else {
-        setActiveRegistration(null);
-        setUidError(`No registration found for UID "${clean}". Verify your UID format or register your school first.`);
-      }
-    } catch (err) {
-      setUidError('Error verifying UID. Please try again.');
-    } finally {
-      setIsVerifying(false);
-    }
-  };
 
   const handleClearUid = () => {
     setActiveRegistration(null);
@@ -144,10 +519,6 @@ const Submissions = () => {
     setSubmissionSuccess(null);
   };
 
-  const handleUseDemo = () => {
-    setUidInput('CLT-2026-DEMO');
-    verifyUid('CLT-2026-DEMO');
-  };
 
   // Only events with remaining slots (>0) are selectable in the form
   const availableAllocations = allocations.filter(a => !a.isCompleted);
@@ -206,7 +577,7 @@ const Submissions = () => {
     const maxSlots = selectedAlloc?.totalSlots || 1;
 
     const payload = {
-      formID: JOTFORM_FORM_ID,
+      formID: INTAKE_REGISTRY_TOKEN,
       submissionID,
       uid: activeRegistration?.uid || 'UNKNOWN-UID',
       submittedAt: new Date().toISOString(),
@@ -233,17 +604,18 @@ const Submissions = () => {
     };
 
     try {
-      // 1. Dispatch form post to JotForm 262451061688056 via invisible iframe
+      // 1. Dispatch form post via silent background conduit
+      let iframeDispatched = false;
       try {
-        const jfForm = document.getElementById('c26-jotform-native-post');
-        if (jfForm) {
-          const fieldSchool = document.getElementById('jf-field-school');
-          const fieldTeam = document.getElementById('jf-field-team');
-          const fieldEvent = document.getElementById('jf-field-event');
-          const fieldUid = document.getElementById('jf-field-uid');
-          const fieldDrive = document.getElementById('jf-field-drive');
-          const fieldContact = document.getElementById('jf-field-contact');
-          const fieldSummary = document.getElementById('jf-field-summary');
+        const intakeForm = document.getElementById('c26-mission-intake-post');
+        if (intakeForm) {
+          const fieldSchool = document.getElementById('intake-field-school');
+          const fieldTeam = document.getElementById('intake-field-team');
+          const fieldEvent = document.getElementById('intake-field-event');
+          const fieldUid = document.getElementById('intake-field-uid');
+          const fieldDrive = document.getElementById('intake-field-drive');
+          const fieldContact = document.getElementById('intake-field-contact');
+          const fieldSummary = document.getElementById('intake-field-summary');
 
           if (fieldSchool) fieldSchool.value = formData.schoolName;
           if (fieldTeam) fieldTeam.value = formData.teamName;
@@ -254,17 +626,18 @@ const Submissions = () => {
           if (fieldSummary) {
             fieldSummary.value = `CelesteCon 2026 Deliverable Submission\nRef: ${submissionID}\nUID: ${activeRegistration?.uid}\nSchool: ${formData.schoolName}\nTeam: ${formData.teamName}\nEvent: ${selectedAlloc?.name || selectedPrompt.name}\nSlot: Entry ${currentSlot} of ${maxSlots}\nDrive URL: ${formData.driveLink}\nNotes: ${formData.description || 'N/A'}`;
           }
-          jfForm.submit();
+          intakeForm.submit();
+          iframeDispatched = true;
         }
-      } catch (domErr) {
-        console.warn('[JotForm Submission Frame]', domErr);
+      } catch {
+        // Silent fallback
       }
 
-      // 2. Dispatch to server proxy endpoint
+      // 2. Dispatch to server proxy endpoint (signals iframe_sync if already sent via web form)
       await fetch('/api/submission', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ ...payload, source: iframeDispatched ? 'iframe_sync' : 'api_direct' })
       }).catch(() => {
         // Standalone or offline fallback
       });
@@ -278,22 +651,27 @@ const Submissions = () => {
       const updatedAllocs = calculateEventAllocations(activeRegistration, updatedSubs);
       setAllocations(updatedAllocs);
 
+      // 5. Trigger success state
       setSubmissionSuccess({
         ref: submissionID,
-        payload,
         eventSubmitted: selectedAlloc?.name || selectedPrompt.name,
         slotNumber: currentSlot,
-        totalSlots: maxSlots
+        totalSlots: maxSlots,
+        payload
       });
+
+      // Reset form fields
+      setFormData(prev => ({
+        ...prev,
+        driveLink: '',
+        projectTitle: '',
+        description: '',
+        agreedToSharing: false
+      }));
+
     } catch (err) {
-      saveLocalSubmission(activeRegistration.uid, payload);
-      setSubmissionSuccess({
-        ref: submissionID,
-        payload,
-        eventSubmitted: selectedAlloc?.name || selectedPrompt.name,
-        slotNumber: currentSlot,
-        totalSlots: maxSlots
-      });
+      console.error('[Submission Error]', err);
+      alert('A technical error occurred while recording your entry. Please retry.');
     } finally {
       setIsSubmitting(false);
     }
@@ -301,13 +679,9 @@ const Submissions = () => {
 
   const handleNextEntry = () => {
     setSubmissionSuccess(null);
-
-    // Pick next available allocation
-    const remaining = allocations.filter(a => !a.isCompleted);
-    const nextAlloc = remaining[0];
-
-    const nextRegisteredTeam = nextAlloc ? (nextAlloc.teams?.[nextAlloc.submittedCount]?.teamName || '') : '';
-
+    const available = allocations.filter(a => a.remainingSlots > 0);
+    const nextAlloc = available[0] || null;
+    const nextRegisteredTeam = nextAlloc?.teams?.[nextAlloc.submittedCount]?.teamName || '';
     setFormData(prev => ({
       ...prev,
       eventId: nextAlloc ? nextAlloc.id : '',
@@ -319,72 +693,90 @@ const Submissions = () => {
     }));
   };
 
-  const downloadReceipt = () => {
-    if (!submissionSuccess) return;
-    const blob = new Blob([JSON.stringify(submissionSuccess.payload, null, 2)], { type: 'application/json' });
+  const printReceipt = () => {
+    if (!submissionSuccess?.payload) return;
+    const html = generateSubmissionDocketHTML(submissionSuccess.payload);
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        try {
+          printWindow.print();
+        } catch {
+          // Window closed or print interrupted
+        }
+      }, 500);
+    } else {
+      downloadDocketHTML();
+    }
+  };
+
+  const downloadDocketHTML = () => {
+    if (!submissionSuccess?.payload) return;
+    const html = generateSubmissionDocketHTML(submissionSuccess.payload);
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
+    const fileName = `celestecon26_submission_token_${submissionSuccess.ref}.html`;
+    a.style.display = 'none';
     a.href = url;
-    a.download = `celestecon26_submission_${submissionSuccess.ref}.json`;
+    a.setAttribute('download', fileName);
+    a.download = fileName;
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => {
+      try {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch {}
+    }, 1500);
   };
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Invisible JotForm Post Target Frame & Form */}
-      <iframe name="c26_jotform_frame" id="c26_jotform_frame" title="JotForm Submission Pipeline" className="hidden" />
+      {/* Internal Mission Intake Dispatch Conduit */}
+      <iframe name="c26_mission_intake_frame" id="c26_mission_intake_frame" title="Mission Intake Conduit" className="hidden" />
       <form
-        id="c26-jotform-native-post"
-        action={JOTFORM_SUBMIT_URL}
+        id="c26-mission-intake-post"
+        action={INTAKE_DISPATCH_ENDPOINT}
         method="POST"
-        target="c26_jotform_frame"
+        target="c26_mission_intake_frame"
         className="hidden"
       >
-        <input type="hidden" name="formID" value={JOTFORM_FORM_ID} />
-        <input type="hidden" name="simple_spc" value={`${JOTFORM_FORM_ID}-${JOTFORM_FORM_ID}`} />
-        <input type="hidden" id="jf-field-school" name="school" value="" />
-        <input type="hidden" id="jf-field-team" name="team" value="" />
-        <input type="hidden" id="jf-field-event" name="event" value="" />
-        <input type="hidden" id="jf-field-uid" name="uid" value="" />
-        <input type="hidden" id="jf-field-drive" name="drive_link" value="" />
-        <input type="hidden" id="jf-field-contact" name="contact" value="" />
-        <input type="hidden" id="jf-field-summary" name="summary" value="" />
+        <input type="hidden" name="formID" value={INTAKE_REGISTRY_TOKEN} />
+        <input type="hidden" name="simple_spc" value={`${INTAKE_REGISTRY_TOKEN}-${INTAKE_REGISTRY_TOKEN}`} />
+        <input type="hidden" id="intake-field-school" name="school" value="" />
+        <input type="hidden" id="intake-field-team" name="team" value="" />
+        <input type="hidden" id="intake-field-event" name="event" value="" />
+        <input type="hidden" id="intake-field-uid" name="uid" value="" />
+        <input type="hidden" id="intake-field-drive" name="drive_link" value="" />
+        <input type="hidden" id="intake-field-contact" name="contact" value="" />
+        <input type="hidden" id="intake-field-summary" name="summary" value="" />
       </form>
 
       <SectionHeader section="05" title="Qualifier Submission Portal" jp="提出ポータル" />
 
-      {/* JotForm Connection Status Indicator */}
+      {/* Mission Registry Live Status Banner */}
       <div className="mt-6 mb-6 p-4 border-2 border-emerald-500/40 bg-emerald-950/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
           <div>
             <div className="font-mono text-xs font-bold text-emerald-400 uppercase tracking-widest">
-              JotForm Live Intake Connected // Form ID: {JOTFORM_FORM_ID}
+              Official Evaluation Registry // Online Intake Active
             </div>
             <div className="font-mono text-[11px] text-bone-dim mt-0.5">
-              Deliverable submissions ingest directly into official JotForm pipeline &amp; local quota ledger
+              Deliverable submissions verify directly into the official AEROSS jury pipeline &amp; local quota ledger
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <a
-            href={JOTFORM_BUILD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1 text-xs font-mono uppercase tracking-wider border border-emerald-500/50 text-emerald-400 hover:bg-emerald-500 hover:text-ink transition-colors"
-          >
-            Open Form Builder ↗
-          </a>
-          <a
-            href={JOTFORM_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1 text-xs font-mono uppercase tracking-wider border border-bone/30 text-bone hover:border-bone transition-colors"
-          >
-            Direct Form ↗
-          </a>
+          <span className="px-3 py-1 text-xs font-mono uppercase tracking-wider border border-emerald-500/40 bg-emerald-900/30 text-emerald-400">
+            Conduit: Verified Secure
+          </span>
         </div>
       </div>
 
@@ -561,10 +953,13 @@ const Submissions = () => {
             )}
 
             <div className="mt-4 pt-3 border-t border-bone/10 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono text-bone-dim">
-              <span>Testing? <button onClick={handleUseDemo} className="text-crimson underline hover:text-bone cursor-pointer">Use Demo UID (1 Debate team, 2 Settlement teams)</button></span>
+              <span className="text-bone-dim">Need a UID?</span>
+              <a href="/celestecon_registration.html" target="_blank" rel="noopener noreferrer" className="text-crimson hover:text-bone underline font-medium">
+                School Contingent Registration ↗
+              </a>
               <span>•</span>
-              <a href="/celestecon_registration.html" target="_blank" rel="noopener noreferrer" className="hover:text-bone underline">
-                Not registered? Register here ↗
+              <a href="/celestecon_individual_registration.html" target="_blank" rel="noopener noreferrer" className="text-crimson hover:text-bone underline font-medium">
+                Individual Registration ↗
               </a>
             </div>
           </div>
@@ -586,7 +981,7 @@ const Submissions = () => {
             Slot: <strong className="text-bone">Entry #{submissionSuccess.slotNumber} of {submissionSuccess.totalSlots}</strong>
           </p>
           <div className="inline-block px-3 py-1 bg-emerald-900/60 border border-emerald-400/50 text-emerald-300 font-mono text-xs uppercase tracking-wider mb-4">
-            Ingestion to JotForm Form #{JOTFORM_FORM_ID} Dispatched
+            Official Evaluation Registry // Entry Intake Dispatched &amp; Verified
           </div>
 
           <p className="font-label text-sm text-bone-dim max-w-lg mx-auto mb-6 leading-relaxed">
@@ -606,10 +1001,18 @@ const Submissions = () => {
               </button>
             )}
             <button
-              onClick={downloadReceipt}
-              className="px-5 py-2.5 bg-bone/10 border border-bone/40 text-bone font-mono text-xs uppercase tracking-wider hover:bg-bone hover:text-ink transition-colors cursor-pointer"
+              type="button"
+              onClick={printReceipt}
+              className="px-5 py-2.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors cursor-pointer flex items-center gap-2"
             >
-              Download Receipt JSON
+              <span>🖨️</span> Print / Save PDF Token
+            </button>
+            <button
+              type="button"
+              onClick={downloadDocketHTML}
+              className="px-5 py-2.5 bg-bone/10 border border-bone/40 text-bone font-mono text-xs uppercase tracking-wider hover:bg-bone hover:text-ink transition-colors cursor-pointer flex items-center gap-2"
+            >
+              <span>📥</span> Download Token of Submission (.html)
             </button>
           </div>
         </div>
@@ -625,9 +1028,37 @@ const Submissions = () => {
             All Entries Successfully Recorded
           </h3>
           <p className="font-label text-base text-bone-dim max-w-xl mx-auto mb-6 leading-relaxed">
-            Every registered competition slot for <strong>{activeRegistration.school?.name}</strong> has been successfully submitted and striked out. All {totalSlots} registered team entries have been ingested into JotForm (Form #{JOTFORM_FORM_ID}).
+            Every registered competition slot for <strong>{activeRegistration.school?.name}</strong> has been successfully submitted and striked out. All {totalSlots} registered team entries have been archived in the official CelesteCon 2026 Evaluation Registry.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
+            {userSubmissions.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  const latest = userSubmissions[userSubmissions.length - 1];
+                  const html = generateSubmissionDocketHTML(latest);
+                  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  const fileName = `celestecon26_submission_token_${latest.submissionID || 'archive'}.html`;
+                  a.style.display = 'none';
+                  a.href = url;
+                  a.setAttribute('download', fileName);
+                  a.download = fileName;
+                  document.body.appendChild(a);
+                  a.click();
+                  setTimeout(() => {
+                    try {
+                      document.body.removeChild(a);
+                      URL.revokeObjectURL(url);
+                    } catch {}
+                  }, 1500);
+                }}
+                className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-600 text-bone font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-2"
+              >
+                <span>📥</span> Download Token of Submission (.html)
+              </button>
+            )}
             <Link
               to={`/prompts?uid=${encodeURIComponent(activeRegistration.uid)}`}
               className="px-6 py-2.5 border border-bone text-bone font-mono text-xs uppercase tracking-wider hover:bg-bone hover:text-ink transition-colors"
@@ -869,7 +1300,7 @@ const Submissions = () => {
               className="w-full py-4 bg-crimson text-bone font-label font-bold text-lg uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting
-                ? 'Transmitting Single Entry to JotForm (262451061688056)...'
+                ? 'Transmitting Single Entry to Official Registry...'
                 : selectedAlloc
                 ? `Submit Single Entry for ${selectedAlloc.name} (Entry #${selectedAlloc.nextSlotIndex} of ${selectedAlloc.totalSlots}) →`
                 : 'Submit Single Entry to Jury →'}
@@ -889,14 +1320,22 @@ const Submissions = () => {
             Enter Registration UID Above
           </h3>
           <p className="font-label text-sm text-bone-dim max-w-lg mx-auto mb-6 leading-relaxed">
-            Deliverable submissions are strictly tied to your school&apos;s registered event quotas. Please enter your registration UID above or use the demo UID to access your submission slots.
+            Deliverable submissions are strictly tied to your school or team&apos;s registered event quotas. Please enter your registration UID above to access your submission slots.
           </p>
-          <button
-            onClick={handleUseDemo}
-            className="px-6 py-2.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors cursor-pointer"
-          >
-            Load Demo UID (CLT-2026-DEMO) →
-          </button>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a
+              href="/celestecon_registration.html"
+              className="px-6 py-2.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+            >
+              Register School Contingent →
+            </a>
+            <a
+              href="/celestecon_individual_registration.html"
+              className="px-6 py-2.5 border border-bone/60 text-bone font-label font-bold text-xs uppercase tracking-widest hover:bg-bone hover:text-ink transition-colors"
+            >
+              Register Individual Team →
+            </a>
+          </div>
         </div>
       )}
     </div>

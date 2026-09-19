@@ -131,7 +131,42 @@ export function setActiveUID(uid) {
   }
 }
 
-export async function lookupRegistration(uid) {
+// Bounded LRU cache to prevent memory growth under high volume
+class BoundedLRUMap {
+  constructor(maxSize = 100) {
+    this.maxSize = maxSize;
+    this.map = new Map();
+  }
+  get(key) {
+    if (!this.map.has(key)) return undefined;
+    const val = this.map.get(key);
+    this.map.delete(key);
+    this.map.set(key, val);
+    return val;
+  }
+  set(key, value) {
+    if (this.map.has(key)) {
+      this.map.delete(key);
+    } else if (this.map.size >= this.maxSize) {
+      const oldestKey = this.map.keys().next().value;
+      this.map.delete(oldestKey);
+    }
+    this.map.set(key, value);
+  }
+  has(key) {
+    return this.map.has(key);
+  }
+  delete(key) {
+    return this.map.delete(key);
+  }
+}
+
+const _memoryCache = new BoundedLRUMap(100);
+const _negativeCache = new BoundedLRUMap(100); // key -> timestamp of 404
+const _inFlightLookups = new Map(); // key -> Promise
+const NEGATIVE_CACHE_TTL_MS = 30000; // 30 seconds
+
+export async function lookupRegistration(uid, { forceRefresh = false } = {}) {
   const clean = normalizeUid(uid);
   if (!clean) return null;
 
@@ -140,37 +175,69 @@ export async function lookupRegistration(uid) {
     return DEMO_REGISTRATION;
   }
 
-  // 2. Check LocalStorage
-  const localStore = getLocalRegistrations();
-  if (localStore[clean]) {
-    return localStore[clean];
+  // 2. Check In-Memory Cache (skip if forceRefresh is true)
+  if (!forceRefresh && _memoryCache.has(clean)) {
+    return _memoryCache.get(clean);
   }
-  // Try looking for partial matches or digit matches (e.g. 98765 or CLT-2026-98765)
-  const digits = clean.replace(/\D/g, '');
-  for (const k of Object.keys(localStore)) {
-    if (k.includes(clean) || (digits && digits.length >= 4 && k.includes(digits))) {
-      return localStore[k];
+
+  // 3. Check Negative Cache (prevent spamming API on recently failed lookups, skip if forceRefresh)
+  if (!forceRefresh) {
+    const lastFailed = _negativeCache.get(clean);
+    if (lastFailed && Date.now() - lastFailed < NEGATIVE_CACHE_TTL_MS) {
+      return null;
     }
   }
 
-  // 3. Try Remote Proxy API
-  try {
-    const res = await fetch(`/api/registration/${encodeURIComponent(clean)}`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data && (data.uid || data.school)) {
-        saveLocalRegistration(data);
-        return data;
+  // 4. Check LocalStorage (skip if forceRefresh is true)
+  if (!forceRefresh) {
+    const localStore = getLocalRegistrations();
+    if (localStore[clean]) {
+      _memoryCache.set(clean, localStore[clean]);
+      return localStore[clean];
+    }
+    // Try looking for partial matches or digit matches (e.g. 98765 or CLT-2026-98765)
+    const digits = clean.replace(/\D/g, '');
+    for (const k of Object.keys(localStore)) {
+      if (k.includes(clean) || (digits && digits.length >= 4 && k.includes(digits))) {
+        _memoryCache.set(clean, localStore[k]);
+        return localStore[k];
       }
     }
-  } catch (err) {
-    // API not reachable or offline
   }
 
-  return null;
+  // 5. In-flight deduplication: reuse active request if already fetching this clean UID
+  if (_inFlightLookups.has(clean)) {
+    return _inFlightLookups.get(clean);
+  }
+
+  // 6. Try Remote Proxy API
+  const fetchPromise = (async () => {
+    try {
+      const res = await fetch(`/api/registration/${encodeURIComponent(clean)}`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && (data.uid || data.school)) {
+          saveLocalRegistration(data);
+          _memoryCache.set(clean, data);
+          _negativeCache.delete(clean);
+          return data;
+        }
+      } else if (res.status === 404) {
+        _negativeCache.set(clean, Date.now());
+      }
+    } catch {
+      // API not reachable or offline
+    } finally {
+      _inFlightLookups.delete(clean);
+    }
+    return null;
+  })();
+
+  _inFlightLookups.set(clean, fetchPromise);
+  return fetchPromise;
 }
 
 export function getLocalSubmissions(uid) {

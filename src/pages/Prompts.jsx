@@ -6,8 +6,7 @@ import {
   lookupRegistration,
   getActiveUID,
   setActiveUID,
-  isEventRegistered,
-  DEMO_REGISTRATION
+  isEventRegistered
 } from '../utils/registrationLookup';
 
 const PromptCard = ({ item, activeUid, registeredEventData }) => {
@@ -169,25 +168,13 @@ const PromptCard = ({ item, activeUid, registeredEventData }) => {
 };
 
 const Prompts = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [uidInput, setUidInput] = useState('');
   const [activeRegistration, setActiveRegistration] = useState(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [searchFilter, setSearchFilter] = useState('');
-
-  // Initial load: check query param or local storage
-  useEffect(() => {
-    const paramUid = searchParams.get('uid');
-    const storedUid = getActiveUID();
-    const candidateUid = paramUid || storedUid;
-    if (candidateUid) {
-      setUidInput(candidateUid);
-      handleVerify(candidateUid);
-    }
-  }, []);
 
   const handleVerify = async (uidToVerify = null) => {
     const targetUid = (uidToVerify || uidInput).trim();
@@ -207,12 +194,23 @@ const Prompts = () => {
         setActiveRegistration(null);
         setErrorMessage(`No registration found for UID "${targetUid}". Please check your UID format or complete school registration.`);
       }
-    } catch (e) {
+    } catch {
       setErrorMessage('Verification failed. Please check connection and try again.');
     } finally {
       setIsVerifying(false);
     }
   };
+
+  // Initial load: check query param or local storage
+  useEffect(() => {
+    const paramUid = searchParams.get('uid');
+    const storedUid = getActiveUID();
+    const candidateUid = paramUid || storedUid;
+    if (candidateUid) {
+      setUidInput(candidateUid);
+      handleVerify(candidateUid);
+    }
+  }, []);
 
   const handleClearUid = () => {
     setActiveRegistration(null);
@@ -221,10 +219,6 @@ const Prompts = () => {
     setErrorMessage('');
   };
 
-  const handleUseDemo = () => {
-    setUidInput('CLT-2026-DEMO');
-    handleVerify('CLT-2026-DEMO');
-  };
 
   // Filter prompts according to registration UID: ONLY display registered competitions!
   const filtered = hybridPrompts.filter((item) => {
@@ -233,16 +227,13 @@ const Prompts = () => {
       return false;
     }
 
-    // 2. Category filter
-    const matchesCategory = selectedCategory === 'ALL' || item.category === selectedCategory;
-
-    // 3. Search text filter
+    // 2. Search text filter
     const matchesSearch =
       searchFilter === '' ||
       item.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
       item.hook.toLowerCase().includes(searchFilter.toLowerCase());
 
-    return matchesCategory && matchesSearch;
+    return matchesSearch;
   });
 
   // Find registered event object helper
@@ -360,10 +351,13 @@ const Prompts = () => {
             )}
 
             <div className="mt-4 pt-3 border-t border-bone/10 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono text-bone-dim">
-              <span>Quick Test? <button onClick={handleUseDemo} className="text-crimson underline hover:text-bone cursor-pointer">Use Demo UID (1 Debate team, 2 Settlement teams)</button></span>
+              <span className="text-bone-dim">Need a UID?</span>
+              <a href="/celestecon_registration.html" target="_blank" rel="noopener noreferrer" className="text-crimson hover:text-bone underline font-medium">
+                School Contingent Registration ↗
+              </a>
               <span>•</span>
-              <a href="/celestecon_registration.html" target="_blank" rel="noopener noreferrer" className="hover:text-bone underline">
-                Not registered yet? Register here ↗
+              <a href="/celestecon_individual_registration.html" target="_blank" rel="noopener noreferrer" className="text-crimson hover:text-bone underline font-medium">
+                Individual Registration ↗
               </a>
             </div>
           </div>
@@ -434,14 +428,22 @@ const Prompts = () => {
             Enter Your Registration UID Above
           </h3>
           <p className="font-label text-sm text-bone-dim max-w-lg mx-auto mb-6 leading-relaxed">
-            Competition briefs, challenge cases, and official proposal templates are locked to verified participants. Please enter your registration UID above or test with the demo UID to unlock only your school&apos;s registered events.
+            Competition briefs, challenge cases, and official proposal templates are locked to verified participants. Please enter your registration UID above to unlock your registered competition events.
           </p>
-          <button
-            onClick={handleUseDemo}
-            className="px-6 py-2.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors cursor-pointer"
-          >
-            Load Demo UID (CLT-2026-DEMO) →
-          </button>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a
+              href="/celestecon_registration.html"
+              className="px-6 py-2.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+            >
+              Register School Contingent →
+            </a>
+            <a
+              href="/celestecon_individual_registration.html"
+              className="px-6 py-2.5 border border-bone/60 text-bone font-label font-bold text-xs uppercase tracking-widest hover:bg-bone hover:text-ink transition-colors"
+            >
+              Register Individual Team →
+            </a>
+          </div>
         </div>
       )}
 

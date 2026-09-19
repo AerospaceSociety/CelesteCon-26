@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { EXECUTIVES } from '../data/executives';
-import { Phone, Mail, Copy, Check, ExternalLink, User, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, Copy, Check, ExternalLink, AlertTriangle } from 'lucide-react';
 
 const ExecCard = ({ exec, index }) => {
-  const [imgSrc, setImgSrc] = useState(exec.image);
+  const [imgSrc, setImgSrc] = useState(exec.image || exec.placeholder);
   const [hasError, setHasError] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
 
@@ -51,13 +51,6 @@ const ExecCard = ({ exec, index }) => {
             }`}
           />
 
-          {/* Background-less image notification & path hint */}
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <span className="bg-ink/90 border border-bone/40 text-bone font-mono text-[8px] px-2 py-0.5 whitespace-nowrap uppercase tracking-wider">
-              {hasError ? `Drop PNG: /public${exec.image}` : 'Transparent Cutout'}
-            </span>
-          </div>
-
           {/* Bottom subtle shadow ramp */}
           <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink to-transparent z-10 pointer-events-none" />
         </div>
@@ -86,7 +79,7 @@ const ExecCard = ({ exec, index }) => {
             <a
               href={`tel:${exec.phoneRaw}`}
               className="flex-1 flex items-center justify-center gap-1.5 border border-crimson/80 bg-crimson/15 hover:bg-crimson hover:text-bone text-crimson py-1.5 px-2 font-bold transition-colors"
-              title="Call Siddhartha Srivastava"
+              title={`Call ${exec.name}`}
             >
               <Phone size={11} />
               <span>{exec.phone}</span>
