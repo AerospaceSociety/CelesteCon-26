@@ -210,18 +210,6 @@ const Contact = () => {
             </dl>
           </div>
 
-          {/* Schedule Clash & Participant Responsibility Advisory */}
-          <div className="border border-amber-500/40 bg-amber-950/20 p-3.5 space-y-1.5 font-mono text-[10px]">
-            <div className="flex items-center gap-2 text-amber-400 font-bold uppercase tracking-wider">
-              <AlertTriangle size={13} />
-              <span>Multi-Competition Timing Advisory</span>
-            </div>
-            <p className="text-bone-dim leading-relaxed">
-              Students are permitted to register for multiple competitions. However, on-site event rounds and stage slots may run concurrently. Resolving schedule clashes is the sole responsibility of the participant and the delegating institution.
-            </p>
-          </div>
-        </div>
-
         {/* Right Column: Faculty Directory & Message Transmission */}
         <div className="space-y-6">
           <h3 className="font-display text-2xl md:text-3xl text-bone uppercase leading-none">
