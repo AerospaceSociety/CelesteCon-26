@@ -86,7 +86,7 @@ const MissionDossierModal = ({ event, onClose }) => {
         <div className="bg-bone text-ink px-4 sm:px-6 py-2.5 flex items-center justify-between font-mono text-xs uppercase tracking-widest font-bold border-b border-bone shrink-0">
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="bg-crimson text-bone-hi px-2 py-0.5 font-bold">
-              DOSSIER // CC26-E{event.id}
+              Event Details // CC26-E{event.id}
             </span>
             <span className="hidden sm:inline text-ink-3">
               {EVENT_DISCIPLINES[event.id] || 'COMPETITION SPEC'}
@@ -409,7 +409,7 @@ const MissionGridCard = ({ event, onOpenDossier }) => {
             onClick={() => onOpenDossier(event)}
             className="w-full sm:w-auto px-3.5 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest hover:bg-crimson hover:text-bone hover:border-crimson transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <span>View Dossier</span>
+            <span>View Details</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
