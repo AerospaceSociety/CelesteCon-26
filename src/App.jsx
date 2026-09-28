@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Comps from './pages/Comps';
 import Format from './pages/Format';
 import Sponsors from './pages/Sponsors';
-import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 
 const Navbar = () => {
@@ -30,7 +29,6 @@ const Navbar = () => {
     { path: '/comps', label: 'The Comps' },
     { path: '/format', label: 'Format & Dates' },
     //{ path: '/sponsors', label: 'Sponsors' },
-    { path: '/gallery', label: 'Gallery' },
     { path: '/contact', label: 'Contact' }
   ];
 
@@ -137,7 +135,7 @@ function App() {
             <Route path="/comps" element={<Comps />} />
             <Route path="/format" element={<Format />} />
             {/*<Route path="/sponsors" element={<Sponsors />} />*/}
-            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/gallery" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
