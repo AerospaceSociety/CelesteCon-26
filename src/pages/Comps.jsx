@@ -19,32 +19,29 @@ import {
 
 // Tag events with disciplines for intuitive filtering
 const EVENT_DISCIPLINES = {
-  '01': 'Debate & Strategy',
-  '02': 'Knowledge & STEM',
-  '03': 'Space Habitability',
+  '01': 'Space Habitability',
+  '02': 'Aerospace & 3D CAD',
+  '03': 'Debate & Strategy',
   '04': 'Venture & Pitch',
-  '05': 'Aerospace Engineering',
-  '06': 'Innovation & Design',
-  '07': 'Theatre & Improv',
-  '08': '3D CAD & Modeling',
-  '09': 'Game Development',
-  '10': 'Rocketry & Fabrication',
-  '11': 'F1 & Automotive'
+  '05': 'Game Development',
+  '06': 'Theatre & Satire',
+  '07': 'Rocketry & Propulsion',
+  '08': 'F1 & Automotive'
 };
 
 const DISCIPLINES = [
   'ALL',
   'Engineering & CAD',
   'Habitability & Venture',
-  'Debate & Knowledge',
+  'Debate & Strategy',
   'Creative & Media'
 ];
 
 const getDisciplineGroup = (id) => {
-  if (['05', '08', '10', '11'].includes(id)) return 'Engineering & CAD';
-  if (['03', '04', '06'].includes(id)) return 'Habitability & Venture';
-  if (['01', '02'].includes(id)) return 'Debate & Knowledge';
-  if (['07', '09'].includes(id)) return 'Creative & Media';
+  if (['02', '07', '08'].includes(id)) return 'Engineering & CAD';
+  if (['01', '04'].includes(id)) return 'Habitability & Venture';
+  if (['03'].includes(id)) return 'Debate & Strategy';
+  if (['05', '06'].includes(id)) return 'Creative & Media';
   return 'Other';
 };
 
@@ -310,6 +307,15 @@ const MissionDossierModal = ({ event, onClose }) => {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto justify-end">
+            {event.url && (
+              <a
+                href={event.url}
+                className="px-4 py-1.5 bg-crimson text-bone-hi border border-crimson font-label font-bold text-xs uppercase tracking-widest hover:bg-bone hover:text-ink hover:border-bone transition-colors flex items-center gap-1.5 no-underline"
+              >
+                <span>Full Event Handbook</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            )}
             <button
               onClick={onClose}
               className="px-4 py-1.5 border border-bone/60 text-bone font-label font-bold text-xs uppercase tracking-widest hover:bg-bone hover:text-ink transition-colors cursor-pointer"
@@ -367,22 +373,14 @@ const MissionGridCard = ({ event, onOpenDossier }) => {
             </span>
           </div>
 
-          {/* Title - Clickable to open dossier */}
-          <h3
-            onClick={() => onOpenDossier(event)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onOpenDossier(event);
-              }
-            }}
-            tabIndex={0}
-            role="button"
-            className="font-display text-2xl text-bone uppercase tracking-wide group-hover:text-crimson transition-colors mb-2 cursor-pointer outline-none focus:text-crimson"
-            title="Click to view full dossier"
+          {/* Title - Clickable to open standalone integrated event page */}
+          <a
+            href={event.url || '#'}
+            className="font-display text-2xl text-bone uppercase tracking-wide group-hover:text-crimson transition-colors mb-2 block no-underline outline-none focus:text-crimson cursor-pointer"
+            title="Click to view full event handbook & details"
           >
             {event.name}
-          </h3>
+          </a>
 
           {/* Tagline / Hook */}
           <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed line-clamp-3 mb-4">
@@ -403,14 +401,21 @@ const MissionGridCard = ({ event, onOpenDossier }) => {
           </div>
         )}
 
-        {/* Action Bar - Single Button Only */}
-        <div className="pt-2 border-t border-bone/15">
+        {/* Action Bar - Primary Button Navigates to Event Page, Secondary to Quick Summary */}
+        <div className="pt-2 border-t border-bone/15 flex items-center gap-2">
+          <a
+            href={event.url || '#'}
+            className="flex-1 px-3.5 py-2 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest hover:bg-bone hover:text-ink hover:border-bone border border-crimson transition-colors flex items-center justify-center gap-1.5 no-underline"
+          >
+            <span>Open Event Details</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </a>
           <button
             onClick={() => onOpenDossier(event)}
-            className="w-full sm:w-auto px-3.5 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest hover:bg-crimson hover:text-bone hover:border-crimson transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            className="px-3 py-2 border border-bone/40 text-bone-dim hover:text-bone hover:border-bone font-mono text-[10.5px] uppercase tracking-wider transition-colors cursor-pointer"
+            title="Quick Modal Summary"
           >
-            <span>View Details</span>
-            <ChevronRight className="w-3.5 h-3.5" />
+            Summary
           </button>
         </div>
       </div>
@@ -429,21 +434,13 @@ const MissionListRow = ({ event, onOpenDossier }) => {
 
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h3
-              onClick={() => onOpenDossier(event)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onOpenDossier(event);
-                }
-              }}
-              tabIndex={0}
-              role="button"
-              className="font-display text-xl text-bone uppercase tracking-wide group-hover:text-crimson transition-colors cursor-pointer outline-none focus:text-crimson"
-              title="Click to view full dossier"
+            <a
+              href={event.url || '#'}
+              className="font-display text-xl text-bone uppercase tracking-wide group-hover:text-crimson transition-colors cursor-pointer outline-none focus:text-crimson no-underline block"
+              title="Click to view full event handbook & details"
             >
               {event.name}
-            </h3>
+            </a>
             <span
               className={`font-mono text-[9px] tracking-widest uppercase px-2 py-0.2 font-bold border ${
                 event.mode === 'Onsite'
@@ -460,18 +457,24 @@ const MissionListRow = ({ event, onOpenDossier }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 shrink-0 self-end md:self-auto">
-        <div className="hidden lg:flex flex-col text-right font-mono text-[10px] text-bone-dim">
+      <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
+        <div className="hidden lg:flex flex-col text-right font-mono text-[10px] text-bone-dim mr-2">
           <span>{event.eligibility.split('(')[0].trim()}</span>
           <span className="text-bone-dim/70">{event.team.split('(')[0].trim()}</span>
         </div>
 
+        <a
+          href={event.url || '#'}
+          className="px-3.5 py-1.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest hover:bg-bone hover:text-ink hover:border-bone border border-crimson transition-colors flex items-center gap-1 no-underline"
+        >
+          <span>Event Page</span>
+          <ChevronRight className="w-3.5 h-3.5" />
+        </a>
         <button
           onClick={() => onOpenDossier(event)}
-          className="px-3.5 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest hover:bg-crimson hover:text-bone hover:border-crimson transition-colors flex items-center gap-1 cursor-pointer"
+          className="px-2.5 py-1.5 border border-bone/40 text-bone-dim hover:text-bone hover:border-bone font-mono text-[10px] uppercase tracking-wider transition-colors cursor-pointer"
         >
-          <span>Dossier</span>
-          <ChevronRight className="w-3.5 h-3.5" />
+          Summary
         </button>
       </div>
     </div>
@@ -542,15 +545,15 @@ const Comps = () => {
       {/* Briefing Intro & Stats Band */}
       <div className="mt-4 mb-6 flex flex-col md:flex-row md:items-baseline justify-between gap-4 border-b-2 border-bone/30 pb-4">
         <p className="font-label text-base md:text-lg text-bone-dim max-w-3xl leading-relaxed">
-          The official competition catalog of CelesteCon 2026. 11 challenges spanning aerospace engineering, orbital habitat design, rocketry, commercial venture, robotics, gaming, and space theatre.
+          The official competition catalog of CelesteCon 2026. 8 flagship challenges spanning space settlement design, aero-mechanical UAVs &amp; 3D CAD, debate &amp; forensics, aerospace commercialization, game development, theatre &amp; satire, rocketry, and F1 motorsport engineering.
         </p>
 
         <div className="flex items-center gap-3 text-bone font-mono text-xs shrink-0 flex-wrap">
           <span className="px-2.5 py-1 bg-bone text-ink font-bold">
-            11 CHALLENGES
+            8 CHALLENGES
           </span>
           <span className="px-2 py-0.5 border border-bone/40 text-bone-dim">
-            8 HYBRID
+            5 HYBRID
           </span>
           <span className="px-2 py-0.5 border border-bone/40 text-bone-dim">
             3 ONSITE

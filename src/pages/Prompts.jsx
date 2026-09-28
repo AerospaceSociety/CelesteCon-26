@@ -156,12 +156,22 @@ const PromptCard = ({ item, activeUid, registeredEventData }) => {
           <span>{item.deliverables}</span>
         </div>
 
-        <Link
-          to={`/submissions?event=${item.id}${activeUid ? `&uid=${encodeURIComponent(activeUid)}` : ''}`}
-          className="px-5 py-2 bg-crimson text-bone font-label font-bold text-xs sm:text-sm uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors whitespace-nowrap self-stretch sm:self-auto text-center"
-        >
-          Submit Entry on Portal →
-        </Link>
+        <div className="flex flex-wrap items-center gap-2 self-stretch sm:self-auto">
+          {item.url && (
+            <a
+              href={item.url}
+              className="px-4 py-2 border border-bone/40 text-bone font-label text-xs sm:text-sm uppercase tracking-widest hover:border-crimson hover:text-crimson transition-colors whitespace-nowrap text-center flex-1 sm:flex-initial"
+            >
+              Event Handbook ↗
+            </a>
+          )}
+          <Link
+            to={`/submissions?event=${item.id}${activeUid ? `&uid=${encodeURIComponent(activeUid)}` : ''}`}
+            className="px-5 py-2 bg-crimson text-bone font-label font-bold text-xs sm:text-sm uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors whitespace-nowrap text-center flex-1 sm:flex-initial"
+          >
+            Submit Entry on Portal →
+          </Link>
+        </div>
       </div>
     </div>
   );

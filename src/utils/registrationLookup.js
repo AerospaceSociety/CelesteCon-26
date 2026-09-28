@@ -5,22 +5,32 @@
    ========================================================================== */
 
 export const EVENT_ID_ALIASES = {
-  theatre: 'surprise',
-  surprise: 'surprise',
-  dimension3: 'dimension3',
-  cad: 'dimension3',
+  theatre: 'theatre',
+  surprise: 'theatre',
+  aeross: 'theatre',
+  'aeross theatre': 'theatre',
+  dimension3: 'volatus',
+  cad: 'volatus',
+  volatus: 'volatus',
   bpp: 'bpp',
   business: 'bpp',
-  volatus: 'volatus',
-  cosmovate: 'cosmovate',
+  'business power pitch': 'bpp',
+  cosmovate: 'gamejam',
+  gamejam: 'gamejam',
+  'vector gamejam': 'gamejam',
   dispute: 'dispute',
   debate: 'dispute',
+  quizzitch: 'dispute',
+  quiz: 'dispute',
+  'in pursuit of dispute': 'dispute',
   settle: 'settle',
   settlement: 'settle',
-  quizzitch: 'quizzitch',
-  quiz: 'quizzitch',
-  gamejam: 'gamejam',
-  f1: 'f1'
+  'settle-me-this': 'settle',
+  f1: 'f1',
+  formula: 'f1',
+  'formula celeste': 'f1',
+  rocketry: 'rocketry',
+  rocket: 'rocketry'
 };
 
 export const DEMO_REGISTRATION = {

@@ -114,6 +114,14 @@ const Sponsors = () => {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+          <a
+            href="/CelesteCon_2026_Sponsor_Brochure.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 border border-bone/60 bg-bone/10 text-bone font-label font-bold text-xs uppercase tracking-widest hover:border-crimson hover:text-crimson transition-colors whitespace-nowrap text-center"
+          >
+            Sponsorship Brochure ↗
+          </a>
           <Link
             to="/contact"
             className="px-5 py-2.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors whitespace-nowrap text-center"

@@ -1,0 +1,602 @@
+/* ============================================================
+   CELESTECON 2026 · EVENT SHELL DESIGN SYSTEM
+   Shared Header, Navigation, Theme Engine & Footer
+   ============================================================ */
+
+/* CSS Variables for the Shell (Dark by default) */
+:root {
+  --c26-ink: #161310;
+  --c26-ink-2: #221F1B;
+  --c26-ink-3: #33302A;
+  --c26-ink-4: #57534A;
+  --c26-bone: #E8E1CE;
+  --c26-bone-hi: #F2EDDD;
+  --c26-bone-dim: #DDD4BC;
+  --c26-crimson: #C23A1E;
+  --c26-crimson-deep: #93290F;
+  --c26-crimson-hi: #E0482B;
+  
+  --c26-f-display: 'Anton', 'Arial Narrow', Impact, sans-serif;
+  --c26-f-label: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+  --c26-f-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --c26-f-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif;
+  
+  --c26-header-h: 56px;
+  --c26-subbar-h: 42px;
+}
+
+/* Light Theme Variables */
+:root[data-theme="light"] {
+  --c26-ink: #E8E1CE;
+  --c26-ink-2: #DDD4BC;
+  --c26-ink-3: #CFC4AA;
+  --c26-ink-4: #BCAE91;
+  --c26-bone: #161310;
+  --c26-bone-hi: #000000;
+  --c26-bone-dim: #33302A;
+  --c26-crimson: #C23A1E;
+  --c26-crimson-deep: #93290F;
+  --c26-crimson-hi: #A62910;
+}
+
+/* Site Header */
+.c26-site-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--c26-ink);
+  border-bottom: 2px solid var(--c26-bone);
+  font-family: var(--c26-f-label);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.c26-site-header-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+  height: var(--c26-header-h);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.c26-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--c26-bone);
+  transition: color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.c26-brand:hover {
+  color: var(--c26-crimson);
+}
+
+.c26-brand-title {
+  font-family: var(--c26-f-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.c26-brand-edition {
+  font-family: var(--c26-f-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--c26-crimson);
+  font-weight: 600;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .c26-brand-edition {
+    display: inline-block;
+  }
+}
+
+/* Nav Links */
+.c26-nav-links {
+  display: none;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (min-width: 900px) {
+  .c26-nav-links {
+    display: flex;
+  }
+}
+
+.c26-nav-item {
+  font-family: var(--c26-f-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--c26-bone-dim);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 0;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.c26-nav-item:hover,
+.c26-nav-item.active {
+  color: var(--c26-crimson);
+}
+
+.c26-nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--c26-crimson);
+}
+
+/* Header Actions */
+.c26-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Registration Dropdown */
+.c26-reg-dropdown {
+  position: relative;
+}
+
+.c26-reg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--c26-crimson);
+  color: var(--c26-bone-hi);
+  font-family: var(--c26-f-label);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 6px 14px;
+  border: 1px solid var(--c26-crimson);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.c26-reg-btn:hover {
+  background-color: var(--c26-ink);
+  color: var(--c26-crimson);
+}
+
+.c26-caret {
+  transition: transform 0.2s ease;
+}
+
+.c26-reg-btn[aria-expanded="true"] .c26-caret {
+  transform: rotate(180deg);
+}
+
+.c26-reg-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  width: 260px;
+  background-color: var(--c26-ink);
+  border: 2px solid var(--c26-bone);
+  padding: 6px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  z-index: 1010;
+}
+
+.c26-reg-menu.open {
+  display: block;
+  animation: c26-fade 0.15s ease;
+}
+
+@keyframes c26-fade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.c26-reg-item {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--c26-bone);
+  border-bottom: 1px solid rgba(232, 225, 206, 0.15);
+  transition: background-color 0.15s ease;
+}
+
+:root[data-theme="light"] .c26-reg-item {
+  border-bottom: 1px solid rgba(22, 19, 16, 0.15);
+}
+
+.c26-reg-item:last-child {
+  border-bottom: none;
+}
+
+.c26-reg-item:hover {
+  background-color: rgba(232, 225, 206, 0.1);
+}
+
+:root[data-theme="light"] .c26-reg-item:hover {
+  background-color: rgba(22, 19, 16, 0.08);
+}
+
+.c26-reg-heading {
+  display: block;
+  font-family: var(--c26-f-label);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c26-bone);
+}
+
+.c26-reg-item-ind .c26-reg-heading {
+  color: var(--c26-crimson);
+}
+
+.c26-reg-desc {
+  display: block;
+  font-family: var(--c26-f-mono);
+  font-size: 11px;
+  color: var(--c26-bone-dim);
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+/* Theme Toggle Button */
+.c26-theme-btn {
+  background: transparent;
+  border: 1px solid var(--c26-bone-dim);
+  color: var(--c26-bone);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.c26-theme-btn:hover {
+  border-color: var(--c26-crimson);
+  color: var(--c26-crimson);
+}
+
+.c26-theme-btn svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2;
+}
+
+/* Mobile Toggle */
+.c26-mobile-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--c26-bone-dim);
+  color: var(--c26-bone);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (min-width: 900px) {
+  .c26-mobile-toggle {
+    display: none;
+  }
+}
+
+.c26-mobile-toggle:hover {
+  border-color: var(--c26-crimson);
+  color: var(--c26-crimson);
+}
+
+/* Mobile Drawer Menu */
+.c26-mobile-menu {
+  background-color: var(--c26-ink);
+  border-top: 1px solid var(--c26-bone);
+  padding: 12px clamp(16px, 4vw, 40px) 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.c26-mobile-menu[hidden] {
+  display: none !important;
+}
+
+.c26-mobile-item {
+  font-family: var(--c26-f-label);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--c26-bone-dim);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-left: 2px solid transparent;
+}
+
+.c26-mobile-item:hover,
+.c26-mobile-item.active {
+  color: var(--c26-crimson);
+  border-left-color: var(--c26-crimson);
+  background-color: rgba(232, 225, 206, 0.05);
+}
+
+.c26-mobile-reg {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(232, 225, 206, 0.2);
+}
+
+.c26-mobile-reg-link {
+  font-family: var(--c26-f-label);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 8px 12px;
+  text-align: center;
+  border: 1px solid var(--c26-bone);
+  color: var(--c26-bone);
+  text-decoration: none;
+}
+
+.c26-mobile-reg-link.c26-primary {
+  background-color: var(--c26-crimson);
+  border-color: var(--c26-crimson);
+  color: var(--c26-bone-hi);
+}
+
+/* Event Subbar */
+.c26-event-subbar {
+  background-color: var(--c26-ink-2);
+  border-bottom: 1px solid var(--c26-ink-3);
+  font-family: var(--c26-f-mono);
+  font-size: 11px;
+}
+
+:root[data-theme="light"] .c26-event-subbar {
+  background-color: #E2DAC6;
+  border-bottom: 1px solid #CFC4AA;
+}
+
+.c26-event-subbar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px clamp(16px, 4vw, 40px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.c26-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--c26-bone);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.15s ease;
+}
+
+.c26-back-link:hover {
+  color: var(--c26-crimson);
+}
+
+.c26-event-badge-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.c26-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid;
+}
+
+.c26-badge-accent {
+  background-color: var(--c26-crimson);
+  border-color: var(--c26-crimson);
+  color: #FFFFFF;
+}
+
+.c26-badge-status {
+  border-color: var(--c26-bone-dim);
+  color: var(--c26-bone);
+}
+
+.c26-subbar-cta {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--c26-f-label);
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c26-crimson);
+  text-decoration: none;
+  padding-left: 6px;
+  transition: color 0.15s ease;
+}
+
+.c26-subbar-cta:hover {
+  color: var(--c26-bone);
+  text-decoration: underline;
+}
+
+/* Site Footer */
+.c26-site-footer {
+  margin-top: clamp(60px, 10vw, 100px);
+  background-color: var(--c26-bone);
+  color: var(--c26-ink);
+  border-top: 4px solid var(--c26-ink-3);
+  font-family: var(--c26-f-label);
+  padding: clamp(36px, 6vw, 64px) 0 28px;
+}
+
+:root[data-theme="light"] .c26-site-footer {
+  background-color: #DDD4BC;
+  color: #161310;
+  border-top: 4px solid #161310;
+}
+
+.c26-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+}
+
+.c26-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 32px;
+}
+
+@media (min-width: 640px) {
+  .c26-footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .c26-footer-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  }
+}
+
+.c26-footer-brand {
+  font-family: var(--c26-f-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+  line-height: 1;
+}
+
+.c26-footer-motto {
+  font-family: var(--c26-f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--c26-crimson-deep);
+  margin: 0 0 8px;
+}
+
+.c26-footer-desc {
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.c26-footer-heading {
+  font-family: var(--c26-f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--c26-crimson-deep);
+  margin: 0 0 14px;
+}
+
+.c26-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.c26-footer-links li a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.c26-footer-links li a:hover {
+  color: var(--c26-crimson);
+  border-bottom-color: var(--c26-crimson);
+}
+
+.c26-footer-links li span {
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.c26-footer-address {
+  font-style: normal;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+}
+
+.c26-footer-bottom {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(22, 19, 16, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--c26-f-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.c26-footer-stamps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.c26-jp-stamp {
+  font-family: var(--c26-f-jp);
+  color: var(--c26-crimson);
+  font-weight: 700;
+}

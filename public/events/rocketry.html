@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Rocketry · Build &amp; Launch Challenge · CelesteCon 2026</title>
+  <meta name="description"
+    content="Rocketry — the Aerospace Model Fabrication &amp; Flight Propulsion Challenge of CelesteCon 2026 by AEROSS, Delhi Public School R.K. Puram. A nationwide two-round engineering challenge: a technical CAD &amp; fabrication dossier, followed by live structural scrutineering and an official test launch window.">
+  <meta name="theme-color" content="#090C10">
+  <link rel="icon" type="image/jpeg" href="/favicon.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700&display=swap">
+  <link rel="stylesheet" href="/events/event-shell.css">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    })();
+  </script>
+  <style>
+    /* ============================================================
+       ROCKETRY · CelesteCon 2026 · Edition VI · Ref № RCK-26
+       Build & Launch Challenge: Scale Fabrication & Flight Propulsion
+       ============================================================ */
+    :root {
+      color-scheme: dark;
+      --sl: #090C10;
+      --sl-2: #10151E;
+      --sl-3: #06080B;
+      --sl-4: #181F2C;
+      --rule: #1E2736;
+      --rule-hi: #323F54;
+      --zn: #E4E8EE;
+      --zn-2: #ACB6C4;
+      --zn-dim: #728094;
+      --fl: #FF6827;
+      --fl-hi: #FF884D;
+      --fl-dim: #8F330B;
+      --th: #F5B025;
+      --th-hi: #FFCA5E;
+      --th-dim: #845B0A;
+      --cy: #29C6E8;
+      --cy-hi: #6BE0F7;
+      --cy-dim: #136273;
+      --go: #3CD070;
+      --go-dim: #1D6938;
+      --no: #F03B30;
+      --no-dim: #781913;
+      --f-display: "Anton", "Oswald", Impact, sans-serif;
+      --f-head: "Oswald", "Arial Narrow", sans-serif;
+      --f-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      --f-mono: "IBM Plex Mono", monospace;
+      --f-jp: "Noto Sans JP", sans-serif;
+      --maxw: 1180px;
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --sl: #F6F3EC;
+      --sl-2: #ECE6DB;
+      --sl-3: #FAF8F3;
+      --sl-4: #DFD8CB;
+      --rule: #CFC5B2;
+      --rule-hi: #B4A790;
+      --zn: #12161D;
+      --zn-2: #28303E;
+      --zn-dim: #546274;
+      --fl: #C84209;
+      --fl-hi: #A13002;
+      --fl-dim: #EAA684;
+      --th: #8E6007;
+      --th-hi: #6E4903;
+      --th-dim: #D4AF57;
+      --cy: #0D7E96;
+      --cy-hi: #096174;
+      --cy-dim: #72D2E6;
+      --go: #187744;
+      --go-dim: #68C291;
+      --no: #C2271D;
+      --no-dim: #E57973;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background-color: var(--sl);
+      background-image:
+        radial-gradient(rgba(232, 225, 206, 0.05) 1px, transparent 1px),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.008) 0 2px, transparent 2px 6px);
+      background-size: 4px 4px, auto;
+      color: var(--zn);
+      font: 16px/1.6 var(--f-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root[data-theme="light"] body {
+      background-image:
+        radial-gradient(rgba(22, 19, 16, 0.05) 1px, transparent 1px),
+        repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.012) 0 2px, transparent 2px 6px);
+    }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
+    a { color: var(--zn); text-decoration-color: var(--fl); text-underline-offset: 3px; }
+    a:hover { color: var(--fl-hi); }
+    h1, h2, h3, h4, h5 { margin: 0; text-wrap: balance; }
+    p { margin: 0; }
+    strong { font-weight: 600; color: var(--zn); }
+    em { color: var(--th-hi); font-style: normal; }
+
+    /* Tags & Badges */
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px; font: 500 11px/1 var(--f-mono);
+      letter-spacing: .12em; text-transform: uppercase; border: 1px solid var(--rule-hi);
+      padding: 5px 8px; color: var(--zn-2); white-space: nowrap;
+    }
+    .tag.fl { border-color: var(--fl); color: var(--fl); }
+    .tag.th { border-color: var(--th-dim); color: var(--th); }
+    .tag.cy { border-color: var(--cy-dim); color: var(--cy); }
+    .tag.go { border-color: var(--go-dim); color: var(--go); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* Hero Section */
+    .hero { position: relative; padding-block: clamp(36px, 6vw, 72px) 32px; border-bottom: 2px solid var(--rule); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+    .hero h1 { font: 400 clamp(54px, 9vw, 126px)/.86 var(--f-display); text-transform: uppercase; margin-top: 18px; }
+    .hero h1 .l2 { color: var(--fl); }
+    .hero h1 .l3 { -webkit-text-stroke: 1.5px var(--zn); color: transparent; }
+    .hero .sub { font: 500 clamp(19px, 2.2vw, 24px)/1.3 var(--f-head); text-transform: uppercase; letter-spacing: .02em; margin-top: 20px; color: var(--zn); }
+    .hero .lede { margin-top: 14px; max-width: 62ch; color: var(--zn-2); font-size: 16px; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+    .btn {
+      font: 600 13px/1 var(--f-head); letter-spacing: .12em; text-transform: uppercase;
+      padding: 13px 20px; border: 1px solid var(--zn); color: var(--zn); background: transparent;
+      text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn:hover { border-color: var(--fl); color: var(--fl); }
+    .btn.primary { background: var(--fl); border-color: var(--fl); color: #fff; }
+    .btn.primary:hover { background: var(--fl-hi); border-color: var(--fl-hi); color: var(--sl); }
+    .jp { position: absolute; right: 24px; top: clamp(36px, 6vw, 72px); writing-mode: vertical-rl; font: 400 13px/1 var(--f-jp); letter-spacing: .5em; color: var(--zn-dim); }
+
+    /* Technical Figure */
+    .fig { border: 1px solid var(--rule); background: var(--sl-2); padding: 16px; margin: 0; position: relative; }
+    .fig-head { display: flex; justify-content: space-between; gap: 8px; font: 500 10.5px/1.3 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--zn-dim); border-bottom: 1px solid var(--rule); padding-bottom: 10px; margin-bottom: 12px; }
+    .fig svg { display: block; width: 100%; height: auto; }
+    .fig-cap { font: 400 12px/1.5 var(--f-mono); color: var(--zn-dim); border-top: 1px solid var(--rule); padding-top: 10px; margin-top: 12px; }
+
+    /* Specification Plate */
+    .plate { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border: 1px solid var(--rule); border-top: 3px solid var(--zn); margin: clamp(28px, 4vw, 44px) 0 0; }
+    @media (max-width: 900px) { .plate { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 500px) { .plate { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .plate > div { padding: 14px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .plate dt { font: 500 10px/1.3 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--zn-dim); }
+    .plate dd { margin: 6px 0 0; font: 600 17px/1.2 var(--f-head); text-transform: uppercase; }
+    .plate dd small { display: block; font: 400 12px/1.4 var(--f-body); color: var(--zn-2); margin-top: 2px; text-transform: none; }
+
+    /* Navigation Tabs */
+    .secnav { position: sticky; top: var(--c26-header-h); z-index: 900; background: var(--sl); border-bottom: 2px solid var(--rule); margin-top: 20px; }
+    .secnav .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+    .secnav .wrap::-webkit-scrollbar { display: none; }
+    .secnav a { flex: none; font: 600 12px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--zn-dim); padding: 15px 14px; border-bottom: 2px solid transparent; }
+    .secnav a b { color: var(--fl); margin-right: 6px; }
+    .secnav a:hover, .secnav a.on { color: var(--zn); border-bottom-color: var(--fl); }
+
+    /* Sections */
+    section.sec { padding-block: clamp(48px, 7vw, 84px) 0; scroll-margin-top: 80px; }
+    .sec-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(14px, 3vw, 28px); align-items: end; border-bottom: 3px solid var(--zn); padding-bottom: 16px; margin-bottom: 32px; }
+    .sec-no { font: 400 clamp(54px, 8vw, 96px)/.8 var(--f-display); color: transparent; -webkit-text-stroke: 1.5px var(--fl); }
+    .sec-head h2 { font: 700 clamp(26px, 3.8vw, 44px)/1.02 var(--f-head); text-transform: uppercase; margin-top: 6px; }
+    .sec-intro { max-width: 70ch; color: var(--zn-2); font-size: 16.5px; }
+
+    /* Division Grid */
+    .div-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+    @media (max-width: 768px) { .div-grid { grid-template-columns: 1fr; } }
+    .div-card { border: 1px solid var(--rule); background: var(--sl-2); padding: 24px; }
+    .div-card.accent { border-top: 4px solid var(--fl); }
+    .div-card.cyan { border-top: 4px solid var(--cy); }
+    .div-card h3 { font: 700 22px/1.2 var(--f-head); text-transform: uppercase; margin-bottom: 8px; }
+    .div-card p { color: var(--zn-2); font-size: 14.5px; margin-top: 8px; }
+    .div-card ul { margin-top: 14px; padding-left: 1.2em; font-size: 14px; color: var(--zn-2); }
+    .div-card li + li { margin-top: 6px; }
+
+    /* Calculator Widget */
+    .calc-card { border: 1px solid var(--rule); background: var(--sl-2); padding: clamp(20px, 3vw, 32px); margin-top: 24px; }
+    .calc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+    @media (max-width: 768px) { .calc-grid { grid-template-columns: 1fr; } }
+    .calc-field label { display: block; font: 500 11px/1.3 var(--f-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--zn-dim); margin-bottom: 6px; }
+    .calc-field input { width: 100%; background: var(--sl-3); border: 1px solid var(--rule-hi); color: var(--zn); padding: 8px 12px; font: 500 14px/1.2 var(--f-mono); }
+    .calc-field input:focus { outline: 2px solid var(--fl); border-color: var(--fl); }
+    .calc-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 20px; border-top: 1px solid var(--rule); padding-top: 16px; }
+    @media (max-width: 768px) { .calc-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .calc-res-item { background: var(--sl-3); padding: 12px; border: 1px solid var(--rule); }
+    .calc-res-label { font: 500 10px/1 var(--f-mono); text-transform: uppercase; color: var(--zn-dim); }
+    .calc-res-val { font: 700 20px/1.2 var(--f-mono); color: var(--th); margin-top: 4px; }
+    .verdict { padding: 12px 16px; font: 600 13px/1.4 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; margin-top: 16px; border: 1px solid; }
+    .verdict.go { background: rgba(60, 208, 112, 0.1); border-color: var(--go); color: var(--go); }
+    .verdict.nogo { background: rgba(240, 59, 48, 0.1); border-color: var(--no); color: var(--no); }
+
+    /* Rules Table */
+    .rule-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+    .rule-table th, .rule-table td { padding: 10px 14px; border: 1px solid var(--rule); text-align: left; }
+    .rule-table th { background: var(--sl-3); font: 600 11px/1.3 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--zn-dim); }
+    .rule-table td.code { font-family: var(--f-mono); font-weight: 600; color: var(--fl); width: 15%; }
+  </style>
+</head>
+
+<body>
+  <!-- CelesteCon Site Header -->
+  <header class="c26-site-header">
+    <div class="c26-site-header-inner">
+      <a href="/" class="c26-brand">
+        <span class="c26-brand-title">CELESTECON</span>
+        <span class="c26-brand-edition">№ 26 // ED. VI</span>
+      </a>
+      <nav class="c26-nav-links">
+        <a href="/" class="c26-nav-item">Home</a>
+        <a href="/about" class="c26-nav-item">About AEROSS</a>
+        <a href="/comps" class="c26-nav-item active">The Comps</a>
+        <a href="/format" class="c26-nav-item">Format &amp; Dates</a>
+        <a href="/sponsors" class="c26-nav-item">Sponsors</a>
+        <a href="/gallery" class="c26-nav-item">Gallery</a>
+        <a href="/contact" class="c26-nav-item">Contact</a>
+      </nav>
+      <div class="c26-nav-actions">
+        <div class="c26-reg-dropdown">
+          <button type="button" class="c26-reg-btn" id="c26-reg-toggle" aria-expanded="false">
+            <span>Register</span>
+            <svg class="c26-caret" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="c26-reg-menu" id="c26-reg-menu">
+            <a href="/celestecon_registration.html" class="c26-reg-item">
+              <span class="c26-reg-heading">School Contingent</span>
+              <span class="c26-reg-desc">Official school registration portal</span>
+            </a>
+            <a href="/celestecon_individual_registration.html" class="c26-reg-item c26-reg-item-ind">
+              <span class="c26-reg-heading">Individual Entry</span>
+              <span class="c26-reg-desc">Direct student &amp; private entries</span>
+            </a>
+          </div>
+        </div>
+        <button type="button" class="c26-theme-btn" id="c26-theme-toggle" aria-label="Toggle theme">
+          <!-- Filled by script -->
+        </button>
+        <button type="button" class="c26-mobile-toggle" id="c26-mobile-toggle" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+    <div class="c26-mobile-menu" id="c26-mobile-menu" hidden>
+      <a href="/" class="c26-mobile-item">Home</a>
+      <a href="/about" class="c26-mobile-item">About AEROSS</a>
+      <a href="/comps" class="c26-mobile-item active">The Comps</a>
+      <a href="/format" class="c26-mobile-item">Format &amp; Dates</a>
+      <a href="/sponsors" class="c26-mobile-item">Sponsors</a>
+      <a href="/gallery" class="c26-mobile-item">Gallery</a>
+      <a href="/contact" class="c26-mobile-item">Contact</a>
+      <div class="c26-mobile-reg">
+        <a href="/celestecon_registration.html" class="c26-mobile-reg-link">School Registration</a>
+        <a href="/celestecon_individual_registration.html" class="c26-mobile-reg-link c26-primary">Individual Registration</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Event Subbar -->
+  <div class="c26-event-subbar">
+    <div class="c26-event-subbar-inner">
+      <a href="/comps" class="c26-back-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>Back to All Events</span>
+      </a>
+      <div class="c26-event-badge-strip">
+        <span class="c26-badge c26-badge-accent">DOSSIER // CC26-E07</span>
+        <span class="c26-badge c26-badge-status">ONSITE FINALE · 2 ROUNDS</span>
+        <a href="/celestecon_registration.html" class="c26-subbar-cta">Register For Rocketry &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="jp" aria-hidden="true">火箭設計 · 推進軌道審査</div>
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <div class="tags">
+              <span class="tag">Ref. № RCK-26</span>
+              <span class="tag">Edition VI</span>
+              <span class="tag fl">Flagship Propulsion</span>
+              <span class="tag th">Fabrication &amp; Flight</span>
+              <span class="tag cy">Grades 6–12</span>
+            </div>
+            <h1><span>Rocketry</span><br><span class="l2">Ignite</span> · <span class="l3">Ascend</span> · <span class="l2">Recover</span></h1>
+            <p class="sub">The Hands-on Model Rocketry, Aerospace Craftsmanship &amp; Propulsion Challenge.</p>
+            <p class="lede">From Tsiolkovsky's founding rocket equation to multi-stage orbital launchers, true aerospace engineering begins with physical propulsion. Rocketry challenges student teams to engineer, balance, fabricate, and test-launch physical aerospace vehicles under strict aerodynamic and range-safety parameters.</p>
+            <p class="lede">In <strong>Round 1</strong>, teams submit a comprehensive Engineering Dossier documenting structural CAD design, motor impulse sizing, recovery parachute deployment mechanics, and Barrowman aerodynamic stability margin ($X_{cp} - X_{cg}$). In <strong>Round 2</strong>, qualifying teams assemble at the designated launch range on campus for structural scrutineering and an official test flight review before a jury of aerospace researchers.</p>
+            <div class="cta">
+              <a class="btn primary" href="#tracks">Explore Tracks &amp; Specs &rarr;</a>
+              <a class="btn" href="#calc">Stability Calculator</a>
+              <a class="btn" href="#safety">Safety Code &amp; Rules</a>
+            </div>
+          </div>
+
+          <figure class="fig">
+            <div class="fig-head">
+              <span>FIG. 01 — AERODYNAMIC STABILITY &amp; PROFILE</span>
+              <span>CALIBER MARGIN $\ge$ 1.5D</span>
+            </div>
+            <svg viewBox="0 0 400 320" role="img" aria-label="Rocket Schematic with Center of Pressure and Center of Gravity indicators">
+              <defs>
+                <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FFCA5E" />
+                  <stop offset="50%" stop-color="#FF6827" />
+                  <stop offset="100%" stop-color="transparent" />
+                </linearGradient>
+              </defs>
+              <!-- Center axis -->
+              <line x1="200" y1="20" x2="200" y2="280" stroke="#323F54" stroke-dasharray="4 4" stroke-width="1.2" />
+              <!-- Nosecone -->
+              <path d="M200 30 Q180 80 180 110 L220 110 Q220 80 200 30 Z" fill="none" stroke="#29C6E8" stroke-width="2" />
+              <!-- Payload & Electronics Bay -->
+              <rect x="180" y="110" width="40" height="40" fill="none" stroke="#728094" stroke-width="1.5" />
+              <text x="130" y="135" font-family="IBM Plex Mono" font-size="9" fill="#29C6E8" text-anchor="end">PAYLOAD BAY</text>
+              <!-- Parachute Recovery Bay -->
+              <rect x="180" y="150" width="40" height="45" fill="none" stroke="#728094" stroke-width="1.5" />
+              <text x="270" y="175" font-family="IBM Plex Mono" font-size="9" fill="#ACB6C4">CHUTE RECOVERY</text>
+              <!-- Body Tube & Motor Mount -->
+              <rect x="180" y="195" width="40" height="65" fill="none" stroke="#E4E8EE" stroke-width="2" />
+              <text x="130" y="235" font-family="IBM Plex Mono" font-size="9" fill="#FF884D" text-anchor="end">MOTOR CASING</text>
+              <!-- Trapezoidal Fins -->
+              <path d="M180 230 L140 260 L140 270 L180 260 Z" fill="none" stroke="#E4E8EE" stroke-width="2" />
+              <path d="M220 230 L260 260 L260 270 L220 260 Z" fill="none" stroke="#E4E8EE" stroke-width="2" />
+              <!-- Center of Gravity (CG) -->
+              <circle cx="200" cy="140" r="5" fill="#3CD070" />
+              <text x="212" y="144" font-family="IBM Plex Mono" font-size="10" font-weight="600" fill="#3CD070">CG (Center of Mass)</text>
+              <!-- Center of Pressure (CP) -->
+              <circle cx="200" cy="205" r="5" fill="#F03B30" />
+              <text x="212" y="209" font-family="IBM Plex Mono" font-size="10" font-weight="600" fill="#F03B30">CP (Center of Pressure)</text>
+              <!-- Stability Margin Bracket -->
+              <line x1="165" y1="140" x2="165" y2="205" stroke="#F5B025" stroke-width="1.5" />
+              <line x1="160" y1="140" x2="170" y2="140" stroke="#F5B025" stroke-width="1.5" />
+              <line x1="160" y1="205" x2="170" y2="205" stroke="#F5B025" stroke-width="1.5" />
+              <text x="155" y="175" font-family="IBM Plex Mono" font-size="9" font-weight="600" fill="#F5B025" text-anchor="end">STABILITY MARGIN</text>
+              <!-- Exhaust plume -->
+              <path d="M190 260 Q200 305 200 315 Q200 305 210 260 Z" fill="url(#flame)" opacity="0.8" />
+            </svg>
+            <div class="fig-cap">
+              Crucial stability condition: The Center of Gravity (CG) must precede the Center of Pressure (CP) toward the nosecone by at least 1.0 to 2.0 body tube diameters (calibers) under all fuel depletion phases.
+            </div>
+          </figure>
+        </div>
+
+        <!-- Technical Specification Plate -->
+        <div class="plate">
+          <div>
+            <dt>Ref Code</dt>
+            <dd>RCK-26<small>Edition VI</small></dd>
+          </div>
+          <div>
+            <dt>Mode</dt>
+            <dd>Onsite<small>Range Finale</small></dd>
+          </div>
+          <div>
+            <dt>Team Size</dt>
+            <dd>1–3<small>Per Delegation</small></dd>
+          </div>
+          <div>
+            <dt>Max Launch MTOW</dt>
+            <dd>500 g<small>Model Rocket Code</small></dd>
+          </div>
+          <div>
+            <dt>Stability Req</dt>
+            <dd>&ge; 1.2 Cal<small>CG ahead of CP</small></dd>
+          </div>
+          <div>
+            <dt>Recovery</dt>
+            <dd>Dual Deploy<small>Streamer / Chute</small></dd>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sticky Navigation Strip -->
+    <nav class="secnav" aria-label="Competition Section Navigation">
+      <div class="wrap">
+        <a href="#tracks" class="on"><b>01</b> Tracks &amp; Formats</a>
+        <a href="#engineering"><b>02</b> Flight Engineering</a>
+        <a href="#calc"><b>03</b> Apogee &amp; CG Calculator</a>
+        <a href="#safety"><b>04</b> Range Safety Code</a>
+        <a href="#rubric"><b>05</b> Evaluation Matrix</a>
+        <a href="#schedule"><b>06</b> Launch Schedule</a>
+      </div>
+    </nav>
+
+    <div class="wrap">
+      <!-- Section 01: Tracks -->
+      <section id="tracks" class="sec">
+        <div class="sec-head">
+          <div class="sec-no">01</div>
+          <div>
+            <h2>Competition Tracks</h2>
+            <p class="sec-intro">Two distinct disciplines catering to scale master craftsmanship and high-performance aerodynamic flight testing.</p>
+          </div>
+        </div>
+
+        <div class="div-grid">
+          <div class="div-card cyan">
+            <span class="tag cy">Track A</span>
+            <h3>Static Scale &amp; Orbital Craft</h3>
+            <p>Designed for scale fidelity, museum-grade craftsmanship, and historic aerospace replication. Open to both Junior (Grades 6–8) and Senior (Grades 9–12) divisions.</p>
+            <ul>
+              <li><strong>Subject Matter:</strong> Real-world orbital launch vehicles (e.g. PSLV, LVM3, Saturn V, Falcon 9, Ariane 6, SLS, Starship) or robotic deep-space probes.</li>
+              <li><strong>Scale Fidelity:</strong> Strict adherence to true geometric aspect ratios, stage separation mechanisms, interstage trusses, and thermal protection tiling.</li>
+              <li><strong>Materials:</strong> Balsa wood, composite resin, 3D printing (PLA/PETG), lightweight aluminum, styrene, and high-density foam. Non-flight model.</li>
+              <li><strong>Deliverable:</strong> Completed display craft, scale calculation docket, and paint liveries accompanied by an engineering process logbook.</li>
+            </ul>
+          </div>
+
+          <div class="div-card accent">
+            <span class="tag fl">Track B</span>
+            <h3>Working Propulsion &amp; Flight Launch</h3>
+            <p>High-stakes flight testing with powered ascent and safe parachute recovery on the campus launch pad. Open to Senior teams (Grades 9–12).</p>
+            <ul>
+              <li><strong>Propulsion Categories:</strong> Class 1 Commercial Model Rocket Solid Motors (Estes A, B, C, D impulse ratings) OR High-Pressure Hydro-Pneumatic Multi-Stage Water Rockets (&le; 100 PSI with certified pressure relief valves).</li>
+              <li><strong>Aerodynamic Verification:</strong> Mandatory Barrowman stability calculation showing static margin between 1.0 and 2.5 calibers before launch clearance.</li>
+              <li><strong>Recovery System:</strong> Deployed ejection charge streamer, mechanical spring baffle, or dual-deployment parachute with drift velocity &le; 5 m/s.</li>
+              <li><strong>Telemetry &amp; Scrutineering:</strong> Electronic altimeter data logging (optional bonus) and mandatory pre-launch range officer inspection.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 02: Flight Engineering -->
+      <section id="engineering" class="sec">
+        <div class="sec-head">
+          <div class="sec-no">02</div>
+          <div>
+            <h2>Aerodynamic Principles &amp; Barrowman Math</h2>
+            <p class="sec-intro">True rocket design demands rigorous mathematics to guarantee flight path stability and prevent aerodynamic tumble.</p>
+          </div>
+        </div>
+
+        <p style="color: var(--zn-2); max-width: 72ch; font-size: 16px; margin-bottom: 20px;">
+          The stability of an unguided model rocket in atmospheric flight is governed entirely by the relative positions of its <strong>Center of Gravity ($X_{cg}$)</strong> and its <strong>Center of Pressure ($X_{cp}$)</strong>. As long as the CP lies behind the CG, any angle of attack ($\alpha$) induced by crosswinds produces a restoring aeromechanical torque that aligns the rocket back into the relative wind vector.
+        </p>
+
+        <table class="rule-table">
+          <thead>
+            <tr>
+              <th>Subsystem</th>
+              <th>Technical Design Standard</th>
+              <th>Evaluation Parameter</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">NOSECONE</td>
+              <td>Von Kármán, Parabolic, or Ogive profile to minimize subsonic wave drag and skin friction.</td>
+              <td>Shape factor fineness ratio $L/D \ge 3.0$.</td>
+            </tr>
+            <tr>
+              <td class="code">BODY TUBE</td>
+              <td>Spiral-wound kraft phenolic tubing or thin-wall carbon composite; smooth seam finishing.</td>
+              <td>Cylindrical uniformity; motor tube centering rings with engine block.</td>
+            </tr>
+            <tr>
+              <td class="code">FIN CAN</td>
+              <td>3 or 4 symmetrical clipped delta or swept-back trapezoidal fins with airfoiled edges.</td>
+              <td>True perpendicular alignment; root fillet adhesive strength &gt; 25 N shear.</td>
+            </tr>
+            <tr>
+              <td class="code">RECOVERY</td>
+              <td>Fire-resistant recovery wadding; ripstop nylon or polyethylene parachute with braided shroud lines.</td>
+              <td>Shock cord length $\ge 3\times$ body length; positive deployment ejection seal.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 03: Live Interactive Calculator -->
+      <section id="calc" class="sec">
+        <div class="sec-head">
+          <div class="sec-no">03</div>
+          <div>
+            <h2>Flight Telemetry &amp; Stability Calculator</h2>
+            <p class="sec-intro">Input your vehicle mass, motor parameters, and dimensions to estimate your apogee altitude, burnout velocity, and stability margin.</p>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <h3 style="font-family: var(--f-head); text-transform: uppercase; font-size: 20px; color: var(--fl);">Interactive Barrowman &amp; Apogee Sizer</h3>
+          <p style="color: var(--zn-dim); font-size: 13px; font-family: var(--f-mono); margin-top: 4px;">Live mathematical model based on Tsiolkovsky $\Delta v$ and ballistic coasting.</p>
+
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label for="rc-mass">Total Liftoff Mass ($m_0$) [grams]</label>
+              <input type="number" id="rc-mass" value="120" min="20" max="1500" step="5">
+            </div>
+            <div class="calc-field">
+              <label for="rc-prop">Propellant / Motor Mass ($m_p$) [grams]</label>
+              <input type="number" id="rc-prop" value="25" min="2" max="250" step="1">
+            </div>
+            <div class="calc-field">
+              <label for="rc-impulse">Total Motor Impulse ($I_t$) [N&middot;s]</label>
+              <input type="number" id="rc-impulse" value="20" min="1" max="160" step="0.5">
+            </div>
+            <div class="calc-field">
+              <label for="rc-dia">Body Tube Diameter ($D$) [mm]</label>
+              <input type="number" id="rc-dia" value="35" min="15" max="120" step="1">
+            </div>
+            <div class="calc-field">
+              <label for="rc-xcg">Center of Gravity ($X_{cg}$) [mm from nose]</label>
+              <input type="number" id="rc-xcg" value="210" min="50" max="1200" step="5">
+            </div>
+            <div class="calc-field">
+              <label for="rc-xcp">Center of Pressure ($X_{cp}$) [mm from nose]</label>
+              <input type="number" id="rc-xcp" value="270" min="50" max="1500" step="5">
+            </div>
+          </div>
+
+          <div class="calc-results">
+            <div class="calc-res-item">
+              <div class="calc-res-label">Est. Apogee Altitude</div>
+              <div class="calc-res-val" id="res-apogee">142 m</div>
+            </div>
+            <div class="calc-res-item">
+              <div class="calc-res-label">Burnout Velocity ($V_b$)</div>
+              <div class="calc-res-val" id="res-vel">51 m/s</div>
+            </div>
+            <div class="calc-res-item">
+              <div class="calc-res-label">Static Caliber Margin</div>
+              <div class="calc-res-val" id="res-margin">1.71 cal</div>
+            </div>
+            <div class="calc-res-item">
+              <div class="calc-res-label">Launch Rail Exit Speed</div>
+              <div class="calc-res-val" id="res-exit">17.8 m/s</div>
+            </div>
+          </div>
+
+          <div class="verdict go" id="res-verdict">
+            GO FOR LAUNCH · Vehicle displays stable flight configuration ($X_{cp} - X_{cg} = 1.71\text{ calibers} \ge 1.0\text{D}$) and sufficient launch rail clearance velocity.
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 04: Safety Code -->
+      <section id="safety" class="sec">
+        <div class="sec-head">
+          <div class="sec-no">04</div>
+          <div>
+            <h2>Range Safety Code &amp; Launch Protocols</h2>
+            <p class="sec-intro">Safety is the foundational rule of rocketry. Zero exceptions are made to the range protocol.</p>
+          </div>
+        </div>
+
+        <table class="rule-table">
+          <thead>
+            <tr>
+              <th>Protocol ID</th>
+              <th>Mandatory Range Rule</th>
+              <th>Operational Penalty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">R-01.PROPELLANT</td>
+              <td>Only commercially manufactured, factory-sealed and certified model rocket motors (or pneumatic water assemblies) are permitted. Absolutely NO homemade propellants, match heads, potassium nitrate mixes, or explosive chemicals.</td>
+              <td>Immediate disqualification and safety escort off campus.</td>
+            </tr>
+            <tr>
+              <td class="code">R-02.IGNITION</td>
+              <td>Launches must use an electrical launch system with a safety interlock key and spring-loaded launch button located at least 5 meters away from the launch pad for model rockets.</td>
+              <td>Launch aborted until compliant controller connected.</td>
+            </tr>
+            <tr>
+              <td class="code">R-03.RECOVERY</td>
+              <td>Every flying vehicle must incorporate an engineered recovery system (parachute, streamer, or gliding wings) that returns it safely without damage to spectators or property.</td>
+              <td>Disqualification from Track B flight scoring.</td>
+            </tr>
+            <tr>
+              <td class="code">R-04.WIND LIMIT</td>
+              <td>No rocket shall be launched in surface winds exceeding 30 km/h (8 m/s) or toward low-altitude cloud cover.</td>
+              <td>Range Hold until atmospheric clearance.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 05: Rubric -->
+      <section id="rubric" class="sec">
+        <div class="sec-head">
+          <div class="sec-no">05</div>
+          <div>
+            <h2>Evaluation Matrix &amp; Scoring Rubric</h2>
+            <p class="sec-intro">Scored out of 100 points by our panel of aerospace researchers and engineering alumni.</p>
+          </div>
+        </div>
+
+        <div class="div-grid">
+          <div class="div-card">
+            <h3>Technical Dossier (Round 1) — 40 Pts</h3>
+            <ul>
+              <li><strong>Structural &amp; CAD Modeling (15 pts):</strong> Quality of orthographic blueprints, dimensioned exploded views, and aerodynamic surface smoothness.</li>
+              <li><strong>Barrowman Mathematical Validation (15 pts):</strong> Detailed calculations verifying stability margin under full and spent propellant states.</li>
+              <li><strong>Recovery &amp; Ejection Sizing (10 pts):</strong> Parachute drag sizing, descent rate calculation, and thermal protection design.</li>
+            </ul>
+          </div>
+          <div class="div-card">
+            <h3>Onsite Flight Review (Round 2) — 60 Pts</h3>
+            <ul>
+              <li><strong>Craftsmanship &amp; Structural Scrutineering (20 pts):</strong> Fin alignment, body rigidity, launch lug clearance, and motor retention integrity.</li>
+              <li><strong>Flight Performance &amp; Stability (25 pts):</strong> Straight trajectory, minimal weathercocking, clean staging, and apogee deployment.</li>
+              <li><strong>Technical Defense &amp; Q&amp;A (15 pts):</strong> Ability of all team members to defend engineering decisions and explain recovery aerodynamics.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 06: Schedule -->
+      <section id="schedule" class="sec">
+        <div class="sec-head">
+          <div class="sec-no">06</div>
+          <div>
+            <h2>Milestones &amp; Launch Timelines</h2>
+            <p class="sec-intro">Key deadlines for technical dossier submission, range declaration, and campus launch trials.</p>
+          </div>
+        </div>
+
+        <table class="rule-table" style="margin-bottom: 60px;">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Milestone Date</th>
+              <th>Required Submission / Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">PHASE 01</td>
+              <td>Registration Window</td>
+              <td>School or Individual Registration &amp; Declaration of Track A (Scale) or Track B (Flight).</td>
+            </tr>
+            <tr>
+              <td class="code">PHASE 02</td>
+              <td>Round 1 Dossier Deadline</td>
+              <td>Submit CAD models, blueprints, math calculations, and fabrication plan via the portal.</td>
+            </tr>
+            <tr>
+              <td class="code">PHASE 03</td>
+              <td>Shortlist Announcement</td>
+              <td>Top qualifying teams receive confirmation for the on-campus Scrutineering and Flight Window.</td>
+            </tr>
+            <tr>
+              <td class="code">PHASE 04</td>
+              <td>CelesteCon Launch Day</td>
+              <td>On-campus static display at the Open Air Theatre (OAT) followed by designated field launches at the campus grounds.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Official Site Footer -->
+  <footer class="c26-site-footer">
+    <div class="c26-footer-inner">
+      <div class="c26-footer-grid">
+        <div class="c26-footer-col">
+          <h3 class="c26-footer-brand">AEROSS</h3>
+          <p class="c26-footer-motto">"Sky is not the Limit"</p>
+          <p class="c26-footer-desc">Aerospace Society, Delhi Public School R.K. Puram</p>
+        </div>
+        <div class="c26-footer-col">
+          <h4 class="c26-footer-heading">Quick Links</h4>
+          <ul class="c26-footer-links">
+            <li><a href="/about">About AEROSS</a></li>
+            <li><a href="/comps">The Comps</a></li>
+            <li><a href="/format">Format &amp; Dates</a></li>
+            <li><a href="/sponsors">Sponsors</a></li>
+          </ul>
+        </div>
+        <div class="c26-footer-col">
+          <h4 class="c26-footer-heading">Contact</h4>
+          <ul class="c26-footer-links">
+            <li><a href="mailto:aeross@dpsrkp.net">aeross@dpsrkp.net</a></li>
+            <li><span>IG: @aerospace_society</span></li>
+            <li><span>LI: Aeross: Aerospace Society</span></li>
+          </ul>
+        </div>
+        <div class="c26-footer-col">
+          <h4 class="c26-footer-heading">Address</h4>
+          <address class="c26-footer-address">
+            Delhi Public School, R.K. Puram<br />
+            New Delhi – 110022
+          </address>
+        </div>
+      </div>
+      <div class="c26-footer-bottom">
+        <span class="c26-footer-copy">№ CC-VI-2026 // REF RCK-26</span>
+        <div class="c26-footer-stamps">
+          <span class="c26-jp-stamp">第六回航空宇宙大会</span>
+          <span class="c26-footer-copy">&copy; 2026 AEROSS</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/events/event-shell.js"></script>
+  <script>
+    (function() {
+      // Real-time Rocket Telemetry & Stability Calculator Logic
+      var massEl = document.getElementById('rc-mass');
+      var propEl = document.getElementById('rc-prop');
+      var impEl = document.getElementById('rc-impulse');
+      var diaEl = document.getElementById('rc-dia');
+      var xcgEl = document.getElementById('rc-xcg');
+      var xcpEl = document.getElementById('rc-xcp');
+
+      var apogeeRes = document.getElementById('res-apogee');
+      var velRes = document.getElementById('res-vel');
+      var marginRes = document.getElementById('res-margin');
+      var exitRes = document.getElementById('res-exit');
+      var verdictRes = document.getElementById('res-verdict');
+
+      function calculateRocket() {
+        var m0 = parseFloat(massEl.value) / 1000; // kg
+        var mp = parseFloat(propEl.value) / 1000; // kg
+        var It = parseFloat(impEl.value); // N*s
+        var D = parseFloat(diaEl.value); // mm
+        var xcg = parseFloat(xcgEl.value); // mm
+        var xcp = parseFloat(xcpEl.value); // mm
+
+        if (m0 <= 0 || mp <= 0 || It <= 0 || D <= 0) return;
+        var mf = Math.max(0.01, m0 - mp);
+        var g = 9.80665;
+        var Isp = It / (mp * g); // seconds
+        var burnTime = Math.max(0.5, It / 15); // est average thrust 15N
+
+        // Tsiolkovsky delta-V
+        var deltaV = Isp * g * Math.log(m0 / mf);
+        var vBurnout = Math.max(0, deltaV - (g * burnTime));
+        var hBurnout = 0.5 * (vBurnout) * burnTime;
+        var hCoast = (vBurnout * vBurnout) / (2 * g * 1.3); // aerodynamic drag factor ~1.3
+        var totalApogee = hBurnout + hCoast;
+
+        // Static Stability Margin in calibers
+        var marginCal = (xcp - xcg) / D;
+
+        // Exit velocity off 1m rail
+        var aAvg = (It / burnTime) / m0 - g;
+        var vRail = aAvg > 0 ? Math.sqrt(2 * aAvg * 1.0) : 0;
+
+        apogeeRes.textContent = Math.round(totalApogee) + ' m';
+        velRes.textContent = Math.round(vBurnout) + ' m/s';
+        marginRes.textContent = marginCal.toFixed(2) + ' cal';
+        exitRes.textContent = vRail.toFixed(1) + ' m/s';
+
+        if (marginCal < 1.0) {
+          verdictRes.className = 'verdict nogo';
+          verdictRes.textContent = 'NO-GO · Marginal or unstable configuration (' + marginCal.toFixed(2) + ' calibers < 1.0D). Rocket will tumble upon rail exit. Move CG forward or enlarge fins.';
+        } else if (marginCal > 3.0) {
+          verdictRes.className = 'verdict go';
+          verdictRes.style.borderColor = 'var(--th)';
+          verdictRes.textContent = 'CAUTION · Over-stable (' + marginCal.toFixed(2) + ' calibers > 3.0D). Risk of weathercocking into crosswinds. Reduce fin area or verify nosecone ballast.';
+        } else {
+          verdictRes.className = 'verdict go';
+          verdictRes.textContent = 'GO FOR LAUNCH · Vehicle displays stable flight configuration (' + marginCal.toFixed(2) + ' calibers) with positive restoring torque.';
+        }
+      }
+
+      [massEl, propEl, impEl, diaEl, xcgEl, xcpEl].forEach(function(input) {
+        if (input) input.addEventListener('input', calculateRocket);
+      });
+      calculateRocket();
+    })();
+  </script>
+</body>
+</html>

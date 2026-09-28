@@ -136,7 +136,7 @@ const Contact = () => {
               Executive Leadership
             </h3>
           </div>
-          <p className="font-mono text-xs text-bone-dim max-w-md">
+          <p className="font-mono text-xs text-bone-dim max-w-md text-justify">
             Direct coordination desk for competition scrutiny, institutional delegations, event schedule synchronization, and emergency logistics.
           </p>
         </div>
