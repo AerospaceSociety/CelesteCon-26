@@ -77,7 +77,7 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
           {event.categories && event.categories.length > 0 && (
             <div>
               <h4 className="font-mono text-xs tracking-[0.2em] text-crimson uppercase font-bold mb-3 border-b border-bone/20 pb-1 flex items-center gap-2">
-                <span>◆ Category & Track Breakdown</span>
+                <span>◆ Categories & Divisions</span>
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {event.categories.map((cat, i) => (
@@ -205,12 +205,20 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
             <span className="font-mono text-[10px] tracking-widest uppercase text-bone-dim">
               Event ID: CC26-E{event.id}
             </span>
-            <a
-              href="/celestecon_registration.html"
-              className="px-4 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
-            >
-              Register For Event ↗
-            </a>
+            <div className="flex items-center gap-2 flex-wrap">
+              <a
+                href="/celestecon_registration.html"
+                className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
+              >
+                School Portal ↗
+              </a>
+              <a
+                href="/celestecon_individual_registration.html"
+                className="px-3 py-1.5 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson text-crimson hover:bg-crimson hover:text-bone transition-colors"
+              >
+                Individual Portal ↗
+              </a>
+            </div>
           </div>
 
         </div>
@@ -242,13 +250,35 @@ const Comps = () => {
       <SectionHeader section="03" title="The Comps" jp="競技一覧" />
 
       {/* Event Outline Masthead */}
-      <div className="mt-8 mb-10 border-2 border-bone p-6 sm:p-8 bg-bone/[0.03]">
+      <div className="mt-8 mb-6 border-2 border-bone p-6 sm:p-8 bg-bone/[0.03]">
         <div className="font-mono text-xs tracking-[0.2em] text-crimson font-bold uppercase mb-2">
           {eventOutline.title}
         </div>
         <p className="font-label text-base sm:text-lg text-bone leading-relaxed">
           {eventOutline.description}
         </p>
+      </div>
+
+      {/* Registration Portals Banner */}
+      <div className="mb-10 border-2 border-crimson/80 bg-crimson/5 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-mono text-xs">
+        <div>
+          <span className="text-crimson font-bold uppercase tracking-wider block">Registration Portals Active</span>
+          <span className="text-bone-dim text-[11px]">School contingent delegations (up to 3 teams per event) & Direct individual entries (open events).</span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <a
+            href="/celestecon_registration.html"
+            className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
+          >
+            School Portal ↗
+          </a>
+          <a
+            href="/celestecon_individual_registration.html"
+            className="px-3 py-1.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+          >
+            Individual Portal ↗
+          </a>
+        </div>
       </div>
 
       {/* Controls & Filter Bar */}
