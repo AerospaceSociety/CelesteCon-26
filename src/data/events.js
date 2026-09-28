@@ -1,381 +1,361 @@
 export const eventOutline = {
   title: 'Event Outline',
   description:
-    'Just like each year, CelesteCon 2026 brings forward a variety of different sub-events to cater to the skills and interest of our wide pool of applicants. If you love the research aspect of aerospace and aviation, our space settlement contest and UAV design challenge have got you covered. For those who have a knack for presenting your ideas, debate and business power pitch await you. And if you\'re someone who loves to learn, we have workshops for that too. A detailed overview of all our events has been listed below.'
+    'CelesteCon 2026 brings forward 8 flagship competitions designed to test the complete spectrum of aerospace, engineering, debate, commercialization, and artistic innovation. From orbital settlement architecture to live aircraft flight reviews, chess-clock debates, and field rocketry launches, explore our updated competition guidelines below.'
 };
 
 export const events = [
   {
     id: '01',
-    name: 'In Pursuit of Dispute (Debate)',
-    mode: 'Hybrid',
-    eligibility: 'Grades 9–12',
-    team: 'Team of 2 (max 1 team per school)',
-    quote: "“It’s better to debate a question without settling it than to settle a question without debating it.”",
-    overview:
-      'This event is for all those space and aviation enthusiasts who not only love to research, but also to discuss, deliberate and voice their opinions and ideas. This two-round event invites a team of two participants per school to participate in high-energy debates on relevant space and aviation frontiers.',
-    hook: 'High-energy parliamentary-style debates on relevant space and aviation frontiers.',
-    rounds: [
-      {
-        title: 'Round 1 (Online Qualifier)',
-        desc: 'Participants will be given 2 days to prepare and submit a video-based case presentation on the released debate topic.'
-      },
-      {
-        title: 'Round 2 (Onsite Finals)',
-        desc: 'Teams will be assigned their motion 2 days prior to the onsite event. The contest will follow a conventional debate format. Each team will be assigned one stance and is free to divide their speaking time between participants as they wish. Total speaking time per team: 3 or 4 minutes (a warning bell will be sounded). Pairs of teams will debate the same motion with opposing stances. Following each speech, a 3-minute cross-questioning window allows opposing teams and other schools to raise Points of Information (POIs). The judging panel may also pose questions at their discretion. Speakers are advised to memorise their speeches, though reference notes are permitted.'
-      }
-    ],
-    criteria: [
-      'Research and technical understanding',
-      'Argumentation, evidence and examples',
-      'Structure and organisation',
-      'Delivery and rhetoric',
-      'Rebuttal / clashes'
-    ],
-    isDraft: false
-  },
-  {
-    id: '02',
-    name: 'Quizzitch',
-    mode: 'Hybrid',
-    eligibility: 'Grades 6–12 (Open)',
-    team: 'Team of 2',
-    quote: '“Somewhere, something incredible is waiting to be known.” — Carl Sagan',
-    overview:
-      'This competition is designed for all those students who get excited to learn a new solar system fact, love keeping up with the latest space missions, and genuinely enjoy a good brain teaser. This event challenges students to not only bring scientific knowledge, but also their logical approach and problem-solving skills.',
-    hook: 'Aerospace trivia, space mission developments, STEM fundamentals, and logical puzzles.',
-    rounds: [
-      {
-        title: 'Round 1 (Online Prelims)',
-        desc: 'Qualifying round conducted online over a 45-minute window (Quiz Platform + Google Meet). Participants answer a wide range of questions spanning aerospace, aviation, STEM, and logical reasoning. Questions are MCQ-based across 3 formats: Single Correct (no negative marking), Single Correct (+2 correct, -1 negative marking), and Multiple Correct (Bonus questions if the rest of the quiz is completed before time). Top 10 teams advance to the final onsite round.'
-      },
-      {
-        title: 'Round 2 (Onsite Finals)',
-        desc: 'The finalists compete in an offline battle comprising two parts: (1) Advanced Written Test, and (2) Rapid-Fire / Buzzer Round. Tests advanced subject knowledge, critical thinking, rapid deduction, teamwork, and composure under pressure.'
-      }
-    ],
-    criteria: [
-      'Written test score and technical accuracy',
-      'Rapid-fire / buzzer round speed & precision',
-      'Logical problem-solving & deduction',
-      'Teamwork and presence of mind'
-    ],
-    isDraft: false
-  },
-  {
-    id: '03',
-    name: 'Settle-Me-This (Space Settlement)',
+    name: 'Settle-Me-This (Space Settlement Design)',
+    discipline: 'Space Settlement Design',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
     team: 'Team of 3–5 members',
     quote: '“Earth is the cradle of humanity, but one cannot live in the cradle forever.” — Konstantin Tsiolkovsky',
     overview:
-      'Space colonisation has come far beyond trying to find a second home on the moon or viewing Mars as the only suitable alternate habitat. With advancements in science and technology, the concept of space settlements has gained immense traction. This event invites participants to create their own proposal for a fully functioning, habitable free-space settlement.',
-    hook: 'Design a comprehensive proposal for a fully functioning, habitable free-space settlement.',
+      'Space colonisation has advanced far beyond lunar outposts or viewing Mars as the only alternate habitat. With rapid advancements in materials, life support, and orbital dynamics, the concept of permanent free-space settlements has gained immense traction. Settle-Me-This invites teams to author a comprehensive engineering proposal for a fully functioning, self-sustaining orbital settlement situated beyond planetary surfaces (such as at Earth-Moon or Sun-Earth Lagrange points).',
+    hook: 'Design a comprehensive proposal for a self-sustaining, habitable free-space settlement.',
     categories: [
       {
-        name: 'Junior Category (Grades 6–8)',
-        desc: 'Evaluated separately. Maximum proposal length: 25 pages.'
+        name: 'Junior Division (Grades 6–8)',
+        desc: 'Maximum proposal length: 25 pages. Evaluated with age-appropriate design scope focusing on functional habitat layout, atmospheric baseline, radiation shielding concepts, and agricultural logistics.'
       },
       {
-        name: 'Senior Category (Grades 9–12)',
-        desc: 'Evaluated separately. Maximum proposal length: 35 pages.'
+        name: 'Senior Division (Grades 9–12)',
+        desc: 'Maximum proposal length: 35 pages. Evaluated on rigorous technical depth, structural finite-element considerations, artificial gravity rotational sizing, ECLSS calculations, and orbital mechanics.'
       }
     ],
     rounds: [
       {
-        title: 'Round 1 (Proposal Submission)',
-        desc: 'Participants submit a proposal for a free-space settlement (not situated directly on a planetary or lunar surface, though supporting remote infrastructure may be). Proposals must cover structural design, operations & infrastructure, and human life support/social factors. Submissions may include theoretical research, 2D/3D models, or hand-drawn sketches. Max pages: 25 pages (Junior) / 35 pages (Senior).'
+        title: 'Round 1 (Online Proposal Submission)',
+        desc: 'Teams prepare and submit an exhaustive engineering proposal covering: (1) Structural geometry, materials selection, pressure vessel integrity, and artificial gravity sizing; (2) Operations, station logistics, communications, and power generation architecture; (3) Environmental Control and Life Support Systems (ECLSS), radiation shielding, and closed-loop agriculture; and (4) Community planning, socio-economic structure, and emergency decompression protocols. 2D/3D models and engineering blueprints are strongly encouraged. Max pages: 25 pages (Junior) / 35 pages (Senior).'
       },
       {
-        title: 'Round 2 (Presentation & Defense)',
-        desc: 'Top 5 qualifying teams from each category receive a window to polish their submission, then present on the day of the onsite event (for NCR students). Non-NCR qualifying teams will be accommodated virtually on Google Meet 1 day prior to the event (or present virtually). Teams deliver up to a 10-minute presentation (PPT or supporting models), followed by a 5-minute judge Q&A and a 3-minute injection challenge session with follow-up questions.'
+        title: 'Round 2 (On-Campus Presentation & Defense)',
+        desc: 'Shortlisted qualifying teams present live on campus at DPS R.K. Puram (virtual accommodations provided for verified non-NCR teams). Teams deliver an up to 10-minute presentation (using slides, physical mockups, or digital CAD models), followed by a 5-minute judge interrogation and an intensive 3-minute technical injection challenge (an unexpected orbital perturbation or life-support failure scenario requiring rapid spontaneous problem solving).'
       }
     ],
     criteria: [
-      'Research and scientific accuracy',
-      'Innovation and originality',
-      'Engineering and technical feasibility',
-      'Clarity and presentation of ideas',
-      'Overall proposal quality and defense'
+      'Structural design, artificial gravity rotational sizing & materials',
+      'Life support (ECLSS), closed-loop recycling & radiation shielding',
+      'Operational feasibility, electrical power architecture & logistics',
+      'Clarity of technical documentation, drawings & oral defense',
+      'Critical thinking & composure during the injection challenge'
+    ],
+    timeline: [
+      { label: 'Registration Opens', date: 'TBA' },
+      { label: 'Proposal Submission Deadline', date: 'TBA' },
+      { label: 'Finalists Announcement', date: 'TBA' },
+      { label: 'On-Campus Defense & Grand Finale', date: 'CelesteCon 2026' }
+    ],
+    isDraft: false
+  },
+  {
+    id: '02',
+    name: 'Volatus (Aviation / UAV & Dimension III)',
+    discipline: 'Aviation, UAV & 3D CAD',
+    mode: 'Hybrid',
+    eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
+    team: 'Team of 2–4 members',
+    quote: '“Once you have tasted flight, you will forever walk the earth with your eyes turned skyward.” — Leonardo da Vinci',
+    overview:
+      'Combining aero-mechanical engineering, flight dynamics, and digital prototyping (incorporating the legacy of Dimension III 3D modeling), Volatus challenges students to solve real-world aviation problems. Teams design an uncrewed aerial vehicle (UAV/eVTOL) to meet stringent mission profiles, complete with aerodynamic calculations, structural packaging in CAD, and an oral flight review.',
+    hook: 'Aero-mechanical design challenge incorporating precision 3D CAD modeling and flight review.',
+    categories: [
+      {
+        name: 'Junior Division (Grades 6–8)',
+        desc: 'Fixed-wing cargo or disaster-relief UAV. Focus on hand-launch aerodynamics, longitudinal stability, payload bay mechanics, and basic CAD/scale structural prototyping.'
+      },
+      {
+        name: 'Senior Division (Grades 9–12)',
+        desc: 'High-performance eVTOL or long-range parcel delivery aircraft. Focus on aerodynamic sizing, wing loading, power-to-weight ratio, center of gravity (CG) envelope, and precision multi-part 3D CAD assembly.'
+      }
+    ],
+    rounds: [
+      {
+        title: 'Round 1 (Technical Dossier & 3D CAD Submission)',
+        desc: 'Teams prepare and submit an engineering dossier detailing: aircraft mission profile, aerodynamic sizing (wing area, aspect ratio, airfoil selection, drag polar, thrust-to-weight), weight & balance analysis, and complete 3D CAD assembly files (.STEP, .F3D, or .BLEND) with rendered isometric views and exploded assembly diagrams.'
+      },
+      {
+        title: 'Round 2 (Onsite Flight Review & Jury Interrogation)',
+        desc: 'Finalist teams present their aircraft designs in a science-fair style exhibition on campus. Teams showcase interactive 3D model walkthroughs and physical prototypes/scale mockups. Teams must defend structural choices, stability derivatives, and aerodynamic calculations in a 10-minute jury review followed by an engineering curveball prompt.'
+      }
+    ],
+    software: ['Autodesk Fusion 360', 'SolidWorks', 'Blender', 'Onshape', 'AutoCAD', 'OpenVSP'],
+    criteria: [
+      'Aerodynamic feasibility, airfoil selection & sizing calculations',
+      '3D CAD modeling quality, packaging, assembly & structural detailing',
+      'Mass balance, center of gravity (CG) & static stability margin',
+      'Technical documentation, rendering & engineering drawing standards',
+      'Defense of design choices and response to jury curveballs'
+    ],
+    timeline: [
+      { label: 'Registration Opens', date: 'TBA' },
+      { label: 'Dossier & CAD Submission', date: 'TBA' },
+      { label: 'Shortlist Notification', date: 'TBA' },
+      { label: 'Live Flight Review', date: 'CelesteCon 2026' }
+    ],
+    isDraft: false
+  },
+  {
+    id: '03',
+    name: 'In Pursuit of Dispute (Debate & Quizzitch)',
+    discipline: 'Debate & Forensics',
+    mode: 'Hybrid',
+    eligibility: 'Grades 6–12 (Open)',
+    team: 'Team of 2–3 members (max 2 teams per school)',
+    quote: '“It’s better to debate a question without settling it than to settle a question without debating it.”',
+    overview:
+      'The premier aerospace forensics and debate championship of CelesteCon 2026, integrating Quizzitch preliminaries with a high-stakes parliamentary debate tournament. This event tests technical aerospace literacy, geopolitical and ethical acumen, and spontaneous rhetoric under strict time pressure.',
+    hook: 'Quizzitch prelims screening into a high-stakes live chess-clock parliamentary debate.',
+    rounds: [
+      {
+        title: 'Round 1 (Quizzitch Screening & Case Video)',
+        desc: 'Stage 1 consists of an online proctored aerospace quiz testing orbital mechanics, mission history, astrophysics trivia, and logical reasoning. Concurrently, teams submit a concise 3-minute video presentation addressing an assigned motion regarding space commercialization, orbital debris policy, or planetary defense ethics. Top qualifying teams advance to the finals.'
+      },
+      {
+        title: 'Round 2 (Onsite Chess-Clock Finals)',
+        desc: 'Finalist teams face off in a live parliamentary-style tournament at DPS R.K. Puram. Debates operate under a chess-clock time system: each side receives a 15-minute shared time bank to divide between constructive speeches and rebuttals. Opposing teams may raise Points of Information (POIs) during designated open speech windows. The round culminates in rapid-fire cross-examination and jury interrogation.'
+      }
+    ],
+    criteria: [
+      'Aerospace scientific accuracy & policy understanding',
+      'Argumentation structure, factual evidence & citations',
+      'Chess-clock pacing, rhetorical delivery & stage presence',
+      'Clash handling, POI execution & rebuttal precision'
+    ],
+    timeline: [
+      { label: 'Online Quiz & Video Submission', date: 'TBA' },
+      { label: 'Qualifier Results', date: 'TBA' },
+      { label: 'Motions Released for R2', date: '48 hours prior to onsite event' },
+      { label: 'Live Tournament', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   },
   {
     id: '04',
     name: 'Business Power Pitch',
+    discipline: 'Aerospace Venture & Pitch',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
-    team: 'Team of 3 members',
+    team: 'Team of 2–4 members (max 3 teams per school)',
     quote: '“The most powerful person in the world is the storyteller.” — Steve Jobs',
     overview:
-      'Real-world innovation requires more than just a good idea—it demands execution and compelling communication. This event challenges you to move from concept to pitch. You and your team must detail an innovative product or service based on the theme and provided sub-tracks, then strategically market and pitch it. Success relies equally on the strength of your idea and your ability to sell it.',
-    hook: 'Build and pitch an aerospace venture, product, or service to a panel of investors.',
-    rounds: [
+      'True aerospace innovation demands visionary engineering paired with viable unit economics and compelling market strategy. Business Power Pitch challenges teams to conceptualize a commercial aerospace venture—spanning space resource utilization, satellite constellations, space tourism, or sustainable aviation—and pitch it to a panel of venture capitalists and industry executives.',
+    hook: 'Architect a space commercialization venture and pitch live before venture capitalists.',
+    categories: [
       {
-        title: 'Round 1 (Business Proposal & Pitch Video)',
-        desc: 'Propose a creative product or service solution aligned with your chosen track. Each team must submit: (1) A comprehensive business proposal detailing solution, company overview, product/service breakdown, business model, addressable market, and financial planning; and (2) A 5-minute video pitching the idea in a unique and convincing way.'
+        name: 'Track 1 — Off-Planet Infrastructure & Mining',
+        desc: 'In-situ resource extraction, orbital power grids, lunar regolith processing, and extraterrestrial manufacturing.'
       },
       {
-        title: 'Round 2 (Live Investor Pitch)',
-        desc: 'Qualifying teams compete to secure funding from judges acting as "investors". Teams present a pitch deck in a live 5–7 minute presentation (props or small prototypes are welcomed though not mandatory). Following each presentation, competing teams may highlight flaws or ask sharp questions to earn bonus points.'
+        name: 'Track 2 — LEO Commercialization & Satellites',
+        desc: 'SmallSat constellations, active orbital debris de-orbiting, space manufacturing, and microgravity research platforms.'
+      },
+      {
+        name: 'Track 3 — Sustainable Aviation & Green Flight',
+        desc: 'Hydrogen/electric aircraft propulsion, sustainable aviation fuel (SAF) supply chains, and urban air mobility networks.'
+      },
+      {
+        name: 'Track 4 — Space Exploration Services & Tourism',
+        desc: 'Commercial orbital habitat modules, astronaut life-support logistics, astronaut health-tech, and suborbital tourism.'
+      }
+    ],
+    rounds: [
+      {
+        title: 'Round 1 (Venture Memo & Pitch Video)',
+        desc: 'Teams select one venture track and submit: (1) A comprehensive business memo (executive summary, problem & market size TAM/SAM/SOM, unit economics, technical solution, go-to-market plan, risk analysis, and 3-year financial projections); and (2) A concise 5-minute video pitch deck selling the opportunity.'
+      },
+      {
+        title: 'Round 2 (Live Investor Shark Tank)',
+        desc: 'Qualifying finalist teams pitch live on stage before a panel of venture capitalists and startup founders. Teams deliver an 8-minute slide presentation (functional mockups, UI demos, or prototypes are encouraged), followed by a 6-minute investor cross-examination probing financial feasibility, customer acquisition, and technical hurdles. Competing teams in the audience may ask challenger questions for bonus points.'
       }
     ],
     templateUrl: 'https://docs.google.com/document/d/1wd8T4sqoSLX3euoxNoyVo6AzFL1JX9Vvt_xle5pmrMY/edit?tab=t.0#heading=h.nmq48d4hymqb',
     templateLabel: 'Business Power Pitch Submission Template',
     criteria: [
-      'Problem & Research',
-      'Innovation & Tech',
-      'Impact & Scale',
-      'Feasibility',
-      'Sustainability',
-      'Ethics & Inclusion',
-      'Presentation & Storytelling'
+      'Problem validation, value proposition & technical novelty',
+      'Market sizing (TAM/SAM/SOM) & competitor differentiation',
+      'Financial model, unit economics & revenue monetization',
+      'Operational feasibility, regulatory compliance & scalability',
+      'Pitch delivery, narrative charisma & investor Q&A defense'
+    ],
+    timeline: [
+      { label: 'Track Registration & Memo Submission', date: 'TBA' },
+      { label: 'Finalists Announcement', date: 'TBA' },
+      { label: 'Live Shark Tank Finals', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   },
   {
     id: '05',
-    name: 'Volatus',
-    mode: 'Hybrid',
+    name: 'Vector GameJam',
+    discipline: 'Game Development & Simulation',
+    mode: 'Onsite',
     eligibility: 'Grades 6–12',
-    team: 'Team of 2–4 members',
-    quote: '“Once you have tasted flight, you will forever walk the earth with your eyes turned skyward.” — Leonardo da Vinci',
+    team: 'Team of 1–3 members',
+    quote: '“You can discover more about a person in an hour of play than in a year of conversation.” — Plato',
     overview:
-      'Volatus (Latin for "flight") is built for the engineers and problem-solvers of the aerospace world—those who don\'t just imagine a solution, but are willing to research, design and defend it. This event pushes participants to take a case-based aerospace or aviation problem and develop it into a genuine engineering solution, backed by sound reasoning and technical depth.',
-    hook: 'Take a case-based aerospace or aviation problem and engineer a defensible solution.',
+      'The aerospace game development sprint of CelesteCon. Teams are tasked with designing, programming, and polishing an original playable game or interactive simulation built around aerospace concepts (orbital gravity assists, atmospheric reentry, rocket staging, or zero-g navigation) to be showcased live for peer playtesting and jury evaluation.',
+    hook: 'Design, code, and polish a playable aerospace game for live playtesting and jury review.',
     rounds: [
       {
-        title: 'Round 1 (Case Proposal)',
-        desc: 'Participants choose from 3 case-based prompts released for the round. Teams must prepare and submit an online project proposal outlining their proposed solution, its technical grounding, and its direct relevance to the chosen case.'
+        title: 'Phase 1 (Theme Announcement & Build Sprint)',
+        desc: 'The central theme and mechanics constraints are revealed online. Teams have a dedicated sprint window to develop a fully playable game prototype in any game engine (Unity, Unreal Engine, Godot, WebGL/Three.js, or Pygame). Teams submit their playable build, source code repository link, and a 2-page Game Design Document (GDD) explaining core loop, physics models, and controls.'
       },
       {
-        title: 'Round 2 (Science-Fair Exhibit & Defense)',
-        desc: 'Shortlisted teams develop their Round 1 submission into a full engineering project based on their assigned case study. Teams present their project in a science-fair style format, with judges and visitors interacting between exhibits. Presentations should include supporting visuals, models, or prototypes. Teams must defend design choices in direct Q&A with judges.'
+        title: 'Phase 2 (Arcade Expo, Peer Playtesting & Patch Sprint)',
+        desc: 'Finalists set up interactive stations in the CelesteCon Arcade Expo. All attendees and competing teams playtest and submit peer ratings. Industry game developers and software judges evaluate codebase quality, frame rate stability (targeted at 60 FPS), and physics fidelity. During the event, teams receive a surprise 45-minute "Curveball Patch Sprint" to implement a live feature update.'
       }
     ],
+    software: ['Unity', 'Unreal Engine', 'Godot', 'WebGL / Three.js', 'Python / Pygame', 'Raylib / C++'],
     criteria: [
-      'Research and technical understanding',
-      'Depth and feasibility of the proposed solution',
-      'Relevance to the assigned case study',
-      'Quality of presentation and exhibit',
-      'Ability to answer questions and defend design choices'
+      'Gameplay mechanics, responsiveness & fun factor',
+      'Authentic incorporation of aerospace or orbital physics',
+      'Software engineering quality, optimization & 60 FPS stability',
+      'Visual aesthetics, UI clarity, sound design & polish',
+      'Execution of the surprise live patch sprint'
+    ],
+    timeline: [
+      { label: 'Theme Release', date: '72 hours prior to submission' },
+      { label: 'Build & GDD Submission', date: 'TBA' },
+      { label: 'Live Arcade Expo & Peer Review', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   },
   {
     id: '06',
-    name: 'Cosmovate',
+    name: 'AEROSS Theatre',
+    discipline: 'Theatre, Satire & Improv',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
-    team: 'Team of 2–3 members',
-    quote: '“Logic will get you from A to B. Imagination will take you everywhere.” — Albert Einstein',
+    team: 'Individual or Team of 1–3 members',
+    quote: '“If you want to tell people the truth, make them laugh, otherwise they\'ll kill you.” — Oscar Wilde',
     overview:
-      'Cosmovate is where creativity meets engineering. Participants are handed a single, deliberately quirky prompt and challenged to turn it into a real, technically grounded aerospace-themed idea. The event rewards teams who can balance imaginative thinking with the discipline of sound technical reasoning, because a good idea is only as strong as the science behind it.',
-    hook: 'Turn an unusual, imaginative prompt into a technically sound aerospace innovation.',
+      'AEROSS Theatre brings the performing arts to the cosmos. Designed for the orators, actors, satirists, and comedians who can take the complexities of space exploration, scientific history, and astronaut life and transform them into sharp, witty, and captivating stagecraft.',
+    hook: 'Performing arts, satire, stand-up comedy, and live aerospace improv on the main stage.',
     rounds: [
       {
-        title: 'Round 1 (Creative Concept Submission)',
-        desc: 'All teams receive the same prompt. Teams develop their idea and submit online in a creative format of their choosing (video, poster, write-up, etc.). Entries receive independent evaluation on both artistic merit and technical backing.'
+        title: 'Round 1 (Online Audition Video)',
+        desc: 'Participants prepare and submit a 3 to 5 minute recorded video performance on an aerospace, aviation, or space science theme. Submissions may take the form of: theatrical skits, stand-up comedy routines, satirical news broadcasts (e.g., mission control bloopers), dramatic scientific monologues, or musical parodies.'
       },
       {
-        title: 'Round 2 (Live Concept Pitch)',
-        desc: 'Qualifying teams pitch their concept live to a panel of judges. The pitch must clearly cover the core concept, its technical feasibility, and potential real-world applications. Time limit per pitch: 5 minutes, followed by a short panel Q&A.'
+        title: 'Round 2 (Live Showcase & Improv at AVH)',
+        desc: 'Shortlisted finalists perform live in front of a packed audience at the Audio-Visual Hall (AVH). Following their prepared 5-minute set, performers face an impromptu "Spotlight Curveball": an on-the-spot aerospace scenario or audience prompt requiring 2 minutes of spontaneous comedic or dramatic improvisation.'
       }
     ],
     criteria: [
-      'Originality and creativity of the idea',
-      'Technical soundness and feasibility',
-      'Clarity and persuasiveness of the pitch',
-      'Ability to handle questions from the panel',
-      'Artistic merit & visual presentation'
+      'Wit, comedic timing, or dramatic storytelling',
+      'Creative connection to aerospace themes and scientific tropes',
+      'Vocal projection, body language & stage charisma',
+      'Audience connection & engagement',
+      'Adaptability, quick thinking & spontaneous improv skill'
+    ],
+    timeline: [
+      { label: 'Video Audition Submission', date: 'TBA' },
+      { label: 'Finalists Shortlist', date: 'TBA' },
+      { label: 'Live Stage Showcase & Improv', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   },
   {
     id: '07',
-    name: 'Surprise (AEROSS Theatre)',
-    mode: 'Hybrid',
-    eligibility: 'Grades 6–12',
-    team: 'Individual or Team of up to 3',
-    quote: '“If you want to tell people the truth, make them laugh, otherwise they\'ll kill you.” — Oscar Wilde',
+    name: 'Rocketry',
+    discipline: 'Model Craft & Flight Propulsion',
+    mode: 'Onsite',
+    eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
+    team: 'Individual or Team of 1–3 members',
+    quote: '“The best way to predict the future is to build it.” — Alan Kay',
     overview:
-      'AEROSS Theatre brings the stage to the space enthusiast. This event is for the performers, storytellers and comedians who can take the vastness of aerospace and aviation and turn it into something fun, sharp and genuinely entertaining. Whether it\'s stand-up, a skit or an educational bit aimed at a younger audience, the goal is the same: make space engaging.',
-    hook: 'Stand-up, skits, improv, and entertaining theatrical performances on space and aviation.',
-    rounds: [
+      'The premier hands-on aerospace fabrication and propulsion competition of CelesteCon. Rocketry celebrates physical engineering, craftsmanship, and ballistics. Teams construct museum-grade scale models of historical/modern launch vehicles or engineer flight-ready functional rockets tested on the campus launch pad.',
+    hook: 'Build and launch high-powered scale models and functional rocket craft on the launch pad.',
+    categories: [
       {
-        title: 'Round 1 (Online Video Submission)',
-        desc: 'Participants submit a video performance built around an aerospace or aviation theme—this may take the form of stand-up comedy, a skit, improv, or an engaging educational video.'
+        name: 'Track A — Scale & Static Display Craft (Junior & Senior)',
+        desc: 'Precise scale reproductions of historical or modern launch vehicles, planetary landers, or space probes. Evaluated on fidelity, paint finish, structural symmetry, internal staging detailing, and scale accuracy.'
       },
       {
-        title: 'Round 2 (Live Improv at AVH)',
-        desc: 'Shortlisted participants perform live at the Audio-Visual Hall (AVH). This round is an improv performance on a topic given on the spot. Performances must stay aerospace-themed and showcase presence of mind under pressure.'
+        name: 'Track B — Flight Propulsion & Launch (Senior: 9th–12th)',
+        desc: 'Functional rocket craft powered by certified commercial solid model rocket motors (Class A–D) or pneumatic multi-stage water propulsion systems. Evaluated on stability, straight ascent trajectory, altitude, and safe parachute/streamer recovery.'
       }
     ],
+    rounds: [
+      {
+        title: 'Round 1 (Fabrication Dossier & Safety Declaration)',
+        desc: 'Teams register their chosen track and submit a technical dossier including: dimensioned CAD/orthographic blueprints, material specs, Barrowman aerodynamic stability calculations (showing Center of Pressure CP behind Center of Gravity CG by at least 1.0 to 2.0 calibers), and parachute deployment schematics.'
+      },
+      {
+        title: 'Round 2 (Technical Inspection & Live Launch Field Trials)',
+        desc: 'On the day of the event, all models undergo a mandatory static scrutineering inspection in the Open Arena. Track A entries are displayed in an open exhibition. Track B flight rockets undergo motor/igniter safety clearance by faculty marshals, followed by official launch pad trials on the campus athletic grounds with altitude tracking and recovery verification.'
+      }
+    ],
+    safetyRules: [
+      'Only commercially manufactured, certified model rocket motors (Class A through D) or standard pneumatic water pressure systems are permitted.',
+      'Strictly no homemade chemical propellants, unauthorized fireworks, or pyrotechnics of any kind. Violation results in immediate disqualification.',
+      'Flight rockets must demonstrate a static stability margin of at least 1.0 body diameter (caliber) prior to launch clearance.',
+      'All launches are conducted under the direct supervision of range safety officers at the designated outdoor range with safe standoff distances.',
+      'Every flight rocket must incorporate a reliable recovery system (parachute, streamer, or tumble recovery) to prevent ballistic impact.'
+    ],
     criteria: [
-      'Humour and audience engagement',
-      'Creativity and originality',
-      'Relevance to the aerospace/aviation theme',
-      'Stage presence and delivery',
-      'Improvisational skill (Round 2)'
+      'Track A: Scale accuracy & proportions · Craftsmanship & finish · Detailing & material selection · Technical write-up',
+      'Track B: Barrowman aerodynamic stability & safety clearance · Launch rail exit velocity & trajectory · Parachute deployment reliability · Clean recovery'
+    ],
+    timeline: [
+      { label: 'Registration & Blueprint Declaration', date: 'TBA' },
+      { label: 'Build Window', date: 'September – October 2026' },
+      { label: 'Static Inspection & Range Launch', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   },
   {
     id: '08',
-    name: 'Dimension III (3D Design & CAD)',
-    mode: 'Hybrid',
-    eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
-    team: 'Individual or Team of 2',
-    quote: '“Design is not just what it looks like and feels like. Design is how it works.” — Steve Jobs',
-    overview:
-      'Dimension III challenges participants to bring their aerospace concepts into three-dimensional form. For the senior category, this means modelling with precision using industry CAD/3D software; for the junior category, it means building hands-on physical models with real materials. Either way, the goal is the same—translate an idea into a tangible, well-constructed model.',
-    hook: 'Bring aerospace concepts to life through 3D CAD modeling or hands-on structural crafting.',
-    categories: [
-      {
-        name: 'Junior Category (Grades 6–8)',
-        desc: 'Physical Craft Track: Teams build physical models using tangible materials (cardboard, balsa wood, foam board, etc.) as their final round submission.'
-      },
-      {
-        name: 'Senior Category (Grades 9–12)',
-        desc: 'Digital CAD/3D Track: Teams model precision engineering designs using CAD or Blender software, presenting live onsite at the OAT.'
-      }
-    ],
-    rounds: [
-      {
-        title: 'Round 1 (Prompt Release & Online Build)',
-        desc: 'Participants choose from 3 released prompts. Senior models must be built using 3D modelling software only (CAD or Blender) and submitted online. Junior teams build their physical model using physical craft materials as their final submission.'
-      },
-      {
-        title: 'Round 2 (Onsite Showcase at OAT — Seniors)',
-        desc: 'Shortlisted senior teams refine and present their final 3D models (CAD/Blender) onsite at the Open Air Theatre (OAT) to the jury.'
-      }
-    ],
-    software: ['AutoCAD', 'Autodesk Fusion 360', 'SolidWorks', 'Blender', 'Onshape'],
-    criteria: [
-      'Technical accuracy and craftsmanship',
-      'Creativity and originality of design',
-      'Adherence to the prompt specifications',
-      'Overall finish, detail, and presentation'
-    ],
-    isDraft: false
-  },
-  {
-    id: '09',
-    name: 'GameJam',
-    mode: 'Onsite',
-    eligibility: 'Grades 6–12',
-    team: 'Individual or Team of up to 3',
-    quote: '“You can discover more about a person in an hour of play than in a year of conversation.” — Plato',
-    overview:
-      'GameJam is a build-and-play challenge for participants who\'d rather create than compete in the traditional sense. Teams are given a theme ahead of time to design, build and polish a working minigame from scratch, then open it up to peer review and judge evaluation.',
-    hook: 'Design, code, and polish a working aerospace minigame for live peer review and playtesting.',
-    rounds: [
-      {
-        title: 'Phase 1 (Theme Release & Pre-Build)',
-        desc: 'The theme will be released online ahead of the event. Teams build and test a working minigame based on the theme beforehand.'
-      },
-      {
-        title: 'Phase 2 (Onsite Showcase & Peer Review)',
-        desc: 'Teams showcase their playable game on campus for a peer-review round, where participating teams play and rate each other\'s work. Judges will also review submissions independently of the peer-review scores.'
-      }
-    ],
-    criteria: [
-      'Creativity and relevance to the theme',
-      'Functionality and completeness of the game',
-      'Peer review score and gameplay experience',
-      'Overall polish, visual aesthetics, and sound design'
-    ],
-    isDraft: false
-  },
-  {
-    id: '10',
-    name: 'AEROSS Foundry',
+    name: 'Formula Celeste (F1)',
+    discipline: 'F1 Motorsport & Aerodynamic Engineering',
     mode: 'Onsite',
     eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
-    team: 'Individual or Team of up to 2',
-    quote: '“The best way to predict the future is to build it.” — Alan Kay',
+    team: 'Team of 3–5 members (max 3 teams per school)',
+    quote: '“Simplify, then add lightness.” — Colin Chapman',
     overview:
-      'AEROSS Foundry is AEROSS\'s flagship model-making and build challenge, open to students ahead of CelesteCon. Participants design and construct a model of a rocket, drone, plane, satellite, or related aerospace/aviation craft—either as a static scale build or as a working, functional model. The event celebrates hands-on craftsmanship: turning a concept into something you can actually hold, display, or fly.',
-    hook: 'Hands-on aerospace model-making for static scale display builds or functional RC/propulsion craft.',
+      'The miniature Formula 1 engineering challenge of CelesteCon. Teams design, simulate, manufacture, and race miniature CO2-cartridge powered racing cars along a 20-meter high-speed track. Formula Celeste merges computational fluid dynamics (CFD), CNC/3D manufacturing precision, aerodynamic downforce analysis, enterprise team branding, and lightning-fast track racing.',
+    hook: 'Design, manufacture, brand, and race miniature F1 cars on the competition racetrack.',
     categories: [
       {
-        name: 'Track A — Scale & Static Models (Junior & Senior)',
-        desc: 'A non-functional, display-built model of a rocket, drone, plane, satellite, or related aerospace craft. Built to represent the real subject as accurately as possible in form, proportion, and detail. Any material allowed (cardboard, foam board, balsa wood, 3D-printed parts, etc.). Not required to fly or launch.'
+        name: 'Junior Division (Grades 6–8)',
+        desc: 'Entry class focusing on balsa/foam aerodynamics, wheel alignment, low rolling resistance, and team livery design.'
       },
       {
-        name: 'Track B — Working / RC Models (Senior Only: 9th–12th)',
-        desc: 'A functional build including RC-controlled planes/drones, motorized/powered models, or rocket models capable of an actual test launch. Judged on real performance (flight, launch, operation) alongside craftsmanship, with a mandatory live demonstration slot.'
+        name: 'Senior Division (Grades 9–12)',
+        desc: 'High-performance class incorporating precision 3D CAD modeling, CFD drag polar analysis, composite/additive manufacturing tolerances, and full enterprise pit-wall branding.'
       }
     ],
     rounds: [
       {
-        title: 'Registration & Declaration',
-        desc: 'Interested participants/teams register and declare their track (Track A or B) and subject (rocket, drone, plane, satellite, or craft) by the registration deadline. Max 1 model per entry.'
+        title: 'Round 1 (Engineering Dossier & CAD Submission)',
+        desc: 'Teams submit an exhaustive engineering dossier including: complete 3D CAD model (.STEP / .F3D), CFD pressure coefficient and drag analysis, weight and center-of-mass balance, manufacturing process sheets, and enterprise portfolio (team identity, livery, sponsorship concept, and uniform designs).'
       },
       {
-        title: 'Build & Submission Window',
-        desc: 'Participants build independently with their own materials. Each entry must submit a short info card / write-up (subject, scale if applicable, materials used, and for Track B, a note on how it functions). Models submitted onsite on Judging Day (second week of October, by Oct 9th).'
-      },
-      {
-        title: 'Judging Day & Live Demos',
-        desc: 'Track A models are displayed and evaluated in an exhibition-style format with judges reviewing each entry. Track B models additionally receive a live demo/test slot in a designated safe area to demonstrate flight/propulsion functionality.'
+        title: 'Round 2 (Technical Scrutineering, Pit Defense & Track Races)',
+        desc: 'On race day, cars enter official Parc Fermé for scrutineering (weight check, minimum ground clearance, wheel track, CO2 canister chamber dimensions). Teams defend their design decisions and aerodynamic trade-offs in an oral presentation at their team pit display. Finally, cars compete in head-to-head timed runs down the 20-meter tethered track with laser-sensor timing gates measuring reaction time and elapsed sprint speed.'
       }
     ],
     safetyRules: [
-      'Only commercially available, certified model rocket motors, batteries, and RC components are permitted.',
-      'No homemade propellants, fuels, or explosive materials of any kind.',
-      'All propulsion or RC-powered entries must be checked and cleared by a supervising teacher/mentor before their test slot.',
-      'Test launches and flights will only be conducted in a designated, supervised area.'
+      'Cars must adhere to standard miniature F1 envelope dimensions and minimum weight thresholds specified in the technical regulations.',
+      'Standard 8-gram CO2 canisters will be provided and loaded exclusively by official track marshals at the launch gate.',
+      'All wheels must rotate freely and remain in continuous contact with the track surface. Enclosed wheels or internal drive motors are prohibited.',
+      'Structural safety: Cars must withstand rapid deceleration at the track deceleration gate without chassis fragmentation.'
     ],
     criteria: [
-      'Track A: Structural and scale accuracy · Craftsmanship and finish · Detailing · Effective material usage · Accompanying write-up',
-      'Track B: Functionality and real performance · Build quality & durability · Safety & reliability · Technical innovation · Explanatory write-up'
+      'Aerodynamic efficiency (CFD analysis, drag minimization, frontal area)',
+      'Manufacturing precision, dimensional tolerances & build finish',
+      'Track race performance (laser gate elapsed sprint time & reaction speed)',
+      'Enterprise portfolio, livery branding & pit display quality',
+      'Engineering presentation & jury technical defense'
     ],
     timeline: [
-      { label: 'Registration Opens', date: '01 September 2026' },
-      { label: 'Build Window', date: 'September – Early October 2026' },
-      { label: 'Submission & Judging Day', date: 'Second week of October (by Oct 9, 2026)' },
-      { label: 'Exhibition & Results', date: 'CelesteCon 2026' }
-    ],
-    isDraft: false
-  },
-  {
-    id: '11',
-    name: 'F1 (F1 in Schools)',
-    mode: 'Onsite',
-    eligibility: 'Grades 9–12 (Senior)',
-    team: 'Team of up to 5 members',
-    quote: '“Simplify, then add lightness.” — Colin Chapman',
-    overview:
-      'F1 in Schools is a miniature Formula 1 engineering and racing competition hosted by AEROSS as part of CelesteCon 2026. Teams of students design, develop, and build their own miniature F1-style racing car, combining engineering, aerodynamics, manufacturing, teamwork, branding, and racing. The competition challenges participants to take a car from an initial concept through CAD design and construction to the racetrack, evaluated on performance, engineering decisions, design process, presentation, and team identity.',
-    hook: 'Design, manufacture, brand, and race miniature F1 cars on the competition racetrack.',
-    rounds: [
-      {
-        title: 'Design & Build Phase',
-        desc: 'Teams design and construct their miniature F1 car using CAD and engineering principles: Aerodynamics & efficiency, Dimensions & proportions, Weight & balance, Wheel/axle alignment, Structural integrity, and Manufacturing precision. Along with the car, teams submit a technical write-up. Teams may also develop full team identity (name, logo, livery, sponsorships, pit display).'
-      },
-      {
-        title: 'Competition & Race Day',
-        desc: 'Teams present their cars and engineering work before racing on the track. Includes: (1) Technical Inspection against specifications, (2) Engineering Evaluation of aerodynamics & construction, (3) Team Presentation explaining design choices, (4) Pit Display Evaluation, (5) Official F1 Track Races, and (6) Judges\' technical Q&A.'
-      }
-    ],
-    criteria: [
-      'Engineering & CAD Design',
-      'Aerodynamics & Efficiency',
-      'Manufacturing Precision & Craftsmanship',
-      'Track Race Performance',
-      'Innovation & Technical Documentation',
-      'Team Presentation & Defense',
-      'Branding, Livery & Marketing',
-      'Teamwork & Organisation'
-    ],
-    timeline: [
-      { label: 'Registration Opens', date: '01 October 2026' },
-      { label: 'Design & Build Window', date: '01 – 23 October 2026' },
-      { label: 'Car & Doc Submission', date: '24 October 2026' },
-      { label: 'Competition & Race Day', date: '24 October 2026' },
-      { label: 'Results', date: 'Same day at CelesteCon 2026' }
+      { label: 'Registration & CAD Submission', date: 'TBA' },
+      { label: 'Scrutineering & Pit Set-up', date: 'Race Day Morning' },
+      { label: 'Grand Prix Track Races & Finals', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   }

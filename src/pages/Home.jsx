@@ -90,7 +90,7 @@ const Home = () => {
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Format</dt>
             <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">R1 online qualifiers → R2 campus finale</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Comps</dt>
-            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">11 events · junior & senior tracks</dd>
+            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">8 events · junior & senior tracks</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Cohort</dt>
             <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Grades 6–12, nationwide</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Faculty</dt>
@@ -160,9 +160,9 @@ const Home = () => {
       <section className="mb-24">
         <div className="flex items-baseline gap-3 mt-8 mb-2 pb-1.5 border-b-4 border-bone flex-wrap">
           <h2 className="font-display text-[clamp(20px,3.4vw,34px)] text-bone uppercase tracking-wide leading-none">The Competitions</h2>
-          <span className="font-jp font-bold text-[clamp(10px,1.3vw,13px)] tracking-[0.25em] text-crimson">全十一種目</span>
+          <span className="font-jp font-bold text-[clamp(10px,1.3vw,13px)] tracking-[0.25em] text-crimson">全八種目</span>
           <span className="flex-1 min-w-[20px]"></span>
-          <span className="font-mono text-[9.5px] tracking-[0.16em] uppercase text-bone-dim font-bold">SEC. 03 // FIELD ROSTER (11 EVENTS)</span>
+          <span className="font-mono text-[9.5px] tracking-[0.16em] uppercase text-bone-dim font-bold">SEC. 03 // FIELD ROSTER (8 EVENTS)</span>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,3vw,34px)] gap-y-0">
@@ -189,7 +189,7 @@ const Home = () => {
             to="/comps"
             className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-crimson font-bold border-b border-crimson hover:text-bone hover:border-bone transition-colors py-1"
           >
-            <span>Explore Full Guidelines & Round Structures for All 11 Events</span>
+            <span>Explore Full Guidelines & Round Structures for All 8 Events</span>
             <span>→</span>
           </Link>
         </div>
