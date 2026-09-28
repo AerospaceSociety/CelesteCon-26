@@ -1,7 +1,7 @@
 export const eventOutline = {
   title: 'Event Outline',
   description:
-    'CelesteCon 2026 brings forward 8 flagship competitions designed to test the complete spectrum of aerospace, engineering, debate, commercialization, and artistic innovation. From orbital settlement architecture to live aircraft flight reviews, chess-clock debates, and field rocketry launches, explore our updated competition guidelines below.'
+    'CelesteCon 2026 brings forward 8 flagship competitions designed to test the complete spectrum of aerospace, engineering, debate, commercialization, creative arts, and motorsport. From orbital settlement architecture to live aircraft flight reviews, chess-clock debates, CelesteJam game builds, and AEROSS Prix sprints, explore our updated competition guidelines below.'
 };
 
 export const events = [
@@ -190,32 +190,32 @@ export const events = [
   },
   {
     id: '05',
-    name: 'Vector GameJam',
+    name: 'CelesteJam',
     discipline: 'Game Development & Simulation',
     mode: 'Onsite',
     eligibility: 'Grades 6–12',
     team: 'Team of 1–3 members',
     quote: '“You can discover more about a person in an hour of play than in a year of conversation.” — Plato',
     overview:
-      'The aerospace game development sprint of CelesteCon. Teams are tasked with designing, programming, and polishing an original playable game or interactive simulation built around aerospace concepts (orbital gravity assists, atmospheric reentry, rocket staging, or zero-g navigation) to be showcased live for peer playtesting and jury evaluation.',
-    hook: 'Design, code, and polish a playable aerospace game for live playtesting and jury review.',
+      'CelesteJam is CelesteCon’s official game development challenge. Teams are tasked with designing, programming, and polishing an original, playable minigame or interactive simulation to be showcased live on campus for peer playtesting and jury evaluation.',
+    hook: 'Design, code, and polish a playable minigame for live campus playtesting and jury review.',
     rounds: [
       {
         title: 'Phase 1 (Theme Announcement & Build Sprint)',
-        desc: 'The central theme and mechanics constraints are revealed online. Teams have a dedicated sprint window to develop a fully playable game prototype in any game engine (Unity, Unreal Engine, Godot, WebGL/Three.js, or Pygame). Teams submit their playable build, source code repository link, and a 2-page Game Design Document (GDD) explaining core loop, physics models, and controls.'
+        desc: 'The central theme and mechanics constraints are revealed online. Teams have a dedicated sprint window to develop a fully playable game prototype in any game engine (Unity, Unreal Engine, Godot, WebGL/Three.js, or Pygame). Teams submit their playable build, source code repository link, and a 2-page Game Design Document (GDD) explaining core loop, mechanics, and controls.'
       },
       {
         title: 'Phase 2 (Arcade Expo, Peer Playtesting & Patch Sprint)',
-        desc: 'Finalists set up interactive stations in the CelesteCon Arcade Expo. All attendees and competing teams playtest and submit peer ratings. Industry game developers and software judges evaluate codebase quality, frame rate stability (targeted at 60 FPS), and physics fidelity. During the event, teams receive a surprise 45-minute "Curveball Patch Sprint" to implement a live feature update.'
+        desc: 'Finalists set up interactive stations in the CelesteCon Arcade Expo. All attendees and competing teams playtest and submit peer ratings. Industry game developers and software judges evaluate codebase quality, frame rate stability (targeted at 60 FPS), and mechanics design. During the event, teams receive a surprise 45-minute "Curveball Patch Sprint" to implement a live feature update.'
       }
     ],
     software: ['Unity', 'Unreal Engine', 'Godot', 'WebGL / Three.js', 'Python / Pygame', 'Raylib / C++'],
     criteria: [
-      'Gameplay mechanics, responsiveness & fun factor',
-      'Authentic incorporation of aerospace or orbital physics',
+      'Gameplay mechanics, responsiveness & player fun factor',
+      'Mechanics design, simulation fidelity & control responsiveness',
       'Software engineering quality, optimization & 60 FPS stability',
       'Visual aesthetics, UI clarity, sound design & polish',
-      'Execution of the surprise live patch sprint'
+      'Execution of the live surprise patch sprint'
     ],
     timeline: [
       { label: 'Theme Release', date: '72 hours prior to submission' },
@@ -227,30 +227,29 @@ export const events = [
   {
     id: '06',
     name: 'AEROSS Theatre',
-    discipline: 'Theatre, Satire & Improv',
+    discipline: 'Creative Arts & Talent Showcase',
     mode: 'Hybrid',
     eligibility: 'Grades 6–12',
     team: 'Individual or Team of 1–3 members',
-    quote: '“If you want to tell people the truth, make them laugh, otherwise they\'ll kill you.” — Oscar Wilde',
+    quote: '“All the world’s a stage, and all the men and women merely players.” — William Shakespeare',
     overview:
-      'AEROSS Theatre brings the performing arts to the cosmos. Designed for the orators, actors, satirists, and comedians who can take the complexities of space exploration, scientific history, and astronaut life and transform them into sharp, witty, and captivating stagecraft.',
-    hook: 'Performing arts, satire, stand-up comedy, and live aerospace improv on the main stage.',
+      'AEROSS Theatre is CelesteCon’s open stage for creative performance and artistic expression. Participants have complete artistic freedom to submit and perform anything and everything—stand-up comedy, theatrical skits, musical instruments, singing, dance, poetry, mimicry, magic, or dramatic monologues. There are no restrictions to aerospace or science themes; bring your purest stagecraft, talent, and energy to captivate the audience.',
+    hook: 'Open creative performance and talent showcase — comedy, skits, instruments, singing, and live stagecraft.',
     rounds: [
       {
         title: 'Round 1 (Online Audition Video)',
-        desc: 'Participants prepare and submit a 3 to 5 minute recorded video performance on an aerospace, aviation, or space science theme. Submissions may take the form of: theatrical skits, stand-up comedy routines, satirical news broadcasts (e.g., mission control bloopers), dramatic scientific monologues, or musical parodies.'
+        desc: 'Participants prepare and submit a 3 to 5 minute recorded video showcasing any talent of their choice—stand-up comedy, theatrical skits, musical instruments, vocal singing, dance, mono-acting, magic, or poetry. You have total creative freedom over your topic, genre, and style. Submissions are judged on artistic originality, technical proficiency, stage charisma, and entertainment value.'
       },
       {
-        title: 'Round 2 (Live Showcase & Improv at AVH)',
-        desc: 'Shortlisted finalists perform live in front of a packed audience at the Audio-Visual Hall (AVH). Following their prepared 5-minute set, performers face an impromptu "Spotlight Curveball": an on-the-spot aerospace scenario or audience prompt requiring 2 minutes of spontaneous comedic or dramatic improvisation.'
+        title: 'Round 2 (Onsite Finals — Talent Showcase)',
+        desc: 'Shortlisted finalists take the main stage live at the Audio-Visual Hall (AVH) in an electrifying talent show format. Acts are not restricted to skits; finalists can perform live musical sets, comedy routines, theatrical pieces, vocal performances, or multi-talent acts. Teams will be evaluated on stage presence, timing, delivery, audience engagement, and overall entertainment quotient.'
       }
     ],
     criteria: [
-      'Wit, comedic timing, or dramatic storytelling',
-      'Creative connection to aerospace themes and scientific tropes',
-      'Vocal projection, body language & stage charisma',
-      'Audience connection & engagement',
-      'Adaptability, quick thinking & spontaneous improv skill'
+      'Creativity, originality & artistic expression',
+      'Skill and technical execution (acting, vocals, instrumentation, timing)',
+      'Stage presence, confidence & crowd engagement',
+      'Pacing, delivery & overall entertainment quotient'
     ],
     timeline: [
       { label: 'Video Audition Submission', date: 'TBA' },
@@ -262,63 +261,59 @@ export const events = [
   {
     id: '07',
     name: 'Rocketry',
-    discipline: 'Model Craft & Flight Propulsion',
+    discipline: 'Model Craft & Aerodynamic Flight Simulation',
     mode: 'Onsite',
     eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
     team: 'Individual or Team of 1–3 members',
     quote: '“The best way to predict the future is to build it.” — Alan Kay',
     overview:
-      'The premier hands-on aerospace fabrication and propulsion competition of CelesteCon. Rocketry celebrates physical engineering, craftsmanship, and ballistics. Teams construct museum-grade scale models of historical/modern launch vehicles or engineer flight-ready functional rockets tested on the campus launch pad.',
-    hook: 'Build and launch high-powered scale models and functional rocket craft on the launch pad.',
+      'Rocketry is CelesteCon’s hands-on aerospace fabrication and aerodynamic simulation challenge. Participants design and construct high-precision scale rockets or flight-capable vehicle models. Rather than live field launches, rockets will undergo rigorous static inspection, dimensional scrutiny, and computational flight simulation testing to evaluate whether the craft is aerodynamically sound, properly balanced, and genuinely capable of flight.',
+    hook: 'Design, fabricate, and simulate flight-capable rocket models evaluated through aerodynamic testing.',
     categories: [
       {
-        name: 'Track A — Scale & Static Display Craft (Junior & Senior)',
-        desc: 'Precise scale reproductions of historical or modern launch vehicles, planetary landers, or space probes. Evaluated on fidelity, paint finish, structural symmetry, internal staging detailing, and scale accuracy.'
+        name: 'Junior Division (Grades 6–8)',
+        desc: 'Scale model craft, structural symmetry, material selection, fin alignment, and basic center of gravity (CG) / center of pressure (CP) balance verification.'
       },
       {
-        name: 'Track B — Flight Propulsion & Launch (Senior: 9th–12th)',
-        desc: 'Functional rocket craft powered by certified commercial solid model rocket motors (Class A–D) or pneumatic multi-stage water propulsion systems. Evaluated on stability, straight ascent trajectory, altitude, and safe parachute/streamer recovery.'
+        name: 'Senior Division (Grades 9–12)',
+        desc: 'Advanced aerodynamic design, precision Barrowman stability calculations, recovery bay mechanisms, and multi-variable flight simulation profiles (using OpenRocket / RockSim or analytical models).'
       }
     ],
     rounds: [
       {
-        title: 'Round 1 (Fabrication Dossier & Safety Declaration)',
-        desc: 'Teams register their chosen track and submit a technical dossier including: dimensioned CAD/orthographic blueprints, material specs, Barrowman aerodynamic stability calculations (showing Center of Pressure CP behind Center of Gravity CG by at least 1.0 to 2.0 calibers), and parachute deployment schematics.'
-      },
-      {
-        title: 'Round 2 (Technical Inspection & Live Launch Field Trials)',
-        desc: 'On the day of the event, all models undergo a mandatory static scrutineering inspection in the Open Arena. Track A entries are displayed in an open exhibition. Track B flight rockets undergo motor/igniter safety clearance by faculty marshals, followed by official launch pad trials on the campus athletic grounds with altitude tracking and recovery verification.'
+        title: 'Single Onsite Round (Static Scrutineering, Simulation & Flight Readiness Test)',
+        desc: 'A single comprehensive offline competition held on campus during CelesteCon. Participants bring their fabricated rocket models along with their technical design dossier (or simulation file). The competition comprises: (1) Physical Scrutineering — inspection of craftsmanship, fin alignment, structural integrity, and weight distribution; (2) Aerodynamic Stability & Simulation Test — verification of Center of Gravity (CG) vs Center of Pressure (CP) using Barrowman formulas and digital flight simulations (OpenRocket / RockSim) to simulate apogee, trajectory, velocity curves, and verify genuine flight capability; and (3) Recovery Mechanism Inspection — examination of parachute/streamer bay deployment readiness. Note: Physical rockets will not be launched into the air; all flight evaluations are performed through simulation, bench, and stability testing.'
       }
     ],
     safetyRules: [
-      'Only commercially manufactured, certified model rocket motors (Class A through D) or standard pneumatic water pressure systems are permitted.',
-      'Strictly no homemade chemical propellants, unauthorized fireworks, or pyrotechnics of any kind. Violation results in immediate disqualification.',
-      'Flight rockets must demonstrate a static stability margin of at least 1.0 body diameter (caliber) prior to launch clearance.',
-      'All launches are conducted under the direct supervision of range safety officers at the designated outdoor range with safe standoff distances.',
-      'Every flight rocket must incorporate a reliable recovery system (parachute, streamer, or tumble recovery) to prevent ballistic impact.'
+      'Physical rockets will NOT be launched at the venue. All flight capabilities are assessed via software simulation and physical bench testing.',
+      'Strictly no live pyrotechnic motors, chemical propellants, igniters, or explosive substances may be brought onto school grounds.',
+      'Models must be structurally sound and safe for hands-on inspection and measurement by the judging panel.'
     ],
     criteria: [
-      'Track A: Scale accuracy & proportions · Craftsmanship & finish · Detailing & material selection · Technical write-up',
-      'Track B: Barrowman aerodynamic stability & safety clearance · Launch rail exit velocity & trajectory · Parachute deployment reliability · Clean recovery'
+      'Craftsmanship, dimensional fidelity, symmetry & finish',
+      'Aerodynamic stability margin (Barrowman calculations & CG/CP verification)',
+      'Flight simulation accuracy (apogee estimation, thrust-to-weight modeling, trajectory)',
+      'Internal packaging & parachute/recovery system deployment design',
+      'Technical defense and oral presentation before the jury'
     ],
     timeline: [
-      { label: 'Registration & Blueprint Declaration', date: 'TBA' },
-      { label: 'Build Window', date: 'September – October 2026' },
-      { label: 'Static Inspection & Range Launch', date: 'CelesteCon 2026' }
+      { label: 'Registration Deadline', date: 'TBA' },
+      { label: 'Onsite Competition & Technical Evaluation', date: 'CelesteCon 2026' }
     ],
     isDraft: false
   },
   {
     id: '08',
-    name: 'Formula Celeste (F1)',
-    discipline: 'F1 Motorsport & Aerodynamic Engineering',
+    name: 'AEROSS Prix',
+    discipline: 'Miniature F1 Motorsport & Aerodynamic Engineering',
     mode: 'Onsite',
     eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
     team: 'Team of 3–5 members (max 3 teams per school)',
     quote: '“Simplify, then add lightness.” — Colin Chapman',
     overview:
-      'The miniature Formula 1 engineering challenge of CelesteCon. Teams design, simulate, manufacture, and race miniature CO2-cartridge powered racing cars along a 20-meter high-speed track. Formula Celeste merges computational fluid dynamics (CFD), CNC/3D manufacturing precision, aerodynamic downforce analysis, enterprise team branding, and lightning-fast track racing.',
-    hook: 'Design, manufacture, brand, and race miniature F1 cars on the competition racetrack.',
+      'AEROSS Prix is CelesteCon’s premier miniature Formula 1 engineering and racing challenge. Teams design, manufacture, brand, and race miniature CO2-cartridge powered racing cars along a 20-meter high-speed track. AEROSS Prix merges computational fluid dynamics (CFD), precision CNC/3D manufacturing, aerodynamic downforce analysis, enterprise pit branding, and lightning-fast track sprints.',
+    hook: 'Design, manufacture, brand, and race miniature F1 cars in an action-packed onsite Grand Prix.',
     categories: [
       {
         name: 'Junior Division (Grades 6–8)',
@@ -331,12 +326,8 @@ export const events = [
     ],
     rounds: [
       {
-        title: 'Round 1 (Engineering Dossier & CAD Submission)',
-        desc: 'Teams submit an exhaustive engineering dossier including: complete 3D CAD model (.STEP / .F3D), CFD pressure coefficient and drag analysis, weight and center-of-mass balance, manufacturing process sheets, and enterprise portfolio (team identity, livery, sponsorship concept, and uniform designs).'
-      },
-      {
-        title: 'Round 2 (Technical Scrutineering, Pit Defense & Track Races)',
-        desc: 'On race day, cars enter official Parc Fermé for scrutineering (weight check, minimum ground clearance, wheel track, CO2 canister chamber dimensions). Teams defend their design decisions and aerodynamic trade-offs in an oral presentation at their team pit display. Finally, cars compete in head-to-head timed runs down the 20-meter tethered track with laser-sensor timing gates measuring reaction time and elapsed sprint speed.'
+        title: 'Single Onsite Round (Scrutineering, Pit Defense & Track Races)',
+        desc: 'A high-octane single offline competition held on campus during CelesteCon. Teams bring their engineered miniature F1 cars, CAD/CFD documentation, and pit displays. The day is divided into three key phases: (1) Technical Scrutineering — inspection of dimensions, minimum weight thresholds, wheel track, and CO2 canister chamber alignment; (2) Enterprise & Engineering Defense — oral presentation of CAD/CFD design, manufacturing process, and team livery at their pit display; and (3) Official Track Races — head-to-head sprint racing down the 20-meter track powered by standard CO2 canisters with laser-sensor timing measuring reaction speed and sprint times.'
       }
     ],
     safetyRules: [
@@ -353,7 +344,7 @@ export const events = [
       'Engineering presentation & jury technical defense'
     ],
     timeline: [
-      { label: 'Registration & CAD Submission', date: 'TBA' },
+      { label: 'Registration Deadline', date: 'TBA' },
       { label: 'Scrutineering & Pit Set-up', date: 'Race Day Morning' },
       { label: 'Grand Prix Track Races & Finals', date: 'CelesteCon 2026' }
     ],
