@@ -18,12 +18,12 @@ export const events = [
     hook: 'Design a comprehensive proposal for a self-sustaining, habitable free-space settlement.',
     categories: [
       {
-        name: 'Junior Division (Grades 6–8)',
-        desc: 'Maximum proposal length: 25 pages. Evaluated with age-appropriate design scope focusing on functional habitat layout, atmospheric baseline, radiation shielding concepts, and agricultural logistics.'
+        name: 'Junior Category (Grades 6–8)',
+        desc: 'Open to middle school students. Evaluated independently with age-appropriate criteria.'
       },
       {
-        name: 'Senior Division (Grades 9–12)',
-        desc: 'Maximum proposal length: 35 pages. Evaluated on rigorous technical depth, structural finite-element considerations, artificial gravity rotational sizing, ECLSS calculations, and orbital mechanics.'
+        name: 'Senior Category (Grades 9–12)',
+        desc: 'Open to high school students. Evaluated independently with advanced technical evaluation.'
       }
     ],
     rounds: [
@@ -64,12 +64,12 @@ export const events = [
     hook: 'Aero-mechanical design challenge incorporating precision 3D CAD modeling and flight review.',
     categories: [
       {
-        name: 'Junior Division (Grades 6–8)',
-        desc: 'Fixed-wing cargo or disaster-relief UAV. Focus on hand-launch aerodynamics, longitudinal stability, payload bay mechanics, and basic CAD/scale structural prototyping.'
+        name: 'Junior Category (Grades 6–8)',
+        desc: 'Open to middle school students. Evaluated independently with age-appropriate design and prototyping criteria.'
       },
       {
-        name: 'Senior Division (Grades 9–12)',
-        desc: 'High-performance eVTOL or long-range parcel delivery aircraft. Focus on aerodynamic sizing, wing loading, power-to-weight ratio, center of gravity (CG) envelope, and precision multi-part 3D CAD assembly.'
+        name: 'Senior Category (Grades 9–12)',
+        desc: 'Open to high school students. Evaluated independently with advanced aero-mechanical and 3D CAD modeling criteria.'
       }
     ],
     rounds: [
@@ -138,7 +138,7 @@ export const events = [
     name: 'Business Power Pitch',
     discipline: 'Aerospace Venture & Pitch',
     mode: 'Hybrid',
-    eligibility: 'Grades 6–12',
+    eligibility: 'Grades 6–12 (Junior: 6th–8th, Senior: 9th–12th)',
     team: 'Team of 2–4 members (max 3 teams per school)',
     quote: '“The most powerful person in the world is the storyteller.” — Steve Jobs',
     overview:
@@ -146,26 +146,18 @@ export const events = [
     hook: 'Architect a space commercialization venture and pitch live before venture capitalists.',
     categories: [
       {
-        name: 'Track 1 — Off-Planet Infrastructure & Mining',
-        desc: 'In-situ resource extraction, orbital power grids, lunar regolith processing, and extraterrestrial manufacturing.'
+        name: 'Junior Category (Grades 6–8)',
+        desc: 'Open to middle school students. Evaluated independently focusing on innovative venture concept, problem-solving, and pitch presentation.'
       },
       {
-        name: 'Track 2 — LEO Commercialization & Satellites',
-        desc: 'SmallSat constellations, active orbital debris de-orbiting, space manufacturing, and microgravity research platforms.'
-      },
-      {
-        name: 'Track 3 — Sustainable Aviation & Green Flight',
-        desc: 'Hydrogen/electric aircraft propulsion, sustainable aviation fuel (SAF) supply chains, and urban air mobility networks.'
-      },
-      {
-        name: 'Track 4 — Space Exploration Services & Tourism',
-        desc: 'Commercial orbital habitat modules, astronaut life-support logistics, astronaut health-tech, and suborbital tourism.'
+        name: 'Senior Category (Grades 9–12)',
+        desc: 'Open to high school students. Evaluated independently with comprehensive business model analysis, unit economics, and investor defense.'
       }
     ],
     rounds: [
       {
-        title: 'Round 1 (Venture Memo & Pitch Video)',
-        desc: 'Teams select one venture track and submit: (1) A comprehensive business memo (executive summary, problem & market size TAM/SAM/SOM, unit economics, technical solution, go-to-market plan, risk analysis, and 3-year financial projections); and (2) A concise 5-minute video pitch deck selling the opportunity.'
+        title: 'Round 1 (Business Proposal & Pitch Video)',
+        desc: 'Teams prepare and submit: (1) A comprehensive business memo detailing market opportunity, solution, business model, addressable market, and financial planning; and (2) A concise 5-minute video pitch deck presenting the venture.'
       },
       {
         title: 'Round 2 (Live Investor Shark Tank)',
@@ -182,7 +174,7 @@ export const events = [
       'Pitch delivery, narrative charisma & investor Q&A defense'
     ],
     timeline: [
-      { label: 'Track Registration & Memo Submission', date: 'TBA' },
+      { label: 'Registration & Proposal Submission', date: 'TBA' },
       { label: 'Finalists Announcement', date: 'TBA' },
       { label: 'Live Shark Tank Finals', date: 'CelesteCon 2026' }
     ],

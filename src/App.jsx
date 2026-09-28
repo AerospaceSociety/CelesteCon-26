@@ -9,6 +9,8 @@ import Contact from './pages/Contact';
 
 const Navbar = () => {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [registerDropdownOpen, setRegisterDropdownOpen] = useState(false);
   const [isLight, setIsLight] = useState(() => {
     return localStorage.getItem('theme') === 'light';
   });
@@ -23,6 +25,12 @@ const Navbar = () => {
     }
   }, [isLight]);
 
+  // Close mobile menu and dropdown whenever the route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setRegisterDropdownOpen(false);
+  }, [location.pathname]);
+
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About AEROSS' },
@@ -36,9 +44,9 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-ink border-b-2 border-bone">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
-          <div className="flex-shrink-0 flex items-center font-display font-bold text-2xl text-bone tracking-widest uppercase">
+          <Link to="/" className="flex-shrink-0 flex items-center font-display font-bold text-2xl text-bone tracking-widest uppercase hover:text-crimson transition-colors">
             CELESTECON
-          </div>
+          </Link>
           <div className="hidden md:flex space-x-6">
             {navLinks.map(link => (
               <Link
@@ -51,13 +59,48 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-4">
-            <a
-              href="/celestecon_registration.html"
-              className="px-4 py-1.5 bg-crimson text-bone-hi font-label text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
-            >
-              Register
-            </a>
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Desktop Registration Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
+                className="px-3 sm:px-4 py-1.5 bg-crimson text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer"
+                aria-haspopup="true"
+                aria-expanded={registerDropdownOpen}
+              >
+                <span>Register</span>
+                <svg className={`w-3.5 h-3.5 transition-transform ${registerDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {registerDropdownOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-72 bg-ink border-2 border-bone shadow-2xl p-2 z-50"
+                  onMouseLeave={() => setRegisterDropdownOpen(false)}
+                >
+                  <a
+                    href="/celestecon_registration.html"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
+                  >
+                    <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
+                      School Contingent
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry.</p>
+                  </a>
+                  <a
+                    href="/celestecon_individual_registration.html"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors text-left"
+                  >
+                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider">
+                      Individual Entry
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Direct student registration across open events.</p>
+                  </a>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setIsLight(!isLight)}
               className="p-1.5 text-bone hover:text-crimson transition-colors"
@@ -69,8 +112,61 @@ const Navbar = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" /></svg>
               )}
             </button>
+
+            {/* Mobile Hamburger Menu Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-1.5 text-bone hover:text-crimson transition-colors md:hidden border border-bone/40"
+              aria-label="Toggle Menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t-2 border-bone/40 bg-ink py-4 px-2">
+            <div className="flex flex-col space-y-2">
+              {navLinks.map(link => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-base font-label uppercase tracking-widest py-2 px-3 border-l-2 transition-colors ${
+                    location.pathname === link.path
+                      ? 'border-crimson text-crimson font-bold bg-bone/5'
+                      : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/50'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="pt-3 border-t border-bone/20 mt-2 flex flex-col gap-2">
+                <div className="font-mono text-[10px] text-bone-dim uppercase tracking-widest px-3">Registration Portals</div>
+                <a
+                  href="/celestecon_registration.html"
+                  className="text-sm font-label uppercase tracking-widest py-2 px-3 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center"
+                >
+                  <span>School Registration</span>
+                  <span>↗</span>
+                </a>
+                <a
+                  href="/celestecon_individual_registration.html"
+                  className="text-sm font-label uppercase tracking-widest py-2 px-3 bg-crimson text-bone-hi font-bold border border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
+                >
+                  <span>Individual Registration</span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
@@ -122,6 +218,17 @@ const Footer = () => {
   );
 };
 
+const RedirectTo = ({ to }) => {
+  useEffect(() => {
+    window.location.href = to;
+  }, [to]);
+  return (
+    <div className="py-20 text-center font-mono text-sm text-bone">
+      Redirecting to registration portal...
+    </div>
+  );
+};
+
 function App() {
   return (
     <BrowserRouter>
@@ -137,6 +244,10 @@ function App() {
             {/*<Route path="/sponsors" element={<Sponsors />} />*/}
             <Route path="/gallery" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/register" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/register-school" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/register-individual" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
+            <Route path="/individual-registration" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
           </Routes>
         </main>
         <Footer />
