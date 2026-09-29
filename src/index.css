@@ -28,12 +28,20 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     background-color: var(--color-ink);
     color: var(--color-bone);
     font-family: var(--font-label);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -61,4 +69,18 @@
   background-image: radial-gradient(rgba(232,225,206,.16) .6px, transparent .9px);
   background-size: 4px 4px;
   mix-blend-mode: overlay;
+}
+
+/* Theme-reactive sponsor logos */
+:root[data-theme="light"] .sponsor-logo-dark {
+  display: none !important;
+}
+:root[data-theme="light"] .sponsor-logo-light {
+  display: block !important;
+}
+:root:not([data-theme="light"]) .sponsor-logo-dark {
+  display: block !important;
+}
+:root:not([data-theme="light"]) .sponsor-logo-light {
+  display: none !important;
 }

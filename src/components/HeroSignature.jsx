@@ -137,19 +137,22 @@ const HeroSignature = () => {
       x.fill();
       
       // faint cross-hair + annotations
-      x.globalAlpha = 0.5;
-      x.strokeStyle = BONE;
-      x.lineWidth = 0.6;
-      x.setLineDash([2, 4]);
-      x.beginPath(); x.moveTo(cx - R * 3.1, cy); x.lineTo(cx - R * 1.5, cy); x.stroke();
-      x.beginPath(); x.moveTo(cx + R * 1.5, cy); x.lineTo(cx + R * 3.1, cy); x.stroke();
-      x.setLineDash([]);
-      x.globalAlpha = 0.85;
-      x.font = '9px "IBM Plex Mono", monospace';
-      x.fillStyle = BONE;
-      x.fillText('Rₛ = 2GM/c²', cx + R * 1.62, cy - 6);
-      x.fillText('ACCRETION DISK', cx - R * 3.05, cy - 6);
-      x.globalAlpha = 1;
+      // faint cross-hair + annotations (only on wider viewports to avoid mobile crowding)
+      if (w > 380) {
+        x.globalAlpha = 0.5;
+        x.strokeStyle = BONE;
+        x.lineWidth = 0.6;
+        x.setLineDash([2, 4]);
+        x.beginPath(); x.moveTo(cx - R * 3.1, cy); x.lineTo(cx - R * 1.5, cy); x.stroke();
+        x.beginPath(); x.moveTo(cx + R * 1.5, cy); x.lineTo(cx + R * 3.1, cy); x.stroke();
+        x.setLineDash([]);
+        x.globalAlpha = 0.85;
+        x.font = '9px "IBM Plex Mono", monospace';
+        x.fillStyle = BONE;
+        x.fillText('Rₛ = 2GM/c²', cx + R * 1.62, cy - 6);
+        x.fillText('ACCRETION DISK', cx - R * 3.05, cy - 6);
+        x.globalAlpha = 1;
+      }
     };
 
     draw();
@@ -167,9 +170,16 @@ const HeroSignature = () => {
   }, []);
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="grid grid-cols-[20px_1fr_20px] md:grid-cols-[34px_1fr_34px] gap-2 md:gap-4 lg:gap-6 mt-4 w-full">
-        <div className="flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
+    <div className="w-full flex flex-col items-center">
+      {/* Mobile Top Japanese Caption Bar */}
+      <div className="flex md:hidden justify-between items-center w-full font-mono text-[9px] text-bone-dim tracking-wider uppercase mb-2 px-1">
+        <span className="font-jp font-bold text-bone">光さえも逃れられない。</span>
+        <span className="font-jp font-bold text-crimson">未来の技術者たちへ。</span>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-[34px_1fr_34px] gap-2 md:gap-4 lg:gap-6 mt-1 sm:mt-4 w-full">
+        {/* Desktop Left Pillar */}
+        <div className="hidden md:flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
           <span className="font-jp font-bold text-[10px] md:text-[11.5px] leading-relaxed w-[1.2em] text-center" style={{ lineBreak: 'anywhere', wordBreak: 'break-all' }}>
             光さえも逃れられない。
           </span>
@@ -178,18 +188,19 @@ const HeroSignature = () => {
           </span>
         </div>
         
-        <figure ref={containerRef} className="relative border-2 border-bone bg-ink overflow-hidden aspect-[16/10.6] w-full">
+        <figure ref={containerRef} className="relative border-2 border-bone bg-ink overflow-hidden aspect-[16/10] sm:aspect-[16/10.6] w-full">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" aria-hidden="true" />
           <div className="screen absolute inset-0 pointer-events-none"></div>
-          <span className="absolute left-2 top-2 z-10 font-mono text-[9px] tracking-widest text-bone border border-bone/75 px-1.5 py-0.5 bg-ink/50 uppercase">
+          <span className="absolute left-1.5 sm:left-2 top-1.5 sm:top-2 z-10 font-mono text-[7.5px] sm:text-[9px] tracking-wider sm:tracking-widest text-bone border border-bone/75 px-1.5 py-0.5 bg-ink/75 uppercase max-w-[70%] sm:max-w-none truncate">
             FIG.01 — ACCRETION STUDY // GARGANTUA CLASS
           </span>
-          <div className="absolute right-2 bottom-2 z-10 text-right font-mono text-[8.5px] tracking-[0.14em] text-bone/85 uppercase leading-relaxed">
+          <div className="absolute right-1.5 sm:right-2 bottom-1.5 sm:bottom-2 z-10 text-right font-mono text-[7px] sm:text-[8.5px] tracking-[0.08em] sm:tracking-[0.14em] text-bone/85 uppercase leading-relaxed bg-ink/60 px-1 py-0.5">
             AEROSS VISUAL UNIT<br/>EXPOSURE 1/60 · ISO 3200
           </div>
         </figure>
         
-        <div className="flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
+        {/* Desktop Right Pillar */}
+        <div className="hidden md:flex flex-col justify-between items-center uppercase overflow-hidden gap-3">
           <span className="font-jp font-bold text-[10px] md:text-[11.5px] leading-relaxed w-[1.2em] text-center" style={{ lineBreak: 'anywhere', wordBreak: 'break-all' }}>
             未来の技術者たちへ。
           </span>
