@@ -31,12 +31,24 @@ const Navbar = () => {
     setRegisterDropdownOpen(false);
   }, [location.pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About AEROSS' },
     { path: '/comps', label: 'The Comps' },
     { path: '/format', label: 'Format & Dates' },
-    //{ path: '/sponsors', label: 'Sponsors' },
+    { path: '/sponsors', label: 'Sponsors' },
     { path: '/contact', label: 'Contact' }
   ];
 
@@ -44,7 +56,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-ink border-b-2 border-bone">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
-          <Link to="/" className="flex-shrink-0 flex items-center font-display font-bold text-2xl text-bone tracking-widest uppercase hover:text-crimson transition-colors">
+          <Link to="/" className="flex-shrink-0 flex items-center font-display font-bold text-xl sm:text-2xl text-bone tracking-widest uppercase hover:text-crimson transition-colors">
             CELESTECON
           </Link>
           <div className="hidden md:flex space-x-6">
@@ -59,9 +71,9 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-4">
             {/* Desktop Registration Dropdown */}
-            <div className="relative">
+            <div className="relative hidden md:block">
               <button
                 type="button"
                 onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
@@ -101,67 +113,113 @@ const Navbar = () => {
               )}
             </div>
 
+            {/* Mobile Direct Register Button */}
+            <a
+              href="/celestecon_registration.html"
+              className="md:hidden px-2.5 py-1 bg-crimson text-bone-hi font-label text-xs font-bold uppercase tracking-wider border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+            >
+              Register
+            </a>
+
             <button
               onClick={() => setIsLight(!isLight)}
-              className="p-1.5 text-bone hover:text-crimson transition-colors"
+              className="p-1.5 text-bone hover:text-crimson transition-colors flex items-center justify-center"
               aria-label="Toggle theme"
             >
               {isLight ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" /></svg>
               )}
             </button>
 
             {/* Mobile Hamburger Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 text-bone hover:text-crimson transition-colors md:hidden border border-bone/40"
+              className="p-1.5 text-bone hover:text-crimson transition-colors md:hidden border border-bone/40 flex items-center justify-center"
               aria-label="Toggle Menu"
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
               )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Full-Screen Overlay Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t-2 border-bone/40 bg-ink py-4 px-2">
+          <div className="md:hidden fixed inset-x-0 top-14 bottom-0 z-50 bg-ink border-b-2 border-bone p-4 overflow-y-auto flex flex-col justify-between animate-in fade-in duration-150">
             <div className="flex flex-col space-y-2">
+              <div className="font-mono text-[10px] text-bone-dim uppercase tracking-[0.2em] px-3 pt-1 pb-1 border-b border-bone/20 font-bold">
+                Navigation // 目次
+              </div>
               {navLinks.map(link => (
                 <Link
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`text-base font-label uppercase tracking-widest py-2 px-3 border-l-2 transition-colors ${
+                  className={`text-lg font-label uppercase tracking-widest py-3 px-3 border-l-4 transition-colors ${
                     location.pathname === link.path
-                      ? 'border-crimson text-crimson font-bold bg-bone/5'
+                      ? 'border-crimson text-crimson font-bold bg-bone/10'
                       : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/50'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-bone/20 mt-2 flex flex-col gap-2">
-                <div className="font-mono text-[10px] text-bone-dim uppercase tracking-widest px-3">Registration Portals</div>
+            </div>
+
+            <div className="pt-4 border-t-2 border-bone/30 mt-6 flex flex-col gap-2.5 pb-6">
+              <div className="font-mono text-[10px] text-bone-dim uppercase tracking-[0.2em] px-1 font-bold">
+                Registration Portals // 登録
+              </div>
+              <a
+                href="/celestecon_registration.html"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-label uppercase tracking-widest py-3 px-4 border-2 border-bone text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center font-bold bg-ink"
+              >
+                <span>School Contingent</span>
+                <span>↗</span>
+              </a>
+              <a
+                href="/celestecon_individual_registration.html"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-label uppercase tracking-widest py-3 px-4 bg-crimson text-bone-hi font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
+              >
+                <span>Individual Entry</span>
+                <span>↗</span>
+              </a>
+
+              <div className="pt-3 border-t border-bone/20 flex items-center justify-between font-mono text-[11px] px-1">
                 <a
-                  href="/celestecon_registration.html"
-                  className="text-sm font-label uppercase tracking-widest py-2 px-3 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center"
+                  href="https://www.instagram.com/aerospace_society/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-bone-dim hover:text-crimson transition-colors flex items-center gap-0.5"
                 >
-                  <span>School Registration</span>
-                  <span>↗</span>
+                  <span>Instagram</span>
+                  <span className="text-[9px]">↗</span>
                 </a>
+                <span className="text-bone-dim/40">•</span>
                 <a
-                  href="/celestecon_individual_registration.html"
-                  className="text-sm font-label uppercase tracking-widest py-2 px-3 bg-crimson text-bone-hi font-bold border border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
+                  href="https://www.linkedin.com/company/aeross-aerospace-society"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-bone-dim hover:text-crimson transition-colors flex items-center gap-0.5"
                 >
-                  <span>Individual Registration</span>
-                  <span>↗</span>
+                  <span>LinkedIn</span>
+                  <span className="text-[9px]">↗</span>
+                </a>
+                <span className="text-bone-dim/40">•</span>
+                <a
+                  href="mailto:aeross@dpsrkp.net"
+                  className="text-bone-dim hover:text-crimson transition-colors flex items-center gap-0.5"
+                >
+                  <span>Email</span>
+                  <span className="text-[9px]">↗</span>
                 </a>
               </div>
             </div>
@@ -174,41 +232,61 @@ const Navbar = () => {
 
 const Footer = () => {
   return (
-    <footer className="border-t-4 border-ink-3 mt-24 py-12 bg-bone text-ink">
+    <footer className="border-t-4 border-ink-3 mt-12 md:mt-24 py-8 md:py-12 bg-bone text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-1">
-            <h3 className="font-display font-bold text-2xl mb-2 text-ink uppercase tracking-wider">AEROSS</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          <div className="sm:col-span-2 md:col-span-1">
+            <h3 className="font-display font-bold text-2xl mb-1 text-ink uppercase tracking-wider">AEROSS</h3>
             <p className="font-mono text-xs text-ink-3 uppercase tracking-widest font-bold">"Sky is not the Limit"</p>
           </div>
           <div>
-            <h4 className="font-mono text-[10px] text-crimson-deep mb-3 tracking-[0.2em] font-bold uppercase">Quick Links</h4>
-            <ul className="space-y-1 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
+            <h4 className="font-mono text-[10px] text-crimson-deep mb-2 tracking-[0.2em] font-bold uppercase">Quick Links</h4>
+            <ul className="space-y-1.5 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
               <li><Link to="/about" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">About AEROSS</Link></li>
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
               <li><Link to="/format" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Format & Dates</Link></li>
-              {/* <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors</Link></li>*/}
+              <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors & Partners</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-mono text-[10px] text-crimson-deep mb-3 tracking-[0.2em] font-bold uppercase">Contact</h4>
-            <ul className="space-y-1 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
+            <h4 className="font-mono text-[10px] text-crimson-deep mb-2 tracking-[0.2em] font-bold uppercase">Contact &amp; Social</h4>
+            <ul className="space-y-1.5 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
               <li><a href="mailto:aeross@dpsrkp.net" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">aeross@dpsrkp.net</a></li>
-              <li>IG: @aerospace_society</li>
-              <li>LI: Aeross: Aerospace Society</li>
+              <li>
+                <a
+                  href="https://www.instagram.com/aerospace_society/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson inline-flex items-center gap-1"
+                >
+                  <span>IG: @aerospace_society</span>
+                  <span className="text-[10px]">↗</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/company/aeross-aerospace-society"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson inline-flex items-center gap-1"
+                >
+                  <span>LI: Aeross: Aerospace Society</span>
+                  <span className="text-[10px]">↗</span>
+                </a>
+              </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-mono text-[10px] text-crimson-deep mb-3 tracking-[0.2em] font-bold uppercase">Address</h4>
+            <h4 className="font-mono text-[10px] text-crimson-deep mb-2 tracking-[0.2em] font-bold uppercase">Address</h4>
             <address className="not-italic font-label text-sm uppercase tracking-widest font-semibold text-ink-2 leading-relaxed">
               Delhi Public School, R.K. Puram<br />
               New Delhi – 110022
             </address>
           </div>
         </div>
-        <div className="mt-12 pt-6 border-t-2 border-ink flex flex-col md:flex-row justify-between items-center">
+        <div className="mt-8 pt-4 border-t-2 border-ink flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <p className="font-mono text-[10px] text-ink-3 font-bold tracking-widest uppercase">№ CC-VI-2026</p>
-          <div className="flex items-center gap-2 mt-4 md:mt-0">
+          <div className="flex items-center gap-3">
             <span className="font-jp text-[10px] text-crimson font-bold tracking-widest">第六回航空宇宙大会</span>
             <span className="font-mono text-[10px] text-ink-3 font-bold tracking-widest uppercase">&copy; {new Date().getFullYear()} AEROSS</span>
           </div>
@@ -235,13 +313,13 @@ function App() {
       <div className="bg-grain"></div>
       <div className="min-h-screen flex flex-col relative z-10">
         <Navbar />
-        <main className="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <main className="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/comps" element={<Comps />} />
             <Route path="/format" element={<Format />} />
-            {/*<Route path="/sponsors" element={<Sponsors />} />*/}
+            <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/gallery" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<RedirectTo to="/celestecon_registration.html" />} />

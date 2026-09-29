@@ -35,8 +35,8 @@ const ExecCard = ({ exec, index }) => {
           <span className="text-[#161310]/80 font-bold tracking-wider truncate max-w-[110px]">{exec.division.split(' ')[0]}</span>
         </div>
 
-        {/* Photo Container with Out-of-Frame Pop Effect */}
-        <div className="relative h-80 sm:h-72 w-full border-b border-[#161310]/20 bg-[#ECE5D6] flex items-end justify-center overflow-visible md:overflow-hidden md:group-hover:overflow-visible transition-all duration-300">
+        {/* Photo Container with Out-of-Frame Pop Effect on Desktop Hover Only */}
+        <div className="relative h-72 sm:h-72 w-full border-b border-[#161310]/20 bg-[#ECE5D6] flex items-end justify-center overflow-hidden md:overflow-hidden md:group-hover:overflow-visible transition-all duration-300">
           {/* Corner Technical Reticles (+) */}
           <span className="absolute top-2 left-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
           <span className="absolute top-2 right-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
@@ -44,28 +44,27 @@ const ExecCard = ({ exec, index }) => {
           <span className="absolute bottom-2 right-2 font-mono text-[10px] text-[#161310]/35 select-none leading-none z-0">+</span>
 
           {/* Warm Ambient Halo Glow behind person */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 sm:w-48 sm:h-48 rounded-full bg-gradient-to-br from-crimson/25 via-crimson/10 to-transparent blur-xl pointer-events-none transition-all duration-500 group-hover:scale-125 group-hover:opacity-100 opacity-75 z-0" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-48 sm:h-48 rounded-full bg-gradient-to-br from-crimson/25 via-crimson/10 to-transparent blur-xl pointer-events-none transition-all duration-500 group-hover:scale-125 group-hover:opacity-100 opacity-75 z-0" />
 
-          {/* Cutout Subject - Components (guitar neck, hands, bouquet, bottom) break OUT OF FRAME */}
-          <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-20 overflow-visible">
+          {/* Cutout Subject - cleanly contained on mobile, subtle lift on desktop hover */}
+          <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-20">
             <img
               src={imgSrc}
               alt={exec.name}
               onError={handleImageError}
-              className={`transition-all duration-300 ease-out pointer-events-none ${
-                isCustomPhoto
-                  ? 'h-full w-auto max-w-none left-1/2 -translate-x-1/2 bottom-0 absolute object-contain object-bottom origin-bottom ' +
-                    'scale-120 translate-y-5 drop-shadow-[0_12px_22px_rgba(194,58,30,0.35)] ' +
-                    'md:origin-center md:scale-95 md:translate-y-0 md:drop-shadow-[0_4px_10px_rgba(0,0,0,0.18)] ' +
-                    'md:group-hover:scale-110 md:group-hover:translate-y-5 md:group-hover:drop-shadow-[0_16px_30px_rgba(194,58,30,0.5)]'
+              className={`transition-all duration-300 ease-out pointer-events-none ${isCustomPhoto
+                  ? 'h-full w-auto max-w-full bottom-0 object-contain object-bottom origin-bottom ' +
+                  'scale-100 translate-y-0 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] ' +
+                  'md:max-w-none md:left-1/2 md:-translate-x-1/2 md:absolute md:origin-center md:scale-95 ' +
+                  'md:group-hover:scale-110 md:group-hover:translate-y-4 md:group-hover:drop-shadow-[0_16px_30px_rgba(194,58,30,0.5)]'
                   : 'w-full h-full object-contain object-bottom invert opacity-75 p-3 group-hover:scale-105 transition-transform'
-              }`}
+                }`}
             />
           </div>
         </div>
 
         {/* Executive Info */}
-        <div className="p-4 pt-8 sm:pt-7 space-y-2 relative z-10">
+        <div className="p-4 space-y-2 relative z-10">
           <div className="font-mono text-[9.5px] text-crimson font-bold uppercase tracking-[0.16em]">
             {exec.role}
           </div>
@@ -88,7 +87,7 @@ const ExecCard = ({ exec, index }) => {
           <div className="flex items-center gap-1.5">
             <a
               href={`tel:${exec.phoneRaw}`}
-              className="flex-1 flex items-center justify-center gap-1.5 border border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson py-1.5 px-2 font-bold transition-colors"
+              className="flex-1 flex items-center justify-center gap-1.5 border border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson py-2 px-2 font-bold transition-colors"
               title={`Call ${exec.name}`}
             >
               <Phone size={11} />
@@ -96,7 +95,7 @@ const ExecCard = ({ exec, index }) => {
             </a>
             <button
               onClick={handleCopyPhone}
-              className="p-1.5 border border-[#161310]/30 text-[#161310] hover:border-crimson hover:text-crimson transition-colors bg-[#E3DCC9]/40"
+              className="p-2 border border-[#161310]/30 text-[#161310] hover:border-crimson hover:text-crimson transition-colors bg-[#E3DCC9]/40"
               title="Copy phone number"
             >
               {copiedPhone ? <Check size={12} className="text-emerald-700" /> : <Copy size={12} />}
@@ -106,11 +105,10 @@ const ExecCard = ({ exec, index }) => {
 
         <a
           href={`mailto:${exec.email}?subject=%5BCelesteCon%2026%5D%20Attn:%20${encodeURIComponent(exec.name)}`}
-          className={`w-full flex items-center justify-center gap-1.5 border py-1.5 px-2 font-bold transition-colors ${
-            exec.phone
+          className={`w-full flex items-center justify-center gap-1.5 border py-2 px-2 font-bold transition-colors ${exec.phone
               ? 'border-[#161310]/30 text-[#161310] hover:border-[#161310] hover:bg-[#161310] hover:text-white bg-[#E3DCC9]/40'
               : 'border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson'
-          }`}
+            }`}
         >
           <Mail size={11} />
           <span>Email {exec.name.split(' ')[0]}</span>
@@ -165,15 +163,15 @@ const Contact = () => {
               <span>Primary Desks</span>
               <span>EST. 2009</span>
             </div>
-            <dl className="p-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 font-mono text-[10.5px] tracking-[0.03em]">
+            <dl className="p-3 sm:p-4 grid grid-cols-[80px_1fr] sm:grid-cols-[auto_1fr] gap-x-3 sm:gap-x-4 gap-y-2.5 sm:gap-y-3 font-mono text-[10px] sm:text-[10.5px] tracking-[0.03em]">
               <dt className="text-crimson font-bold uppercase whitespace-nowrap">Primary POC</dt>
-              <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">
+              <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 break-words">
                 <a href="tel:+918929020721" className="hover:text-crimson font-bold transition-colors">
                   Siddhartha Srivastava (+91 89290 20721)
                 </a>
               </dd>
               <dt className="text-crimson font-bold uppercase whitespace-nowrap">Central Email</dt>
-              <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">
+              <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 break-all">
                 <a href="mailto:aeross@dpsrkp.net" className="hover:text-crimson transition-colors">
                   aeross@dpsrkp.net
                 </a>
@@ -181,7 +179,7 @@ const Contact = () => {
               <dt className="text-crimson font-bold uppercase whitespace-nowrap">Instagram</dt>
               <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">
                 <a
-                  href="https://instagram.com/aerospace_society"
+                  href="https://www.instagram.com/aerospace_society/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-crimson transition-colors inline-flex items-center gap-1"
@@ -193,7 +191,7 @@ const Contact = () => {
               <dt className="text-crimson font-bold uppercase whitespace-nowrap">LinkedIn</dt>
               <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">
                 <a
-                  href="https://www.linkedin.com/company/aeross-dpsrkp"
+                  href="https://www.linkedin.com/company/aeross-aerospace-society"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-crimson transition-colors inline-flex items-center gap-1"
@@ -296,7 +294,7 @@ const Contact = () => {
                   type="text"
                   required
                   placeholder="Your Name // Institution // Designation"
-                  className="w-full bg-transparent border-[1.5px] border-bone/40 px-3 py-2 font-mono text-[11px] text-bone placeholder:text-bone/30 focus:outline-none focus:border-crimson transition-colors"
+                  className="w-full bg-transparent border-[1.5px] border-bone/40 px-3 py-2 font-mono text-base sm:text-xs text-bone placeholder:text-bone/30 focus:outline-none focus:border-crimson transition-colors"
                 />
               </div>
               <div>
@@ -305,12 +303,12 @@ const Contact = () => {
                   required
                   rows="3"
                   placeholder="Inquiry content, competition questions, or delegation notes..."
-                  className="w-full bg-transparent border-[1.5px] border-bone/40 px-3 py-2 font-mono text-[11px] text-bone placeholder:text-bone/30 focus:outline-none focus:border-crimson transition-colors resize-none"
+                  className="w-full bg-transparent border-[1.5px] border-bone/40 px-3 py-2 font-mono text-base sm:text-xs text-bone placeholder:text-bone/30 focus:outline-none focus:border-crimson transition-colors resize-none"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full border-[1.5px] border-crimson bg-crimson text-bone-hi font-label font-bold text-sm uppercase tracking-widest py-2 hover:bg-transparent hover:text-crimson transition-colors flex items-center justify-center gap-2"
+                className="w-full border-[1.5px] border-crimson bg-crimson text-bone-hi font-label font-bold text-sm uppercase tracking-widest py-2.5 hover:bg-transparent hover:text-crimson transition-colors flex items-center justify-center gap-2"
               >
                 <Mail size={13} />
                 <span>Transmit Dispatch</span>

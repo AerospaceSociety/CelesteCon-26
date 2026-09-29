@@ -6,7 +6,7 @@ const Format = () => {
     <div className="max-w-4xl">
       <SectionHeader section="05" title="Format & Logistics" jp="大会形式" />
       
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8 md:gap-12 mt-6 sm:mt-8">
         <div>
           <h3 className="font-display text-[clamp(24px,4vw,40px)] text-bone uppercase leading-[1.1] mb-6">
             A two-stage crucible.
@@ -32,7 +32,7 @@ const Format = () => {
               The top-performing teams from Round 1 will be invited to Delhi Public School, R.K. Puram for the grand finale. 
               This stage involves live presentations, on-the-spot physical builds, buzzer rounds, and the Open Arena.
             </p>
-            <div className="border border-bone/30 bg-bone/5 p-4 inline-block">
+            <div className="border border-bone/30 bg-bone/5 p-4 block sm:inline-block">
               <span className="font-mono text-[10px] tracking-widest text-bone uppercase">Venue</span>
               <div className="font-label font-bold text-bone uppercase tracking-widest mt-1">Delhi Public School, R.K. Puram</div>
             </div>

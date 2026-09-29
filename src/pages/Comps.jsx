@@ -20,19 +20,19 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
           }
         }}
       >
-        <div className="flex flex-wrap items-baseline justify-between gap-3 mb-2">
-          <div className="flex items-baseline gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-3 mb-2">
+          <div className="flex items-baseline gap-2.5 sm:gap-3">
             <span className="font-mono text-sm sm:text-base text-crimson font-bold tracking-wider">
               {String(index + 1).padStart(2, '0')}
             </span>
-            <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase tracking-wide group-hover:text-crimson transition-colors">
+            <h3 className="font-display text-xl sm:text-2xl md:text-3xl text-bone uppercase tracking-wide group-hover:text-crimson transition-colors leading-tight">
               {event.name}
             </h3>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap pl-6 sm:pl-0">
             <span
-              className={`font-mono text-[10px] tracking-widest uppercase border px-2.5 py-0.5 font-bold ${
+              className={`font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border px-2 sm:px-2.5 py-0.5 font-bold ${
                 event.mode === 'Onsite'
                   ? 'bg-bone text-ink border-bone'
                   : 'bg-ink text-bone border-bone'
@@ -41,16 +41,16 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
               {event.mode}
             </span>
             {event.eligibility && (
-              <span className="font-mono text-[10px] tracking-widest uppercase border border-bone/40 text-bone-dim px-2 py-0.5">
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border border-bone/40 text-bone-dim px-1.5 sm:px-2 py-0.5">
                 {event.eligibility}
               </span>
             )}
             {event.team && (
-              <span className="font-mono text-[10px] tracking-widest uppercase border border-crimson/60 text-crimson px-2 py-0.5 font-bold">
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border border-crimson/60 text-crimson px-1.5 sm:px-2 py-0.5 font-bold">
                 {event.team}
               </span>
             )}
-            <span className="font-mono text-xs text-bone-dim group-hover:text-crimson transition-colors ml-1">
+            <span className="font-mono text-xs text-bone-dim group-hover:text-crimson transition-colors ml-auto sm:ml-1 font-bold">
               {expanded ? '▲ [COLLAPSE]' : '▼ [DETAILS]'}
             </span>
           </div>
@@ -260,21 +260,21 @@ const Comps = () => {
       </div>
 
       {/* Registration Portals Banner */}
-      <div className="mb-10 border-2 border-crimson/80 bg-crimson/5 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-mono text-xs">
+      <div className="mb-8 sm:mb-10 border-2 border-crimson/80 bg-crimson/5 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-mono text-xs">
         <div>
           <span className="text-crimson font-bold uppercase tracking-wider block">Registration Portals Active</span>
-          <span className="text-bone-dim text-[11px]">School contingent delegations (up to 3 teams per event) & Direct individual entries (open events).</span>
+          <span className="text-bone-dim text-[11px] leading-relaxed block mt-0.5">School contingent delegations (up to 3 teams per event) & Direct individual entries (open events).</span>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto shrink-0">
           <a
             href="/celestecon_registration.html"
-            className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
+            className="px-3 py-2 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors text-center"
           >
             School Portal ↗
           </a>
           <a
             href="/celestecon_individual_registration.html"
-            className="px-3 py-1.5 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+            className="px-3 py-2 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center"
           >
             Individual Portal ↗
           </a>
@@ -282,14 +282,14 @@ const Comps = () => {
       </div>
 
       {/* Controls & Filter Bar */}
-      <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+      <div className="mb-6 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center">
         {/* Mode Filters */}
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-1.5 sm:gap-2 w-full sm:w-auto">
           {['ALL', 'HYBRID', 'ONSITE'].map((mode) => (
             <button
               key={mode}
               onClick={() => setFilterMode(mode)}
-              className={`px-3 py-1 font-mono text-xs uppercase tracking-widest font-bold border transition-colors ${
+              className={`flex-1 sm:flex-initial px-2.5 sm:px-3 py-1.5 font-mono text-xs uppercase tracking-wider sm:tracking-widest font-bold border transition-colors text-center ${
                 filterMode === mode
                   ? 'bg-crimson text-bone border-crimson'
                   : 'bg-ink text-bone-dim border-bone/40 hover:border-bone hover:text-bone'
@@ -301,17 +301,17 @@ const Comps = () => {
         </div>
 
         {/* Search and Expand All Toggle */}
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 sm:gap-3 items-center w-full sm:w-auto">
           <input
             type="text"
             placeholder="Filter competitions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-ink border-2 border-bone/40 px-3 py-1 text-sm font-label text-bone placeholder:text-bone-dim/50 focus:border-crimson outline-none w-full sm:w-48"
+            className="bg-ink border-2 border-bone/40 px-3 py-1.5 text-base sm:text-sm font-label text-bone placeholder:text-bone-dim/50 focus:border-crimson outline-none flex-1 min-w-0 sm:w-48"
           />
           <button
             onClick={() => setExpandAll(!expandAll)}
-            className="px-3 py-1 font-mono text-xs uppercase tracking-widest font-bold border border-bone/60 text-bone hover:bg-bone hover:text-ink transition-colors whitespace-nowrap"
+            className="px-3 py-1.5 font-mono text-xs uppercase tracking-wider sm:tracking-widest font-bold border border-bone/60 text-bone hover:bg-bone hover:text-ink transition-colors whitespace-nowrap shrink-0"
           >
             {expandAll ? 'Collapse All' : 'Expand All'}
           </button>
