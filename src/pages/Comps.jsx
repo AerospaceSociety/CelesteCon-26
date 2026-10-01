@@ -50,6 +50,11 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
                 {event.team}
               </span>
             )}
+            {event.schoolCap && (
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border border-bone/30 text-bone-dim px-1.5 sm:px-2 py-0.5">
+                Cap: {event.schoolCap}
+              </span>
+            )}
             <span className="font-mono text-xs text-bone-dim group-hover:text-crimson transition-colors ml-auto sm:ml-1 font-bold">
               {expanded ? '▲ [COLLAPSE]' : '▼ [DETAILS]'}
             </span>
@@ -263,7 +268,7 @@ const Comps = () => {
       <div className="mb-8 sm:mb-10 border-2 border-crimson/80 bg-crimson/5 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-mono text-xs">
         <div>
           <span className="text-crimson font-bold uppercase tracking-wider block">Registration Portals Active</span>
-          <span className="text-bone-dim text-[11px] leading-relaxed block mt-0.5">School contingent delegations (up to 3 teams per event) & Direct individual entries (open events).</span>
+          <span className="text-bone-dim text-[11px] leading-relaxed block mt-0.5">School contingent delegations (2–3 teams/school per-event quota) & Direct individual entries (strictly 1 team per competition). Regular deadline: 10 Oct · Rocketry/Prix/Jam: 20 Oct.</span>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto shrink-0">
           <a
