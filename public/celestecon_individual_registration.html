@@ -1230,7 +1230,7 @@
     <header class="hero" id="top">
       <div class="switch-banner">
         <span>Registering on behalf of an official school contingent?</span>
-        <a href="/celestecon_registration.html">Switch to School Registration (Up to 3 entries/event) &rarr;</a>
+        <a href="/celestecon_registration.html">Switch to School Registration (2–3 entries/event quota) &rarr;</a>
       </div>
 
       <p class="eyebrow">CelesteCon 2026 // Direct Student Portal</p>
@@ -1240,12 +1240,13 @@
       <div class="hero-meta" aria-label="Registration details">
         <span>8 Events</span>
         <span style="color:var(--crimson); font-weight:700;">Strict Limit: 1 Team per Competition</span>
-        <span>Independent / Open Entry</span>
-        <span>Official Cadet Registry: Active</span>
+        <span>Regular Deadline: 10 Oct · 11:59 PM IST</span>
+        <span>Rocketry/Prix/Jam Deadline: 20 Oct · 11:59 PM IST</span>
+        <span>Onsite Finale: 24 Oct (07:45 AM)</span>
       </div>
       <div class="clash-advisory-box">
-        <div class="clash-advisory-tag">&#9670; Participation &amp; Scheduling Advisory</div>
-        <p>A student can enter multiple competitions (limit to 1 team per competition). If participating in multiple competitions, note that on-campus timings during the offline finals may clash, and attendance coordination across events is the registrant's responsibility.</p>
+        <div class="clash-advisory-tag">&#9670; Participation Directives &amp; Scheduling Advisory</div>
+        <p>Independent entries are strictly limited to <strong>1 team per competition</strong>. A student may enter several events; however, offline rounds on campus may clash, and attendance coordination across overlaps is the sole responsibility of the registrant. The portal locks strictly at 11:59 PM IST on deadline day (no on-spot additions). <strong>Hardware Notice:</strong> Delegates must bring their own Wi-Fi / mobile internet connection (personal hotspot); power outlets will be accessible.</p>
       </div>
       <hr class="divider">
     </header>
@@ -1456,51 +1457,51 @@
       const EVENTS = {
         settle: {
           name: "Settle-Me-This (Space Settlement Design)",
-          tagline: "Habitable Free-Space Settlement Proposal",
-          desc: "Design a comprehensive proposal for a permanent, self-sustaining free-space settlement. Junior (Grades 6–8) and Senior (Grades 9–12) categories, evaluated independently.",
+          tagline: "Free-Space Orbital Settlement Design & Oral Defense",
+          desc: "Author an engineering proposal for a permanent, habitable free-space settlement (max 25 pages Junior / 35 pages Senior). Top 5 teams per category advance to live campus presentation.",
           classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 1, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
         },
         volatus: {
-          name: "Volatus (Aviation / UAV & Dimension III)",
-          tagline: "Aero-Mechanical Design & Precision 3D CAD",
-          desc: "Aero-mechanical UAV/eVTOL engineering challenge incorporating precision 3D CAD modeling and live flight review. Junior (Grades 6–8) and Senior (Grades 9–12) categories.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 4, maxTeams: 1, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+          name: "Volatus (Aviation, UAV & 3D CAD)",
+          tagline: "Aero-Mechanical UAV/eVTOL Prototyping & CAD (incl. Dimension III)",
+          desc: "Design a UAV or eVTOL for a case-based mission profile. Submit online proposal with 3D CAD model; shortlisted teams present science-fair exhibit on campus.",
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
         },
         dispute: {
           name: "In Pursuit of Dispute (Debate & Quizzitch)",
-          tagline: "Quizzitch Prelims + Live Chess-Clock Parliamentary Debate",
-          desc: "Aerospace screening quiz (Quizzitch) leading into bracketed live chess-clock parliamentary debates with Points of Information (POIs) on campus.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 3, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
+          tagline: "Quizzitch Online Prelims + Live Parliamentary Debate",
+          desc: "45-minute Quizzitch online screening quiz on aerospace science. Top 10 teams advance to live parliamentary debates with POIs and jury questioning.",
+          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
         },
         bpp: {
           name: "Business Power Pitch",
           tagline: "Commercial Aerospace Venture & Investor Shark Tank",
-          desc: "Architect a commercial space venture, submit an executive proposal with pitch video, and defend before venture capitalists in a live shark tank. Junior (Grades 6–8) and Senior (Grades 9–12) categories.",
-          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 4, maxTeams: 1, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+          desc: "Turn a quirky prompt into a viable aerospace good or service. Submit pitch deck & 5-min video; finalists present 7-min live pitch to investor judges.",
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 1, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
         },
         gamejam: {
           name: "CelesteJam",
-          tagline: "Aerospace Minigame Build Sprint & Arcade Expo",
-          desc: "Design, program, and polish a playable minigame or simulation for live arcade playtesting, peer review, and a surprise live patch sprint on campus.",
+          tagline: "Game Development, Arcade Showcase & Peer Review",
+          desc: "Theme released online 10 Oct. Build a playable minigame beforehand in any engine; showcase and playtest onsite for peer review and jury evaluation.",
           classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 1, mode: "Onsite", categories: null, restricted: false
         },
         theatre: {
           name: "AEROSS Theatre",
-          tagline: "Creative Arts, Stagecraft & Open Talent Showcase",
-          desc: "Complete creative freedom to showcase any performance art—stand-up comedy, theatrical skits, musical instruments, singing, dance, magic, or monologues. Online audition video leading to an onsite talent showcase.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
+          tagline: "Open Stage, Creative Performance & Live Improv",
+          desc: "Total creative freedom: stand-up, skits, instruments, singing, dance, poetry, mimicry, magic, or monologues. 3–5 min video audition; live showcase & improv at the AVH.",
+          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 5, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false
         },
         rocketry: {
           name: "Rocketry",
-          tagline: "Model Craft, Static Scrutineering & Flight Simulation",
-          desc: "Single onsite round: design, construct, and evaluate flight-capable rocket models through physical scrutineering, dimensional inspection, and computational flight simulation (no live launches into the air). Junior (Grades 6–8) and Senior (Grades 9–12) divisions.",
+          tagline: "Model Build, Static Scrutineering & Simulation",
+          desc: "Design and build a real rocket around a supplied motor specification (no motor fitted) and submit OpenRocket files. Onsite measurement & simulation testing (no live launches).",
           classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 1, mode: "Onsite", categories: ['junior', 'senior'], restricted: false
         },
         f1: {
           name: "AEROSS Prix",
           tagline: "Miniature F1 Motorsport & Aerodynamic Engineering",
-          desc: "Single onsite round: CAD/CFD aerodynamic design, manufacturing scrutiny, enterprise pit displays, and live CO2-powered racetrack sprints on campus. Junior (Grades 6–8) and Senior (Grades 9–12) divisions.",
-          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 1, mode: "Onsite", categories: ['junior', 'senior'], restricted: false
+          desc: "Design, manufacture and document an F1-style car (max 30-pg write-up, CAD & livery). Onsite technical inspection, pit defense, and 20m CO2 racetrack sprints.",
+          classMin: 9, classMax: 12, minMembers: 1, maxMembers: 5, maxTeams: 1, mode: "Onsite", categories: null, restricted: false
         }
       };
 

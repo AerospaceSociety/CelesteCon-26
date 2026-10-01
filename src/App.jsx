@@ -102,12 +102,24 @@ const Navbar = () => {
                   <a
                     href="/celestecon_individual_registration.html"
                     onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors text-left"
+                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
                   >
                     <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider">
                       Individual Entry
                     </div>
                     <p className="font-label text-xs text-bone-dim mt-0.5">Direct student registration across open events.</p>
+                  </a>
+                  <a
+                    href="/CelesteCon_2026_Brochure.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors text-left group"
+                  >
+                    <div className="font-label font-bold text-xs text-bone uppercase tracking-wider flex items-center justify-between group-hover:text-crimson">
+                      <span>Participant Brochure (PDF)</span>
+                      <span>↗</span>
+                    </div>
                   </a>
                 </div>
               )}
@@ -192,6 +204,16 @@ const Navbar = () => {
                 <span>Individual Entry</span>
                 <span>↗</span>
               </a>
+              <a
+                href="/CelesteCon_2026_Brochure.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5"
+              >
+                <span>Participant Brochure (PDF)</span>
+                <span>↗</span>
+              </a>
 
               <div className="pt-3 border-t border-bone/20 flex items-center justify-between font-mono text-[11px] px-1">
                 <a
@@ -246,6 +268,7 @@ const Footer = () => {
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
               <li><Link to="/format" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Format & Dates</Link></li>
               <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors & Partners</Link></li>
+              <li><a href="/CelesteCon_2026_Brochure.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Participant Brochure (PDF) ↗</a></li>
             </ul>
           </div>
           <div>
@@ -326,6 +349,7 @@ function App() {
             <Route path="/register-school" element={<RedirectTo to="/celestecon_registration.html" />} />
             <Route path="/register-individual" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
             <Route path="/individual-registration" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
+            <Route path="/brochure" element={<RedirectTo to="/CelesteCon_2026_Brochure.pdf" />} />
           </Routes>
         </main>
         <Footer />
