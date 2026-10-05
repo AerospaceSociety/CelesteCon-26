@@ -97,20 +97,10 @@ const Navbar = () => {
                     <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
                       School Contingent
                     </div>
-                    <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry.</p>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry portal.</p>
                   </a>
                   <a
-                    href="/celestecon_individual_registration.html"
-                    onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
-                  >
-                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider">
-                      Individual Entry
-                    </div>
-                    <p className="font-label text-xs text-bone-dim mt-0.5">Direct student registration across open events.</p>
-                  </a>
-                  <a
-                    href="/CelesteCon_2026_Brochure.pdf"
+                    href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setRegisterDropdownOpen(false)}
@@ -120,6 +110,7 @@ const Navbar = () => {
                       <span>Participant Brochure (PDF)</span>
                       <span>↗</span>
                     </div>
+                    <p className="font-label text-[11px] text-bone-dim mt-0.5">Complete guidelines, rules &amp; dossiers.</p>
                   </a>
                 </div>
               )}
@@ -186,26 +177,18 @@ const Navbar = () => {
 
             <div className="pt-4 border-t-2 border-bone/30 mt-6 flex flex-col gap-2.5 pb-6">
               <div className="font-mono text-[10px] text-bone-dim uppercase tracking-[0.2em] px-1 font-bold">
-                Registration Portals // 登録
+                Registration &amp; Documents // 登録
               </div>
               <a
                 href="/celestecon_registration.html"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-label uppercase tracking-widest py-3 px-4 border-2 border-bone text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center font-bold bg-ink"
-              >
-                <span>School Contingent</span>
-                <span>↗</span>
-              </a>
-              <a
-                href="/celestecon_individual_registration.html"
-                onClick={() => setMobileMenuOpen(false)}
                 className="text-sm font-label uppercase tracking-widest py-3 px-4 bg-crimson text-bone-hi font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
               >
-                <span>Individual Entry</span>
+                <span>School Contingent Registration</span>
                 <span>↗</span>
               </a>
               <a
-                href="/CelesteCon_2026_Brochure.pdf"
+                href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
@@ -268,7 +251,7 @@ const Footer = () => {
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
               <li><Link to="/format" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Format & Dates</Link></li>
               <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors & Partners</Link></li>
-              <li><a href="/CelesteCon_2026_Brochure.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Participant Brochure (PDF) ↗</a></li>
+              <li><a href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Participant Brochure (PDF) ↗</a></li>
             </ul>
           </div>
           <div>
@@ -347,9 +330,9 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<RedirectTo to="/celestecon_registration.html" />} />
             <Route path="/register-school" element={<RedirectTo to="/celestecon_registration.html" />} />
-            <Route path="/register-individual" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
-            <Route path="/individual-registration" element={<RedirectTo to="/celestecon_individual_registration.html" />} />
-            <Route path="/brochure" element={<RedirectTo to="/CelesteCon_2026_Brochure.pdf" />} />
+            <Route path="/register-individual" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/individual-registration" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/brochure" element={<RedirectTo to="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" />} />
           </Routes>
         </main>
         <Footer />

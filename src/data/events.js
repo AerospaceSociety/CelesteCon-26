@@ -6,9 +6,11 @@ export const eventOutline = {
 
 export const masterMilestones = {
   regOpens: '01 Oct',
-  regDeadlineRegular: '10 Oct 11:59 PM IST',
+  regDeadlineRegular: '12 Oct 11:59 PM IST',
+  r1Commences: '13 Oct',
+  r1SubmissionDeadline: '18 Oct 11:59 PM IST',
+  r1Results: '20 Oct',
   regDeadlineExtended: '20 Oct 11:59 PM IST (Rocketry, AEROSS Prix, CelesteJam)',
-  r1Commences: '11 Oct',
   onsiteFinale: '24 Oct 07:45 AM Reporting',
   venue: 'Delhi Public School, Sector 12, R.K. Puram, New Delhi — 110022'
 };
@@ -21,7 +23,7 @@ export const events = [
     mode: 'Hybrid',
     eligibility: 'Grades 6–8 Junior · Grades 9–12 Senior (judged separately)',
     team: 'Team of 3–5 members',
-    schoolCap: '2 teams / school',
+    schoolCap: '1 team per category (Jr / Sr) limit',
     quote: '“Mankind was born on Earth. It was never meant to die here.”',
     overview:
       'Create your own proposal for a fully functioning, habitable orbital space settlement in free space. The settlement must not be located on a planet or moon, though support activities may be.',
@@ -55,10 +57,12 @@ export const events = [
     ],
     timeline: [
       { label: 'Registration Opens', date: '01 Oct' },
-      { label: 'Proposal Submission Deadline', date: '17 Oct' },
-      { label: 'Finalists Announcement (Top 5 / Category)', date: '19 Oct' },
+      { label: 'Proposal Submission Deadline', date: '18 Oct' },
+      { label: 'Finalists Announcement (Top 5 / Category)', date: '20 Oct' },
       { label: 'Onsite Presentation & Defense', date: '24 Oct (CelesteCon 2026)' }
     ],
+    regDeadline: '12 Oct 2026',
+    poc: { name: 'Arshia Barsain', email: 'r24333arshia@dpsrkp.net' },
     isDraft: false
   },
   {
@@ -68,7 +72,7 @@ export const events = [
     mode: 'Hybrid',
     eligibility: 'Grades 9–12',
     team: 'Team of 3 members',
-    schoolCap: '3 teams / school',
+    schoolCap: '1 team per competition',
     quote: '“Once you have tasted flight, you will forever walk the earth with your eyes turned skyward.” — Leonardo da Vinci',
     overview:
       'Design a UAV or eVTOL that meets a defined mission profile: research it, design it and defend it. Incorporates aero-mechanical calculations, digital 3D CAD modeling, and a science-fair style defense.',
@@ -94,10 +98,12 @@ export const events = [
     ],
     timeline: [
       { label: 'Registration Opens', date: '01 Oct' },
-      { label: 'Proposal & 3D Model Due', date: '17 Oct' },
-      { label: 'Shortlist Notification', date: '19 Oct' },
+      { label: 'Proposal & 3D Model Due', date: '18 Oct' },
+      { label: 'Shortlist Notification', date: '20 Oct' },
       { label: 'Onsite Science-Fair Exhibition', date: '24 Oct (CelesteCon 2026)' }
     ],
+    regDeadline: '12 Oct 2026',
+    poc: { name: 'Tarushi Tomar', email: 'r24564tarushi@dpsrkp.net' },
     isDraft: false
   },
   {
@@ -107,7 +113,7 @@ export const events = [
     mode: 'Hybrid',
     eligibility: 'Grades 9–12',
     team: 'Team of 2 members',
-    schoolCap: '2 teams / school',
+    schoolCap: '1 team per competition',
     quote: '“It’s better to debate a question without settling it than to settle a question without debating it.”',
     overview:
       'Qualify through an online aerospace quiz (Quizzitch), then prove your knowledge in a high-energy onsite parliamentary debate.',
@@ -115,7 +121,7 @@ export const events = [
     rounds: [
       {
         title: 'Round 1 (Online Quiz — Quizzitch)',
-        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. MCQs come in three formats: single correct (no negative marking), single correct (+3 / −1), and multiple correct (bonus questions if the rest of the quiz is finished before time). The top 10 teams advance.'
+        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. Single correct (+3 / −1) (bonus questions if the rest of the quiz is finished before time). The top 10 teams advance. Note: Only one member of the team is to attempt the quiz.'
       },
       {
         title: 'Round 2 (Onsite Parliamentary Debate)',
@@ -131,10 +137,12 @@ export const events = [
     ],
     timeline: [
       { label: 'Online Quiz (Quizzitch)', date: '16 Oct' },
-      { label: 'Qualifier Results (Top 10 Teams)', date: '19 Oct' },
+      { label: 'Qualifier Results (Top 10 Teams)', date: '20 Oct' },
       { label: 'Motions Assigned (3 Days Prior)', date: '21 Oct' },
       { label: 'Live Debate Chambers', date: '24 Oct (CelesteCon 2026)' }
     ],
+    regDeadline: '12 Oct 2026',
+    poc: { name: 'Manya Gupta', email: 'e11748manya@dpsrkp.net' },
     isDraft: false
   },
   {
@@ -144,7 +152,7 @@ export const events = [
     mode: 'Hybrid',
     eligibility: 'Grades 6–8 Junior · Grades 9–12 Senior (judged separately)',
     team: 'Team of 3 members',
-    schoolCap: '2 teams / school',
+    schoolCap: '1 team per category (Jr / Sr) limit',
     quote: '“The most powerful person in the world is the storyteller.” — Steve Jobs',
     overview:
       'Turn a quirky prompt into a technically grounded aerospace or aviation product or service, then market it and pitch it for funding.',
@@ -179,31 +187,79 @@ export const events = [
       'Response to cross-questioning'
     ],
     timeline: [
-      { label: 'Round 1 Submission (Deck + Video)', date: '17 Oct' },
-      { label: 'Finalists Announcement', date: '19 Oct' },
+      { label: 'Round 1 Submission (Deck + Video)', date: '18 Oct' },
+      { label: 'Finalists Announcement', date: '20 Oct' },
       { label: 'Live Investor Pitches', date: '24 Oct (CelesteCon 2026)' }
     ],
+    regDeadline: '12 Oct 2026',
+    poc: { name: 'Ryaan Namit Jain', email: 'r23542ryaan@dpsrkp.net' },
     isDraft: false
   },
   {
     id: '05',
+    name: 'AEROSS Theatre',
+    discipline: 'Open Stage & Talent Showcase',
+    mode: 'Hybrid',
+    eligibility: 'Grades 9–12 only',
+    team: 'Team of 3–5 members',
+    schoolCap: '1 team per competition',
+    quote: '“All the world’s a stage, and all the men and women merely players.” — William Shakespeare',
+    overview:
+      'Total creative freedom: stand-up, skits, instruments, singing, dance, poetry, mimicry, magic or monologues. No aerospace or science theme required.',
+    hook: 'Total creative performance freedom — stand-up, skits, music, singing, dance, poetry, magic, or monologues.',
+    rounds: [
+      {
+        title: 'Round 1 (Video Audition Performance)',
+        desc: 'Submit a 3–5 minute video performance showcasing a talent of your choice, in any genre. Make sure the audio and visual quality are clear and the video stays strictly within the time limit.'
+      },
+      {
+        title: 'Round 2 (Live Showcase at the AVH)',
+        desc: 'Shortlisted participants perform live on event day in a talent show where creativity has no bounds. The round also includes improv performances on a topic given on the spot, testing presence of mind, quick thinking and creativity under pressure. Stage lighting, vocal mics and audio playback are provided by the host school.'
+      }
+    ],
+    criteria: [
+      'Humour & audience engagement',
+      'Creativity & originality',
+      'Stage presence & delivery'
+    ],
+    timeline: [
+      { label: 'Video Audition Due', date: '18 Oct' },
+      { label: 'Finalists Announcement', date: '20 Oct' },
+      { label: 'Live Stage Showcase & Improv', date: '24 Oct (CelesteCon 2026)' }
+    ],
+    regDeadline: '12 Oct 2026',
+    poc: { name: 'Siddharth Srivastava', email: 'r24998siddharth@dpsrkp.net' },
+    isDraft: false
+  },
+  {
+    id: '06',
     name: 'CelesteJam',
     discipline: 'Game Development',
     mode: 'Onsite',
-    eligibility: 'Grades 6–12 (Open)',
-    team: 'Team of 1–3 members',
-    schoolCap: '2 teams / school',
+    eligibility: 'Grades 6–8 Junior · Grades 9–12 Senior (judged separately)',
+    team: 'Team of 2–3 members',
+    schoolCap: '1 team per category (Jr / Sr) limit',
     quote: '“You can discover more about a person in an hour of play than in a year of conversation.” — Plato',
     overview:
       'Build, polish and showcase a working minigame from scratch around a set theme, then open it to peer review and jury evaluation on campus.',
     hook: 'Develop an original minigame around an assigned theme, then defend code & host peer playtesting onsite.',
+    categories: [
+      {
+        name: 'Junior Division (Grades 6–8)',
+        desc: 'Open to middle school students. Evaluated on game concept creativity, core gameplay mechanics, and thematic polish.'
+      },
+      {
+        name: 'Senior Division (Grades 9–12)',
+        desc: 'Open to high school students. Evaluated with advanced criteria on architecture, custom shaders/logic, frame rate stability, and technical design.'
+      }
+    ],
     rounds: [
       {
-        title: 'Round 1 (Theme Release & Pre-Event Build)',
+        title: 'Phase 1 (Theme & Build — Remote/Online)',
         desc: 'The theme is released online ahead of the event (10 Oct). Build a working minigame based on it beforehand, using any game engine such as Unity, Unreal Engine, Godot, WebGL / Three.js or Pygame.'
       },
       {
-        title: 'Round 2 (Arcade Expo, Peer Review & Jury Inspection)',
+        title: 'Phase 2 (Showcase & Peer Review — Onsite)',
         desc: 'Teams showcase their games onsite while other participating teams play and rate each other’s work. Judges review submissions independently of peer scores, looking at codebase quality, technical design, frame rate stability, and UI polish. Note: Participants are to bring their own devices to showcase their games.'
       }
     ],
@@ -217,42 +273,10 @@ export const events = [
     timeline: [
       { label: 'Theme Released Online', date: '10 Oct' },
       { label: 'Registration Deadline', date: '20 Oct 11:59 PM IST' },
-      { label: 'Live Arcade Showcase & Peer Review', date: '24 Oct (CelesteCon 2026)' }
+      { label: 'Live Showcase & Peer Review', date: '24 Oct (CelesteCon 2026)' }
     ],
-    isDraft: false
-  },
-  {
-    id: '06',
-    name: 'AEROSS Theatre',
-    discipline: 'Open Stage & Talent Showcase',
-    mode: 'Hybrid',
-    eligibility: 'Grades 6–12 (Open)',
-    team: 'Team of 1–5 members',
-    schoolCap: '2 teams / school',
-    quote: '“All the world’s a stage, and all the men and women merely players.” — William Shakespeare',
-    overview:
-      'Total creative freedom: stand-up, skits, instruments, singing, dance, poetry, mimicry, magic or monologues. No aerospace or science theme required.',
-    hook: 'Total creative performance freedom — stand-up, skits, music, singing, dance, poetry, magic, or monologues.',
-    rounds: [
-      {
-        title: 'Round 1 (Video Audition Performance)',
-        desc: 'Submit a 3–5 minute video performance showcasing a talent of your choice, in any genre. Make sure the audio and visual quality are clear and the video stays strictly within the time limit.'
-      },
-      {
-        title: 'Round 2 (Live Showcase & Spontaneous Improv at the AVH)',
-        desc: 'Shortlisted participants perform live on event day in a talent show where creativity has no bounds. The round also includes improv performances on a topic given on the spot, testing presence of mind, quick thinking and creativity under pressure. Stage lighting, vocal mics and audio playback are provided by the host school.'
-      }
-    ],
-    criteria: [
-      'Humour & audience engagement',
-      'Creativity & originality',
-      'Stage presence & delivery'
-    ],
-    timeline: [
-      { label: 'Video Audition Due', date: '17 Oct' },
-      { label: 'Finalists Announcement', date: '19 Oct' },
-      { label: 'Live Stage Showcase & Improv', date: '24 Oct (CelesteCon 2026)' }
-    ],
+    regDeadline: '20 Oct 2026',
+    poc: { name: 'Kiara Kapoor', email: 'r24334kiara@dpsrkp.net' },
     isDraft: false
   },
   {
@@ -261,8 +285,8 @@ export const events = [
     discipline: 'Model Rocket Designing & Crafting / Simulation',
     mode: 'Onsite',
     eligibility: 'Grades 6–8 Junior · Grades 9–12 Senior (judged separately)',
-    team: 'Team of 1–3 members',
-    schoolCap: '2 teams / school',
+    team: 'Team of 2–3 members',
+    schoolCap: '1 team per category (Jr / Sr) limit',
     quote: '“The best way to predict the future is to build it.” — Alan Kay',
     overview:
       'Build a real rocket around a supplied motor, without fitting it, and let the simulation decide: the best-performing rockets win. No launches at this event.',
@@ -300,6 +324,8 @@ export const events = [
       { label: 'OpenRocket File Due', date: '22 Oct' },
       { label: 'Onsite Measurement & Simulation', date: '24 Oct (CelesteCon 2026)' }
     ],
+    regDeadline: '20 Oct 2026',
+    poc: { name: 'Farzooque Hasan', email: 'r25246farzooque@dpsrkp.net' },
     isDraft: false
   },
   {
@@ -308,8 +334,8 @@ export const events = [
     discipline: 'Inspired by F1 Motorsport',
     mode: 'Onsite',
     eligibility: 'Grades 9–12',
-    team: 'Team of up to 5 members (1–5 members)',
-    schoolCap: '2 teams / school',
+    team: 'Team of 3–5 members',
+    schoolCap: '1 team per competition',
     quote: '“Simplify, then add lightness.” — Colin Chapman',
     overview:
       'Found your own racing constructor and take a miniature F1-style car from concept through CAD and manufacturing to the track. The fastest car does not automatically win.',
@@ -327,7 +353,7 @@ export const events = [
     safetyRules: [
       'Car technical specs: length 170–210 mm · width ≤ 85 mm · height ≤ 65 mm · wheel diameter 26–34 mm · minimum mass 50 g without cartridge.',
       'Propulsion: Organiser-supplied 12 g CO₂ cartridge, handled and loaded exclusively by event marshals.',
-      'Budget cap: ₹20,000 for car, spares, tooling, and display (in-kind contributions valued at fair market value).',
+      'Budget cap: ₹30,000 for car, spares, tooling, and display (in-kind contributions valued at fair market value).',
       'Structural safety: Cars must withstand rapid deceleration at the deceleration gate without chassis fragmentation.'
     ],
     criteria: [
@@ -347,6 +373,8 @@ export const events = [
       { label: 'Scrutineering & Inspection', date: '24 Oct Morning' },
       { label: 'Track Races & Grand Prix Finals', date: '24 Oct (CelesteCon 2026)' }
     ],
+    regDeadline: '20 Oct 2026',
+    poc: { name: 'Anant Jha', email: 'v09759anant@dpsrkp.net' },
     isDraft: false
   }
 ];

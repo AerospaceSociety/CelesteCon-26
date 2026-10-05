@@ -742,6 +742,7 @@
         grid-template-columns: 1fr;
         gap: 10px;
       }
+
       .btn-x {
         align-self: flex-end;
       }
@@ -1208,7 +1209,8 @@
       <a class="brand" href="/">AEROSS</a>
       <div class="nav-right">
         <span class="nav-note">CelesteCon 2026 registration</span>
-        <a href="/celestecon_individual_registration.html" class="nav-btn nav-btn-highlight" style="margin-left: 12px;">Individual Entry &rarr;</a>
+        <a href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" target="_blank"
+          rel="noopener noreferrer" class="nav-btn" style="margin-left: 12px;">Brochure (PDF) ↗</a>
         <a href="/" class="nav-btn nav-btn-ghost" style="margin-left: 8px;">Home</a>
       </div>
     </div>
@@ -1216,9 +1218,13 @@
 
   <div class="wrap" id="form-shell">
     <header class="hero" id="top">
-      <div class="switch-banner">
-        <span>Registering as an individual student or independent team?</span>
-        <a href="/celestecon_individual_registration.html">Go to Individual Registration (1 team limit) &rarr;</a>
+      <!-- Policy Update Banner -->
+      <div class="notice-banner"
+        style="background: rgba(22, 19, 16, 0.05); border: 1px solid var(--border-sub); border-left: 4px solid var(--crimson); padding: 12px 16px; margin-bottom: 24px; border-radius: 2px;">
+        <p style="margin: 0; font-size: 13.5px; color: var(--text); line-height: 1.5;">
+          <strong>Notice:</strong> The team limit per competition has been revised to one team per category (Junior /
+          Senior).
+        </p>
       </div>
 
       <p class="eyebrow">CelesteCon 2026</p>
@@ -1227,14 +1233,18 @@
       </p>
       <div class="hero-meta" aria-label="Registration details">
         <span>8 Competitions</span>
-        <span>School Quotas: 2–3 Teams / Event</span>
-        <span style="color:var(--crimson); font-weight:700;">Regular Deadline: 10 Oct · 11:59 PM IST</span>
+        <span style="color:var(--crimson); font-weight:700;">Quota: 1 Team per Category (Jr / Sr)</span>
+        <span style="color:var(--crimson); font-weight:700;">Regular Deadline: 12 Oct · 11:59 PM IST</span>
         <span>Rocketry/Prix/Jam Deadline: 20 Oct · 11:59 PM IST</span>
         <span>Onsite Finale: 24 Oct (07:45 AM)</span>
       </div>
       <div class="clash-advisory-box">
-        <div class="clash-advisory-tag">◆ Quota Directives &amp; Scheduling Advisory</div>
-        <p>Official school delegations may register up to the per-event team cap: <strong>2 teams/school</strong> for Settle-Me-This, In Pursuit of Dispute, Business Power Pitch, CelesteJam, AEROSS Theatre, Rocketry, and AEROSS Prix; and <strong>3 teams/school</strong> for Volatus. Students may enter multiple competitions, but offline rounds on campus may clash; attendance coordination across overlaps is the responsibility of the student and teacher coordinator. The portal locks strictly at 11:59 PM IST on deadline day (no on-spot additions). <strong>Hardware Notice:</strong> Delegates must bring their own Wi-Fi / internet connection (mobile hotspot); power outlets will be provided.</p>
+        <div class="clash-advisory-tag">◆ Delegation Advisory</div>
+        <p><strong>Official Delegation Quota:</strong> Schools can enter up to 1 team per category (Junior 6–8 and
+          Senior 9–12) for competitions featuring dual divisions (Settle-Me-This, Business Power Pitch, CelesteJam, and
+          Rocketry). For single-category competitions (Volatus, In Pursuit of Dispute, AEROSS Theatre, and AEROSS Prix),
+          schools may enter strictly 1 team.<br> The portal locks at 11:59 PM IST on 12th October 2026 (no on-spot
+          additions).</p>
       </div>
       <hr class="divider">
     </header>
@@ -1288,7 +1298,9 @@
         <span class="section-num">02</span>
         <span class="section-title">Event Selection</span>
       </div>
-      <div class="section-sub">Choose every event your school is entering. You can add multiple teams or entries per event as per the limits below.</div>
+      <div class="section-sub">Choose every event your school is entering. For dual-track events (Settle-Me-This,
+        Business Power Pitch, CelesteJam, Rocketry), your school can enter up to 1 team for both Junior and Senior
+        categories. For other events, limit is 1 team per school.</div>
       <div class="event-grid" id="event-grid"></div>
       <div class="field-error" data-error-for="event-selection"></div>
     </section>
@@ -1298,7 +1310,8 @@
         <span class="section-num">03</span>
         <span class="section-title">Teams and Members</span>
       </div>
-      <div class="section-sub">Add each team's details, member names, and unique student email IDs. Students may participate in multiple events (note the offline scheduling clash responsibility).</div>
+      <div class="section-sub">Add each team's details, member names, and unique student email IDs. Students may
+        participate in multiple events (note the offline scheduling clash responsibility).</div>
       <div id="team-details"></div>
     </section>
 
@@ -1313,7 +1326,8 @@
         <div class="totals" id="totals-box"></div>
         <div class="review-box" id="review-box">Fill in the sections above. A live summary will appear here.</div>
         <div class="review-actions" style="justify-content: flex-end;">
-          <button class="btn primary" type="button" id="submit-btn" onclick="CC.submitForm()" style="background: var(--crimson); border-color: var(--crimson); color: #ffffff; font-weight: 700; font-size: 14px; padding: 12px 24px; text-transform: uppercase; letter-spacing: 0.05em;">
+          <button class="btn primary" type="button" id="submit-btn" onclick="CC.submitForm()"
+            style="background: var(--crimson); border-color: var(--crimson); color: #ffffff; font-weight: 700; font-size: 14px; padding: 12px 24px; text-transform: uppercase; letter-spacing: 0.05em;">
             Submit School Registration &rarr;
           </button>
         </div>
@@ -1326,58 +1340,74 @@
   <main class="success-page" id="success-page" hidden>
     <p class="success-mark" aria-hidden="true">&#10003;</p>
     <h1>Registration Submitted</h1>
-    <p>Thank you. Your school registration has been successfully recorded. Official IDs have been generated below for your records and submissions.</p>
-    
+    <p>Thank you. Your school registration has been successfully recorded. Official IDs have been generated below for
+      your records and submissions.</p>
+
     <div class="reference" style="margin: 32px 0 20px;">
       <div class="reference-label">School ID (UID)</div>
-      <div class="reference-id" id="success-ref" style="font-size: 26px; color: var(--crimson); font-weight: 700;">CLT-2026-SCH-00000</div>
+      <div class="reference-id" id="success-ref" style="font-size: 26px; color: var(--crimson); font-weight: 700;">
+        CLT-2026-SCH-00000</div>
     </div>
 
     <div class="clash-advisory-box" style="margin-bottom: 24px;">
       <div class="clash-advisory-tag">◆ Offline Timing Reminder</div>
-      <p>If any student is participating in multiple competitions, offline rounds on campus during CelesteCon may run concurrently. Scheduling attendance is the responsibility of the student and school coordinator.</p>
+      <p>If any student is participating in multiple competitions, offline rounds on campus during CelesteCon may run
+        concurrently. Scheduling attendance is the responsibility of the student and school coordinator.</p>
     </div>
 
     <div id="success-manifest" class="id-manifest"></div>
 
     <!-- Official Submission Token Section -->
-    <div class="token-docket-box" style="margin: 28px 0; padding: 22px 26px; background: rgba(4, 120, 87, 0.08); border: 2px solid var(--success); border-radius: 4px; text-align: left;">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 10px;">
+    <div class="token-docket-box"
+      style="margin: 28px 0; padding: 22px 26px; background: rgba(4, 120, 87, 0.08); border: 2px solid var(--success); border-radius: 4px; text-align: left;">
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 10px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--success);"></span>
-          <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.08em;">
+          <span
+            style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--success);"></span>
+          <span
+            style="font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.08em;">
             ✓ Official Token of Submission Generated
           </span>
         </div>
-        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--secondary); background: rgba(0,0,0,0.06); padding: 3px 8px; border-radius: 3px;">
+        <span
+          style="font-family: var(--font-mono); font-size: 11px; color: var(--secondary); background: rgba(0,0,0,0.06); padding: 3px 8px; border-radius: 3px;">
           Verified Institutional Record
         </span>
       </div>
       <p style="margin: 0 0 16px; font-size: 13.5px; color: var(--text); line-height: 1.55;">
-        Your official school registration token contains your accredited quotas, team assignments, and School UID. Retain this token for all Round 1 deliverable submissions and on-campus check-in at CelesteCon 2026.
+        Your official school registration token contains your accredited quotas, team assignments, and School UID.
+        Retain this token for all Round 1 deliverable submissions and on-campus check-in at CelesteCon 2026.
       </p>
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button class="btn primary" type="button" onclick="CC.downloadDocketHTML()" style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; font-size: 13px; box-shadow: 0 2px 8px rgba(194,58,30,0.35);">
+        <button class="btn primary" type="button" onclick="CC.downloadDocketHTML()"
+          style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; font-size: 13px; box-shadow: 0 2px 8px rgba(194,58,30,0.35);">
           <span>📥</span> Download Token of Submission (.html)
         </button>
-        <button class="btn" type="button" onclick="CC.printDocket()" style="border: 1px solid var(--ink); color: var(--ink) !important; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; font-size: 13px; background: rgba(22, 19, 16, 0.06);">
+        <button class="btn" type="button" onclick="CC.printDocket()"
+          style="border: 1px solid var(--ink); color: var(--ink) !important; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; font-size: 13px; background: rgba(22, 19, 16, 0.06);">
           <span>🖨️</span> Print / Save PDF Token
         </button>
-        <button class="btn" type="button" onclick="CC.copyManifest()" style="border: 1px solid var(--border-sub); color: var(--ink) !important; display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px; font-size: 13px; background: rgba(22, 19, 16, 0.04);">
+        <button class="btn" type="button" onclick="CC.copyManifest()"
+          style="border: 1px solid var(--border-sub); color: var(--ink) !important; display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px; font-size: 13px; background: rgba(22, 19, 16, 0.04);">
           <span>📋</span> Copy All Registration IDs
         </button>
       </div>
     </div>
 
     <div class="review-actions" style="margin-top: 28px; justify-content: center; gap: 14px; flex-wrap: wrap;">
-      <a href="/prompts" class="btn primary" style="background: var(--ink); border-color: var(--ink); color: var(--bone-hi) !important; font-weight: 600; padding: 10px 20px; text-decoration: none;">Access Prompt Portal &rarr;</a>
-      <a href="/submissions" class="btn primary" style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 600; padding: 10px 20px; text-decoration: none;">Access Submission Portal &rarr;</a>
+      <a href="/prompts" class="btn primary"
+        style="background: var(--ink); border-color: var(--ink); color: var(--bone-hi) !important; font-weight: 600; padding: 10px 20px; text-decoration: none;">Access
+        Prompt Portal &rarr;</a>
+      <a href="/submissions" class="btn primary"
+        style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 600; padding: 10px 20px; text-decoration: none;">Access
+        Submission Portal &rarr;</a>
       <button class="text-link" type="button" onclick="window.location.reload()">New Registration &rarr;</button>
     </div>
   </main>
 
   <script>
-(function () {
+    (function () {
 
       const CATEGORY = {
         junior: { id: 'junior', label: 'Junior (Classes 6-8)', classMin: 6, classMax: 8 },
@@ -1389,67 +1419,98 @@
           name: "Settle-Me-This (Space Settlement Design)",
           tagline: "Free-Space Orbital Settlement Design & Oral Defense",
           desc: "Author an engineering proposal for a permanent, habitable free-space settlement (max 25 pages Junior / 35 pages Senior). Top 5 teams per category advance to live campus presentation.",
-          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 2, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 2, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false,
+          trackType: "dual",
+          trackLabel: "Dual Track: Junior (6–8) & Senior (9–12)",
+          guidelineNotice: "Separate divisions for Junior (Classes 6–8) and Senior (Classes 9–12), judged and ranked independently. School can register 1 Junior team AND 1 Senior team."
         },
         volatus: {
           name: "Volatus (Aviation, UAV & 3D CAD)",
           tagline: "Aero-Mechanical UAV/eVTOL Prototyping & CAD (incl. Dimension III)",
           desc: "Design a UAV or eVTOL for a case-based mission profile. Submit online proposal with 3D CAD model; shortlisted teams present science-fair exhibit on campus.",
-          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 3, mode: "Hybrid", categories: null, restricted: false
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false,
+          trackType: "senior",
+          trackLabel: "Senior Division Only (Classes 9–12)",
+          guidelineNotice: "Strictly Senior Division. Open exclusively to high school students in Classes 9, 10, 11, and 12. Junior students (Classes 6–8) are not eligible. Limit 1 team per school."
         },
         dispute: {
           name: "In Pursuit of Dispute (Debate & Quizzitch)",
           tagline: "Quizzitch Online Prelims + Live Parliamentary Debate",
-          desc: "45-minute Quizzitch online screening quiz on aerospace science. Top 10 teams advance to live parliamentary debates with POIs and jury questioning.",
-          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 2, mode: "Hybrid", categories: null, restricted: false
+          desc: "45-minute Quizzitch online screening quiz on aerospace science. Top 10 teams advance to live parliamentary debates with POIs and jury questioning. Note: Only one member of the team attempts the quiz.",
+          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false,
+          trackType: "senior",
+          trackLabel: "Senior Division Only (Classes 9–12)",
+          guidelineNotice: "Strictly Senior Division. Open exclusively to high school students in Classes 9, 10, 11, and 12. Limit 1 team per school (2 members)."
         },
         bpp: {
           name: "Business Power Pitch",
           tagline: "Commercial Aerospace Venture & Investor Shark Tank",
           desc: "Turn a quirky prompt into a viable aerospace good or service. Submit pitch deck & 5-min video; finalists present 7-min live pitch to investor judges.",
-          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 2, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false
+          classMin: 6, classMax: 12, minMembers: 3, maxMembers: 3, maxTeams: 2, mode: "Hybrid", categories: ['junior', 'senior'], restricted: false,
+          trackType: "dual",
+          trackLabel: "Dual Track: Junior (6–8) & Senior (9–12)",
+          guidelineNotice: "Separate divisions for Junior (Classes 6–8) and Senior (Classes 9–12), judged and ranked independently. School can register 1 Junior team AND 1 Senior team."
         },
         gamejam: {
           name: "CelesteJam",
           tagline: "Game Development, Arcade Showcase & Peer Review",
           desc: "Theme released online 10 Oct. Build a playable minigame beforehand in any engine; showcase and playtest onsite for peer review and jury evaluation.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 2, mode: "Onsite", categories: null, restricted: false
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 3, maxTeams: 2, mode: "Onsite", categories: ['junior', 'senior'], restricted: false,
+          trackType: "dual",
+          trackLabel: "Dual Track: Junior (6–8) & Senior (9–12)",
+          guidelineNotice: "Separate divisions for Junior (Classes 6–8) and Senior (Classes 9–12), judged and ranked independently. School can register 1 Junior team AND 1 Senior team (2–3 members)."
         },
         theatre: {
           name: "AEROSS Theatre",
           tagline: "Open Stage, Creative Performance & Live Improv",
           desc: "Total creative freedom: stand-up, skits, instruments, singing, dance, poetry, mimicry, magic, or monologues. 3–5 min video audition; live showcase & improv at the AVH.",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 5, maxTeams: 2, mode: "Hybrid", categories: null, restricted: false
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false,
+          trackType: "senior",
+          trackLabel: "Senior Division Only (Classes 9–12)",
+          guidelineNotice: "Strictly Senior Division (Classes 9–12 only). Team of 3–5 members. Limit 1 team per school."
         },
         rocketry: {
           name: "Rocketry",
           tagline: "Model Build, Static Scrutineering & Simulation",
           desc: "Design and build a real rocket around a supplied motor specification (no motor fitted) and submit OpenRocket files. Onsite measurement & simulation testing (no live launches).",
-          classMin: 6, classMax: 12, minMembers: 1, maxMembers: 3, maxTeams: 2, mode: "Onsite", categories: ['junior', 'senior'], restricted: false
+          classMin: 6, classMax: 12, minMembers: 2, maxMembers: 3, maxTeams: 2, mode: "Onsite", categories: ['junior', 'senior'], restricted: false,
+          trackType: "dual",
+          trackLabel: "Dual Track: Junior (6–8) & Senior (9–12)",
+          guidelineNotice: "Separate divisions for Junior (Classes 6–8) and Senior (Classes 9–12), judged and ranked independently. School can register 1 Junior team AND 1 Senior team (2–3 members)."
         },
         f1: {
           name: "AEROSS Prix",
           tagline: "Miniature F1 Motorsport & Aerodynamic Engineering",
-          desc: "Design, manufacture and document an F1-style car (max 30-pg write-up, CAD & livery). Onsite technical inspection, pit defense, and 20m CO2 racetrack sprints.",
-          classMin: 9, classMax: 12, minMembers: 1, maxMembers: 5, maxTeams: 2, mode: "Onsite", categories: null, restricted: false
+          desc: "Design, manufacture and document an F1-style car (max 30-pg write-up, CAD & livery). Onsite technical inspection, pit defense, and 20m CO2 racetrack sprints. Budget cap: ₹30,000.",
+          classMin: 9, classMax: 12, minMembers: 3, maxMembers: 5, maxTeams: 1, mode: "Onsite", categories: null, restricted: false,
+          trackType: "senior",
+          trackLabel: "Senior Division Only (Classes 9–12)",
+          guidelineNotice: "Strictly Senior Division. Open exclusively to high school students in Classes 9, 10, 11, and 12. Limit 1 team per school (3–5 members). Budget cap: ₹30,000."
         }
       };
 
-      const MAX_TEAMS_PER_EVENT = 3;
       const state = { selected: new Set(), data: {} };
       const stepIds = ['s-school', 's-events', 's-teams', 's-review'];
 
       function makeMember() { return { name: '', email: '', cls: '', gender: '' }; }
-      function makeTeam(evId) {
+      function makeTeam(evId, preferredCategory) {
         const ev = EVENTS[evId];
+        let cat = null;
+        if (ev.categories) {
+          cat = preferredCategory || ev.categories[0];
+        }
         return {
           name: '',
-          category: ev.categories ? ev.categories[0] : null,
-          cosmovateConfirmed: false,
+          category: cat,
+          restrictedConfirmed: false,
           members: Array.from({ length: ev.minMembers }, makeMember)
         };
       }
-      function ensureEvent(evId) { if (!state.data[evId]) state.data[evId] = [makeTeam(evId)]; }
+      function ensureEvent(evId) {
+        if (!state.data[evId] || state.data[evId].length === 0) {
+          state.data[evId] = [makeTeam(evId)];
+        }
+      }
 
       function escapeHTML(value) {
         return String(value || '')
@@ -1479,8 +1540,10 @@
         grid.innerHTML = Object.keys(EVENTS).map(id => {
           const ev = EVENTS[id];
           const on = state.selected.has(id);
-          const limit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
           const teamLabel = ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team of ${ev.minMembers}–${ev.maxMembers}`;
+          const quotaBadge = ev.trackType === 'dual'
+            ? '1 Team / Category (Max 2)'
+            : '1 Team Limit';
           return `
       <button class="event-card ${on ? 'on' : ''}" type="button" aria-pressed="${on}" onclick="CC.toggleEvent('${id}')">
         <span class="event-card-inner">
@@ -1491,9 +1554,10 @@
             <span class="desc">${ev.desc}</span>
             <span class="badges">
               <span class="badge">${ev.mode}</span>
-              <span class="badge">Classes ${ev.classMin}-${ev.classMax}</span>
+              ${ev.trackType === 'dual' ? '<span class="badge" style="color:var(--crimson); font-weight:700;">Junior (6–8) &amp; Senior (9–12) Tracks</span>' : ''}
+              ${ev.trackType === 'senior' ? '<span class="badge" style="color:var(--crimson); font-weight:700;">Senior Only (Classes 9–12)</span>' : ''}
               <span class="badge">${teamLabel}</span>
-              <span class="badge">Max ${limit} Team${limit > 1 ? 's' : ''}/School</span>
+              <span class="badge" style="font-weight:700; color:var(--text);">${quotaBadge}</span>
               ${ev.restricted ? '<span class="badge">DPS RKP only</span>' : ''}
             </span>
           </span>
@@ -1539,20 +1603,41 @@
         const ev = EVENTS[evId];
         ensureEvent(evId);
         const teams = state.data[evId];
-        const unit = 'Team';
         const teamsHTML = teams.map((team, i) => renderTeamBlockHTML(evId, team, i)).join('');
-        const teamLimit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
+        const teamLimit = ev.maxTeams || 1;
         const atMax = teams.length >= teamLimit;
+
+        let addBtnHTML = '';
+        let quotaNote = '';
+
+        if (ev.trackType === 'dual') {
+          if (!atMax) {
+            const currentCat = teams[0] ? teams[0].category : 'junior';
+            const missingCatLabel = currentCat === 'junior' ? 'Senior Category (Classes 9–12)' : 'Junior Category (Classes 6–8)';
+            addBtnHTML = `<button class="btn small" type="button" onclick="CC.addTeam('${evId}')" style="background: var(--ink); color: #ffffff; border: 1px solid var(--ink); font-weight: 700; padding: 7px 15px; font-size: 12px; cursor: pointer; border-radius: 3px;">+ Add Team for ${missingCatLabel}</button>`;
+            quotaNote = `Dual Track: School can send 1 Junior team AND 1 Senior team (${teams.length} of ${teamLimit} entered)`;
+          } else {
+            quotaNote = `Dual Track Quota Fulfilled: Both Junior & Senior teams allocated (1 team per category limit)`;
+          }
+        } else {
+          quotaNote = `1 team entry limit per school`;
+        }
+
         return `
     <div class="event-section" id="section-${evId}">
       <div class="event-section-head">
-        <h3>${ev.name}</h3>
-        <span class="meta">[${ev.mode}] ${ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers} / ` : `Team of ${ev.minMembers}–${ev.maxMembers} / `}Classes ${ev.classMin}-${ev.classMax} / Max ${teamLimit} ${unit.toLowerCase()}${teamLimit > 1 ? 's' : ''} per school${ev.restricted ? ' / DPS R.K. Puram only' : ''}</span>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+          <h3 style="margin:0;">${ev.name}</h3>
+          <span class="meta">[${ev.mode}] ${ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team of ${ev.minMembers}–${ev.maxMembers}`} / ${ev.trackLabel}</span>
+        </div>
+        <div class="track-advisory-box" style="margin-top: 8px; padding: 8px 12px; background: rgba(22,19,16,0.03); border-left: 3px solid ${ev.trackType === 'senior' ? 'var(--crimson)' : 'var(--ink)'}; font-size: 12px; color: var(--secondary); line-height: 1.45;">
+          <strong>Official Quota Rule:</strong> ${ev.guidelineNotice}
+        </div>
       </div>
       ${teamsHTML}
-      <div class="row-actions">
-        <button class="btn small" type="button" ${atMax ? 'disabled' : ''} onclick="CC.addTeam('${evId}')">+ Add another ${unit.toLowerCase()}</button>
-        <span class="cap-note">${teams.length} of ${teamLimit} ${unit.toLowerCase()}${teamLimit > 1 ? 's' : ''} used${atMax ? '. Cap reached for this school.' : ''}</span>
+      <div class="row-actions" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border-sub); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div>${addBtnHTML}</div>
+        <span class="cap-note" style="color:var(--muted); font-family:var(--font-mono); font-size:11px;">${quotaNote}</span>
       </div>
     </div>`;
       }
@@ -1563,7 +1648,21 @@
         const atMaxMembers = team.members.length >= ev.maxMembers;
         const atMinMembers = team.members.length <= ev.minMembers;
         const fixedSize = ev.minMembers === ev.maxMembers;
-        const teamLabel = `Team ${i + 1}`;
+
+        let divisionTag = '';
+        if (ev.trackType === 'dual') {
+          const catName = team.category === 'junior' ? 'Junior Category (Classes 6–8)' : (team.category === 'senior' ? 'Senior Category (Classes 9–12)' : 'Category Unassigned');
+          divisionTag = ` — ${catName}`;
+        }
+        const teamLabel = ev.trackType === 'dual' ? `Team Entry ${i + 1}${divisionTag}` : `School Team Entry`;
+
+        let clsMin = ev.classMin;
+        let clsMax = ev.classMax;
+        if (ev.categories && team.category && CATEGORY[team.category]) {
+          clsMin = CATEGORY[team.category].classMin;
+          clsMax = CATEGORY[team.category].classMax;
+        }
+
         const membersHTML = team.members.map((m, j) => `
       <div class="member-row">
         <p class="member-title">Member ${j + 1}</p>
@@ -1580,7 +1679,7 @@
           </div>
           <div class="field compact">
             <label for="m-${evId}-${i}-${j}-cls">Class</label>
-            <select id="m-${evId}-${i}-${j}-cls" onchange="CC.updateReview()">${classOptions(ev.classMin, ev.classMax, m.cls)}</select>
+            <select id="m-${evId}-${i}-${j}-cls" onchange="CC.updateReview()">${classOptions(clsMin, clsMax, m.cls)}</select>
             <div class="field-error" data-error-for="m-${evId}-${i}-${j}-cls"></div>
           </div>
           <div class="field compact">
@@ -1593,10 +1692,10 @@
       </div>`).join('');
 
         return `
-    <div class="team-block">
+    <div class="team-block" style="${ev.trackType === 'dual' && team.category === 'senior' ? 'border-top: 3px solid var(--crimson);' : ''}">
       <div class="team-block-head">
         <div class="team-main">
-          <p class="team-title">${teamLabel}</p>
+          <p class="team-title" style="font-weight: 700; color: ${team.category === 'senior' ? 'var(--crimson)' : 'var(--ink)'};">${teamLabel}</p>
           <div class="field">
             <label for="team-${evId}-${i}-name">Team Name</label>
             <input type="text" id="team-${evId}-${i}-name" value="${escapeHTML(team.name)}" placeholder="Team name" oninput="CC.updateReview()">
@@ -1604,8 +1703,8 @@
           </div>
           ${ev.categories ? `
           <div class="field">
-            <label for="team-${evId}-${i}-cat">Category</label>
-            <select id="team-${evId}-${i}-cat" onchange="CC.updateReview()">${categoryOptions(ev.categories, team.category)}</select>
+            <label for="team-${evId}-${i}-cat">Track / Category Division *</label>
+            <select id="team-${evId}-${i}-cat" onchange="CC.changeCategory('${evId}', ${i}, this.value)">${categoryOptions(ev.categories, team.category)}</select>
             <div class="field-error" data-error-for="team-${evId}-${i}-cat"></div>
           </div>` : ''}
         </div>
@@ -1639,9 +1738,14 @@
       function addTeam(evId) {
         syncEventFromDOM(evId);
         const ev = EVENTS[evId];
-        const teamLimit = ev.maxTeams || MAX_TEAMS_PER_EVENT;
+        const teamLimit = ev.maxTeams || 1;
         if (state.data[evId].length < teamLimit) {
-          state.data[evId].push(makeTeam(evId));
+          let nextCat = null;
+          if (ev.categories) {
+            const existingCats = state.data[evId].map(t => t.category);
+            nextCat = ev.categories.find(c => !existingCats.includes(c)) || ev.categories[0];
+          }
+          state.data[evId].push(makeTeam(evId, nextCat));
           clearValidationUI();
           renderTeamDetails();
           updateReview();
@@ -1651,6 +1755,25 @@
         syncEventFromDOM(evId);
         if (state.data[evId].length > 1) {
           state.data[evId].splice(i, 1);
+          clearValidationUI();
+          renderTeamDetails();
+          updateReview();
+        }
+      }
+      function changeCategory(evId, teamIndex, newCat) {
+        syncEventFromDOM(evId);
+        const team = state.data[evId] && state.data[evId][teamIndex];
+        if (team && CATEGORY[newCat]) {
+          team.category = newCat;
+          const { classMin, classMax } = CATEGORY[newCat];
+          team.members.forEach(m => {
+            if (m.cls) {
+              const c = Number(m.cls);
+              if (c < classMin || c > classMax) {
+                m.cls = '';
+              }
+            }
+          });
           clearValidationUI();
           renderTeamDetails();
           updateReview();
@@ -1715,24 +1838,46 @@
         Object.keys(EVENTS).filter(id => state.selected.has(id)).forEach(evId => {
           const ev = EVENTS[evId];
           const teams = state.data[evId] || [];
+          const teamLimit = ev.maxTeams || 1;
+          if (teams.length > teamLimit) {
+            addError(`${ev.name}: maximum ${teamLimit} team(s) allowed per school.`, `section-${evId}`);
+          }
+          if (ev.trackType === 'dual') {
+            const catCounts = {};
+            teams.forEach(t => {
+              if (t.category) {
+                catCounts[t.category] = (catCounts[t.category] || 0) + 1;
+              }
+            });
+            if (catCounts['junior'] > 1) {
+              addError(`${ev.name}: only 1 team for Junior Category (Classes 6–8) is permitted per school. Please adjust the track division or remove the duplicate team.`, `section-${evId}`);
+            }
+            if (catCounts['senior'] > 1) {
+              addError(`${ev.name}: only 1 team for Senior Category (Classes 9–12) is permitted per school. Please adjust the track division or remove the duplicate team.`, `section-${evId}`);
+            }
+          }
           teams.forEach((team, i) => {
-            const label = `${ev.name} Team ${i + 1}`;
+            const trackDesc = team.category && CATEGORY[team.category] ? ` (${CATEGORY[team.category].label})` : '';
+            const label = `${ev.name} Team ${i + 1}${trackDesc}`;
             if (!team.name) addError(`${label}: please enter a team name.`, `team-${evId}-${i}-name`);
             let clsMin = ev.classMin, clsMax = ev.classMax;
             if (ev.categories) {
-              if (!team.category) addError(`${label}: please choose a category.`, `team-${evId}-${i}-cat`);
-              else { clsMin = CATEGORY[team.category].classMin; clsMax = CATEGORY[team.category].classMax; }
+              if (!team.category) addError(`${label}: please choose a category division.`, `team-${evId}-${i}-cat`);
+              else if (CATEGORY[team.category]) {
+                clsMin = CATEGORY[team.category].classMin;
+                clsMax = CATEGORY[team.category].classMax;
+              }
             }
             if (ev.restricted && !team.restrictedConfirmed) addError(`${label}: please confirm DPS R.K. Puram eligibility.`, `team-${evId}-${i}-restricted`);
             if (team.members.length < ev.minMembers || team.members.length > ev.maxMembers) {
-              addError(`${label}: enter between ${ev.minMembers} and ${ev.maxMembers} member(s).`, `team-${evId}-${i}-members`);
+              addError(`${label}: enter ${ev.minMembers === ev.maxMembers ? `exactly ${ev.minMembers}` : `between ${ev.minMembers} and ${ev.maxMembers}`} member(s).`, `team-${evId}-${i}-members`);
             }
 
             const seenEmailsInTeam = new Set();
             team.members.forEach((m, j) => {
               const mLabel = `${label}, Member ${j + 1}`;
               if (!m.name) addError(`${mLabel}: please enter a name.`, `m-${evId}-${i}-${j}-name`);
-              
+
               if (!m.email) {
                 addError(`${mLabel}: please enter a student email address.`, `m-${evId}-${i}-${j}-email`);
               } else if (!emailRegex.test(m.email)) {
@@ -1754,8 +1899,20 @@
                 });
               }
 
-              if (!m.cls) addError(`${mLabel}: please choose a class.`, `m-${evId}-${i}-${j}-cls`);
-              else if (Number(m.cls) < clsMin || Number(m.cls) > clsMax) addError(`${mLabel}: class must be between ${clsMin} and ${clsMax}.`, `m-${evId}-${i}-${j}-cls`);
+              if (!m.cls) {
+                addError(`${mLabel}: please choose a class.`, `m-${evId}-${i}-${j}-cls`);
+              } else {
+                const c = Number(m.cls);
+                if (c < clsMin || c > clsMax) {
+                  if (ev.categories && team.category) {
+                    addError(`${mLabel}: ${CATEGORY[team.category].label} is strictly for Classes ${clsMin} to ${clsMax} (selected Class ${m.cls}).`, `m-${evId}-${i}-${j}-cls`);
+                  } else if (ev.classMin === 9) {
+                    addError(`${mLabel}: ${ev.name} is strictly for Senior students in Classes 9 to 12 (selected Class ${m.cls}).`, `m-${evId}-${i}-${j}-cls`);
+                  } else {
+                    addError(`${mLabel}: class must be between ${clsMin} and ${clsMax}.`, `m-${evId}-${i}-${j}-cls`);
+                  }
+                }
+              }
               if (!m.gender) addError(`${mLabel}: please choose a gender.`, `m-${evId}-${i}-${j}-gender`);
             });
           });
@@ -1842,6 +1999,8 @@
           return {
             id: evId,
             name: ev.name,
+            trackType: ev.trackType,
+            trackLabel: ev.trackLabel,
             teams: teams
           };
         });
@@ -1872,11 +2031,11 @@
         }
         const eventLines = events.map(e => {
           const teamLines = e.teams.map((t, i) => {
-            const header = '  [' + (t.teamId || ('Team ' + (i + 1))) + '] Team: ' + (t.teamName || ('Team ' + (i + 1))) + (t.category ? ' / ' + t.category : '');
+            const header = '  [' + (t.teamId || ('Team ' + (i + 1))) + '] Team: ' + (t.teamName || ('Team ' + (i + 1))) + (t.category ? ' / Track: ' + t.category : (e.trackLabel ? ' / ' + e.trackLabel : ''));
             const members = t.members.map((m, j) => '    ' + (j + 1) + '. ' + (m.name || '-') + ' [ID: ' + (m.memberId || 'ID Pending') + '] (' + (m.email || 'No email') + ', Class ' + (m.class || '-') + ', ' + (m.gender || '-') + ')').join('\n');
             return header + '\n' + members;
           }).join('\n');
-          return e.name + '\n' + teamLines;
+          return e.name + (e.trackLabel ? ' [' + e.trackLabel + ']' : '') + '\n' + teamLines;
         }).join('\n\n');
         return headerNote + eventLines;
       }
@@ -2046,7 +2205,7 @@
           eventsHtml += `
           <div style="margin-bottom: 24px; border: 1px solid #cbd5e1; background: #ffffff;">
             <div style="background: #0f172a; color: #ffffff; padding: 10px 16px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;">
-              <span>${ev.name}</span>
+              <span>${ev.name} ${ev.trackLabel ? '<small style="font-size: 11px; opacity: 0.85; text-transform: none; margin-left: 8px;">(' + ev.trackLabel + ')</small>' : ''}</span>
               <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 2px;">${ev.teams.length} Allocated Slot${ev.teams.length > 1 ? 's' : ''}</span>
             </div>
             <div style="padding: 14px 16px;">
@@ -2056,7 +2215,7 @@
               <div style="margin-bottom: ${tIdx < ev.teams.length - 1 ? '16px' : '0'}; padding-bottom: ${tIdx < ev.teams.length - 1 ? '16px' : '0'}; border-bottom: ${tIdx < ev.teams.length - 1 ? '1px dashed #e2e8f0' : 'none'};">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                   <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: #e11d48;">
-                    ${t.teamId}: ${t.teamName || 'Slot ' + (tIdx + 1)} ${t.category ? '[' + String(t.category).toUpperCase() + ']' : ''}
+                    ${t.teamId}: ${t.teamName || 'Slot ' + (tIdx + 1)} ${t.category ? '[' + String(t.category).toUpperCase() + ']' : (ev.trackLabel ? '[' + String(ev.trackLabel).toUpperCase() + ']' : '')}
                   </span>
                   <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b;">${t.members.length} Member${t.members.length > 1 ? 's' : ''}</span>
                 </div>
@@ -2407,7 +2566,7 @@
           setTimeout(() => {
             try {
               printWindow.print();
-            } catch {}
+            } catch { }
           }, 500);
         } else {
           downloadDocketHTML();
@@ -2432,7 +2591,7 @@
           try {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-          } catch {}
+          } catch { }
         }, 1500);
       }
 
@@ -2472,6 +2631,7 @@
         toggleEvent,
         addTeam,
         removeTeam,
+        changeCategory,
         addMember,
         removeMember,
         updateReview,
