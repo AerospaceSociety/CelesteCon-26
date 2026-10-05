@@ -1347,6 +1347,7 @@
       <div class="reference-label">School ID (UID)</div>
       <div class="reference-id" id="success-ref" style="font-size: 26px; color: var(--crimson); font-weight: 700;">
         CLT-2026-SCH-00000</div>
+      <div id="success-sub-id" style="font-family: var(--font-mono); font-size: 12px; color: var(--secondary); margin-top: 6px; font-weight: 600;" hidden></div>
     </div>
 
     <div class="clash-advisory-box" style="margin-bottom: 24px;">
@@ -1380,12 +1381,8 @@
         Retain this token for all Round 1 deliverable submissions and on-campus check-in at CelesteCon 2026.
       </p>
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button class="btn primary" type="button" onclick="CC.downloadDocketHTML()"
+        <button class="btn primary" type="button" onclick="CC.printDocket()"
           style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; font-size: 13px; box-shadow: 0 2px 8px rgba(194,58,30,0.35);">
-          <span>📥</span> Download Token of Submission (.html)
-        </button>
-        <button class="btn" type="button" onclick="CC.printDocket()"
-          style="border: 1px solid var(--ink); color: var(--ink) !important; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; font-size: 13px; background: rgba(22, 19, 16, 0.06);">
           <span>🖨️</span> Print / Save PDF Token
         </button>
         <button class="btn" type="button" onclick="CC.copyManifest()"
@@ -2091,6 +2088,17 @@
         document.getElementById('form-shell').hidden = true;
         document.getElementById('success-page').hidden = false;
 
+        const subIdEl = document.getElementById('success-sub-id');
+        if (subIdEl) {
+          if (submissionID) {
+            subIdEl.innerHTML = `<span style="color:var(--success);">✓ JotForm Confirmed</span> • Submission ID: <strong style="color:var(--text);">#${escapeHTML(String(submissionID))}</strong>`;
+            subIdEl.hidden = false;
+          } else {
+            subIdEl.innerHTML = `<span style="color:var(--secondary); font-size:11px;">(Saved locally in browser • Cloud sync pending)</span>`;
+            subIdEl.hidden = false;
+          }
+        }
+
         const manifestHost = document.getElementById('success-manifest');
         if (manifestHost) {
           manifestHost.innerHTML = payload.events.map(ev => `
@@ -2175,19 +2183,28 @@
         }
         const payload = buildPayload();
         const btn = document.getElementById('submit-btn');
-        btn.disabled = true; btn.textContent = 'Submitting...';
+        btn.disabled = true; btn.textContent = 'Submitting to JotForm...';
         try {
           const res = await fetch('/api/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-          if (!res.ok) throw new Error('proxy responded with ' + res.status);
+          if (!res.ok) {
+            let errMsg = 'HTTP ' + res.status;
+            try {
+              const errObj = await res.json();
+              if (errObj && (errObj.error || errObj.message)) errMsg = errObj.error || errObj.message;
+            } catch (_) {}
+            throw new Error(errMsg);
+          }
           const data = await res.json();
           showSuccess(data.submissionID);
+          setStatus('ok', '✓ Registration recorded & submitted to JotForm' + (data.submissionID ? ' (ID: #' + data.submissionID + ')' : '') + '.');
         } catch (err) {
+          console.warn('JotForm submission via /api/submit did not complete:', err);
           showSuccess(null);
-          setStatus('ok', 'Registration confirmed and stored locally.');
+          setStatus('error', '⚠️ Registration saved locally in browser, but server submission to JotForm returned: ' + err.message);
         } finally {
           btn.disabled = false; btn.textContent = 'Submit Registration';
         }
@@ -2569,7 +2586,7 @@
             } catch { }
           }, 500);
         } else {
-          downloadDocketHTML();
+          window.print();
         }
       }
 
