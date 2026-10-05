@@ -1346,7 +1346,7 @@
     <div class="reference" style="margin: 32px 0 20px;">
       <div class="reference-label">School ID (UID)</div>
       <div class="reference-id" id="success-ref" style="font-size: 26px; color: var(--crimson); font-weight: 700;">
-        CLT-2026-SCH-00000</div>
+        C26-XY-0101</div>
       <div id="success-sub-id" style="font-family: var(--font-mono); font-size: 12px; color: var(--secondary); margin-top: 6px; font-weight: 600;" hidden></div>
     </div>
 
@@ -1944,35 +1944,73 @@
         return { errors, fieldErrors, school, multiEventStudents };
       }
 
-      function generateSchoolUID(submissionID) {
-        if (submissionID) {
-          const digits = String(submissionID).replace(/\D/g, '').slice(-5).padStart(5, '0');
-          return `CLT-2026-SCH-${digits}`;
-        }
-        return `CLT-2026-SCH-${String(Date.now()).slice(-5)}`;
+      function getRandomLetters() {
+        const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        const c1 = letters.charAt(Math.floor(Math.random() * letters.length));
+        const c2 = letters.charAt(Math.floor(Math.random() * letters.length));
+        return `${c1}${c2}`;
       }
 
-      function buildPayload(submissionID) {
+      function getNextLocalSerial() {
+        const stored = parseInt(localStorage.getItem('c26_submission_serial') || '101', 10);
+        return isNaN(stored) || stored < 101 ? 101 : stored;
+      }
+
+      function recordLocalSerialUsed(serial) {
+        const next = Math.max(serial + 1, getNextLocalSerial() + 1);
+        localStorage.setItem('c26_submission_serial', String(next));
+      }
+
+      let currentSessionSchoolUID = null;
+
+      function generateSchoolUID(forcedSerial) {
+        const serial = forcedSerial || getNextLocalSerial();
+        const serialStr = String(serial).padStart(4, '0');
+        return `C26-${getRandomLetters()}-${serialStr}`;
+      }
+
+      function buildPayload(submissionID, overrideUID) {
         const { school, multiEventStudents } = validateAll();
-        const schoolUID = generateSchoolUID(submissionID);
+        if (overrideUID) {
+          currentSessionSchoolUID = overrideUID;
+        } else if (!currentSessionSchoolUID) {
+          currentSessionSchoolUID = generateSchoolUID();
+        }
+        const schoolUID = currentSessionSchoolUID;
 
         const EVENT_CODES = {
-          settle: 'SET',
-          volatus: 'VOL',
-          dispute: 'DISP',
+          settle: 'SMT',
+          volatus: 'Vol',
+          dispute: 'IPOD',
           bpp: 'BPP',
-          gamejam: 'JAM',
-          theatre: 'THEATRE',
-          rocketry: 'RCKT',
-          f1: 'PRIX'
+          theatre: 'ATh',
+          gamejam: 'CJam',
+          rocketry: 'Roc',
+          f1: 'APrix'
         };
 
         const events = Object.keys(EVENTS).filter(id => state.selected.has(id)).map(evId => {
           const ev = EVENTS[evId];
-          const code = EVENT_CODES[evId] || evId.toUpperCase().slice(0, 3);
+          const code = EVENT_CODES[evId] || evId;
+          const isDual = ev.categories && ev.categories.length > 0;
+          const categoryCounts = {};
+
           const teams = (state.data[evId] || []).map((team, tIdx) => {
-            const teamId = `${schoolUID}-${code}-T${tIdx + 1}`;
-            // Format: [SchoolUID]-[EVENT]-T[NUM]-M[NUM]
+            let catTag = '';
+            if (isDual) {
+              const isSenior = team.category === 'senior' || String(team.category || '').toLowerCase().includes('senior');
+              const cat = isSenior ? 'Sr' : 'Jr';
+              categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+              const count = categoryCounts[cat];
+              catTag = `-${cat}${count > 1 ? count : ''}`;
+            } else {
+              categoryCounts['single'] = (categoryCounts['single'] || 0) + 1;
+              const count = categoryCounts['single'];
+              catTag = count > 1 ? `-T${count}` : '';
+            }
+
+            const teamId = `${schoolUID}-${code}${catTag}`;
+            // Format: SchoolID-CompID-Sr/Jr-M1/2/3... (dual track) or SchoolID-CompID-M1/2/3... (single team)
             const members = team.members.map((m, mIdx) => {
               const memberId = `${teamId}-M${mIdx + 1}`;
               return {
@@ -1987,7 +2025,8 @@
             return {
               teamId: teamId,
               teamName: team.name,
-              category: team.category ? CATEGORY[team.category].label : null,
+              rawCategory: team.category,
+              category: team.category ? (CATEGORY[team.category]?.label || team.category) : null,
               restrictedConfirmed: ev.restricted ? !!team.restrictedConfirmed : undefined,
               members: members
             };
@@ -2081,9 +2120,18 @@
         el.textContent = '';
       }
 
-      function showSuccess(submissionID) {
-        const payload = buildPayload(submissionID);
+      function showSuccess(submissionID, serverUID) {
+        if (serverUID) {
+          currentSessionSchoolUID = serverUID;
+        }
+        const payload = buildPayload(submissionID, currentSessionSchoolUID);
         const uid = payload.schoolUID;
+
+        const serialMatch = String(uid).match(/-(\d{4})$/);
+        if (serialMatch) {
+          recordLocalSerialUsed(parseInt(serialMatch[1], 10));
+        }
+
         document.getElementById('success-ref').textContent = uid;
         document.getElementById('form-shell').hidden = true;
         document.getElementById('success-page').hidden = false;
@@ -2199,11 +2247,11 @@
             throw new Error(errMsg);
           }
           const data = await res.json();
-          showSuccess(data.submissionID);
+          showSuccess(data.submissionID, data.schoolUID);
           setStatus('ok', '✓ Registration recorded & submitted to JotForm' + (data.submissionID ? ' (ID: #' + data.submissionID + ')' : '') + '.');
         } catch (err) {
           console.warn('JotForm submission via /api/submit did not complete:', err);
-          showSuccess(null);
+          showSuccess(null, payload.schoolUID);
           setStatus('error', '⚠️ Registration saved locally in browser, but server submission to JotForm returned: ' + err.message);
         } finally {
           btn.disabled = false; btn.textContent = 'Submit Registration';
