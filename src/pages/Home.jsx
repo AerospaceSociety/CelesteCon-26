@@ -56,7 +56,7 @@ const Home = () => {
 
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 items-stretch sm:items-center mt-auto pt-2">
               <a
-                href="/CelesteCon_2026_Brochure.pdf"
+                href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone bg-bone text-ink px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-crimson hover:text-white transition-colors"
@@ -67,7 +67,7 @@ const Home = () => {
                 to="/format"
                 className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-bone hover:text-ink transition-colors cursor-pointer"
               >
-                R1 Online // 11 Oct
+                R1 Online // 13 Oct
               </Link>
               <Link
                 to="/format"
@@ -112,15 +112,15 @@ const Home = () => {
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Venue</dt>
             <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Sector 12, R.K. Puram, New Delhi</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Dates</dt>
-            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 font-bold text-crimson">Event Date: 24 Oct · Reg: 10 Oct</dd>
+            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 font-bold text-crimson">Event Date: 24 Oct 2026</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Format</dt>
             <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">R1 online → R2 campus finale</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Comps</dt>
             <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">8 events · junior & senior tracks</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Cohort</dt>
-            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Grades 6–12, schools & independents</dd>
+            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Grades 6–12, schools</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Faculty</dt>
-            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Ms. Vibha Arora · Mr. Sanchit Chauhan</dd>
+            <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Mrs. Vibha Arora · Mr. Sanchit Chauhan</dd>
             <dt className="text-crimson font-bold uppercase whitespace-nowrap">Society</dt>
             <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">Est. 2009 · 100+ global alumni</dd>
           </dl>
@@ -238,28 +238,25 @@ const Home = () => {
             <span>SEC. 00 // REGISTRATION</span>
           </div>
           <h2 className="font-display uppercase text-2xl sm:text-4xl md:text-5xl leading-[1.02] tracking-[0.01em] mt-3 text-ink text-balance">
-            The grid is open. <span className="text-crimson [-webkit-text-stroke:0]">Assemble your team.</span>
+            The grid is open. <span className="text-crimson [-webkit-text-stroke:0]">Assemble your delegation.</span>
           </h2>
+          <p className="font-label text-sm sm:text-base text-ink-2 mt-2 max-w-2xl leading-relaxed">
+            Register your official school contingent across 8 national aerospace competitions. Compete for division podiums and the coveted Overall Champions Rolling Trophy (minimum 5/8 competitions required).
+          </p>
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-stretch sm:items-center flex-wrap">
             <a
               href="/celestecon_registration.html"
-              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-crimson text-bone-hi font-label font-bold text-base md:text-lg uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-crimson text-bone-hi font-label font-bold text-base md:text-lg uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center shadow-lg"
             >
-              School Contingent &rarr;
+              School Contingent Registration &rarr;
             </a>
             <a
-              href="/celestecon_individual_registration.html"
-              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-ink text-bone font-label font-bold text-base md:text-lg uppercase tracking-widest border border-ink hover:bg-crimson hover:text-bone hover:border-crimson transition-colors text-center"
-            >
-              Individual Entry &rarr;
-            </a>
-            <a
-              href="/CelesteCon_2026_Brochure.pdf"
+              href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-transparent text-ink font-label font-bold text-base md:text-lg uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-bone transition-colors text-center"
             >
-              Brochure (PDF) ↗
+              Participant Brochure (PDF) ↗
             </a>
           </div>
         </div>

@@ -58,42 +58,135 @@ SMTP_FROM = os.environ.get("SMTP_FROM", SMTP_USER or "")
 # Kept in sync manually; if you change one, change the other.
 # ---------------------------------------------------------------------------
 CATEGORY_RANGES = {
+    "junior": (6, 8),
+    "senior": (9, 12),
+    "Junior": (6, 8),
+    "Senior": (9, 12),
     "Junior (Classes 6–8)": (6, 8),
     "Senior (Classes 9–12)": (9, 12),
 }
 
 EVENTS = {
-    "Volatus": {"classMin": 9, "classMax": 12, "min": 2, "max": 6, "categories": False, "restricted": False},
-    "Dimension III": {"classMin": 6, "classMax": 12, "min": 1, "max": 3, "categories": False, "restricted": False},
-    "Quizzitch": {"classMin": 6, "classMax": 12, "min": 1, "max": 1, "categories": True, "restricted": False},
-    "Settle-me-this": {"classMin": 6, "classMax": 12, "min": 2, "max": 5, "categories": True, "restricted": False},
-    "Business Power Pitch": {"classMin": 9, "classMax": 12, "min": 1, "max": 4, "categories": False, "restricted": False},
-    "Cosmovate": {"classMin": 6, "classMax": 12, "min": 1, "max": 4, "categories": True, "restricted": True},
-    "In Pursuit of Dispute": {"classMin": 6, "classMax": 12, "min": 1, "max": 2, "categories": True, "restricted": False},
-    "Surprise Event": {"classMin": 6, "classMax": 12, "min": 2, "max": 2, "categories": False, "restricted": False},
+    "settle": {
+        "name": "Settle-Me-This (Space Settlement Design)",
+        "aliases": ["Settle-Me-This", "Settle-me-this"],
+        "classMin": 6,
+        "classMax": 12,
+        "min": 3,
+        "max": 5,
+        "categories": True,
+        "maxTeams": 2,
+    },
+    "volatus": {
+        "name": "Volatus (Aviation, UAV & 3D CAD)",
+        "aliases": ["Volatus"],
+        "classMin": 9,
+        "classMax": 12,
+        "min": 3,
+        "max": 3,
+        "categories": False,
+        "maxTeams": 1,
+    },
+    "dispute": {
+        "name": "In Pursuit of Dispute (Debate & Quizzitch)",
+        "aliases": ["In Pursuit of Dispute"],
+        "classMin": 9,
+        "classMax": 12,
+        "min": 2,
+        "max": 2,
+        "categories": False,
+        "maxTeams": 1,
+    },
+    "bpp": {
+        "name": "Business Power Pitch",
+        "aliases": ["Business Power Pitch"],
+        "classMin": 6,
+        "classMax": 12,
+        "min": 3,
+        "max": 3,
+        "categories": True,
+        "maxTeams": 2,
+    },
+    "gamejam": {
+        "name": "CelesteJam",
+        "aliases": ["CelesteJam"],
+        "classMin": 6,
+        "classMax": 12,
+        "min": 2,
+        "max": 3,
+        "categories": True,
+        "maxTeams": 2,
+    },
+    "theatre": {
+        "name": "AEROSS Theatre",
+        "aliases": ["AEROSS Theatre"],
+        "classMin": 9,
+        "classMax": 12,
+        "min": 3,
+        "max": 5,
+        "categories": False,
+        "maxTeams": 1,
+    },
+    "rocketry": {
+        "name": "Rocketry",
+        "aliases": ["Rocketry"],
+        "classMin": 6,
+        "classMax": 12,
+        "min": 2,
+        "max": 3,
+        "categories": True,
+        "maxTeams": 2,
+    },
+    "f1": {
+        "name": "AEROSS Prix",
+        "aliases": ["AEROSS Prix", "F1", "Prix"],
+        "classMin": 9,
+        "classMax": 12,
+        "min": 3,
+        "max": 5,
+        "categories": False,
+        "maxTeams": 1,
+    },
 }
-MAX_TEAMS_PER_EVENT = 2
+
+
+def get_event_rule(ev_id: str, ev_name: str) -> Optional[dict]:
+    if ev_id in EVENTS:
+        return EVENTS[ev_id]
+    for key, rule in EVENTS.items():
+        if key.lower() == (ev_id or "").lower() or rule["name"].lower() == (ev_name or "").lower():
+            return rule
+        for alias in rule.get("aliases", []):
+            if alias.lower() in (ev_name or "").lower() or (ev_name or "").lower() in alias.lower():
+                return rule
+    return None
 
 # ---------------------------------------------------------------------------
 # Payload schema (must match the JSON built by celestecon_registration.html)
 # ---------------------------------------------------------------------------
 class Member(BaseModel):
     name: str
+    email: Optional[str] = None
     cls: str = Field(alias="class")
     gender: str
+    memberId: Optional[str] = None
     model_config = {"populate_by_name": True}
 
 
 class Team(BaseModel):
+    teamId: Optional[str] = None
     teamName: Optional[str] = None
     category: Optional[str] = None
     cosmovateConfirmed: Optional[bool] = None
+    restrictedConfirmed: Optional[bool] = None
     members: list[Member]
 
 
 class EventEntry(BaseModel):
     id: str
     name: str
+    trackType: Optional[str] = None
+    trackLabel: Optional[str] = None
     teams: list[Team]
 
 
@@ -121,29 +214,47 @@ def validate_registration(reg: Registration) -> list[str]:
         errors.append("No events selected.")
 
     for ev in reg.events:
-        rules = EVENTS.get(ev.name)
+        rules = get_event_rule(ev.id, ev.name)
         if not rules:
-            errors.append(f"Unknown event: {ev.name}")
+            errors.append(f"Unknown event: {ev.name} (id: {ev.id})")
             continue
-        if len(ev.teams) > MAX_TEAMS_PER_EVENT:
-            errors.append(f"{ev.name}: more than {MAX_TEAMS_PER_EVENT} teams in a single form.")
+        max_teams = rules.get("maxTeams", 1)
+        if len(ev.teams) > max_teams:
+            errors.append(f"{ev.name}: more than {max_teams} teams in a single form (submitted {len(ev.teams)}).")
+
+        # For dual-category events (settle, bpp, gamejam, rocketry), max 1 team per category
+        if rules["categories"]:
+            seen_categories = set()
+            for team in ev.teams:
+                cat = team.category or ""
+                normalized_cat = "junior" if "junior" in cat.lower() else ("senior" if "senior" in cat.lower() else cat)
+                if not normalized_cat:
+                    errors.append(f"{ev.name}: team is missing category selection.")
+                elif normalized_cat in seen_categories:
+                    errors.append(f"{ev.name}: duplicate team entered for category {cat}. Only 1 team per category allowed.")
+                else:
+                    seen_categories.add(normalized_cat)
+
         for i, team in enumerate(ev.teams):
             label = f"{ev.name} Team {i + 1}"
-            if rules["restricted"] and not team.cosmovateConfirmed:
-                errors.append(f"{label}: DPS R.K. Puram confirmation missing.")
             if not (rules["min"] <= len(team.members) <= rules["max"]):
-                errors.append(f"{label}: member count {len(team.members)} outside {rules['min']}-{rules['max']}.")
+                errors.append(f"{label}: member count {len(team.members)} outside allowed range {rules['min']}–{rules['max']}.")
             cls_min, cls_max = rules["classMin"], rules["classMax"]
             if rules["categories"]:
-                if not team.category or team.category not in CATEGORY_RANGES:
-                    errors.append(f"{label}: missing/invalid category.")
-                else:
-                    cls_min, cls_max = CATEGORY_RANGES[team.category]
+                cat = team.category or ""
+                if "junior" in cat.lower():
+                    cls_min, cls_max = 6, 8
+                elif "senior" in cat.lower():
+                    cls_min, cls_max = 9, 12
+                elif cat in CATEGORY_RANGES:
+                    cls_min, cls_max = CATEGORY_RANGES[cat]
+
             for j, m in enumerate(team.members):
                 if not m.name.strip():
                     errors.append(f"{label} Member {j + 1}: name missing.")
-                if not m.cls.strip().isdigit() or not (cls_min <= int(m.cls) <= cls_max):
-                    errors.append(f"{label} Member {j + 1}: class {m.cls!r} outside {cls_min}-{cls_max}.")
+                cls_clean = str(m.cls).strip()
+                if not cls_clean.isdigit() or not (cls_min <= int(cls_clean) <= cls_max):
+                    errors.append(f"{label} Member {j + 1}: class {cls_clean!r} outside eligible range {cls_min}–{cls_max}.")
     return errors
 
 

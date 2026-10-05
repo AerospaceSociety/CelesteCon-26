@@ -55,6 +55,11 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
                 Cap: {event.schoolCap}
               </span>
             )}
+            {event.regDeadline && (
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border border-bone/50 bg-bone/10 text-bone px-1.5 sm:px-2 py-0.5 font-bold">
+                Reg: {event.regDeadline}
+              </span>
+            )}
             <span className="font-mono text-xs text-bone-dim group-hover:text-crimson transition-colors ml-auto sm:ml-1 font-bold">
               {expanded ? '▲ [COLLAPSE]' : '▼ [DETAILS]'}
             </span>
@@ -213,18 +218,20 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
             <div className="flex items-center gap-2 flex-wrap">
               <a
                 href="/celestecon_registration.html"
-                className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors"
+                className="px-3 py-1.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
               >
-                School Portal ↗
-              </a>
-              <a
-                href="/celestecon_individual_registration.html"
-                className="px-3 py-1.5 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson text-crimson hover:bg-crimson hover:text-bone transition-colors"
-              >
-                Individual Portal ↗
+                Register Contingent ↗
               </a>
             </div>
           </div>
+
+          {/* Event Specific Contact / POC Footer */}
+          {event.poc && (
+            <div className="bg-bone/[0.04] border-t border-bone/15 p-2.5 flex items-center gap-2 text-xs font-label text-bone">
+              <span className="w-1.5 h-1.5 bg-crimson shrink-0 inline-block"></span>
+              <span>For further details contact — <strong className="text-bone-hi">{event.poc.name}</strong>: <a href={`mailto:${event.poc.email}`} className="text-crimson hover:underline font-mono text-[11px] ml-1">{event.poc.email}</a></span>
+            </div>
+          )}
 
         </div>
       )}
@@ -264,24 +271,26 @@ const Comps = () => {
         </p>
       </div>
 
-      {/* Registration Portals Banner */}
+      {/* Registration Banner */}
       <div className="mb-8 sm:mb-10 border-2 border-crimson/80 bg-crimson/5 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-mono text-xs">
         <div>
-          <span className="text-crimson font-bold uppercase tracking-wider block">Registration Portals Active</span>
-          <span className="text-bone-dim text-[11px] leading-relaxed block mt-0.5">School contingent delegations (2–3 teams/school per-event quota) & Direct individual entries (strictly 1 team per competition). Regular deadline: 10 Oct · Rocketry/Prix/Jam: 20 Oct.</span>
+          <span className="text-crimson font-bold uppercase tracking-wider block">Official School Registration Active — Institutional Quotas</span>
+          <span className="text-bone-dim text-[11px] leading-relaxed block mt-0.5">School Quota: 1 team per category (Jr 6–8 / Sr 9–12) for Settle-Me-This, Business Power Pitch, CelesteJam, and Rocketry; 1 team per competition for Volatus, In Pursuit of Dispute, AEROSS Theatre, and AEROSS Prix. Regular deadline: 12 Oct · Rocketry/Prix/Jam: 20 Oct. Overall Champions Rolling Trophy requires entries in at least 5 of 8 competitions.</span>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto shrink-0">
           <a
             href="/celestecon_registration.html"
-            className="px-3 py-2 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone hover:border-crimson transition-colors text-center"
+            className="px-4 py-2 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center"
           >
-            School Portal ↗
+            School Registration Portal ↗
           </a>
           <a
-            href="/celestecon_individual_registration.html"
-            className="px-3 py-2 bg-crimson text-bone font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center"
+            href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-2 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-colors text-center"
           >
-            Individual Portal ↗
+            Brochure (PDF) ↗
           </a>
         </div>
       </div>

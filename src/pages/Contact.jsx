@@ -53,11 +53,11 @@ const ExecCard = ({ exec, index }) => {
               alt={exec.name}
               onError={handleImageError}
               className={`transition-all duration-300 ease-out pointer-events-none ${isCustomPhoto
-                  ? 'h-full w-auto max-w-full bottom-0 object-contain object-bottom origin-bottom ' +
-                  'scale-100 translate-y-0 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] ' +
-                  'md:max-w-none md:left-1/2 md:-translate-x-1/2 md:absolute md:origin-center md:scale-95 ' +
-                  'md:group-hover:scale-110 md:group-hover:translate-y-4 md:group-hover:drop-shadow-[0_16px_30px_rgba(194,58,30,0.5)]'
-                  : 'w-full h-full object-contain object-bottom invert opacity-75 p-3 group-hover:scale-105 transition-transform'
+                ? 'h-full w-auto max-w-full bottom-0 object-contain object-bottom origin-bottom ' +
+                'scale-100 translate-y-0 drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] ' +
+                'md:max-w-none md:left-1/2 md:-translate-x-1/2 md:absolute md:origin-center md:scale-95 ' +
+                'md:group-hover:scale-110 md:group-hover:translate-y-4 md:group-hover:drop-shadow-[0_16px_30px_rgba(194,58,30,0.5)]'
+                : 'w-full h-full object-contain object-bottom invert opacity-75 p-3 group-hover:scale-105 transition-transform'
                 }`}
             />
           </div>
@@ -106,8 +106,8 @@ const ExecCard = ({ exec, index }) => {
         <a
           href={`mailto:${exec.email}?subject=%5BCelesteCon%2026%5D%20Attn:%20${encodeURIComponent(exec.name)}`}
           className={`w-full flex items-center justify-center gap-1.5 border py-2 px-2 font-bold transition-colors ${exec.phone
-              ? 'border-[#161310]/30 text-[#161310] hover:border-[#161310] hover:bg-[#161310] hover:text-white bg-[#E3DCC9]/40'
-              : 'border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson'
+            ? 'border-[#161310]/30 text-[#161310] hover:border-[#161310] hover:bg-[#161310] hover:text-white bg-[#E3DCC9]/40'
+            : 'border-crimson bg-crimson/10 hover:bg-crimson hover:text-white text-crimson'
             }`}
         >
           <Mail size={11} />
@@ -181,16 +181,16 @@ const Contact = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#191512] text-bone font-mono text-[11px] tracking-widest uppercase border-b-2 border-bone/30">
+                <tr className="bg-[#191512] text-[#F2EDDD] font-mono text-[11px] tracking-widest uppercase border-b-2 border-bone/30">
                   <th className="py-3.5 px-4 sm:px-6 w-1/2 border-r border-bone/30">
                     <div className="text-crimson font-bold text-[10px] tracking-[0.2em]">FACULTY IN-CHARGE // LEFT COLUMN</div>
-                    <div className="font-display text-xl sm:text-2xl text-bone mt-1 uppercase">Mrs. Vibha Arora</div>
-                    <div className="font-mono text-[11px] text-bone-dim/80 font-normal lowercase tracking-normal">vibhaarora@dpsrkp.net</div>
+                    <div className="font-display text-xl sm:text-2xl text-[#F2EDDD] mt-1 uppercase">Mr. Sanchit Chauhan</div>
+                    <div className="font-mono text-[11px] text-[#DDD4BC]/90 font-normal lowercase tracking-normal">sanchitchauhan@dpsrkp.net</div>
                   </th>
                   <th className="py-3.5 px-4 sm:px-6 w-1/2">
                     <div className="text-crimson font-bold text-[10px] tracking-[0.2em]">FACULTY IN-CHARGE // RIGHT COLUMN</div>
-                    <div className="font-display text-xl sm:text-2xl text-bone mt-1 uppercase">Mr. Sanchit Chauhan</div>
-                    <div className="font-mono text-[11px] text-bone-dim/80 font-normal lowercase tracking-normal">sanchitchauhan@dpsrkp.net</div>
+                    <div className="font-display text-xl sm:text-2xl text-[#F2EDDD] mt-1 uppercase">Mrs. Vibha Arora</div>
+                    <div className="font-mono text-[11px] text-[#DDD4BC]/90 font-normal lowercase tracking-normal">vibhaarora@dpsrkp.net</div>
                   </th>
                 </tr>
               </thead>
@@ -215,26 +215,6 @@ const Contact = () => {
                     <div className="text-crimson text-[9.5px] uppercase font-bold tracking-wider mb-1">Official Email</div>
                     <div className="flex flex-wrap items-center gap-2">
                       <a
-                        href="mailto:vibhaarora@dpsrkp.net?subject=%5BCelesteCon%2026%5D%20Attn:%20Mrs.%20Vibha%20Arora"
-                        className="font-mono text-xs sm:text-sm text-bone font-bold hover:text-crimson transition-colors inline-flex items-center gap-1.5"
-                      >
-                        <Mail size={13} className="text-crimson" />
-                        <span>vibhaarora@dpsrkp.net</span>
-                      </a>
-                      <button
-                        onClick={() => handleCopy('vibhaarora@dpsrkp.net', 'vibha-email')}
-                        className="p-1 px-2 border border-bone/30 text-bone-dim hover:text-crimson hover:border-crimson text-[10px] inline-flex items-center gap-1 transition-colors bg-bone/5"
-                        title="Copy email"
-                      >
-                        {copiedKey === 'vibha-email' ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
-                        <span>{copiedKey === 'vibha-email' ? 'Copied' : 'Copy'}</span>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-4 sm:px-6 align-top">
-                    <div className="text-crimson text-[9.5px] uppercase font-bold tracking-wider mb-1">Official Email</div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <a
                         href="mailto:sanchitchauhan@dpsrkp.net?subject=%5BCelesteCon%2026%5D%20Attn:%20Mr.%20Sanchit%20Chauhan"
                         className="font-mono text-xs sm:text-sm text-bone font-bold hover:text-crimson transition-colors inline-flex items-center gap-1.5"
                       >
@@ -251,31 +231,31 @@ const Contact = () => {
                       </button>
                     </div>
                   </td>
+                  <td className="py-3.5 px-4 sm:px-6 align-top">
+                    <div className="text-crimson text-[9.5px] uppercase font-bold tracking-wider mb-1">Official Email</div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <a
+                        href="mailto:vibhaarora@dpsrkp.net?subject=%5BCelesteCon%2026%5D%20Attn:%20Mrs.%20Vibha%20Arora"
+                        className="font-mono text-xs sm:text-sm text-bone font-bold hover:text-crimson transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <Mail size={13} className="text-crimson" />
+                        <span>vibhaarora@dpsrkp.net</span>
+                      </a>
+                      <button
+                        onClick={() => handleCopy('vibhaarora@dpsrkp.net', 'vibha-email')}
+                        className="p-1 px-2 border border-bone/30 text-bone-dim hover:text-crimson hover:border-crimson text-[10px] inline-flex items-center gap-1 transition-colors bg-bone/5"
+                        title="Copy email"
+                      >
+                        {copiedKey === 'vibha-email' ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+                        <span>{copiedKey === 'vibha-email' ? 'Copied' : 'Copy'}</span>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
 
                 {/* Telephone Row */}
                 <tr className="hover:bg-bone/[0.03] transition-colors">
                   <td className="py-3.5 px-4 sm:px-6 border-r border-bone/20 align-top">
-                    <div className="text-crimson text-[9.5px] uppercase font-bold tracking-wider mb-1">Direct Telephone</div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <a
-                        href="tel:+919871383581"
-                        className="font-mono text-xs sm:text-sm text-bone font-bold hover:text-crimson transition-colors inline-flex items-center gap-1.5"
-                      >
-                        <Phone size={13} className="text-crimson" />
-                        <span>+91 98713 83581</span>
-                      </a>
-                      <button
-                        onClick={() => handleCopy('+919871383581', 'vibha-phone')}
-                        className="p-1 px-2 border border-bone/30 text-bone-dim hover:text-crimson hover:border-crimson text-[10px] inline-flex items-center gap-1 transition-colors bg-bone/5"
-                        title="Copy phone number"
-                      >
-                        {copiedKey === 'vibha-phone' ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
-                        <span>{copiedKey === 'vibha-phone' ? 'Copied' : 'Copy'}</span>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-4 sm:px-6 align-top">
                     <div className="text-crimson text-[9.5px] uppercase font-bold tracking-wider mb-1">Direct Telephone</div>
                     <div className="flex flex-wrap items-center gap-2">
                       <a
@@ -295,29 +275,31 @@ const Contact = () => {
                       </button>
                     </div>
                   </td>
+                  <td className="py-3.5 px-4 sm:px-6 align-top">
+                    <div className="text-crimson text-[9.5px] uppercase font-bold tracking-wider mb-1">Direct Telephone</div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <a
+                        href="tel:+919871383581"
+                        className="font-mono text-xs sm:text-sm text-bone font-bold hover:text-crimson transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <Phone size={13} className="text-crimson" />
+                        <span>+91 98713 83581</span>
+                      </a>
+                      <button
+                        onClick={() => handleCopy('+919871383581', 'vibha-phone')}
+                        className="p-1 px-2 border border-bone/30 text-bone-dim hover:text-crimson hover:border-crimson text-[10px] inline-flex items-center gap-1 transition-colors bg-bone/5"
+                        title="Copy phone number"
+                      >
+                        {copiedKey === 'vibha-phone' ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+                        <span>{copiedKey === 'vibha-phone' ? 'Copied' : 'Copy'}</span>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
 
                 {/* Direct Action Buttons */}
                 <tr className="bg-bone/[0.02]">
                   <td className="p-3.5 px-4 sm:px-6 border-r border-bone/20">
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <a
-                        href="tel:+919871383581"
-                        className="flex-1 flex items-center justify-center gap-1.5 border border-crimson bg-crimson/15 hover:bg-crimson hover:text-white text-crimson py-2.5 px-3 font-mono text-[11px] font-bold tracking-wider uppercase transition-colors"
-                      >
-                        <Phone size={12} />
-                        <span>Call Mrs. Arora</span>
-                      </a>
-                      <a
-                        href="mailto:vibhaarora@dpsrkp.net?subject=%5BCelesteCon%2026%5D%20Attn:%20Mrs.%20Vibha%20Arora"
-                        className="flex-1 flex items-center justify-center gap-1.5 border border-bone/40 hover:border-bone hover:bg-bone hover:text-ink text-bone py-2.5 px-3 font-mono text-[11px] font-bold tracking-wider uppercase transition-colors"
-                      >
-                        <Mail size={12} />
-                        <span>Email Desk</span>
-                      </a>
-                    </div>
-                  </td>
-                  <td className="p-3.5 px-4 sm:px-6">
                     <div className="flex flex-col sm:flex-row gap-2">
                       <a
                         href="tel:+919560332064"
@@ -335,6 +317,24 @@ const Contact = () => {
                       </a>
                     </div>
                   </td>
+                  <td className="p-3.5 px-4 sm:px-6">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <a
+                        href="tel:+919871383581"
+                        className="flex-1 flex items-center justify-center gap-1.5 border border-crimson bg-crimson/15 hover:bg-crimson hover:text-white text-crimson py-2.5 px-3 font-mono text-[11px] font-bold tracking-wider uppercase transition-colors"
+                      >
+                        <Phone size={12} />
+                        <span>Call Mrs. Arora</span>
+                      </a>
+                      <a
+                        href="mailto:vibhaarora@dpsrkp.net?subject=%5BCelesteCon%2026%5D%20Attn:%20Mrs.%20Vibha%20Arora"
+                        className="flex-1 flex items-center justify-center gap-1.5 border border-bone/40 hover:border-bone hover:bg-bone hover:text-ink text-bone py-2.5 px-3 font-mono text-[11px] font-bold tracking-wider uppercase transition-colors"
+                      >
+                        <Mail size={12} />
+                        <span>Email Desk</span>
+                      </a>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -342,17 +342,19 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Communications Matrix & Dispatch Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-4">
-        {/* Left Column: Direct Lines & Inquiries */}
-        <div className="space-y-6">
+      {/* Communications Matrix & Official Portals */}
+      <div className="pt-4 space-y-6">
+        <div>
           <h3 className="font-display text-2xl md:text-3xl text-bone uppercase leading-none">
-            Direct Line & Channels
+            Direct Line &amp; Channels
           </h3>
-          <p className="font-label text-base text-bone-dim leading-relaxed">
+          <p className="font-label text-base text-bone-dim leading-relaxed mt-1">
             For official school delegations, sponsorship liaison, or competition clarifications, our desk is operational.
           </p>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Primary Desks */}
           <div className="border-2 border-bone">
             <div className="bg-bone text-ink font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 flex justify-between font-bold">
               <span>Primary Desks</span>
@@ -400,101 +402,46 @@ const Contact = () => {
                 Delhi Public School, Sector 12, R.K. Puram<br />
                 New Delhi — 110022
               </dd>
-              <dt className="text-crimson font-bold uppercase whitespace-nowrap">Supported By</dt>
-              <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 leading-relaxed">
-                HelpLink.dev
-              </dd>
             </dl>
           </div>
 
           {/* Official Registration Portals */}
-          <div className="border-2 border-crimson bg-crimson/5 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-widest">Official Registration</span>
-              <span className="font-mono text-[9px] text-bone-dim uppercase font-bold">CelesteCon 2026</span>
+          <div className="border-2 border-crimson bg-crimson/5 p-4 sm:p-5 space-y-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-widest">Official Registration</span>
+                <span className="font-mono text-[9px] text-bone-dim uppercase font-bold">CelesteCon 2026</span>
+              </div>
+              <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
+                School contingents may register official delegations across all 8 competitive conclave events through the portal or download the complete technical dossier.
+              </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <a
                 href="/celestecon_registration.html"
-                className="p-3 border border-bone/40 bg-ink hover:border-crimson hover:text-crimson transition-colors block text-left"
+                className="p-3 border border-crimson bg-ink hover:bg-crimson/10 transition-colors block text-left"
               >
-                <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
-                  School Contingent
+                <div className="font-label font-bold text-sm text-bone uppercase tracking-wider flex items-center justify-between">
+                  <span>School Contingent</span>
+                  <span className="text-crimson font-mono text-xs">↗</span>
                 </div>
-                <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry (2–3 teams per event quota).</p>
-                <span className="font-mono text-[10px] text-crimson mt-2 inline-block font-bold">Open Portal ↗</span>
+                <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry across all 8 competitions (1 team per category).</p>
+                <span className="font-mono text-[10px] text-crimson mt-2 inline-block font-bold">Open Registration Portal &rarr;</span>
               </a>
               <a
-                href="/celestecon_individual_registration.html"
-                className="p-3 border border-crimson bg-crimson/10 hover:bg-crimson hover:text-white transition-colors block text-left group"
+                href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 border border-bone/40 bg-ink hover:border-bone transition-colors block text-left group"
               >
-                <div className="font-label font-bold text-sm text-crimson group-hover:text-white uppercase tracking-wider">
-                  Individual Entry
+                <div className="font-label font-bold text-sm text-bone group-hover:text-crimson uppercase tracking-wider flex items-center justify-between">
+                  <span>Brochure (PDF)</span>
+                  <span className="font-mono text-xs">↗</span>
                 </div>
-                <p className="font-label text-xs text-bone-dim group-hover:text-bone-hi mt-0.5">Independent student / team entry (strictly 1 team per event).</p>
-                <span className="font-mono text-[10px] text-crimson group-hover:text-white mt-2 inline-block font-bold">Open Portal ↗</span>
+                <p className="font-label text-xs text-bone-dim mt-0.5">Full 11-page dossier with technical specs, rules, criteria &amp; schedules.</p>
+                <span className="font-mono text-[10px] text-bone-dim group-hover:text-crimson mt-2 inline-block font-bold">Download Official PDF &rarr;</span>
               </a>
             </div>
-          </div>
-        </div>
-
-        {/* Right Column: Direct Transmission Desk */}
-        <div className="space-y-6">
-          <div className="flex items-baseline justify-between border-b border-bone/30 pb-2">
-            <h3 className="font-display text-2xl md:text-3xl text-bone uppercase leading-none">
-              Direct Transmission Desk
-            </h3>
-            <span className="font-mono text-[9px] text-crimson uppercase font-bold">Quick Email</span>
-          </div>
-          <p className="font-label text-sm text-bone-dim leading-relaxed">
-            Send an instant dispatch to the Aerospace Society secretariat for event clarifications, registration inquiries, or campus access verification.
-          </p>
-
-          <div className="p-4 border border-bone/30 bg-bone/[0.02]">
-            <form
-              className="space-y-3"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const designation = e.currentTarget.elements.designation.value;
-                const message = e.currentTarget.elements.message.value;
-                const body = encodeURIComponent(`From: ${designation}\n\nMessage:\n${message}`);
-                window.location.href = `mailto:aeross@dpsrkp.net?subject=${encodeURIComponent(
-                  `[CelesteCon 26 Inquiry] ${designation}`
-                )}&body=${body}`;
-              }}
-            >
-              <div>
-                <label className="font-mono text-[10px] text-bone-dim uppercase font-bold block mb-1">
-                  Sender Identity // Institution // Designation
-                </label>
-                <input
-                  name="designation"
-                  type="text"
-                  required
-                  placeholder="e.g. Dr. A. Sharma // St. Xavier's // Delegation In-Charge"
-                  className="w-full bg-transparent border-[1.5px] border-bone/40 px-3 py-2 font-mono text-base sm:text-xs text-bone placeholder:text-bone/30 focus:outline-none focus:border-crimson transition-colors"
-                />
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-bone-dim uppercase font-bold block mb-1">
-                  Dispatch Content // Inquiries &amp; Requests
-                </label>
-                <textarea
-                  name="message"
-                  required
-                  rows="4"
-                  placeholder="Enter your inquiry, competition clarification, or contingent arrival details..."
-                  className="w-full bg-transparent border-[1.5px] border-bone/40 px-3 py-2 font-mono text-base sm:text-xs text-bone placeholder:text-bone/30 focus:outline-none focus:border-crimson transition-colors resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full border-[1.5px] border-crimson bg-crimson text-bone font-label font-bold text-sm uppercase tracking-widest py-3 hover:bg-ink hover:text-crimson transition-colors flex items-center justify-center gap-2 shadow-lg"
-              >
-                <Mail size={14} />
-                <span>Transmit Dispatch to aeross@dpsrkp.net</span>
-              </button>
-            </form>
           </div>
         </div>
       </div>
