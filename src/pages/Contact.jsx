@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { EXECUTIVES } from '../data/executives';
-import { Phone, Mail, Copy, Check, ExternalLink, AlertTriangle } from 'lucide-react';
+import { Phone, Mail, Copy, Check, ExternalLink } from 'lucide-react';
 
 const ExecCard = ({ exec, index }) => {
   const [imgSrc, setImgSrc] = useState(exec.image || exec.placeholder);
@@ -401,7 +401,7 @@ const Contact = () => {
               <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 leading-relaxed">
                 Delhi Public School, Sector 12, R.K. Puram<br />
                 New Delhi — 110022
-              </dd>
+              </dd> 
             </dl>
           </div>
 

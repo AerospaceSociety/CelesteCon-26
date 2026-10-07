@@ -1,6 +1,5 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { masterMilestones } from '../data/events';
 
 const Format = () => {
   const itinerary = [

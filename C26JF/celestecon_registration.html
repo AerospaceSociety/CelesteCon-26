@@ -1164,152 +1164,122 @@
       margin-bottom: 4px;
     }
     .mech-code-tag.crimson { color: #C23A1E; }
-    .c26-flip-unit {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    @keyframes mechFlipTop {
+      0% { transform: perspective(450px) rotateX(0deg); filter: brightness(1); }
+      100% { transform: perspective(450px) rotateX(-90deg); filter: brightness(0.65); }
     }
-    .c26-rotor-pair {
-      display: flex;
-      gap: 3px;
-      background: #0b0907;
-      padding: 4px;
-      border: 1.5px solid #2b2520;
-      border-radius: 4px;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.6);
+    @keyframes mechFlipBottom {
+      0% { transform: perspective(450px) rotateX(90deg); filter: brightness(0.7); }
+      100% { transform: perspective(450px) rotateX(0deg); filter: brightness(1); }
     }
-    .c26-rotor {
-      position: relative;
-      width: 26px;
-      height: 46px;
-      background: #14110e;
-      border: 1.5px solid #3c342b;
+
+    .mech-flip-card {
+      width: 100%;
+      height: 60px;
+      background: #120f0d;
+      border: 1.5px solid #E8E1CE;
       border-radius: 3px;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), 0 3px 6px rgba(0, 0, 0, 0.6);
       overflow: hidden;
-      perspective: 350px;
-      user-select: none;
-      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.04), 0 3px 6px rgba(0,0,0,0.6);
+      perspective: 450px;
     }
-    @media (min-width: 600px) {
-      .c26-rotor {
-        width: 34px;
-        height: 56px;
-      }
-    }
-    .c26-rotor.crimson {
+    .mech-flip-card.crimson {
       border-color: #C23A1E;
     }
-    .c26-rotor-half {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 50%;
-      overflow: hidden;
-    }
-    .c26-rotor-half.top {
-      top: 0;
-      background: linear-gradient(180deg, #25201b 0%, #171411 100%);
-      border-bottom: 1px solid #000;
-    }
-    .c26-rotor-half.bottom {
-      bottom: 0;
-      background: linear-gradient(180deg, #13100e 0%, #1e1915 100%);
-    }
-    .c26-rotor-num-inner {
-      width: 100%;
-      height: 200%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .c26-rotor-num-inner.bottom-shift {
-      transform: translateY(-50%);
-    }
-    .c26-rotor-glyph {
-      font-family: var(--font-mono, monospace);
-      font-weight: 700;
-      font-size: 26px;
-      line-height: 1;
-      color: #F5EFE0;
-      letter-spacing: -0.02em;
-    }
-    @media (min-width: 600px) {
-      .c26-rotor-glyph {
-        font-size: 34px;
-      }
-    }
-    .c26-rotor-glyph.crimson {
-      color: #C23A1E;
-    }
-    .c26-rotor-leaf-top {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 50%;
-      overflow: hidden;
-      background: linear-gradient(180deg, #28221d 0%, #191512 100%);
-      border-bottom: 1px solid #000;
-      transform-origin: center bottom;
-      animation: rotorFlipTop 0.24s cubic-bezier(0.4, 0, 0.7, 1) forwards;
-      z-index: 20;
-    }
-    .c26-rotor-leaf-bottom {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 50%;
-      overflow: hidden;
-      background: linear-gradient(180deg, #13100e 0%, #1f1a16 100%);
-      transform-origin: center top;
-      animation: rotorFlipBottom 0.24s cubic-bezier(0.15, 0.6, 0.4, 1) 0.20s both;
-      z-index: 30;
-    }
-    @keyframes rotorFlipTop {
-      0% {
-        transform: perspective(350px) rotateX(0deg);
-        filter: brightness(1);
-      }
-      100% {
-        transform: perspective(350px) rotateX(-90deg);
-        filter: brightness(0.6);
-      }
-    }
-    @keyframes rotorFlipBottom {
-      0% {
-        transform: perspective(350px) rotateX(90deg);
-        filter: brightness(0.7);
-      }
-      100% {
-        transform: perspective(350px) rotateX(0deg);
-        filter: brightness(1);
-      }
-    }
-    .c26-rotor-seam {
+    .mech-card-slit {
       position: absolute;
       top: 50%;
       left: 0;
       right: 0;
       height: 1.5px;
       background: #000000;
-      box-shadow: 0 1px 1px rgba(255, 255, 255, 0.08);
+      box-shadow: 0 1px 1px rgba(255, 255, 255, 0.07);
       z-index: 40;
       pointer-events: none;
     }
-    .c26-rotor-hinge {
+    .mech-hinge {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 2px;
-      height: 5px;
+      width: 3px;
+      height: 7px;
       background: #DDD4BC;
       z-index: 45;
-      pointer-events: none;
     }
-    .c26-rotor-hinge.left { left: 0; }
-    .c26-rotor-hinge.right { right: 0; }
-    .c26-rotor-hinge.crimson { background: #C23A1E; }
+    .mech-hinge.left { left: 0; }
+    .mech-hinge.right { right: 0; }
+    .mech-flip-card.crimson .mech-hinge { background: #C23A1E; }
+
+    .mech-half-back-top {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #25201b 0%, #181411 100%);
+      border-bottom: 1px solid #000;
+      display: flex; justify-content: center;
+    }
+    .mech-half-back-top .mech-inner-num {
+      height: 200%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mech-half-back-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #13100e 0%, #1c1713 100%);
+      display: flex; justify-content: center;
+    }
+    .mech-half-back-bottom .mech-inner-num {
+      height: 200%;
+      transform: translateY(-50%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mech-leaf-top {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #27211c 0%, #191512 100%);
+      border-bottom: 1px solid #000;
+      display: flex; justify-content: center;
+      transform-origin: center bottom;
+      animation: mechFlipTop 0.28s cubic-bezier(0.4, 0, 0.7, 1) forwards;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      z-index: 20;
+    }
+    .mech-leaf-top .mech-inner-num {
+      height: 200%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mech-leaf-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #13100e 0%, #1e1915 100%);
+      display: flex; justify-content: center;
+      transform-origin: center top;
+      animation: mechFlipBottom 0.28s cubic-bezier(0.15, 0.6, 0.4, 1) 0.25s both;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      z-index: 30;
+    }
+    .mech-leaf-bottom .mech-inner-num {
+      height: 200%;
+      transform: translateY(-50%);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .mech-num-val {
+      font-family: var(--font-mono);
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 700;
+      line-height: 1;
+      color: #F2EDDD;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .mech-num-val.crimson { color: #C23A1E; }
     .mech-label-tag {
       font-family: var(--font-mono);
       font-size: 9px;
@@ -1321,19 +1291,12 @@
     }
     .mech-label-tag.crimson { color: #C23A1E; }
     .mech-colon {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 2px;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: #DDD4BC;
+      margin-top: 14px;
       opacity: 0.7;
-    }
-    .mech-colon-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #DDD4BC;
-      box-shadow: 0 0 6px rgba(221, 212, 188, 0.5);
     }
     .mech-terminal-footer {
       display: flex;
@@ -1360,7 +1323,9 @@
     }
     @media (max-width: 600px) {
       .mech-timer-terminal { padding: 18px 14px; }
-      .mech-clock-frame { gap: 2px; padding: 12px 4px; }
+      .mech-clock-frame { gap: 3px; padding: 12px 6px; }
+      .mech-flip-card { height: 48px; }
+      .mech-colon { font-size: 16px; margin-top: 10px; }
       .mech-label-tag { font-size: 8px; }
       .mech-code-tag { font-size: 9px; }
     }
@@ -1720,122 +1685,77 @@
         <p>Problem statements, CAD reference packs, and submission upload gates arm and activate at midnight on 13 October. Ticking in live Indian Standard Time.</p>
       </div>
 
-      <!-- Mechanical Timer Display (MM:DD:HH:SS) using FlipDown Rotors -->
-      <div class="mech-clock-frame" aria-label="Countdown to Prompts Launch" style="display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;">
+      <!-- Mechanical Timer Display (MM:DD:HH:SS) -->
+      <div class="mech-clock-frame" aria-label="Countdown to Prompts Launch">
         <!-- MM: Months -->
-        <div class="c26-flip-unit">
+        <div class="mech-unit-box">
           <div class="mech-code-tag">MM</div>
-          <div class="c26-rotor-pair">
-            <div class="c26-rotor" id="rotor-m0" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
-            <div class="c26-rotor" id="rotor-m1" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
+          <div class="mech-flip-card" id="card-months" data-val="00">
+            <div class="mech-half-back-top"><div class="mech-inner-num"><span class="mech-num-val">00</span></div></div>
+            <div class="mech-half-back-bottom"><div class="mech-inner-num"><span class="mech-num-val">00</span></div></div>
+            <div class="mech-card-slit"></div>
+            <div class="mech-hinge left"></div>
+            <div class="mech-hinge right"></div>
           </div>
           <div class="mech-label-tag">MONTHS</div>
         </div>
 
-        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+        <div class="mech-colon">:</div>
 
         <!-- DD: Days -->
-        <div class="c26-flip-unit">
+        <div class="mech-unit-box">
           <div class="mech-code-tag">DD</div>
-          <div class="c26-rotor-pair">
-            <div class="c26-rotor" id="rotor-d0" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
-            <div class="c26-rotor" id="rotor-d1" data-val="6">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">6</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">6</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
+          <div class="mech-flip-card" id="card-days" data-val="07">
+            <div class="mech-half-back-top"><div class="mech-inner-num"><span class="mech-num-val">07</span></div></div>
+            <div class="mech-half-back-bottom"><div class="mech-inner-num"><span class="mech-num-val">07</span></div></div>
+            <div class="mech-card-slit"></div>
+            <div class="mech-hinge left"></div>
+            <div class="mech-hinge right"></div>
           </div>
           <div class="mech-label-tag">DAYS</div>
         </div>
 
-        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+        <div class="mech-colon">:</div>
 
         <!-- HH: Hours -->
-        <div class="c26-flip-unit">
+        <div class="mech-unit-box">
           <div class="mech-code-tag">HH</div>
-          <div class="c26-rotor-pair">
-            <div class="c26-rotor" id="rotor-h0" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
-            <div class="c26-rotor" id="rotor-h1" data-val="3">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">3</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">3</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
+          <div class="mech-flip-card" id="card-hours" data-val="01">
+            <div class="mech-half-back-top"><div class="mech-inner-num"><span class="mech-num-val">01</span></div></div>
+            <div class="mech-half-back-bottom"><div class="mech-inner-num"><span class="mech-num-val">01</span></div></div>
+            <div class="mech-card-slit"></div>
+            <div class="mech-hinge left"></div>
+            <div class="mech-hinge right"></div>
           </div>
           <div class="mech-label-tag">HOURS</div>
         </div>
 
-        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+        <div class="mech-colon">:</div>
 
         <!-- MM: Minutes -->
-        <div class="c26-flip-unit">
+        <div class="mech-unit-box">
           <div class="mech-code-tag">MM</div>
-          <div class="c26-rotor-pair">
-            <div class="c26-rotor" id="rotor-min0" data-val="2">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">2</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">2</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
-            <div class="c26-rotor" id="rotor-min1" data-val="7">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">7</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">7</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left"></div>
-              <div class="c26-rotor-hinge right"></div>
-            </div>
+          <div class="mech-flip-card" id="card-mins" data-val="19">
+            <div class="mech-half-back-top"><div class="mech-inner-num"><span class="mech-num-val">19</span></div></div>
+            <div class="mech-half-back-bottom"><div class="mech-inner-num"><span class="mech-num-val">19</span></div></div>
+            <div class="mech-card-slit"></div>
+            <div class="mech-hinge left"></div>
+            <div class="mech-hinge right"></div>
           </div>
           <div class="mech-label-tag">MINUTES</div>
         </div>
 
-        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+        <div class="mech-colon">:</div>
 
         <!-- SS: Seconds -->
-        <div class="c26-flip-unit">
+        <div class="mech-unit-box">
           <div class="mech-code-tag crimson">SS</div>
-          <div class="c26-rotor-pair">
-            <div class="c26-rotor crimson" id="rotor-s0" data-val="5">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">5</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">5</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left crimson"></div>
-              <div class="c26-rotor-hinge right crimson"></div>
-            </div>
-            <div class="c26-rotor crimson" id="rotor-s1" data-val="9">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">9</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">9</span></div></div>
-              <div class="c26-rotor-seam"></div>
-              <div class="c26-rotor-hinge left crimson"></div>
-              <div class="c26-rotor-hinge right crimson"></div>
-            </div>
+          <div class="mech-flip-card crimson" id="card-secs" data-val="45">
+            <div class="mech-half-back-top"><div class="mech-inner-num"><span class="mech-num-val crimson">45</span></div></div>
+            <div class="mech-half-back-bottom"><div class="mech-inner-num"><span class="mech-num-val crimson">45</span></div></div>
+            <div class="mech-card-slit"></div>
+            <div class="mech-hinge left"></div>
+            <div class="mech-hinge right"></div>
           </div>
           <div class="mech-label-tag crimson">SECONDS</div>
         </div>
@@ -3173,33 +3093,53 @@
       function initMechanicalTimer() {
         const TARGET_EPOCH = new Date('2026-10-13T00:00:00+05:30').getTime();
 
-        function updateRotor(id, nextDigit, isCrimson) {
-          const el = document.getElementById(id);
-          if (!el) return;
-          const prevDigit = el.getAttribute('data-val') || '0';
-          if (prevDigit === nextDigit) return;
+        function updateCard(cardId, numStr, isCrimson) {
+          const card = document.getElementById(cardId);
+          if (!card) return;
+          const prevVal = card.getAttribute('data-val');
 
-          el.setAttribute('data-val', nextDigit);
+          // First tick initialization without jarring initial flip
+          if (!card.dataset.initialized) {
+            card.dataset.initialized = 'true';
+            card.setAttribute('data-val', numStr);
+            const topSpan = card.querySelector('.mech-half-back-top .mech-num-val');
+            const bottomSpan = card.querySelector('.mech-half-back-bottom .mech-num-val');
+            if (topSpan) topSpan.textContent = numStr;
+            if (bottomSpan) bottomSpan.textContent = numStr;
+            return;
+          }
 
-          const glyphs = el.querySelectorAll('.c26-rotor-half .c26-rotor-glyph');
-          glyphs.forEach(function(g) { g.textContent = nextDigit; });
+          if (prevVal === numStr) return;
+          card.setAttribute('data-val', numStr);
 
-          el.querySelectorAll('.c26-rotor-leaf-top, .c26-rotor-leaf-bottom').forEach(function(l) { l.remove(); });
+          // Update underlying back halves to show the new number
+          const topSpan = card.querySelector('.mech-half-back-top .mech-num-val');
+          const bottomSpan = card.querySelector('.mech-half-back-bottom .mech-num-val');
+          if (topSpan) topSpan.textContent = numStr;
+          if (bottomSpan) bottomSpan.textContent = numStr;
 
+          // Remove any previous active leaves
+          card.querySelectorAll('.mech-leaf-top, .mech-leaf-bottom').forEach(function(el) {
+            el.remove();
+          });
+
+          // Create flipping top leaf (folds DOWN 0deg -> -90deg displaying previous number)
           const leafTop = document.createElement('div');
-          leafTop.className = 'c26-rotor-leaf-top';
-          leafTop.innerHTML = '<div class="c26-rotor-num-inner"><span class="c26-rotor-glyph ' + (isCrimson ? 'crimson' : '') + '">' + prevDigit + '</span></div>';
-          el.appendChild(leafTop);
+          leafTop.className = 'mech-leaf-top';
+          leafTop.innerHTML = '<div class="mech-inner-num"><span class="mech-num-val ' + (isCrimson ? 'crimson' : '') + '">' + prevVal + '</span></div>';
+          card.appendChild(leafTop);
 
+          // Create flipping bottom leaf (opens DOWN 90deg -> 0deg displaying new number)
           const leafBottom = document.createElement('div');
-          leafBottom.className = 'c26-rotor-leaf-bottom';
-          leafBottom.innerHTML = '<div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph ' + (isCrimson ? 'crimson' : '') + '">' + nextDigit + '</span></div>';
-          el.appendChild(leafBottom);
+          leafBottom.className = 'mech-leaf-bottom';
+          leafBottom.innerHTML = '<div class="mech-inner-num"><span class="mech-num-val ' + (isCrimson ? 'crimson' : '') + '">' + numStr + '</span></div>';
+          card.appendChild(leafBottom);
 
+          // Remove leaves when 3D fold cycle concludes
           setTimeout(function() {
-            if (leafTop.parentNode === el) leafTop.remove();
-            if (leafBottom.parentNode === el) leafBottom.remove();
-          }, 480);
+            if (leafTop.parentNode === card) leafTop.remove();
+            if (leafBottom.parentNode === card) leafBottom.remove();
+          }, 560);
         }
 
         function tick() {
@@ -3215,22 +3155,11 @@
           const months = Math.floor(totalDays / 30);
           const days = totalDays % 30;
 
-          const mStr = String(months).padStart(2, '0');
-          const dStr = String(days).padStart(2, '0');
-          const hStr = String(hours).padStart(2, '0');
-          const minStr = String(minutes).padStart(2, '0');
-          const sStr = String(seconds).padStart(2, '0');
-
-          updateRotor('rotor-m0', mStr[0], false);
-          updateRotor('rotor-m1', mStr[1], false);
-          updateRotor('rotor-d0', dStr[0], false);
-          updateRotor('rotor-d1', dStr[1], false);
-          updateRotor('rotor-h0', hStr[0], false);
-          updateRotor('rotor-h1', hStr[1], false);
-          updateRotor('rotor-min0', minStr[0], false);
-          updateRotor('rotor-min1', minStr[1], false);
-          updateRotor('rotor-s0', sStr[0], true);
-          updateRotor('rotor-s1', sStr[1], true);
+          updateCard('card-months', String(months).padStart(2, '0'), false);
+          updateCard('card-days', String(days).padStart(2, '0'), false);
+          updateCard('card-hours', String(hours).padStart(2, '0'), false);
+          updateCard('card-mins', String(minutes).padStart(2, '0'), false);
+          updateCard('card-secs', String(seconds).padStart(2, '0'), true);
 
           if (diff <= 0) {
             const statusEl = document.getElementById('mech-status-text');
