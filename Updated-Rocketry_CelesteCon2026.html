@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rocketry · Event 07 · CelesteCon 2026</title>
+<meta name="description" content="Rocketry, Event 07 of CelesteCon 2026 at DPS R.K. Puram, New Delhi. Teams of 2–3 in Junior (Grades 6–8) and Senior (Grades 9–12) divisions build a model rocket around a supplied OpenRocket motor. Judges measure it and simulate the flight. No launches.">
+<meta name="theme-color" content="#0F1012">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Oswald:wght@400;500;600;700&family=Shippori+Mincho:wght@700;800&display=swap">
+<style>
+/* Rocketry · CelesteCon 2026 · Event 07
+   Consistent CelesteCon ink canvas, Solar Crimson highlights,
+   bone text and technical IBM Plex Mono readouts. */
+:root{
+  color-scheme:dark;
+  --bg:#161310;
+  --bg-2:#100E0C;
+  --card:#1E1B17;
+  --card-2:#2B2620;
+  --text:#E8E1CE;
+  --text-2:#BDB6A4;
+  --text-3:#7C7667;
+  --rule:rgba(232,225,206,0.18);
+  --rule-2:rgba(232,225,206,0.32);
+  --orange:#C23A1E;
+  --orange-hi:#E04E2D;
+  --orange-soft:rgba(194,58,30,.15);
+  --blue:#8197FF;
+  --blue-soft:rgba(129,151,255,.14);
+  --green:#22D68F;
+  --green-soft:rgba(34,214,143,.12);
+  --red:#FF5252;
+  --red-soft:rgba(255,82,82,.13);
+  --amber:#FFD400;
+  --amber-soft:rgba(255,212,0,.10);
+  --f-display:"Anton","Oswald",sans-serif;
+  --f-sans:"Oswald",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --maxw:1200px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:clip;background:var(--bg);color:var(--text);font:16px/1.6 var(--f-sans);font-stretch:100%;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+h1,h2,h3,h4,h5{margin:0;line-height:1.05;text-wrap:balance;font-family:var(--f-display);letter-spacing:.03em;text-transform:uppercase}
+p{margin:0}
+ul,ol{margin:0;padding:0}
+a{color:var(--blue);text-underline-offset:3px}
+a:hover{color:var(--orange-hi)}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+::selection{background:var(--orange);color:#0F1012}
+strong,b{font-weight:650}
+sub{font-size:.72em}
+code{font:500 .9em var(--f-mono);background:var(--blue-soft);color:var(--blue);padding:1px 5px;border-radius:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.skip{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--orange);color:#0F1012;padding:8px 12px;font:600 13px/1 var(--f-mono)}
+.skip:focus{left:8px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* ---------- top bar ---------- */
+.topbar{background:#0B0C0E;border-bottom:1px solid var(--rule)}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:46px;font:500 12px/1.3 var(--f-mono);letter-spacing:.04em;color:var(--text-3)}
+.crumbs{display:flex;flex-wrap:wrap;gap:8px}
+.crumbs a{color:var(--text-2);text-decoration:none}
+.crumbs a:hover{color:var(--orange-hi)}
+.crumbs b{color:var(--text);font-weight:500}
+.topbar .contact{color:var(--orange-hi);text-decoration:none;white-space:nowrap}
+.topbar .contact:hover{color:var(--text)}
+
+/* ---------- hero: night sky ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);background:var(--bg)}
+.hero::before{ /* sparse starfield: tiled layers at odd sizes so the pattern doesn't visibly repeat */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:
+    radial-gradient(1px 1px at 23px 41px,#fff 50%,transparent 51%),
+    radial-gradient(1px 1px at 151px 97px,rgba(255,255,255,.8) 50%,transparent 51%),
+    radial-gradient(1.4px 1.4px at 88px 170px,rgba(255,255,255,.9) 50%,transparent 51%),
+    radial-gradient(1px 1px at 260px 20px,rgba(255,255,255,.6) 50%,transparent 51%),
+    radial-gradient(1px 1px at 203px 233px,rgba(255,255,255,.55) 50%,transparent 51%),
+    radial-gradient(1.6px 1.6px at 317px 141px,rgba(255,200,170,.9) 50%,transparent 51%);
+  background-size:211px 187px,283px 241px,331px 293px,379px 269px,241px 307px,421px 359px;
+  mask-image:linear-gradient(180deg,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 100%);
+}
+.hero .top{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);padding-block:clamp(36px,6vw,64px) 20px;align-items:start}
+.hero .top > div{min-width:0;container-type:inline-size}
+.badge{display:inline-flex;align-items:stretch;border:1px solid var(--rule-2);font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;background:var(--card)}
+.badge span{padding:7px 10px}
+.badge span:first-child{background:var(--orange);color:#0F1012}
+.hero h1{margin-top:20px;font-weight:900;font-stretch:125%;font-size:clamp(40px,6.4vw,84px);font-size:min(104px,13cqi);line-height:.9;letter-spacing:-.02em;text-transform:uppercase}
+.hero .sub{margin-top:12px;font:600 clamp(14px,1.5vw,17px)/1.3 var(--f-mono);color:var(--orange-hi);letter-spacing:.04em;text-transform:uppercase}
+.hero .lede{margin-top:22px;max-width:52ch;font-size:clamp(18px,1.8vw,21px);line-height:1.45;color:var(--text)}
+.hero .lede em{font-style:normal;color:var(--orange-hi)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border:1px solid var(--rule-2);border-radius:4px;font:700 15px/1 var(--f-sans);font-stretch:110%;text-decoration:none;color:var(--text);background:var(--card);transition:transform .12s,box-shadow .12s,border-color .12s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--orange);border-color:var(--orange);color:var(--text)}
+.btn.primary{background:var(--orange);border-color:var(--orange);color:#0F1012}
+.btn.primary:hover{box-shadow:3px 3px 0 var(--text);color:#0F1012}
+
+/* flight card */
+.card{background:var(--card);border:1px solid var(--rule-2);border-radius:6px;box-shadow:5px 5px 0 rgba(255,90,31,.55)}
+.fcard .hd{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--rule-2);font:600 11.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.fcard .hd i{font-style:normal;color:var(--orange-hi)}
+.fcard dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr)}
+.fcard dt,.fcard dd{margin:0;padding:10px 16px;border-bottom:1px solid var(--rule)}
+.fcard dt{font:500 12px/1.5 var(--f-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;padding-right:4px}
+.fcard dd{font-weight:600;font-size:15.5px}
+.fcard dd small{display:block;font-weight:400;font-size:13.5px;color:var(--text-3)}
+.fcard dl > :nth-last-child(-n+2){border-bottom:0}
+.fcard .ft{border-top:1px solid var(--rule-2);padding:12px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;background:var(--orange-soft);border-radius:0 0 5px 5px}
+.fcard .ft p{font:500 12px/1.3 var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--text-2)}
+.fcard .ft b{font:800 24px/1 var(--f-sans);font-stretch:120%;color:var(--orange-hi);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* profile strip */
+.hero .profile{position:relative;z-index:1;padding-bottom:26px}
+.profile svg{display:block;width:100%;height:auto}
+.pf-body{fill:var(--card);stroke:var(--text);stroke-width:2}
+.pf-fin{fill:rgba(255,90,31,.2);stroke:var(--text);stroke-width:2}
+.pf-motor{fill:none;stroke:var(--orange-hi);stroke-width:1.5;stroke-dasharray:6 4}
+.pf-chute{fill:none;stroke:var(--text-3);stroke-width:1.2;stroke-dasharray:3 3}
+.pf-tick{stroke:var(--text-3);stroke-width:1}
+.pf-lbl{font:500 12px var(--f-mono);fill:var(--text-3)}
+.pf-cg{font:600 13px var(--f-mono);fill:var(--blue)}
+.pf-cp{font:600 13px var(--f-mono);fill:var(--red)}
+.pf-span{stroke:var(--text);stroke-width:1.2}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(24px,4vw,52px);padding-block:44px 72px;align-items:start}
+.secnav{position:sticky;top:16px}
+.secnav .nav-hd{font:600 11.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);padding:0 0 12px 34px}
+.secnav [role=tablist]{position:relative;display:flex;flex-direction:column}
+.secnav [role=tablist]::before{content:"";position:absolute;left:11px;top:18px;bottom:18px;width:2px;background:var(--rule-2)}
+.secnav [role=tab]{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:center;padding:10px 12px 10px 0;text-decoration:none;color:var(--text-2);border-radius:4px}
+.secnav [role=tab] .dot{position:relative;z-index:1;width:24px;height:24px;border-radius:50%;background:var(--bg);border:2px solid var(--rule-2);display:grid;place-items:center;font:600 10px/1 var(--f-mono);color:var(--text-3)}
+.secnav [role=tab] .lb{display:block;font-weight:650;font-size:16px;line-height:1.2}
+.secnav [role=tab] .lb small{display:block;font:500 11.5px/1.3 var(--f-mono);color:var(--text-3);letter-spacing:.04em;margin-top:2px}
+.secnav [role=tab]:hover .lb{color:var(--text)}
+.secnav [role=tab]:hover .dot{border-color:var(--text-2)}
+.secnav [role=tab].seen .dot{border-color:var(--text-2);background:var(--text-2);color:var(--bg)}
+.secnav [role=tab][aria-selected=true] .dot{border-color:var(--orange);background:var(--orange);color:#0F1012;box-shadow:0 0 0 4px var(--orange-soft)}
+.secnav [role=tab][aria-selected=true] .lb{color:var(--text)}
+.secnav [role=tab][aria-selected=true]{background:var(--card);box-shadow:inset 0 0 0 1px var(--rule)}
+.secnav .nav-ft{margin:14px 0 0 34px;font:500 11.5px/1.5 var(--f-mono);color:var(--text-3)}
+
+.panels{min-width:0}
+.sec{animation:rise .25s ease-out}
+.sec:focus{outline:none}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{font:600 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--orange-hi)}
+.sec h2{margin-top:10px;font-weight:850;font-stretch:118%;font-size:clamp(34px,4.6vw,52px);letter-spacing:-.015em}
+.sec .intro{margin-top:14px;max-width:64ch;font-size:18px;color:var(--text-2)}
+.sec .intro b{color:var(--text)}
+.sec h3{margin:44px 0 16px;font-weight:800;font-stretch:112%;font-size:22px;letter-spacing:-.005em;display:flex;align-items:baseline;gap:12px}
+.sec h3 .n{font:600 12px/1 var(--f-mono);color:var(--text-3);letter-spacing:.06em}
+
+/* timeline */
+.tl{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:30px;position:relative}
+.tl::before{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:var(--rule-2)}
+.tl li{position:relative;padding:28px 14px 0 0}
+.tl li::before{content:"";position:absolute;left:0;top:2px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--text-2)}
+.tl li.key::before{background:var(--orange);border-color:var(--orange)}
+.tl .d{font:600 13px/1 var(--f-mono);color:var(--orange-hi)}
+.tl .t{margin-top:6px;font-weight:700;font-size:16.5px;line-height:1.25}
+.tl .s{margin-top:4px;font-size:14px;color:var(--text-3)}
+.tent{display:inline-block;margin-left:6px;font:500 10.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(255,212,0,.5);border-radius:3px;padding:3px 5px;vertical-align:2px}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:12px}
+.fact{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.fact .k{font:500 11.5px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.fact .v{margin-top:6px;font-weight:750;font-size:18px;line-height:1.25}
+.fact .v small{display:block;font-weight:400;font-size:14px;color:var(--text-3)}
+
+.wins{list-style:none;counter-reset:w;display:grid;gap:10px}
+.wins li{counter-increment:w;display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px;align-items:start;background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:14px 16px 14px 12px}
+.wins li::before{content:"0" counter(w);font:600 14px/1.5 var(--f-mono);color:var(--blue)}
+.wins b{display:block;font-size:16.5px}
+.wins span{color:var(--text-2);font-size:15px}
+
+/* hazard banner */
+.hazard{margin-top:26px;border:1px solid var(--rule-2);border-radius:6px;overflow:hidden;background:var(--card)}
+.hazard .stripe{height:14px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,#0F1012 14px 28px)}
+.hazard .in{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;padding:18px 20px;align-items:start}
+.hazard .no{font-weight:900;font-stretch:125%;font-size:clamp(28px,3.4vw,40px);line-height:.95;text-transform:uppercase;color:var(--red)}
+.hazard h4{font-weight:800;font-size:19px;font-stretch:110%}
+.hazard p{margin-top:6px;color:var(--text-2);font-size:15.5px}
+.hazard p b{color:var(--text)}
+.hazard .ban{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.hazard .ban span{font:600 12px/1 var(--f-mono);padding:6px 8px;border-radius:3px;background:var(--red-soft);color:var(--red);text-decoration:line-through;text-decoration-thickness:1.5px}
+
+.motor{margin-top:16px;padding:18px 20px;border-radius:6px;background:var(--card);border:1px solid var(--orange)}
+.motor h4{font-weight:850;font-size:22px;font-stretch:115%;color:var(--text)}
+.motor-hd p{margin-top:4px;color:var(--text-2);font-size:15.5px}
+.mspec{margin:16px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.mspec div{background:var(--bg-2);padding:10px 12px}
+.mspec dt{font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.mspec dd{margin:5px 0 0;font:600 17px/1.2 var(--f-mono);color:var(--orange-hi)}
+.msrc{margin-top:10px;font-size:13.5px;color:var(--text-3)}
+.mrules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mrules > div{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--orange);border-radius:6px;padding:14px 16px}
+.mrules h5{font-weight:800;font-size:17px;font-stretch:110%}
+.mrules p{margin-top:6px;font-size:15px;color:var(--text-2)}
+
+.yn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.yn > div{background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.yn h4{padding:11px 16px;font:600 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.yn .ok h4{background:var(--green-soft);color:var(--green)}
+.yn .nok h4{background:var(--red-soft);color:var(--red)}
+.yn ul{list-style:none;padding:6px 16px 12px}
+.yn li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:15.5px}
+.yn li:last-child{border-bottom:0}
+.yn .ok li::before{content:"✓";font-weight:800;color:var(--green)}
+.yn .nok li::before{content:"✕";font-weight:800;color:var(--red)}
+.yn li small{display:block;color:var(--text-3);font-size:14px}
+
+/* event-day flow */
+.flow{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px;counter-reset:f}
+.flow li{counter-increment:f;position:relative;background:var(--card);border:1px solid var(--rule-2);border-radius:6px;padding:18px}
+.flow li::before{content:"STAGE 0" counter(f);display:inline-block;font:600 11px/1 var(--f-mono);letter-spacing:.1em;padding:5px 7px;border-radius:3px;background:var(--orange);color:#0F1012}
+.flow li:not(:last-child)::after{content:"";position:absolute;right:-12px;top:50%;width:10px;height:10px;border-top:2px solid var(--orange);border-right:2px solid var(--orange);transform:translateY(-50%) rotate(45deg)}
+.flow h4{margin-top:12px;font-weight:800;font-size:18px;font-stretch:110%}
+.flow p{margin-top:6px;font-size:15px;color:var(--text-2)}
+.flow p b{color:var(--text)}
+.meas{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;font-size:15.5px}
+.meas th,.meas td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top}
+.meas thead th{font:600 11px/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);background:var(--card-2)}
+.meas tbody th{font-weight:700;width:34%}
+.meas td{color:var(--text-2)}
+.meas tr:last-child th,.meas tr:last-child td{border-bottom:0}
+.conds{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.conds span{font:500 13px/1 var(--f-mono);padding:8px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue)}
+.note{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;margin-top:20px;padding:15px 18px;border-radius:6px;background:var(--amber-soft);border:1px solid rgba(255,212,0,.35)}
+.note .ic{font:700 12px/1 var(--f-mono);background:var(--amber);color:#0F1012;padding:5px 7px;border-radius:3px;height:max-content;margin-top:2px}
+.note p{font-size:15.5px;color:var(--text)}
+
+/* checklist */
+.pre{background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.pre .hd{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);background:var(--card-2)}
+.pre .hd p{font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.pre .hd b{font:600 13px/1 var(--f-mono);color:var(--text)}
+.pre .meter{height:4px;background:var(--rule)}
+.pre .meter i{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.pre label{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;align-items:start;padding:11px 16px;border-bottom:1px solid var(--rule);cursor:pointer;font-size:15.5px}
+.pre label:last-child{border-bottom:0}
+.pre input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--green)}
+.pre input:checked + span{color:var(--text-3);text-decoration:line-through}
+
+/* judging */
+.crit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.crit article{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--blue);border-radius:6px;padding:18px}
+.crit article:nth-child(2){border-top-color:var(--orange)}
+.crit article:nth-child(3){border-top-color:var(--text-2)}
+.crit .k{font:600 12px/1 var(--f-mono);color:var(--text-3);letter-spacing:.08em}
+.crit h4{margin-top:10px;font-weight:800;font-size:20px;font-stretch:112%;line-height:1.15}
+.crit ul{list-style:none;margin-top:12px}
+.crit li{position:relative;padding-left:16px;margin-top:7px;font-size:15px;color:var(--text-2)}
+.crit li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--rule-2)}
+.band{margin-top:14px;background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:16px 18px 10px}
+.band p{font-size:15.5px;color:var(--text-2)}
+.band p b{color:var(--text)}
+.band svg{display:block;width:100%;height:auto;margin-top:8px}
+.trophy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.trophy div{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.trophy .p{font:600 12px/1 var(--f-mono);color:var(--text-3)}
+.trophy .v{margin-top:6px;font-weight:850;font-stretch:118%;font-size:28px}
+.trophy div:first-child{border-color:var(--orange)}
+.trophy div:first-child .v{color:var(--orange-hi)}
+
+/* estimator */
+.est{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px;margin-top:26px;align-items:start}
+.inputs{background:var(--card);border:1px solid var(--rule);border-radius:6px}
+.inputs fieldset{margin:0;border:0;border-top:1px solid var(--rule);padding:14px 16px 16px}
+.inputs fieldset:first-child{border-top:0}
+.inputs legend{float:left;width:100%;padding:0;margin-bottom:10px;font:600 11.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--orange-hi)}
+.inputs legend+*{clear:left}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fld label{display:block;font-size:13.5px;color:var(--text-2);margin-bottom:4px;font-weight:550}
+.box{display:flex;border:1px solid var(--rule-2);border-radius:4px;background:var(--bg-2);overflow:hidden}
+.box:focus-within{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-soft)}
+.box input,.box select{flex:1;min-width:0;border:0;background:none;padding:9px 10px;font:500 15.5px/1.2 var(--f-mono);color:var(--text);font-variant-numeric:tabular-nums}
+.box select{cursor:pointer}
+.box select option{background:var(--card);color:var(--text)}
+.box input:focus,.box select:focus{outline:none}
+.box input[readonly]{color:var(--orange-hi)}
+.box .u{display:grid;place-items:center;padding:0 10px;font:500 12px var(--f-mono);color:var(--text-3);background:var(--card-2);border-left:1px solid var(--rule)}
+.inputs .acts{display:flex;gap:10px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--rule)}
+.inputs .acts button{font:600 13px/1 var(--f-sans);padding:9px 12px;border-radius:4px;border:1px solid var(--rule-2);background:var(--card-2);color:var(--text);cursor:pointer}
+.inputs .acts button:hover{border-color:var(--orange)}
+.out{position:sticky;top:16px;display:grid;gap:12px}
+.readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.readout div{background:var(--card);padding:12px 14px}
+.readout .k{font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.readout .v{margin-top:6px;font:600 20px/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.readout .v.cp{color:var(--red)}
+.readout .v.cg{color:var(--blue)}
+.readout .v.over{color:var(--red)}
+.readout .v small{display:block;margin-top:4px;font:500 11px var(--f-mono);color:var(--text-3)}
+.margins{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mg{border-radius:6px;padding:14px 16px;border:1px solid var(--rule-2);background:var(--card)}
+.mg .k{font:600 11.5px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.mg .v{margin-top:6px;font-weight:850;font-stretch:115%;font-size:36px;line-height:1;font-variant-numeric:tabular-nums}
+.mg .v small{font:500 14px var(--f-mono);margin-left:6px;color:var(--text-3)}
+.mg .st{display:inline-block;margin-top:10px;font:600 11.5px/1 var(--f-mono);letter-spacing:.06em;padding:6px 8px;border-radius:3px;background:var(--card-2);color:var(--text-3)}
+.mg.in{background:var(--green-soft);border-color:var(--green)}
+.mg.in .st{background:var(--green);color:#0F1012}
+.mg.lo{background:var(--red-soft);border-color:var(--red)}
+.mg.lo .st{background:var(--red);color:#0F1012}
+.mg.hi{background:var(--amber-soft);border-color:var(--amber)}
+.mg.hi .st{background:var(--amber);color:#0F1012}
+.viz{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:12px 14px}
+.viz .cap{display:flex;justify-content:space-between;font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.viz svg{display:block;width:100%;height:auto;margin-top:6px}
+.formula{margin-top:14px;background:var(--card);border:1px solid var(--rule);border-radius:6px}
+.formula summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:15.5px;list-style:none;display:flex;justify-content:space-between}
+.formula summary::-webkit-details-marker{display:none}
+.formula summary::after{content:"+";font:600 18px/1 var(--f-mono);color:var(--text-3)}
+.formula[open] summary::after{content:"−"}
+.formula .body{padding:0 16px 16px;font-size:15px;color:var(--text-2)}
+.formula .body p+p{margin-top:8px}
+.fine{margin-top:12px;font-size:14px;color:var(--text-3)}
+.mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:10px;justify-content:space-between;align-items:center;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#0B0C0E;border-top:1px solid var(--rule-2);color:var(--text);font:500 13px/1.2 var(--f-mono)}
+.mbar b{font-weight:600;font-size:15px}
+.mbar .tag{padding:4px 6px;border-radius:3px;font-size:11px;background:var(--card-2);color:var(--text-3)}
+.mbar .tag.in{background:var(--green);color:#0F1012}.mbar .tag.lo{background:var(--red);color:#0F1012}.mbar .tag.hi{background:var(--amber);color:#0F1012}
+
+/* rules */
+.steps{list-style:none;counter-reset:r;background:var(--card);border:1px solid var(--rule);border-radius:6px}
+.steps li{counter-increment:r;display:grid;grid-template-columns:44px minmax(0,1fr);padding:11px 16px 11px 0;border-top:1px solid var(--rule);font-size:15.5px;color:var(--text-2)}
+.steps li:first-child{border-top:0}
+.steps li::before{content:counter(r);font:600 14px/1.55 var(--f-mono);color:var(--orange-hi);text-align:center}
+.steps b{color:var(--text)}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:15px 18px}
+.tile h5{font-weight:800;font-size:17px;font-stretch:110%}
+.tile p{margin-top:6px;font-size:15px;color:var(--text-2)}
+.tile p b{color:var(--text)}
+.itin{list-style:none;background:var(--card);border:1px solid var(--rule);border-radius:6px}
+.itin li{display:grid;grid-template-columns:180px minmax(0,1fr);gap:12px;padding:11px 16px;border-top:1px solid var(--rule);font-size:15.5px}
+.itin li:first-child{border-top:0}
+.itin .t{font:600 13.5px/1.5 var(--f-mono);color:var(--blue)}
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.person{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:15px 18px}
+.person.main{border-color:var(--orange);box-shadow:4px 4px 0 rgba(255,90,31,.45)}
+.person .r{font:500 11.5px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.person .nm{margin-top:6px;font-weight:800;font-size:19px;font-stretch:110%}
+.person a,.person .ph{display:block;margin-top:5px;font:500 13.5px/1.4 var(--f-mono);overflow-wrap:anywhere}
+.person .ph{color:var(--text-3)}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:18px;border-top:1px solid var(--rule)}
+.pager a{font-weight:700;font-size:15px;text-decoration:none;color:var(--text-2)}
+.pager a:hover{color:var(--orange-hi)}
+.pager a.next{margin-left:auto;color:var(--text)}
+
+footer{background:#0B0C0E;border-top:1px solid var(--rule);color:var(--text-3)}
+footer .stripe{height:4px;background:repeating-linear-gradient(-45deg,var(--orange) 0 10px,#0B0C0E 10px 20px)}
+footer .wrap{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;padding-block:30px 38px;font-size:14px}
+footer p+p{margin-top:8px}
+footer .mono{font:500 12px/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
+footer a{color:var(--text)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1020px){
+  body[data-panel=stability] .mbar{display:flex}
+  body[data-panel=stability]{padding-bottom:64px}
+  .hero .top{grid-template-columns:minmax(0,1fr)}
+  .est{grid-template-columns:minmax(0,1fr)}
+  .out{position:static}
+}
+@media (max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr);padding-top:0;gap:28px}
+  .secnav{position:sticky;top:0;z-index:20;margin-inline:calc(-1*clamp(16px,4vw,40px));background:rgba(15,16,18,.96);border-bottom:1px solid var(--rule);padding:8px clamp(16px,4vw,40px)}
+  .secnav .nav-hd,.secnav .nav-ft{display:none}
+  .secnav [role=tablist]{flex-direction:row;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .secnav [role=tablist]::-webkit-scrollbar{display:none}
+  .secnav [role=tablist]::before{display:none}
+  .secnav [role=tab]{grid-template-columns:22px auto;gap:8px;padding:7px 12px 7px 7px;white-space:nowrap;border:1px solid var(--rule);background:var(--card)}
+  .secnav [role=tab] .dot{width:22px;height:22px}
+  .secnav [role=tab] .lb{font-size:14.5px}
+  .secnav [role=tab] .lb small{display:none}
+  .secnav [role=tab][aria-selected=true]{border-color:var(--orange);box-shadow:none}
+  .flow{grid-template-columns:minmax(0,1fr)}
+  .flow li:not(:last-child)::after{right:50%;top:auto;bottom:-13px;transform:translateX(50%) rotate(135deg)}
+  .crit{grid-template-columns:minmax(0,1fr)}
+  .tiles{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .tl{grid-template-columns:minmax(0,1fr);gap:16px}
+  .tl::before{left:7px;right:auto;top:6px;bottom:6px;width:2px;height:auto}
+  .tl li{padding:0 0 0 30px}
+  .yn,.margins,.trophy{grid-template-columns:minmax(0,1fr)}
+  .readout{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g2{grid-template-columns:minmax(0,1fr)}
+  .mspec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mrules{grid-template-columns:minmax(0,1fr)}
+  .hazard .in{grid-template-columns:minmax(0,1fr)}
+  .itin li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .meas,.meas tbody,.meas tr,.meas th,.meas td{display:block;width:auto!important}
+  .meas thead{display:none}
+  .meas tr{border-bottom:1px solid var(--rule);padding:8px 0}
+  .meas th,.meas td{border:0;padding:2px 14px}
+  footer .wrap{grid-template-columns:minmax(0,1fr)}
+  .crumbs .hide-sm{display:none}
+}
+@media print{
+  body{background:#fff;color:#000}
+  .topbar,.secnav,.pager,.cta,.mbar{display:none}
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .sec[hidden]{display:block!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="https://celestecon.aeross.org/">CelesteCon 2026</a><span aria-hidden="true">/</span>
+      <span class="hide-sm">Competitions</span><span class="hide-sm" aria-hidden="true">/</span>
+      <b aria-current="page">07 · Rocketry</b>
+    </nav>
+    <a class="contact" href="#rules">Contacts →</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap top">
+    <div>
+      <span class="badge"><span>Event 07</span><span>Onsite · 24 Oct 2026</span></span>
+      <h1>Rocketry</h1>
+      <p class="sub">Model build &amp; simulation</p>
+      <p class="lede">Build a real rocket around an Estes D12 motor, without ever fitting one. <em>On the day, judges measure your rocket and OpenRocket flies it.</em> No launches at this event.</p>
+      <div class="cta">
+        <a class="btn primary" href="#build">Build rules →</a>
+        <a class="btn" href="#stability">Check your stability</a>
+      </div>
+    </div>
+
+    <aside class="card fcard" aria-label="Event summary">
+      <div class="hd"><span>Flight card</span><i>24 Oct</i></div>
+      <dl>
+        <dt>Junior</dt><dd>Grades 6–8</dd>
+        <dt>Senior</dt><dd>Grades 9–12<small>Divisions ranked separately</small></dd>
+        <dt>Team</dt><dd>2–3 members<small>Same school</small></dd>
+        <dt>Motor</dt><dd>Estes D12-5<small>24 mm, from OpenRocket's motor list</small></dd>
+        <dt>Format</dt><dd>One onsite round<small>Build, measure, simulate</small></dd>
+        <dt>Contact</dt><dd>Farzooque Hasan<small><a href="mailto:r25246farzooque@dpsrkp.net">r25246farzooque@dpsrkp.net</a></small></dd>
+      </dl>
+      <div class="ft"><p id="ctLbl">.ork file due in</p><b id="ctVal">-- days</b></div>
+    </aside>
+  </div>
+
+  <div class="wrap profile" aria-hidden="true">
+    <svg viewBox="0 0 1000 200">
+      <line class="pf-tick" x1="40" y1="176" x2="900" y2="176"/>
+      <g id="ticks"></g>
+      <!-- fins (behind body) -->
+      <path class="pf-fin" d="M760 60 L800 14 L860 14 L880 60 Z"/>
+      <path class="pf-fin" d="M760 110 L800 156 L860 156 L880 110 Z"/>
+      <!-- body tube -->
+      <rect class="pf-body" x="200" y="60" width="680" height="50"/>
+      <!-- nose cone (ogive) -->
+      <path class="pf-body" d="M200 60 Q 90 62 40 85 Q 90 108 200 110 Z"/>
+      <!-- recovery bay & empty motor mount -->
+      <rect class="pf-chute" x="230" y="68" width="150" height="34" rx="4"/>
+      <text class="pf-lbl" x="305" y="90" text-anchor="middle">RECOVERY</text>
+      <rect class="pf-motor" x="790" y="70" width="90" height="30"/>
+      <text class="pf-lbl" x="835" y="90" text-anchor="middle">EMPTY</text>
+      <!-- CG marker -->
+      <g transform="translate(640 85)">
+        <circle r="11" fill="#17191D" stroke="#8197FF" stroke-width="2"/>
+        <path d="M0 -11 A11 11 0 0 1 11 0 L0 0 Z M0 11 A11 11 0 0 1 -11 0 L0 0 Z" fill="#8197FF"/>
+      </g>
+      <text class="pf-cg" x="640" y="46" text-anchor="middle">CG</text>
+      <!-- CP marker -->
+      <g transform="translate(712 85)">
+        <circle r="11" fill="#17191D" stroke="#FF5252" stroke-width="2"/>
+        <circle r="5" fill="#FF5252"/>
+      </g>
+      <text class="pf-cp" x="712" y="46" text-anchor="middle">CP</text>
+      <line class="pf-span" x1="640" y1="128" x2="712" y2="128"/>
+      <line class="pf-span" x1="640" y1="122" x2="640" y2="134"/><line class="pf-span" x1="712" y1="122" x2="712" y2="134"/>
+      <text class="pf-lbl" x="676" y="146" text-anchor="middle" style="fill:#F3F1EC;font-weight:600">1.4 cal</text>
+      <text class="pf-lbl" x="900" y="197" text-anchor="end">Ticks: 1 caliber = 1 body diameter</text>
+    </svg>
+  </div>
+</header>
+
+<div class="wrap shell">
+  <nav class="secnav" aria-label="Rocketry sections">
+    <p class="nav-hd">Procedure</p>
+    <div role="tablist" aria-orientation="vertical" aria-label="Rocketry sections">
+      <a role="tab" id="tab-brief" href="#brief" aria-controls="brief" aria-selected="true" tabindex="0"><span class="dot">1</span><span class="lb">Mission<small>What you're building</small></span></a>
+      <a role="tab" id="tab-build" href="#build" aria-controls="build" aria-selected="false" tabindex="-1"><span class="dot">2</span><span class="lb">Build rules<small>Motor, parts, safety</small></span></a>
+      <a role="tab" id="tab-eventday" href="#eventday" aria-controls="eventday" aria-selected="false" tabindex="-1"><span class="dot">3</span><span class="lb">Event day<small>Check-in to simulation</small></span></a>
+      <a role="tab" id="tab-judging" href="#judging" aria-controls="judging" aria-selected="false" tabindex="-1"><span class="dot">4</span><span class="lb">Judging<small>Three criteria</small></span></a>
+      <a role="tab" id="tab-stability" href="#stability" aria-controls="stability" aria-selected="false" tabindex="-1"><span class="dot">5</span><span class="lb">Stability estimator<small>CG, CP, calibers</small></span></a>
+      <a role="tab" id="tab-rules" href="#rules" aria-controls="rules" aria-selected="false" tabindex="-1"><span class="dot">6</span><span class="lb">Rules &amp; contacts<small>Submit, report, ask</small></span></a>
+    </div>
+    <p class="nav-ft">Use ↑ ↓ to move between steps.</p>
+  </nav>
+
+  <main class="panels" id="main">
+
+    <!-- 1 MISSION -->
+    <section class="sec" id="brief" role="tabpanel" aria-labelledby="tab-brief" tabindex="-1">
+      <p class="kicker">Step 1 · Mission</p>
+      <h2>Build the rocket. The simulation flies it.</h2>
+      <p class="intro">Every team designs around the same motor, an <b>Estes D12-5</b>. You build the rocket and send us the <code>.ork</code> file. On 24 October we measure what you built, simulate it, and <b>the best-performing rockets win.</b></p>
+
+      <ol class="tl">
+        <li><p class="d">NOW</p><p class="t">Motor: Estes D12-5</p><p class="s">Start designing around it</p></li>
+        <li class="key"><p class="d">22 OCT</p><p class="t"><code>.ork</code> file due</p><p class="s">Your OpenRocket design</p></li>
+        <li class="key"><p class="d">24 OCT</p><p class="t">Measure &amp; simulate</p><p class="s">Report 07:45 AM, DPS R.K. Puram</p></li>
+      </ol>
+
+      <h3><span class="n">1.1</span>At a glance</h3>
+      <div class="facts">
+        <div class="fact"><p class="k">Divisions</p><p class="v">Junior 6–8 · Senior 9–12<small>Separate rankings</small></p></div>
+        <div class="fact"><p class="k">Team</p><p class="v">2–3 members<small>All from one school</small></p></div>
+        <div class="fact"><p class="k">Venue</p><p class="v">DPS R.K. Puram<small>Sector 12, New Delhi</small></p></div>
+        <div class="fact"><p class="k">Mode</p><p class="v">Onsite, single round<small>Nothing is launched</small></p></div>
+      </div>
+
+      <h3><span class="n">1.2</span>How you win</h3>
+      <ol class="wins">
+        <li><div><b>Fly well in the simulation</b><span>High apogee with a stable flight, using your rocket's real measurements.</span></div></li>
+        <li><div><b>Build what you designed</b><span>The rocket on the scale must match the <code>.ork</code> you submitted.</span></div></li>
+        <li><div><b>Build it cleanly</b><span>Straight fins, solid structure, smooth finish, a recovery system that's packed properly.</span></div></li>
+      </ol>
+
+      <nav class="pager" aria-label="Section pager"><a class="next" href="#build">Next: build rules →</a></nav>
+    </section>
+
+    <!-- 2 BUILD RULES -->
+    <section class="sec" id="build" role="tabpanel" aria-labelledby="tab-build" tabindex="-1" hidden>
+      <p class="kicker">Step 2 · Build rules</p>
+      <h2>Rules of the build</h2>
+      <p class="intro">Hand-built, sized for the D12, with a working recovery system. And nothing that burns.</p>
+
+      <div class="hazard" role="note">
+        <div class="stripe" aria-hidden="true"></div>
+        <div class="in">
+          <p class="no">Zero<br>live<br>motors</p>
+          <div>
+            <h4>None of these come onto campus. At all.</h4>
+            <div class="ban"><span>Motors</span><span>Propellant</span><span>Black powder</span><span>Igniters</span><span>Pressurised containers</span></div>
+            <p>Bring any live combustible item to DPS R.K. Puram and <b>your school is disqualified on the spot.</b> The motor mount stays empty.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="motor">
+        <div class="motor-hd">
+          <h4>The motor: Estes D12-5</h4>
+          <p>Same motor for every team, Junior and Senior. Select it from OpenRocket's built-in motor list.</p>
+        </div>
+        <dl class="mspec">
+          <div><dt>Diameter</dt><dd>24 mm</dd></div>
+          <div><dt>Length</dt><dd>70 mm</dd></div>
+          <div><dt>Loaded mass</dt><dd>≈ 44 g</dd></div>
+          <div><dt>Propellant</dt><dd>≈ 21 g</dd></div>
+          <div><dt>Total impulse</dt><dd>≈ 16.8 N·s</dd></div>
+          <div><dt>Avg thrust</dt><dd>≈ 10 N</dd></div>
+          <div><dt>Burn time</dt><dd>≈ 1.7 s</dd></div>
+          <div><dt>Delay</dt><dd>5 s</dd></div>
+        </dl>
+        <p class="msrc">Figures from ThrustCurve.org, which OpenRocket's motor data is based on. The Estes packet lists slightly different numbers. The simulation uses OpenRocket's.</p>
+      </div>
+
+      <h3><span class="n">2.1</span>Designing around the D12</h3>
+      <div class="mrules">
+        <div><h5>Motor mount</h5><p>A 24 mm motor tube at least 70 mm deep, with a motor hook or retainer to hold it. Judges check the fit with a dummy 24 × 70 mm casing.</p></div>
+        <div><h5>In your <code>.ork</code></h5><p>Use the Estes D12-5 entry exactly. No custom or edited thrust curves, and no extra mass added for the motor: OpenRocket adds it.</p></div>
+        <div><h5>Weight</h5><p>Estes rates the D12-5 for up to 283 g at liftoff, motor included. Lighter rockets fly higher.</p></div>
+        <div><h5>The 5 s delay</h5><p>The parachute charge fires 5 s after burnout. OpenRocket shows an "optimum delay" for your design. The closer it is to 5 s, the nearer apogee your chute opens.</p></div>
+      </div>
+
+      <h3><span class="n">2.2</span>What's allowed</h3>
+      <div class="yn">
+        <div class="ok">
+          <h4>Allowed</h4>
+          <ul>
+            <li><span>Rockets hand-built by the team</span></li>
+            <li><span>Pre-made body tubes, nose cones or centering rings<small>Only if every one is declared in your OpenRocket file</small></span></li>
+            <li><span>A parachute or streamer<small>Packed inside the body, ready to deploy</small></span></li>
+          </ul>
+        </div>
+        <div class="nok">
+          <h4>Not allowed</h4>
+          <ul>
+            <li><span>Ready-to-fly (RTF) commercial kits</span></li>
+            <li><span>Undeclared commercial parts</span></li>
+            <li><span>Custom or edited motor files in the <code>.ork</code></span></li>
+            <li><span>A rocket with no recovery system</span></li>
+            <li><span>Any motor, propellant or igniter on site</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <nav class="pager" aria-label="Section pager"><a href="#brief">← Mission</a><a class="next" href="#eventday">Next: event day →</a></nav>
+    </section>
+
+    <!-- 3 EVENT DAY -->
+    <section class="sec" id="eventday" role="tabpanel" aria-labelledby="tab-eventday" tabindex="-1" hidden>
+      <p class="kicker">Step 3 · Event day</p>
+      <h2>What happens on 24 October</h2>
+      <p class="intro">Bring the rocket to your display station. It goes through three stages, and you don't touch the simulation.</p>
+
+      <ol class="flow">
+        <li><h4>Check-in &amp; safety check</h4><p>Judges look inside to confirm there's no motor or anything else that's banned, and test the mount with a dummy casing.</p></li>
+        <li><h4>Rocket vs file</h4><p>Scrutineers measure the rocket and compare every number with your <code>.ork</code>. <b>Mismatches cost points.</b></p></li>
+        <li><h4>Simulation scoring</h4><p>Your measured values go into OpenRocket under the same standard conditions for every team.</p></li>
+      </ol>
+
+      <h3><span class="n">3.1</span>What gets measured</h3>
+      <table class="meas">
+        <thead><tr><th scope="col">Measurement</th><th scope="col">What it changes in the simulation</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Mass</th><td>Apogee, and where the CG sits once the motor is added</td></tr>
+          <tr><th scope="row">Overall length</th><td>Drag, and the lever arm between CG and CP</td></tr>
+          <tr><th scope="row">Outer diameter</th><td>Frontal area and drag; also the size of one caliber</td></tr>
+          <tr><th scope="row">Centre of gravity (CG)</th><td>Stability margin. Found by balancing the rocket, without a motor</td></tr>
+          <tr><th scope="row">Fin root chord, tip chord, span, sweep</th><td>Centre of pressure (CP), so stability margin</td></tr>
+          <tr><th scope="row">Surface finish</th><td>Skin-friction drag. Judged by eye and matched to an OpenRocket finish setting</td></tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:20px;font-weight:700">Simulation conditions, set by the judges and the same for every team:</p>
+      <div class="conds"><span>Wind</span><span>Atmospheric pressure</span><span>Launch rail angle</span></div>
+
+      <div class="note"><span class="ic">TIP</span><p>Weigh and measure your finished rocket at home, then update the <code>.ork</code> before 22 October. A file that matches the build scores on fidelity, and your simulated flight will look like the one you tested.</p></div>
+      <div class="note"><span class="ic">TIP</span><p>In OpenRocket's results, check the velocity off the launch rod. Below about 15 m/s the rocket leaves slowly and wind pushes it off course.</p></div>
+
+      <h3><span class="n">3.2</span>Before you leave home</h3>
+      <div class="pre" id="pre">
+        <div class="hd"><p>Pre-flight checklist</p><b id="preCount">0 / 9 ready</b></div>
+        <div class="meter"><i id="preBar"></i></div>
+        <label><input type="checkbox"><span><code>.ork</code> file submitted by 22 October</span></label>
+        <label><input type="checkbox"><span>Estes D12-5 selected in the <code>.ork</code>, and every pre-made part declared</span></label>
+        <label><input type="checkbox"><span>Built rocket weighed and measured against the file</span></label>
+        <label><input type="checkbox"><span>Motor mount takes a 24 × 70 mm motor and has a hook or retainer</span></label>
+        <label><input type="checkbox"><span>Motor mount empty. No motor, igniter or propellant anywhere in your kit</span></label>
+        <label><input type="checkbox"><span>Parachute or streamer packed inside the body</span></label>
+        <label><input type="checkbox"><span>Laptop with OpenRocket and your file, fully charged</span></label>
+        <label><input type="checkbox"><span>Token of Submission for check-in</span></label>
+        <label><input type="checkbox"><span>At the Welcome Foyer by 07:45 AM</span></label>
+      </div>
+
+      <nav class="pager" aria-label="Section pager"><a href="#build">← Build rules</a><a class="next" href="#judging">Next: judging →</a></nav>
+    </section>
+
+    <!-- 4 JUDGING -->
+    <section class="sec" id="judging" role="tabpanel" aria-labelledby="tab-judging" tabindex="-1" hidden>
+      <p class="kicker">Step 4 · Judging</p>
+      <h2>Three things decide it</h2>
+      <p class="intro">Juniors and Seniors are ranked separately. In both, a high apogee alone won't carry a rocket that doesn't match its file or wasn't built with care.</p>
+
+      <div class="crit">
+        <article>
+          <p class="k">CRITERION A</p>
+          <h4>Simulated flight performance</h4>
+          <ul>
+            <li>Apogee</li>
+            <li>Stability margin between 1.0 and 2.5 calibers throughout the burn</li>
+            <li>Flight behaviour using your measured parameters</li>
+          </ul>
+        </article>
+        <article>
+          <p class="k">CRITERION B</p>
+          <h4>Digital-to-physical fidelity</h4>
+          <ul>
+            <li>How closely the built rocket matches your <code>.ork</code></li>
+            <li>Checked on the scale and with calipers</li>
+            <li>Differences cost points</li>
+          </ul>
+        </article>
+        <article>
+          <p class="k">CRITERION C</p>
+          <h4>Build quality &amp; craftsmanship</h4>
+          <ul>
+            <li>Fin alignment and fillets</li>
+            <li>Structural rigidity</li>
+            <li>Smooth surface finish</li>
+            <li>Recovery system packaging</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="band">
+        <p><b>The stability band.</b> Margin is the gap between CP and CG, divided by body diameter. Below 1.0 the rocket can wobble or tumble. Above 2.5 it is overstable and weathercocks hard into any wind.</p>
+        <svg viewBox="0 0 600 70" role="img" aria-label="Scale from 0 to 4 calibers with the target band from 1.0 to 2.5 highlighted">
+          <rect x="20" y="18" width="560" height="18" fill="rgba(255,82,82,.16)"/>
+          <rect x="370" y="18" width="210" height="18" fill="rgba(255,212,0,.16)"/>
+          <rect x="160" y="18" width="210" height="18" fill="rgba(34,214,143,.18)" stroke="#22D68F" stroke-width="1.5"/>
+          <text x="265" y="31" text-anchor="middle" style="font:600 12px 'IBM Plex Mono',monospace;fill:#22D68F">TARGET 1.0–2.5</text>
+          <text x="90" y="31" text-anchor="middle" style="font:500 11px 'IBM Plex Mono',monospace;fill:#FF5252">TOO LOW</text>
+          <text x="475" y="31" text-anchor="middle" style="font:500 11px 'IBM Plex Mono',monospace;fill:#FFD400">OVERSTABLE</text>
+          <g style="font:500 11px 'IBM Plex Mono',monospace;fill:#7C818A" text-anchor="middle">
+            <text x="20" y="56">0</text><text x="160" y="56">1.0</text><text x="300" y="56">2.0</text><text x="370" y="56">2.5</text><text x="440" y="56">3.0</text><text x="580" y="56">4.0 cal</text>
+          </g>
+        </svg>
+      </div>
+
+      <h3><span class="n">4.1</span>Overall Champions Rolling Trophy</h3>
+      <p class="intro" style="margin-top:0;font-size:16px">Podium finishes score for your school. Schools entering at least 5 of the 8 competitions are eligible, and the most points takes the trophy.</p>
+      <div class="trophy">
+        <div><p class="p">1ST</p><p class="v">100 pts</p></div>
+        <div><p class="p">2ND</p><p class="v">75 pts</p></div>
+        <div><p class="p">3RD</p><p class="v">50 pts</p></div>
+      </div>
+
+      <nav class="pager" aria-label="Section pager"><a href="#eventday">← Event day</a><a class="next" href="#stability">Next: stability estimator →</a></nav>
+    </section>
+
+    <!-- 5 STABILITY ESTIMATOR -->
+    <section class="sec" id="stability" role="tabpanel" aria-labelledby="tab-stability" tabindex="-1" hidden>
+      <p class="kicker">Step 5 · Stability estimator</p>
+      <h2>Is it in the band?</h2>
+      <p class="intro">A quick Barrowman check of your design. Enter your rocket's dimensions and its mass without a motor. The Estes D12-5 is added for you. You get the margin at liftoff (full motor) and at burnout (propellant gone).</p>
+
+      <div class="est">
+        <form class="inputs" id="est" novalidate onsubmit="return false">
+          <fieldset>
+            <legend>Body &amp; nose</legend>
+            <div class="g2">
+              <div class="fld"><label for="e-d">Body outer diameter</label><div class="box"><input id="e-d" type="number" step="0.1" min="1" inputmode="decimal"><span class="u">mm</span></div></div>
+              <div class="fld"><label for="e-lb">Body tube length</label><div class="box"><input id="e-lb" type="number" step="1" min="1" inputmode="decimal"><span class="u">mm</span></div></div>
+              <div class="fld"><label for="e-shape">Nose cone shape</label><div class="box"><select id="e-shape"><option value="ogive">Ogive</option><option value="cone">Conical</option><option value="parabolic">Parabolic</option></select></div></div>
+              <div class="fld"><label for="e-ln">Nose cone length</label><div class="box"><input id="e-ln" type="number" step="1" min="1" inputmode="decimal"><span class="u">mm</span></div></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Fins</legend>
+            <div class="g2">
+              <div class="fld"><label for="e-n">Number of fins</label><div class="box"><select id="e-n"><option value="3">3</option><option value="4">4</option></select></div></div>
+              <div class="fld"><label for="e-cr">Root chord</label><div class="box"><input id="e-cr" type="number" step="1" min="1" inputmode="decimal"><span class="u">mm</span></div></div>
+              <div class="fld"><label for="e-ct">Tip chord</label><div class="box"><input id="e-ct" type="number" step="1" min="0" inputmode="decimal"><span class="u">mm</span></div></div>
+              <div class="fld"><label for="e-s">Span (root to tip)</label><div class="box"><input id="e-s" type="number" step="1" min="1" inputmode="decimal"><span class="u">mm</span></div></div>
+              <div class="fld"><label for="e-xr">Sweep (leading-edge offset)</label><div class="box"><input id="e-xr" type="number" step="1" inputmode="decimal"><span class="u">mm</span></div></div>
+              <div class="fld"><label for="e-aft">Fin trailing edge to tube end</label><div class="box"><input id="e-aft" type="number" step="1" min="0" inputmode="decimal"><span class="u">mm</span></div></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Mass, no motor fitted</legend>
+            <div class="g2">
+              <div class="fld"><label for="e-m">Rocket mass</label><div class="box"><input id="e-m" type="number" step="0.1" min="0.1" inputmode="decimal"><span class="u">g</span></div></div>
+              <div class="fld"><label for="e-cg">CG from nose tip</label><div class="box"><input id="e-cg" type="number" step="1" min="0" inputmode="decimal"><span class="u">mm</span></div></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Motor: Estes D12-5 (fixed)</legend>
+            <div class="g2">
+              <div class="fld"><label for="e-mm">Loaded mass</label><div class="box"><input id="e-mm" type="number" value="44" readonly tabindex="-1"><span class="u">g</span></div></div>
+              <div class="fld"><label for="e-mp">Propellant mass</label><div class="box"><input id="e-mp" type="number" value="21" readonly tabindex="-1"><span class="u">g</span></div></div>
+              <div class="fld"><label for="e-lm">Motor length</label><div class="box"><input id="e-lm" type="number" value="70" readonly tabindex="-1"><span class="u">mm</span></div></div>
+            </div>
+          </fieldset>
+          <div class="acts">
+            <button type="button" id="e-reset">Load example rocket</button>
+          </div>
+        </form>
+
+        <div class="out" aria-live="polite">
+          <div class="readout">
+            <div><p class="k">CP from nose</p><p class="v cp" id="o-cp">–</p></div>
+            <div><p class="k">CG liftoff</p><p class="v cg" id="o-cg0">–</p></div>
+            <div><p class="k">CG burnout</p><p class="v cg" id="o-cg1">–</p></div>
+            <div><p class="k">Liftoff mass</p><p class="v" id="o-mass">–</p></div>
+          </div>
+          <div class="margins">
+            <div class="mg" id="m0"><p class="k">Margin at liftoff</p><p class="v"><span id="o-s0">–</span><small>cal</small></p><span class="st" id="o-t0">–</span></div>
+            <div class="mg" id="m1"><p class="k">Margin at burnout</p><p class="v"><span id="o-s1">–</span><small>cal</small></p><span class="st" id="o-t1">–</span></div>
+          </div>
+          <div class="viz">
+            <p class="cap"><span>Side profile, to scale</span><span id="o-len">–</span></p>
+            <svg id="vizsvg" viewBox="0 0 640 196" role="img" aria-label="Scaled side profile of your rocket with CG and CP markers"></svg>
+          </div>
+          <div class="viz">
+            <p class="cap"><span>Margin through the burn</span><span>Target 1.0–2.5</span></p>
+            <svg id="gauge" viewBox="0 0 640 74" role="img" aria-label="Stability margin at liftoff and burnout against the target band"></svg>
+          </div>
+        </div>
+      </div>
+
+      <details class="formula">
+        <summary>How this is calculated</summary>
+        <div class="body">
+          <p>CP uses the Barrowman equations for a nose cone plus one fin set, ignoring body lift and transitions. The nose contributes a normal-force coefficient of 2, centred at 0.466 × length for an ogive, 0.666 for a cone and 0.5 for a parabolic nose.</p>
+          <p>CG at liftoff combines your rocket's mass and CG with the loaded motor, assumed to sit with its aft end flush with the end of the body tube. At burnout the propellant mass is removed.</p>
+          <p>Margin = (CP − CG) ÷ body diameter. OpenRocket uses a fuller model, so expect its numbers to differ slightly. The judges' simulation is the one that counts.</p>
+        </div>
+      </details>
+      <p class="fine">The example is a 41.6 mm rocket, about 61 cm long, with a 24 mm motor mount. Replace it with your own numbers.</p>
+
+      <nav class="pager" aria-label="Section pager"><a href="#judging">← Judging</a><a class="next" href="#rules">Next: rules &amp; contacts →</a></nav>
+    </section>
+
+    <!-- 6 RULES & CONTACTS -->
+    <section class="sec" id="rules" role="tabpanel" aria-labelledby="tab-rules" tabindex="-1" hidden>
+      <p class="kicker">Step 6 · Rules &amp; contacts</p>
+      <h2>Rules &amp; contacts</h2>
+      <p class="intro">How to submit your file, how the day runs, and who to ask.</p>
+
+      <h3><span class="n">6.1</span>Submitting your <code>.ork</code></h3>
+      <ol class="steps">
+        <li><span><b>Open the Submission Portal</b> with your School UID.</span></li>
+        <li><span><b>Upload your OpenRocket file</b> with the Estes D12-5 selected and every pre-made part declared.</span></li>
+        <li><span><b>Submit by 22 October.</b> Check the portal for the exact cut-off time.</span></li>
+        <li><span><b>Keep your Token of Submission.</b> You need it to check in on 24 October.</span></li>
+      </ol>
+
+      <h3><span class="n">6.2</span>Conclave rules</h3>
+      <div class="tiles">
+        <div class="tile"><h5>Reporting</h5><p>Welcome Foyer, DPS R.K. Puram, <b>07:45–08:45 AM</b>. Late arrivals can lose their measurement slot. IDs are issued on arrival; bring your Token of Submission.</p></div>
+        <div class="tile"><h5>Display station</h5><p>After check-in, set the rocket up at your display station. <b>Judges come to you</b> to measure it.</p></div>
+        <div class="tile"><h5>Host school</h5><p>DPS R.K. Puram teams compete for benchmarking only. They can't take rankings, podium trophies or the Overall trophy.</p></div>
+        <div class="tile"><h5>Hardware</h5><p>Bring your own laptops, chargers and adapters, fully charged. Power outlets are provided; the host accepts no liability for personal hardware. OpenRocket runs offline, so you don't need internet.</p></div>
+        <div class="tile"><h5>Judges' decisions</h5><p>Judges' decisions are final. Disrespect towards judges or event staff means immediate disqualification.</p></div>
+        <div class="tile"><h5>Attire</h5><p>School uniform is fine. Any outfit appropriate for a school setting is allowed.</p></div>
+      </div>
+
+      <h3><span class="n">6.3</span>Event-day itinerary</h3>
+      <ul class="itin">
+        <li><span class="t">07:45 – 08:45 AM</span><span>Reporting, delegate check-in, kit issue and ID badging</span></li>
+        <li><span class="t">09:00 – 11:30 AM</span><span>Competitions run in parallel arenas</span></li>
+        <li><span class="t">11:30 AM – 12:15 PM</span><span>Break: refreshments, networking, open showcase and engineering exhibits</span></li>
+        <li><span class="t">12:15 – 01:00 PM</span><span>Awards ceremony, keynote and valedictory</span></li>
+        <li><span class="t">01:00 PM onwards</span><span>Departure</span></li>
+      </ul>
+      <p class="fine">Times are indicative. Final times go up on the portal. Escort teachers have a lounge with refreshments and workstations.</p>
+
+      <h3><span class="n">6.4</span>Contacts</h3>
+      <div class="people">
+        <div class="person main"><p class="r">Rocketry lead</p><p class="nm">Farzooque Hasan</p><a href="mailto:r25246farzooque@dpsrkp.net">r25246farzooque@dpsrkp.net</a></div>
+        <div class="person"><p class="r">Secretariat · primary POC</p><p class="nm">Siddharth Srivastava</p><a href="mailto:r24998siddharth@dpsrkp.net">r24998siddharth@dpsrkp.net</a><a href="tel:+918929020721">+91 89290 20721</a></div>
+        <div class="person"><p class="r">General</p><p class="nm">AEROSS</p><a href="mailto:aeross@dpsrkp.net">aeross@dpsrkp.net</a><span class="ph">DPS, Sector 12, R.K. Puram, New Delhi 110022</span></div>
+      </div>
+
+      <nav class="pager" aria-label="Section pager"><a href="#stability">← Stability estimator</a><a class="next" href="#brief">Back to mission ↺</a></nav>
+    </section>
+  </main>
+</div>
+
+<div class="mbar" aria-hidden="true"><span>Liftoff <b id="mb0">–</b> <span class="tag" id="mt0">–</span></span><span>Burnout <b id="mb1">–</b> <span class="tag" id="mt1">–</span></span></div>
+
+<footer>
+  <div class="stripe" aria-hidden="true"></div>
+  <div class="wrap">
+    <div>
+      <p class="mono">Rocketry · Event 07 · CelesteCon 2026 · 6th edition</p>
+      <p>Organised by AEROSS, the Aerospace Society of Delhi Public School, R.K. Puram, New Delhi. Est. 2009. "Build rather than watch."</p>
+      <p>OpenRocket is free and open source: <a href="https://openrocket.info/">openrocket.info</a>. No motors are fired at CelesteCon.</p>
+    </div>
+    <div>
+      <p class="mono">More from CelesteCon</p>
+      <p><a href="https://celestecon.aeross.org/">All eight competitions</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(s,r){return (r||document).querySelector(s);};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var C = {text:'#F3F1EC', card:'#17191D', fin:'rgba(255,90,31,.2)', motor:'#FF7A47', cg:'#8197FF', cp:'#FF5252', dim:'#7C818A'};
+
+  /* ---------------- vertical tabs + hash routing ---------------- */
+  var tabs = $$('.secnav [role="tab"]');
+  var panels = tabs.map(function(t){return document.getElementById(t.getAttribute('aria-controls'));});
+  var shell = $('.shell');
+
+  function indexOf(id){
+    for (var i=0;i<panels.length;i++){ if (panels[i].id===id) return i; }
+    return -1;
+  }
+  function show(id, opts){
+    opts = opts || {};
+    var i = indexOf(id);
+    if (i<0) i = 0;
+    tabs.forEach(function(t,j){
+      var on = j===i;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      t.classList.toggle('seen', j < i);
+      panels[j].hidden = !on;
+    });
+    var hash = '#' + panels[i].id;
+    if (opts.history && location.hash !== hash){
+      history[opts.history === 'replace' ? 'replaceState' : 'pushState'](null, '', hash);
+    }
+    if (opts.focusTab) tabs[i].focus();
+    if (opts.scroll){
+      var top = shell.getBoundingClientRect().top + window.pageYOffset - 8;
+      if (window.pageYOffset > top) window.scrollTo(0, top);
+    }
+    // keep the active tab visible in the horizontal mobile strip without scrolling the page
+    var strip = tabs[i].parentNode;
+    if (strip.scrollWidth > strip.clientWidth){
+      var tr = tabs[i].getBoundingClientRect(), sr = strip.getBoundingClientRect();
+      strip.scrollLeft += (tr.left - sr.left) - (strip.clientWidth - tr.width) / 2;
+    }
+    document.body.setAttribute('data-panel', panels[i].id);
+    if (panels[i].id === 'stability') runEst();
+  }
+
+  $('.secnav [role="tablist"]').addEventListener('keydown', function(e){
+    var cur = tabs.indexOf(document.activeElement);
+    if (cur<0) return;
+    var next = null;
+    switch (e.key){
+      case 'ArrowDown': case 'ArrowRight': next = (cur+1) % tabs.length; break;
+      case 'ArrowUp': case 'ArrowLeft': next = (cur-1+tabs.length) % tabs.length; break;
+      case 'Home': next = 0; break;
+      case 'End': next = tabs.length-1; break;
+      default: return;
+    }
+    e.preventDefault();
+    show(panels[next].id, {history:'replace', focusTab:true});
+  });
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if (indexOf(id) < 0) return;
+    e.preventDefault();
+    var fromTab = tabs.indexOf(a) > -1;
+    show(id, {history:'push', scroll:!fromTab});
+    if (!fromTab) panels[indexOf(id)].focus({preventScroll:true});
+  });
+
+  window.addEventListener('hashchange', function(){ show(location.hash.slice(1)); });
+  window.addEventListener('popstate', function(){ show(location.hash.slice(1)); });
+
+  /* ---------------- countdown on the flight card ---------------- */
+  var orkDue   = new Date('2026-10-22T23:59:00+05:30').getTime();
+  var eventDay = new Date('2026-10-24T07:45:00+05:30').getTime();
+  function tick(){
+    var now = Date.now(), lbl, target;
+    if (now < orkDue){ lbl = '.ork file due in'; target = orkDue; }
+    else if (now < eventDay){ lbl = 'Event day in'; target = eventDay; }
+    else { $('#ctLbl').textContent = '24 October 2026'; $('#ctVal').textContent = 'Event day'; return; }
+    var ms = target - now, d = Math.floor(ms/864e5), h = Math.floor((ms%864e5)/36e5);
+    $('#ctLbl').textContent = lbl;
+    $('#ctVal').textContent = d > 0 ? d + (d===1?' day ':' days ') + h + 'h' : h + 'h ' + Math.floor((ms%36e5)/6e4) + 'm';
+  }
+  tick(); setInterval(tick, 60000);
+
+  /* hero caliber ticks (body is 50 px tall in the profile = 1 caliber) */
+  var tg = $('#ticks');
+  for (var x=40; x<=900; x+=50){
+    var l = document.createElementNS(SVGNS,'line');
+    l.setAttribute('x1',x); l.setAttribute('x2',x); l.setAttribute('y1',171); l.setAttribute('y2',181);
+    l.setAttribute('class','pf-tick'); tg.appendChild(l);
+  }
+
+  /* ---------------- pre-flight checklist ---------------- */
+  var boxes = $$('#pre input[type=checkbox]');
+  function pre(){
+    var n = boxes.filter(function(b){return b.checked;}).length;
+    $('#preCount').textContent = n + ' / ' + boxes.length + (n===boxes.length ? ' · all set' : ' ready');
+    $('#preBar').style.width = (n / boxes.length * 100) + '%';
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', pre); });
+  pre();
+
+  /* ---------------- stability estimator ---------------- */
+  var E = {
+    d:$('#e-d'), lb:$('#e-lb'), shape:$('#e-shape'), ln:$('#e-ln'),
+    n:$('#e-n'), cr:$('#e-cr'), ct:$('#e-ct'), s:$('#e-s'), xr:$('#e-xr'), aft:$('#e-aft'),
+    m:$('#e-m'), cg:$('#e-cg'), mm:$('#e-mm'), mp:$('#e-mp'), lm:$('#e-lm')
+  };
+  // example rocket: 41.6 mm body with a 24 mm mount for the D12
+  var EX = {d:41.6, lb:480, shape:'ogive', ln:130, n:'3', cr:90, ct:40, s:55, xr:50, aft:0, m:100, cg:355};
+  var D12 = {mm:44, mp:21, lm:70};   // Estes D12-5 as listed in OpenRocket / ThrustCurve.org
+  var NOSE = {ogive:0.466, cone:0.666, parabolic:0.5};
+
+  function load(){ Object.keys(EX).forEach(function(k){ E[k].value = EX[k]; }); }
+  function lockMotor(){ E.mm.value = D12.mm; E.mp.value = D12.mp; E.lm.value = D12.lm; }
+  function v(k){ var x = parseFloat(E[k].value); return isFinite(x) ? x : NaN; }
+  function f(x, d){ return isFinite(x) ? x.toFixed(d) : '–'; }
+
+  function compute(){
+    var p = {d:v('d'), lb:v('lb'), ln:v('ln'), n:+E.n.value, cr:v('cr'), ct:v('ct'), s:v('s'), xr:v('xr'), aft:v('aft'),
+             m:v('m'), cg:v('cg'), mm:v('mm'), mp:v('mp'), lm:v('lm'), shape:E.shape.value};
+    var ok = p.d>0 && p.lb>0 && p.ln>0 && p.cr>0 && p.ct>=0 && p.s>0 && isFinite(p.xr) && p.aft>=0 &&
+             p.m>0 && p.cg>=0 && p.mm>=0 && p.mp>=0 && p.mp<=p.mm && p.lm>0;
+    if (!ok) return {ok:false, p:p};
+    var R = p.d/2, L = p.ln + p.lb;
+    var CNn = 2, Xn = NOSE[p.shape] * p.ln;
+    var XB = L - p.aft - p.cr;                                   // nose tip to fin root leading edge
+    var LF = Math.sqrt(p.s*p.s + Math.pow(p.xr + p.ct/2 - p.cr/2, 2));
+    var CNf = (1 + R/(p.s + R)) * (4*p.n*Math.pow(p.s/p.d, 2)) / (1 + Math.sqrt(1 + Math.pow(2*LF/(p.cr + p.ct), 2)));
+    var Xf = XB + p.xr*(p.cr + 2*p.ct)/(3*(p.cr + p.ct)) + (p.cr + p.ct - p.cr*p.ct/(p.cr + p.ct))/6;
+    var CP = (CNn*Xn + CNf*Xf)/(CNn + CNf);
+    var xm = L - p.lm/2;
+    var cg0 = (p.m*p.cg + p.mm*xm)/(p.m + p.mm);
+    var mb = p.mm - p.mp;
+    var cg1 = (p.m*p.cg + mb*xm)/(p.m + mb);
+    return {ok:true, p:p, L:L, CP:CP, cg0:cg0, cg1:cg1, s0:(CP-cg0)/p.d, s1:(CP-cg1)/p.d, XB:XB};
+  }
+
+  function status(el, tEl, s){
+    el.classList.remove('in','lo','hi');
+    if (!isFinite(s)){ tEl.textContent = '–'; return; }
+    if (s < 1.0){ el.classList.add('lo'); tEl.textContent = 'BELOW 1.0 · UNDERSTABLE'; }
+    else if (s > 2.5){ el.classList.add('hi'); tEl.textContent = 'ABOVE 2.5 · OVERSTABLE'; }
+    else { el.classList.add('in'); tEl.textContent = 'IN BAND'; }
+  }
+
+  function el(name, attrs, text){
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function drawProfile(r){
+    var svg = $('#vizsvg');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    if (!r.ok){
+      svg.appendChild(el('text',{x:320,y:100,'text-anchor':'middle',style:"font:500 13px 'IBM Plex Mono',monospace;fill:"+C.dim},'Fill every field to draw the rocket'));
+      return;
+    }
+    var p = r.p;
+    var maxH = p.d + 2*p.s;                                     // body plus two fins
+    var k = Math.min(600 / r.L, 136 / maxH);                    // px per mm
+    var x0 = 20, cy = 96, h = p.d*k/2;
+    var xb = x0 + p.ln*k, xe = x0 + r.L*k;
+    // fins
+    var rootLE = x0 + r.XB*k, rootTE = rootLE + p.cr*k;
+    var tipLE = rootLE + p.xr*k, tipTE = tipLE + p.ct*k;
+    var sp = p.s*k;
+    svg.appendChild(el('path',{d:'M'+rootLE+' '+(cy-h)+' L'+tipLE+' '+(cy-h-sp)+' L'+tipTE+' '+(cy-h-sp)+' L'+rootTE+' '+(cy-h)+' Z',fill:C.fin,stroke:C.text,'stroke-width':1.5}));
+    svg.appendChild(el('path',{d:'M'+rootLE+' '+(cy+h)+' L'+tipLE+' '+(cy+h+sp)+' L'+tipTE+' '+(cy+h+sp)+' L'+rootTE+' '+(cy+h)+' Z',fill:C.fin,stroke:C.text,'stroke-width':1.5}));
+    // body
+    svg.appendChild(el('rect',{x:xb,y:cy-h,width:xe-xb,height:2*h,fill:C.card,stroke:C.text,'stroke-width':1.5}));
+    // nose
+    var nd;
+    if (p.shape === 'cone') nd = 'M'+xb+' '+(cy-h)+' L'+x0+' '+cy+' L'+xb+' '+(cy+h)+' Z';
+    else {
+      var c = p.shape === 'ogive' ? 0.15 : 0.35;
+      nd = 'M'+xb+' '+(cy-h)+' C'+(x0+(xb-x0)*c)+' '+(cy-h)+' '+x0+' '+(cy-h*0.35)+' '+x0+' '+cy+
+           ' C'+x0+' '+(cy+h*0.35)+' '+(x0+(xb-x0)*c)+' '+(cy+h)+' '+xb+' '+(cy+h)+' Z';
+    }
+    svg.appendChild(el('path',{d:nd,fill:C.card,stroke:C.text,'stroke-width':1.5}));
+    // motor (as simulated; never fitted on the day)
+    var ml = Math.min(p.lm, r.L)*k;
+    svg.appendChild(el('rect',{x:xe-ml,y:cy-h*0.6,width:ml,height:h*1.2,fill:'none',stroke:C.motor,'stroke-width':1.2,'stroke-dasharray':'4 3'}));
+    // markers
+    function cgMark(x, label, y){
+      var g = el('g',{transform:'translate('+x+' '+cy+')'});
+      g.appendChild(el('circle',{r:7,fill:C.card,stroke:C.cg,'stroke-width':1.6}));
+      g.appendChild(el('path',{d:'M0 -7 A7 7 0 0 1 7 0 L0 0 Z M0 7 A7 7 0 0 1 -7 0 L0 0 Z',fill:C.cg}));
+      svg.appendChild(g);
+      svg.appendChild(el('line',{x1:x,y1:cy+9,x2:x,y2:y-11,stroke:C.cg,'stroke-width':1}));
+      svg.appendChild(el('text',{x:x,y:y,'text-anchor':'middle',style:"font:600 11px 'IBM Plex Mono',monospace;fill:"+C.cg},label));
+    }
+    var xcp = x0 + r.CP*k;
+    cgMark(x0 + r.cg0*k, 'CG₀ liftoff', 190);
+    cgMark(x0 + r.cg1*k, 'CG₁ burnout', 176);
+    var gcp = el('g',{transform:'translate('+xcp+' '+cy+')'});
+    gcp.appendChild(el('circle',{r:7,fill:C.card,stroke:C.cp,'stroke-width':1.6}));
+    gcp.appendChild(el('circle',{r:3,fill:C.cp}));
+    svg.appendChild(gcp);
+    svg.appendChild(el('line',{x1:xcp,y1:cy-9,x2:xcp,y2:18,stroke:C.cp,'stroke-width':1}));
+    svg.appendChild(el('text',{x:xcp,y:13,'text-anchor':'middle',style:"font:600 11px 'IBM Plex Mono',monospace;fill:"+C.cp},'CP'));
+  }
+
+  function drawGauge(r){
+    var g = $('#gauge');
+    while (g.firstChild) g.removeChild(g.firstChild);
+    var x0 = 20, w = 600, max = 4;
+    function X(s){ return x0 + Math.max(0, Math.min(max, s)) / max * w; }
+    g.appendChild(el('rect',{x:x0,y:22,width:w,height:14,fill:'rgba(255,82,82,.16)'}));
+    g.appendChild(el('rect',{x:X(2.5),y:22,width:X(4)-X(2.5),height:14,fill:'rgba(255,212,0,.16)'}));
+    g.appendChild(el('rect',{x:X(1),y:22,width:X(2.5)-X(1),height:14,fill:'rgba(34,214,143,.18)',stroke:'#22D68F','stroke-width':1.2}));
+    [0,1,2,2.5,3,4].forEach(function(s){
+      g.appendChild(el('text',{x:X(s),y:54,'text-anchor':'middle',style:"font:500 11px 'IBM Plex Mono',monospace;fill:"+C.dim},s===4?'4 cal':String(s)));
+    });
+    if (!r.ok) return;
+    if (isFinite(r.s0) && isFinite(r.s1)){
+      g.appendChild(el('line',{x1:X(r.s0),y1:29,x2:X(r.s1),y2:29,stroke:C.text,'stroke-width':2.5}));
+    }
+    [[r.s0,'Liftoff',12],[r.s1,'Burnout',68]].forEach(function(a){
+      if (!isFinite(a[0])) return;
+      g.appendChild(el('circle',{cx:X(a[0]),cy:29,r:5.5,fill:C.text}));
+      g.appendChild(el('text',{x:X(a[0]),y:a[2],'text-anchor':'middle',style:"font:600 11px 'IBM Plex Mono',monospace;fill:"+C.text},a[1]+' '+a[0].toFixed(2)));
+    });
+  }
+
+  function runEst(){
+    var r = compute();
+    $('#o-cp').textContent = r.ok ? f(r.CP,0) + ' mm' : '–';
+    $('#o-cg0').textContent = r.ok ? f(r.cg0,0) + ' mm' : '–';
+    $('#o-cg1').textContent = r.ok ? f(r.cg1,0) + ' mm' : '–';
+    $('#o-s0').textContent = r.ok ? f(r.s0,2) : '–';
+    $('#o-s1').textContent = r.ok ? f(r.s1,2) : '–';
+    $('#o-len').textContent = r.ok ? 'Length ' + f(r.L,0) + ' mm' : '–';
+    var lift = r.ok ? r.p.m + r.p.mm : NaN, om = $('#o-mass');
+    om.innerHTML = r.ok ? f(lift,0) + ' g<small>' + (lift > 283 ? 'over the 283 g limit' : 'limit 283 g') + '</small>' : '–';
+    om.classList.toggle('over', r.ok && lift > 283);
+    status($('#m0'), $('#o-t0'), r.ok ? r.s0 : NaN);
+    status($('#m1'), $('#o-t1'), r.ok ? r.s1 : NaN);
+    drawProfile(r);
+    drawGauge(r);
+    [[r.s0,'#mb0','#mt0'],[r.s1,'#mb1','#mt1']].forEach(function(a){
+      var ok = r.ok && isFinite(a[0]);
+      $(a[1]).textContent = ok ? a[0].toFixed(2) + ' cal' : '–';
+      var t = $(a[2]);
+      t.className = 'tag' + (ok ? (a[0] < 1 ? ' lo' : a[0] > 2.5 ? ' hi' : ' in') : '');
+      t.textContent = ok ? (a[0] < 1 ? 'LOW' : a[0] > 2.5 ? 'HIGH' : 'IN BAND') : '–';
+    });
+  }
+
+  Object.keys(E).forEach(function(k){
+    E[k].addEventListener('input', runEst);
+    E[k].addEventListener('change', runEst);
+  });
+  $('#e-reset').addEventListener('click', function(){ load(); lockMotor(); runEst(); });
+  load();
+  lockMotor();
+  runEst();
+
+  /* initial route */
+  if (location.hash && indexOf(location.hash.slice(1)) > -1){
+    show(location.hash.slice(1));
+    setTimeout(function(){ show(location.hash.slice(1), {scroll:true}); }, 0);
+  } else {
+    show('brief');
+  }
+})();
+</script>
+</body>
+</html>

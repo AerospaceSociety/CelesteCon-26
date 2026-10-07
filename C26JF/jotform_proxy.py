@@ -1,25 +1,16 @@
 """
 jotform_proxy.py
 -----------------
-A small FastAPI backend that sits between celestecon_registration.html and JotForm.
-
-Why a proxy at all: the browser can't safely hold a JotForm API key (anyone who
-views page source would get it), and JotForm submissions made via API skip
-JotForm's own email notifications — so this proxy holds the key server-side,
-re-validates the payload (never trust the client), forwards it to JotForm, and
-can optionally send its own confirmation email.
-
-Run it:
-    pip install fastapi uvicorn requests --break-system-packages
-    export JOTFORM_API_KEY="your-api-key"
-    uvicorn jotform_proxy:app --reload --port 8000
-
-The root route serves celestecon_registration.html from the same origin, so the
-page's fetch('/api/submit') works without exposing the JotForm API key.
+FastAPI backend that sits between celestecon_registration.html and JotForm.
+Handles validation, generates sequential UIDs (C26-<Letters>-<Serial>),
+assigns team & member IDs, synchronizes the registration summary, and forwards
+payloads securely to JotForm API without exposing API keys to the browser.
 """
 
 import json
 import os
+import random
+import re
 import smtplib
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -36,17 +27,15 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 API_KEY = os.environ.get("JOTFORM_API_KEY")
 FORM_ID = os.environ.get("JOTFORM_FORM_ID")
-API_BASE = os.environ.get("JOTFORM_API_BASE", "https://api.jotform.com")
+API_BASE = os.environ.get("JOTFORM_API_BASE", "https://api.jotform.com").rstrip("/")
 ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "*").split(",")
 
 FIELD_MAP_PATH = Path(__file__).parent / "field_map.json"
-FIELD_MAP = json.loads(FIELD_MAP_PATH.read_text()) if FIELD_MAP_PATH.exists() else {}
+FIELD_MAP = json.loads(FIELD_MAP_PATH.read_text(encoding="utf-8")) if FIELD_MAP_PATH.exists() else {}
 if not FORM_ID:
-    FORM_ID = FIELD_MAP.get("_form_id")
+    FORM_ID = FIELD_MAP.get("_form_id", "261896133006456")
 
-# Optional email confirmation (off unless SMTP_HOST is set) — e.g. point this at
-# the Zoho Mail SMTP already configured for aeross.org / DIPST if you want a
-# receipt sent without relying on JotForm's (disabled-for-API) notifications.
+# Optional email confirmation
 SMTP_HOST = os.environ.get("SMTP_HOST")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 SMTP_USER = os.environ.get("SMTP_USER")
@@ -54,9 +43,19 @@ SMTP_PASS = os.environ.get("SMTP_PASS")
 SMTP_FROM = os.environ.get("SMTP_FROM", SMTP_USER or "")
 
 # ---------------------------------------------------------------------------
-# Event rules — mirrors EVENTS in celestecon_registration.html.
-# Kept in sync manually; if you change one, change the other.
+# Competition Codes & Event Rules
 # ---------------------------------------------------------------------------
+EVENT_CODES = {
+    "settle": "SMT",
+    "volatus": "Vol",
+    "dispute": "IPOD",
+    "bpp": "BPP",
+    "theatre": "ATh",
+    "gamejam": "CJam",
+    "rocketry": "Roc",
+    "f1": "APrix",
+}
+
 CATEGORY_RANGES = {
     "junior": (6, 8),
     "senior": (9, 12),
@@ -69,7 +68,7 @@ CATEGORY_RANGES = {
 EVENTS = {
     "settle": {
         "name": "Settle-Me-This (Space Settlement Design)",
-        "aliases": ["Settle-Me-This", "Settle-me-this"],
+        "aliases": ["Settle-Me-This", "Settle-me-this", "SMT"],
         "classMin": 6,
         "classMax": 12,
         "min": 3,
@@ -79,7 +78,7 @@ EVENTS = {
     },
     "volatus": {
         "name": "Volatus (Aviation, UAV & 3D CAD)",
-        "aliases": ["Volatus"],
+        "aliases": ["Volatus", "Vol"],
         "classMin": 9,
         "classMax": 12,
         "min": 3,
@@ -89,17 +88,17 @@ EVENTS = {
     },
     "dispute": {
         "name": "In Pursuit of Dispute (Debate & Quizzitch)",
-        "aliases": ["In Pursuit of Dispute"],
+        "aliases": ["In Pursuit of Dispute", "IPOD", "Debate", "Dispute"],
         "classMin": 9,
         "classMax": 12,
-        "min": 2,
-        "max": 2,
+        "min": 1,
+        "max": 1,
         "categories": False,
         "maxTeams": 1,
     },
     "bpp": {
         "name": "Business Power Pitch",
-        "aliases": ["Business Power Pitch"],
+        "aliases": ["Business Power Pitch", "BPP"],
         "classMin": 6,
         "classMax": 12,
         "min": 3,
@@ -109,7 +108,7 @@ EVENTS = {
     },
     "gamejam": {
         "name": "CelesteJam",
-        "aliases": ["CelesteJam"],
+        "aliases": ["CelesteJam", "CJam"],
         "classMin": 6,
         "classMax": 12,
         "min": 2,
@@ -119,7 +118,7 @@ EVENTS = {
     },
     "theatre": {
         "name": "AEROSS Theatre",
-        "aliases": ["AEROSS Theatre"],
+        "aliases": ["AEROSS Theatre", "ATh", "Theatre"],
         "classMin": 9,
         "classMax": 12,
         "min": 3,
@@ -129,7 +128,7 @@ EVENTS = {
     },
     "rocketry": {
         "name": "Rocketry",
-        "aliases": ["Rocketry"],
+        "aliases": ["Rocketry", "Roc"],
         "classMin": 6,
         "classMax": 12,
         "min": 2,
@@ -139,7 +138,7 @@ EVENTS = {
     },
     "f1": {
         "name": "AEROSS Prix",
-        "aliases": ["AEROSS Prix", "F1", "Prix"],
+        "aliases": ["AEROSS Prix", "APrix", "F1", "Prix"],
         "classMin": 9,
         "classMax": 12,
         "min": 3,
@@ -161,8 +160,27 @@ def get_event_rule(ev_id: str, ev_name: str) -> Optional[dict]:
                 return rule
     return None
 
+
+def get_random_letters() -> str:
+    letters = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+    return "".join(random.choice(letters) for _ in range(2))
+
+
+def get_next_server_serial() -> Optional[str]:
+    if not API_KEY or not FORM_ID:
+        return None
+    try:
+        resp = requests.get(f"{API_BASE}/form/{FORM_ID}", params={"apiKey": API_KEY}, timeout=5)
+        if resp.status_code == 200:
+            count = int(resp.json().get("content", {}).get("count", 0))
+            return f"{101 + count:04d}"
+    except Exception:
+        pass
+    return None
+
+
 # ---------------------------------------------------------------------------
-# Payload schema (must match the JSON built by celestecon_registration.html)
+# Payload schema
 # ---------------------------------------------------------------------------
 class Member(BaseModel):
     name: str
@@ -170,16 +188,18 @@ class Member(BaseModel):
     cls: str = Field(alias="class")
     gender: str
     memberId: Optional[str] = None
-    model_config = {"populate_by_name": True}
+    model_config = {"populate_by_name": True, "extra": "allow"}
 
 
 class Team(BaseModel):
     teamId: Optional[str] = None
     teamName: Optional[str] = None
+    rawCategory: Optional[str] = None
     category: Optional[str] = None
     cosmovateConfirmed: Optional[bool] = None
     restrictedConfirmed: Optional[bool] = None
     members: list[Member]
+    model_config = {"extra": "allow"}
 
 
 class EventEntry(BaseModel):
@@ -188,6 +208,7 @@ class EventEntry(BaseModel):
     trackType: Optional[str] = None
     trackLabel: Optional[str] = None
     teams: list[Team]
+    model_config = {"extra": "allow"}
 
 
 class School(BaseModel):
@@ -195,6 +216,7 @@ class School(BaseModel):
     contact: str
     phone: str
     email: str
+    model_config = {"extra": "allow"}
 
 
 class Registration(BaseModel):
@@ -203,10 +225,94 @@ class Registration(BaseModel):
     events: list[EventEntry]
     totals: dict
     summary: str
+    schoolUID: Optional[str] = None
+    multiEventStudents: Optional[list] = None
+    model_config = {"extra": "allow"}
 
 
 # ---------------------------------------------------------------------------
-# Server-side re-validation — never trust client-side checks alone
+# UID & Summary Synchronization
+# ---------------------------------------------------------------------------
+def generate_summary(events: list[EventEntry], school_uid: str, multi_event_students: Optional[list] = None) -> str:
+    if not events:
+        return "(no events selected yet)"
+
+    header_note = f"School ID (UID): {school_uid or 'PENDING SUBMISSION'}\n\n"
+    if multi_event_students:
+        header_note += "[SCHEDULE ADVISORY — MULTI-COMPETITION STUDENTS]\n"
+        for s in multi_event_students:
+            s_name = s.get("name") if isinstance(s, dict) else getattr(s, "name", "-")
+            s_email = s.get("email") if isinstance(s, dict) else getattr(s, "email", "-")
+            s_evs = s.get("events", []) if isinstance(s, dict) else getattr(s, "events", [])
+            header_note += f"• {s_name} ({s_email}) ➔ {', '.join(s_evs)}\n  *Timing for offline rounds on campus may clash; student/school responsibility.\n"
+        header_note += "\n"
+
+    event_lines = []
+    for e in events:
+        team_lines = []
+        for i, t in enumerate(e.teams or []):
+            t_id = t.teamId or f"Team {i + 1}"
+            t_name = t.teamName or f"Team {i + 1}"
+            track_part = f" / Track: {t.category}" if t.category else (f" / {e.trackLabel}" if e.trackLabel else "")
+            header = f"  [{t_id}] Team: {t_name}{track_part}"
+            members_lines = []
+            for j, m in enumerate(t.members or []):
+                m_id = m.memberId or "ID Pending"
+                m_email = m.email or "No email"
+                m_cls = m.cls or "-"
+                m_gender = m.gender or "-"
+                members_lines.append(f"    {j + 1}. {m.name or '-'} [ID: {m_id}] ({m_email}, Class {m_cls}, {m_gender})")
+            team_lines.append(header + ("\n" + "\n".join(members_lines) if members_lines else ""))
+        track_hdr = f" [{e.trackLabel}]" if e.trackLabel else ""
+        event_lines.append(f"{e.name}{track_hdr}\n" + "\n".join(team_lines))
+
+    return header_note + "\n\n".join(event_lines)
+
+
+def sync_registration_uids(reg: Registration) -> str:
+    server_serial = get_next_server_serial()
+    match = re.match(r"^C26-([A-Za-z]{2})-", reg.schoolUID or "")
+    letters = match.group(1).upper() if match else get_random_letters()
+
+    if server_serial:
+        official_uid = f"C26-{letters}-{server_serial}"
+    elif reg.schoolUID and reg.schoolUID.startswith("C26-"):
+        official_uid = reg.schoolUID
+    else:
+        official_uid = f"C26-{letters}-0101"
+
+    reg.schoolUID = official_uid
+
+    if reg.events:
+        for ev in reg.events:
+            code = EVENT_CODES.get(ev.id, ev.id)
+            is_dual = ev.id in ("settle", "bpp", "gamejam", "rocketry") or (ev.trackType or "").lower() == "dual"
+            category_counts = {}
+
+            for t in (ev.teams or []):
+                if is_dual:
+                    cat_str = str(t.rawCategory or t.category or "").lower()
+                    is_senior = "senior" in cat_str
+                    cat = "Sr" if is_senior else "Jr"
+                    category_counts[cat] = category_counts.get(cat, 0) + 1
+                    count = category_counts[cat]
+                    cat_tag = f"-{cat}{count if count > 1 else ''}"
+                else:
+                    category_counts["single"] = category_counts.get("single", 0) + 1
+                    count = category_counts["single"]
+                    cat_tag = f"-T{count}" if count > 1 else ""
+
+                t.teamId = f"{official_uid}-{code}{cat_tag}"
+                for m_idx, m in enumerate(t.members or []):
+                    m.memberId = f"{t.teamId}-M{m_idx + 1}"
+
+        reg.summary = generate_summary(reg.events, official_uid, reg.multiEventStudents)
+
+    return official_uid
+
+
+# ---------------------------------------------------------------------------
+# Server-side validation
 # ---------------------------------------------------------------------------
 def validate_registration(reg: Registration) -> list[str]:
     errors = []
@@ -222,11 +328,10 @@ def validate_registration(reg: Registration) -> list[str]:
         if len(ev.teams) > max_teams:
             errors.append(f"{ev.name}: more than {max_teams} teams in a single form (submitted {len(ev.teams)}).")
 
-        # For dual-category events (settle, bpp, gamejam, rocketry), max 1 team per category
         if rules["categories"]:
             seen_categories = set()
             for team in ev.teams:
-                cat = team.category or ""
+                cat = team.rawCategory or team.category or ""
                 normalized_cat = "junior" if "junior" in cat.lower() else ("senior" if "senior" in cat.lower() else cat)
                 if not normalized_cat:
                     errors.append(f"{ev.name}: team is missing category selection.")
@@ -236,12 +341,13 @@ def validate_registration(reg: Registration) -> list[str]:
                     seen_categories.add(normalized_cat)
 
         for i, team in enumerate(ev.teams):
-            label = f"{ev.name} Team {i + 1}"
+            label = f"{ev.name} Entry {i + 1}" if rules["min"] == rules["max"] == 1 else f"{ev.name} Team {i + 1}"
             if not (rules["min"] <= len(team.members) <= rules["max"]):
-                errors.append(f"{label}: member count {len(team.members)} outside allowed range {rules['min']}–{rules['max']}.")
+                req_str = f"exactly {rules['min']}" if rules["min"] == rules["max"] else f"{rules['min']}–{rules['max']}"
+                errors.append(f"{label}: member count {len(team.members)} outside allowed range ({req_str}).")
             cls_min, cls_max = rules["classMin"], rules["classMax"]
             if rules["categories"]:
-                cat = team.category or ""
+                cat = team.rawCategory or team.category or ""
                 if "junior" in cat.lower():
                     cls_min, cls_max = 6, 8
                 elif "senior" in cat.lower():
@@ -289,7 +395,6 @@ def submit_to_jotform(reg: Registration) -> dict:
     if qid("total_participants"):
         params[f"submission[{qid('total_participants')}]"] = str(reg.totals.get("totalParticipants", ""))
     if qid("events_selected"):
-        # JotForm checkbox fields accept repeated submission[qid][]=value entries
         events_qid = qid("events_selected")
         params_list = [(f"submission[{events_qid}][]", ev.name) for ev in reg.events]
     else:
@@ -309,16 +414,16 @@ def submit_to_jotform(reg: Registration) -> dict:
     if body.get("responseCode") not in (200, 201):
         raise HTTPException(502, f"JotForm rejected the submission: {body}")
 
-    return body["content"]
+    return body.get("content") or body
 
 
 def send_confirmation_email(reg: Registration):
     if not SMTP_HOST:
-        return  # email confirmation not configured — skip silently
+        return
     msg = MIMEText(
-        f"Registration received for {reg.school.name}.\n\n{reg.summary}"
+        f"Registration received for {reg.school.name} (UID: {reg.schoolUID}).\n\n{reg.summary}"
     )
-    msg["Subject"] = f"CelesteCon 2026 - Registration received: {reg.school.name}"
+    msg["Subject"] = f"CelesteCon 2026 - Registration received: {reg.school.name} [{reg.schoolUID}]"
     msg["From"] = SMTP_FROM
     msg["To"] = reg.school.email
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
@@ -346,14 +451,21 @@ def submit(reg: Registration):
     if errors:
         raise HTTPException(422, {"errors": errors})
 
+    official_school_uid = sync_registration_uids(reg)
     result = submit_to_jotform(reg)
 
     try:
         send_confirmation_email(reg)
     except Exception:
-        pass  # never fail the registration just because the receipt email failed
+        pass
 
-    return {"submissionID": result.get("submissionID"), "jotform": result}
+    submission_id = result.get("submissionID") if isinstance(result, dict) else None
+    return {
+        "success": True,
+        "submissionID": submission_id,
+        "schoolUID": official_school_uid,
+        "jotform": result,
+    }
 
 
 @app.get("/api/health")
@@ -366,7 +478,10 @@ def health():
 
 @app.get("/")
 def registration_page():
-    page = Path(__file__).parent / "celestecon_registration.html"
-    if not page.exists():
-        raise HTTPException(404, "celestecon_registration.html not found.")
-    return FileResponse(page)
+    local_page = Path(__file__).parent / "celestecon_registration.html"
+    if local_page.exists():
+        return FileResponse(local_page)
+    parent_page = Path(__file__).parent.parent / "public" / "celestecon_registration.html"
+    if parent_page.exists():
+        return FileResponse(parent_page)
+    raise HTTPException(404, "celestecon_registration.html not found.")

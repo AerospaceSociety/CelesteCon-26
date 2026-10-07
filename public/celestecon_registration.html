@@ -1052,6 +1052,319 @@
       color: var(--crimson) !important;
     }
 
+    /* ========================================================================= */
+    /* MECHANICAL PROMPTS & SUBMISSION CHRONOMETER TERMINAL                      */
+    /* ========================================================================= */
+    .mech-timer-terminal {
+      margin: 32px auto 24px;
+      max-width: 760px;
+      background: #161310;
+      border: 2px solid #E8E1CE;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      padding: 24px 28px;
+      position: relative;
+      text-align: left;
+      color: #E8E1CE;
+    }
+    .mech-timer-terminal::before,
+    .mech-timer-terminal::after {
+      content: '+';
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: rgba(232, 225, 206, 0.4);
+      pointer-events: none;
+    }
+    .mech-timer-terminal::before { top: 6px; left: 8px; }
+    .mech-timer-terminal::after { bottom: 6px; right: 8px; }
+
+    .mech-terminal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px solid rgba(232, 225, 206, 0.2);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+    .mech-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #E8E1CE;
+    }
+    .mech-led-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #C23A1E;
+      box-shadow: 0 0 8px #C23A1E;
+      animation: mechLedBlink 1.4s infinite ease-in-out;
+    }
+    @keyframes mechLedBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+    .mech-target-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(194, 58, 30, 0.2);
+      border: 1px solid rgba(194, 58, 30, 0.6);
+      color: #F2EDDD;
+      padding: 3px 8px;
+    }
+    .mech-terminal-title h3 {
+      font-family: var(--font-label);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 4px;
+      color: #F2EDDD;
+    }
+    .mech-terminal-title p {
+      font-size: 12.5px;
+      color: #DDD4BC;
+      margin: 0 0 16px;
+      line-height: 1.5;
+      text-align: left !important;
+    }
+    .mech-clock-frame {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      background: #0d0b09;
+      border: 1px solid rgba(232, 225, 206, 0.25);
+      padding: 16px 12px;
+      margin: 14px 0;
+    }
+    .mech-unit-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      max-width: 90px;
+    }
+    .mech-code-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: #DDD4BC;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .mech-code-tag.crimson { color: #C23A1E; }
+    .c26-flip-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .c26-rotor-pair {
+      display: flex;
+      gap: 3px;
+      background: #0b0907;
+      padding: 4px;
+      border: 1.5px solid #2b2520;
+      border-radius: 4px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.6);
+    }
+    .c26-rotor {
+      position: relative;
+      width: 26px;
+      height: 46px;
+      background: #14110e;
+      border: 1.5px solid #3c342b;
+      border-radius: 3px;
+      overflow: hidden;
+      perspective: 350px;
+      user-select: none;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.04), 0 3px 6px rgba(0,0,0,0.6);
+    }
+    @media (min-width: 600px) {
+      .c26-rotor {
+        width: 34px;
+        height: 56px;
+      }
+    }
+    .c26-rotor.crimson {
+      border-color: #C23A1E;
+    }
+    .c26-rotor-half {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 50%;
+      overflow: hidden;
+    }
+    .c26-rotor-half.top {
+      top: 0;
+      background: linear-gradient(180deg, #25201b 0%, #171411 100%);
+      border-bottom: 1px solid #000;
+    }
+    .c26-rotor-half.bottom {
+      bottom: 0;
+      background: linear-gradient(180deg, #13100e 0%, #1e1915 100%);
+    }
+    .c26-rotor-num-inner {
+      width: 100%;
+      height: 200%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c26-rotor-num-inner.bottom-shift {
+      transform: translateY(-50%);
+    }
+    .c26-rotor-glyph {
+      font-family: var(--font-mono, monospace);
+      font-weight: 700;
+      font-size: 26px;
+      line-height: 1;
+      color: #F5EFE0;
+      letter-spacing: -0.02em;
+    }
+    @media (min-width: 600px) {
+      .c26-rotor-glyph {
+        font-size: 34px;
+      }
+    }
+    .c26-rotor-glyph.crimson {
+      color: #C23A1E;
+    }
+    .c26-rotor-leaf-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #28221d 0%, #191512 100%);
+      border-bottom: 1px solid #000;
+      transform-origin: center bottom;
+      animation: rotorFlipTop 0.24s cubic-bezier(0.4, 0, 0.7, 1) forwards;
+      z-index: 20;
+    }
+    .c26-rotor-leaf-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #13100e 0%, #1f1a16 100%);
+      transform-origin: center top;
+      animation: rotorFlipBottom 0.24s cubic-bezier(0.15, 0.6, 0.4, 1) 0.20s both;
+      z-index: 30;
+    }
+    @keyframes rotorFlipTop {
+      0% {
+        transform: perspective(350px) rotateX(0deg);
+        filter: brightness(1);
+      }
+      100% {
+        transform: perspective(350px) rotateX(-90deg);
+        filter: brightness(0.6);
+      }
+    }
+    @keyframes rotorFlipBottom {
+      0% {
+        transform: perspective(350px) rotateX(90deg);
+        filter: brightness(0.7);
+      }
+      100% {
+        transform: perspective(350px) rotateX(0deg);
+        filter: brightness(1);
+      }
+    }
+    .c26-rotor-seam {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1.5px;
+      background: #000000;
+      box-shadow: 0 1px 1px rgba(255, 255, 255, 0.08);
+      z-index: 40;
+      pointer-events: none;
+    }
+    .c26-rotor-hinge {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 5px;
+      background: #DDD4BC;
+      z-index: 45;
+      pointer-events: none;
+    }
+    .c26-rotor-hinge.left { left: 0; }
+    .c26-rotor-hinge.right { right: 0; }
+    .c26-rotor-hinge.crimson { background: #C23A1E; }
+    .mech-label-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #DDD4BC;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .mech-label-tag.crimson { color: #C23A1E; }
+    .mech-colon {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 2px;
+      opacity: 0.7;
+    }
+    .mech-colon-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #DDD4BC;
+      box-shadow: 0 0 6px rgba(221, 212, 188, 0.5);
+    }
+    .mech-terminal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid rgba(232, 225, 206, 0.2);
+      padding-top: 10px;
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: #DDD4BC;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .status-indicator-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    @media (max-width: 600px) {
+      .mech-timer-terminal { padding: 18px 14px; }
+      .mech-clock-frame { gap: 2px; padding: 12px 4px; }
+      .mech-label-tag { font-size: 8px; }
+      .mech-code-tag { font-size: 9px; }
+    }
+
     footer {
       max-width: 680px;
       border-top: 1px solid var(--border-sub);
@@ -1392,14 +1705,163 @@
       </div>
     </div>
 
-    <div class="review-actions" style="margin-top: 28px; justify-content: center; gap: 14px; flex-wrap: wrap;">
-      <a href="/prompts" class="btn primary"
-        style="background: var(--ink); border-color: var(--ink); color: var(--bone-hi) !important; font-weight: 600; padding: 10px 20px; text-decoration: none;">Access
-        Prompt Portal &rarr;</a>
-      <a href="/submissions" class="btn primary"
-        style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 600; padding: 10px 20px; text-decoration: none;">Access
-        Submission Portal &rarr;</a>
-      <button class="text-link" type="button" onclick="window.location.reload()">New Registration &rarr;</button>
+    <!-- Prompts & Submission Portal Launch Terminal with Mechanical Timer -->
+    <div class="mech-timer-terminal">
+      <div class="mech-terminal-header">
+        <div class="mech-badge">
+          <span class="mech-led-pulse"></span>
+          <span>MISSION TELEMETRY CHRONOMETER</span>
+        </div>
+        <div class="mech-target-tag">T-MINUS // 13 OCT 00:00:00 IST</div>
+      </div>
+
+      <div class="mech-terminal-title">
+        <h3>Round 1 Prompts &amp; Submission Launch Clock</h3>
+        <p>Problem statements, CAD reference packs, and submission upload gates arm and activate at midnight on 13 October. Ticking in live Indian Standard Time.</p>
+      </div>
+
+      <!-- Mechanical Timer Display (MM:DD:HH:SS) using FlipDown Rotors -->
+      <div class="mech-clock-frame" aria-label="Countdown to Prompts Launch" style="display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;">
+        <!-- MM: Months -->
+        <div class="c26-flip-unit">
+          <div class="mech-code-tag">MM</div>
+          <div class="c26-rotor-pair">
+            <div class="c26-rotor" id="rotor-m0" data-val="0">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+            <div class="c26-rotor" id="rotor-m1" data-val="0">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+          </div>
+          <div class="mech-label-tag">MONTHS</div>
+        </div>
+
+        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+
+        <!-- DD: Days -->
+        <div class="c26-flip-unit">
+          <div class="mech-code-tag">DD</div>
+          <div class="c26-rotor-pair">
+            <div class="c26-rotor" id="rotor-d0" data-val="0">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+            <div class="c26-rotor" id="rotor-d1" data-val="6">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">6</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">6</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+          </div>
+          <div class="mech-label-tag">DAYS</div>
+        </div>
+
+        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+
+        <!-- HH: Hours -->
+        <div class="c26-flip-unit">
+          <div class="mech-code-tag">HH</div>
+          <div class="c26-rotor-pair">
+            <div class="c26-rotor" id="rotor-h0" data-val="0">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+            <div class="c26-rotor" id="rotor-h1" data-val="3">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">3</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">3</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+          </div>
+          <div class="mech-label-tag">HOURS</div>
+        </div>
+
+        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+
+        <!-- MM: Minutes -->
+        <div class="c26-flip-unit">
+          <div class="mech-code-tag">MM</div>
+          <div class="c26-rotor-pair">
+            <div class="c26-rotor" id="rotor-min0" data-val="2">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">2</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">2</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+            <div class="c26-rotor" id="rotor-min1" data-val="7">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">7</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">7</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left"></div>
+              <div class="c26-rotor-hinge right"></div>
+            </div>
+          </div>
+          <div class="mech-label-tag">MINUTES</div>
+        </div>
+
+        <div class="mech-colon"><span class="mech-colon-dot"></span><span class="mech-colon-dot"></span></div>
+
+        <!-- SS: Seconds -->
+        <div class="c26-flip-unit">
+          <div class="mech-code-tag crimson">SS</div>
+          <div class="c26-rotor-pair">
+            <div class="c26-rotor crimson" id="rotor-s0" data-val="5">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">5</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">5</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left crimson"></div>
+              <div class="c26-rotor-hinge right crimson"></div>
+            </div>
+            <div class="c26-rotor crimson" id="rotor-s1" data-val="9">
+              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">9</span></div></div>
+              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">9</span></div></div>
+              <div class="c26-rotor-seam"></div>
+              <div class="c26-rotor-hinge left crimson"></div>
+              <div class="c26-rotor-hinge right crimson"></div>
+            </div>
+          </div>
+          <div class="mech-label-tag crimson">SECONDS</div>
+        </div>
+      </div>
+
+      <div class="mech-terminal-footer">
+        <div class="mech-status-line">
+          <span class="status-indicator-dot"></span>
+          <span>GATE STATUS: <strong id="mech-status-text">SYSTEM ARMED // RELEASING 13 OCT 00:00 IST</strong></span>
+        </div>
+        <div class="mech-format-note">
+          CLOCK FORMAT: [MM:DD:HH:MM:SS] // TELEMETRY: IST
+        </div>
+      </div>
+
+      <div class="review-actions" style="margin-top: 20px; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <a href="/prompts" class="btn primary"
+          style="background: var(--ink); border-color: var(--bone); color: var(--bone-hi) !important; font-weight: 700; padding: 11px 22px; text-decoration: none; font-size: 13px;">
+          <span>⚡</span> Access Prompt Portal &rarr;
+        </a>
+        <a href="/submissions" class="btn primary"
+          style="background: var(--crimson); border-color: var(--crimson); color: #ffffff !important; font-weight: 700; padding: 11px 22px; text-decoration: none; font-size: 13px;">
+          <span>📦</span> Access Submission Portal &rarr;
+        </a>
+        <button class="text-link" type="button" onclick="window.location.reload()">New Registration &rarr;</button>
+      </div>
     </div>
   </main>
 
@@ -1433,11 +1895,11 @@
         dispute: {
           name: "In Pursuit of Dispute (Debate & Quizzitch)",
           tagline: "Quizzitch Online Prelims + Live Parliamentary Debate",
-          desc: "45-minute Quizzitch online screening quiz on aerospace science. Top 10 teams advance to live parliamentary debates with POIs and jury questioning. Note: Only one member of the team attempts the quiz.",
-          classMin: 9, classMax: 12, minMembers: 2, maxMembers: 2, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false,
+          desc: "Individual entry (1 student per school). 45-minute Quizzitch online screening quiz on aerospace science. Top 10 qualifiers advance to live parliamentary debates on campus with POIs and jury questioning.",
+          classMin: 9, classMax: 12, minMembers: 1, maxMembers: 1, maxTeams: 1, mode: "Hybrid", categories: null, restricted: false,
           trackType: "senior",
           trackLabel: "Senior Division Only (Classes 9–12)",
-          guidelineNotice: "Strictly Senior Division. Open exclusively to high school students in Classes 9, 10, 11, and 12. Limit 1 team per school (2 members)."
+          guidelineNotice: "Strictly Senior Division. Open exclusively to high school students in Classes 9, 10, 11, and 12. Limit 1 student per school (individual participation)."
         },
         bpp: {
           name: "Business Power Pitch",
@@ -1537,7 +1999,7 @@
         grid.innerHTML = Object.keys(EVENTS).map(id => {
           const ev = EVENTS[id];
           const on = state.selected.has(id);
-          const teamLabel = ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team of ${ev.minMembers}–${ev.maxMembers}`;
+          const teamLabel = ev.minMembers === ev.maxMembers ? (ev.minMembers === 1 ? '1 Student (Individual)' : `Team of ${ev.minMembers}`) : `Team of ${ev.minMembers}–${ev.maxMembers}`;
           const quotaBadge = ev.trackType === 'dual'
             ? '1 Team / Category (Max 2)'
             : '1 Team Limit';
@@ -1625,7 +2087,7 @@
       <div class="event-section-head">
         <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
           <h3 style="margin:0;">${ev.name}</h3>
-          <span class="meta">[${ev.mode}] ${ev.minMembers === ev.maxMembers ? `Team of ${ev.minMembers}` : `Team of ${ev.minMembers}–${ev.maxMembers}`} / ${ev.trackLabel}</span>
+          <span class="meta">[${ev.mode}] ${ev.minMembers === ev.maxMembers ? (ev.minMembers === 1 ? '1 Student (Individual)' : `Team of ${ev.minMembers}`) : `Team of ${ev.minMembers}–${ev.maxMembers}`} / ${ev.trackLabel}</span>
         </div>
         <div class="track-advisory-box" style="margin-top: 8px; padding: 8px 12px; background: rgba(22,19,16,0.03); border-left: 3px solid ${ev.trackType === 'senior' ? 'var(--crimson)' : 'var(--ink)'}; font-size: 12px; color: var(--secondary); line-height: 1.45;">
           <strong>Official Quota Rule:</strong> ${ev.guidelineNotice}
@@ -1651,7 +2113,7 @@
           const catName = team.category === 'junior' ? 'Junior Category (Classes 6–8)' : (team.category === 'senior' ? 'Senior Category (Classes 9–12)' : 'Category Unassigned');
           divisionTag = ` — ${catName}`;
         }
-        const teamLabel = ev.trackType === 'dual' ? `Team Entry ${i + 1}${divisionTag}` : `School Team Entry`;
+        const teamLabel = ev.trackType === 'dual' ? `Team Entry ${i + 1}${divisionTag}` : (ev.minMembers === 1 && ev.maxMembers === 1 ? 'Individual Student Entry' : `School Team Entry`);
 
         let clsMin = ev.classMin;
         let clsMax = ev.classMax;
@@ -1662,7 +2124,7 @@
 
         const membersHTML = team.members.map((m, j) => `
       <div class="member-row">
-        <p class="member-title">Member ${j + 1}</p>
+        <p class="member-title">${ev.minMembers === 1 && ev.maxMembers === 1 ? "Participating Student" : `Member ${j + 1}`}</p>
         <div class="member-fields">
           <div class="field compact">
             <label for="m-${evId}-${i}-${j}-name">Full Name</label>
@@ -1694,8 +2156,8 @@
         <div class="team-main">
           <p class="team-title" style="font-weight: 700; color: ${team.category === 'senior' ? 'var(--crimson)' : 'var(--ink)'};">${teamLabel}</p>
           <div class="field">
-            <label for="team-${evId}-${i}-name">Team Name</label>
-            <input type="text" id="team-${evId}-${i}-name" value="${escapeHTML(team.name)}" placeholder="Team name" oninput="CC.updateReview()">
+            <label for="team-${evId}-${i}-name">${ev.minMembers === 1 && ev.maxMembers === 1 ? 'Student / Entry Name' : 'Team Name'}</label>
+            <input type="text" id="team-${evId}-${i}-name" value="${escapeHTML(team.name)}" placeholder="${ev.minMembers === 1 && ev.maxMembers === 1 ? 'Student / Entry Name' : 'Team name'}" oninput="CC.updateReview()">
             <div class="field-error" data-error-for="team-${evId}-${i}-name"></div>
           </div>
           ${ev.categories ? `
@@ -2708,9 +3170,82 @@
         copyManifest
       };
 
+      function initMechanicalTimer() {
+        const TARGET_EPOCH = new Date('2026-10-13T00:00:00+05:30').getTime();
+
+        function updateRotor(id, nextDigit, isCrimson) {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const prevDigit = el.getAttribute('data-val') || '0';
+          if (prevDigit === nextDigit) return;
+
+          el.setAttribute('data-val', nextDigit);
+
+          const glyphs = el.querySelectorAll('.c26-rotor-half .c26-rotor-glyph');
+          glyphs.forEach(function(g) { g.textContent = nextDigit; });
+
+          el.querySelectorAll('.c26-rotor-leaf-top, .c26-rotor-leaf-bottom').forEach(function(l) { l.remove(); });
+
+          const leafTop = document.createElement('div');
+          leafTop.className = 'c26-rotor-leaf-top';
+          leafTop.innerHTML = '<div class="c26-rotor-num-inner"><span class="c26-rotor-glyph ' + (isCrimson ? 'crimson' : '') + '">' + prevDigit + '</span></div>';
+          el.appendChild(leafTop);
+
+          const leafBottom = document.createElement('div');
+          leafBottom.className = 'c26-rotor-leaf-bottom';
+          leafBottom.innerHTML = '<div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph ' + (isCrimson ? 'crimson' : '') + '">' + nextDigit + '</span></div>';
+          el.appendChild(leafBottom);
+
+          setTimeout(function() {
+            if (leafTop.parentNode === el) leafTop.remove();
+            if (leafBottom.parentNode === el) leafBottom.remove();
+          }, 480);
+        }
+
+        function tick() {
+          const now = Date.now();
+          const diff = Math.max(0, TARGET_EPOCH - now);
+
+          const totalSecs = Math.floor(diff / 1000);
+          const totalDays = Math.floor(totalSecs / 86400);
+          const hours = Math.floor((totalSecs % 86400) / 3600);
+          const minutes = Math.floor((totalSecs % 3600) / 60);
+          const seconds = totalSecs % 60;
+
+          const months = Math.floor(totalDays / 30);
+          const days = totalDays % 30;
+
+          const mStr = String(months).padStart(2, '0');
+          const dStr = String(days).padStart(2, '0');
+          const hStr = String(hours).padStart(2, '0');
+          const minStr = String(minutes).padStart(2, '0');
+          const sStr = String(seconds).padStart(2, '0');
+
+          updateRotor('rotor-m0', mStr[0], false);
+          updateRotor('rotor-m1', mStr[1], false);
+          updateRotor('rotor-d0', dStr[0], false);
+          updateRotor('rotor-d1', dStr[1], false);
+          updateRotor('rotor-h0', hStr[0], false);
+          updateRotor('rotor-h1', hStr[1], false);
+          updateRotor('rotor-min0', minStr[0], false);
+          updateRotor('rotor-min1', minStr[1], false);
+          updateRotor('rotor-s0', sStr[0], true);
+          updateRotor('rotor-s1', sStr[1], true);
+
+          if (diff <= 0) {
+            const statusEl = document.getElementById('mech-status-text');
+            if (statusEl) statusEl.textContent = 'PROMPTS LIVE // UNLOCKED';
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      }
+
       renderEventGrid();
       renderTeamDetails();
       updateReview();
+      initMechanicalTimer();
       refreshProgress();
       window.addEventListener('scroll', refreshProgress, { passive: true });
       window.addEventListener('resize', refreshProgress);

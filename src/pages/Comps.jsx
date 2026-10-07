@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 import { events, eventOutline } from '../data/events';
 
@@ -32,11 +33,10 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
 
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap pl-6 sm:pl-0">
             <span
-              className={`font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border px-2 sm:px-2.5 py-0.5 font-bold ${
-                event.mode === 'Onsite'
+              className={`font-mono text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase border px-2 sm:px-2.5 py-0.5 font-bold ${event.mode === 'Onsite'
                   ? 'bg-bone text-ink border-bone'
                   : 'bg-ink text-bone border-bone'
-              }`}
+                }`}
             >
               {event.mode}
             </span>
@@ -82,7 +82,7 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
       {/* Expanded Detailed Breakdown */}
       {expanded && (
         <div className="mt-6 border-2 border-bone/40 bg-bone/[0.04] p-5 sm:p-7 space-y-6 animate-in fade-in slide-in-from-top-2 duration-200">
-          
+
           {/* Categories / Tracks if applicable */}
           {event.categories && event.categories.length > 0 && (
             <div>
@@ -210,12 +210,27 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
             )}
           </div>
 
-          {/* Registration CTA Footer inside card */}
+          {/* Registration & Portals CTA Footer inside card */}
           <div className="pt-3 border-t border-bone/20 flex justify-between items-center flex-wrap gap-3">
             <span className="font-mono text-[10px] tracking-widest uppercase text-bone-dim">
               Event ID: CC26-E{event.id}
             </span>
             <div className="flex items-center gap-2 flex-wrap">
+              {event.portalUrl && (
+                <Link
+                  to={event.portalUrl}
+                  className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors flex items-center gap-1"
+                >
+                  <span>Prompt</span>
+                  <span>&rarr;</span>
+                </Link>
+              )}
+              <Link
+                to="/submissions"
+                className="px-3 py-1.5 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-colors"
+              >
+                Submit &rarr;
+              </Link>
               <a
                 href="/celestecon_registration.html"
                 className="px-3 py-1.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
@@ -261,38 +276,45 @@ const Comps = () => {
     <div className="max-w-5xl">
       <SectionHeader section="03" title="The Comps" jp="競技一覧" />
 
+      {/* Prompts & Submission Action Hub Banner */}
+      <div className="mt-8 mb-6 border-2 border-bone bg-ink-2/80 p-4 sm:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-xl">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-crimson animate-pulse"></span>
+            <span className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+              Round 1 Problem Statements &amp; Submission Portals
+            </span>
+          </div>
+          <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed max-w-2xl">
+            Access Round 1 competition prompts, case guidelines, interactive simulators (Rocketry &amp; AEROSS Prix), and the digital deposit vault.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto shrink-0">
+          <Link
+            to="/prompts"
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border-2 border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors text-center inline-flex items-center justify-center gap-1.5"
+          >
+            <span>Prompts Page</span>
+            <span>&rarr;</span>
+          </Link>
+          <Link
+            to="/submissions"
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors text-center inline-flex items-center justify-center gap-1.5"
+          >
+            <span>Submission Page</span>
+            <span>&rarr;</span>
+          </Link>
+        </div>
+      </div>
+
       {/* Event Outline Masthead */}
-      <div className="mt-8 mb-6 border-2 border-bone p-6 sm:p-8 bg-bone/[0.03]">
+      <div className="mb-6 border-2 border-bone p-6 sm:p-8 bg-bone/[0.03]">
         <div className="font-mono text-xs tracking-[0.2em] text-crimson font-bold uppercase mb-2">
           {eventOutline.title}
         </div>
         <p className="font-label text-base sm:text-lg text-bone leading-relaxed">
           {eventOutline.description}
         </p>
-      </div>
-
-      {/* Registration Banner */}
-      <div className="mb-8 sm:mb-10 border-2 border-crimson/80 bg-crimson/5 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 font-mono text-xs">
-        <div>
-          <span className="text-crimson font-bold uppercase tracking-wider block">Official School Registration Active — Institutional Quotas</span>
-          <span className="text-bone-dim text-[11px] leading-relaxed block mt-0.5">School Quota: 1 team per category (Jr 6–8 / Sr 9–12) for Settle-Me-This, Business Power Pitch, CelesteJam, and Rocketry; 1 team per competition for Volatus, In Pursuit of Dispute, AEROSS Theatre, and AEROSS Prix. Regular deadline: 12 Oct · Rocketry/Prix/Jam: 20 Oct. Overall Champions Rolling Trophy requires entries in at least 5 of 8 competitions.</span>
-        </div>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto shrink-0">
-          <a
-            href="/celestecon_registration.html"
-            className="px-4 py-2 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center"
-          >
-            School Registration Portal ↗
-          </a>
-          <a
-            href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-2 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-colors text-center"
-          >
-            Brochure (PDF) ↗
-          </a>
-        </div>
       </div>
 
       {/* Controls & Filter Bar */}
@@ -303,11 +325,10 @@ const Comps = () => {
             <button
               key={mode}
               onClick={() => setFilterMode(mode)}
-              className={`flex-1 sm:flex-initial px-2.5 sm:px-3 py-1.5 font-mono text-xs uppercase tracking-wider sm:tracking-widest font-bold border transition-colors text-center ${
-                filterMode === mode
+              className={`flex-1 sm:flex-initial px-2.5 sm:px-3 py-1.5 font-mono text-xs uppercase tracking-wider sm:tracking-widest font-bold border transition-colors text-center ${filterMode === mode
                   ? 'bg-crimson text-bone border-crimson'
                   : 'bg-ink text-bone-dim border-bone/40 hover:border-bone hover:text-bone'
-              }`}
+                }`}
             >
               {mode} ({mode === 'ALL' ? events.length : events.filter(e => e.mode.toUpperCase() === mode).length})
             </button>
@@ -335,7 +356,7 @@ const Comps = () => {
       {/* Events Roster */}
       <div className="border-t-2 border-bone">
         {filteredEvents.length > 0 ? (
-          filteredEvents.map((event, index) => (
+          filteredEvents.map((event) => (
             <EventCard
               key={`${event.id}-${expandAll}`}
               event={event}
@@ -361,6 +382,37 @@ const Comps = () => {
         <p className="font-label text-sm text-bone-dim max-w-2xl leading-relaxed">
           Throughout the Round 2 on-campus finale, the central courtyard hosts the Open Arena. Features Aeromodelling flight tests, PlaneRush, SpaceDunk, and branded minigames for all-day engagement.
         </p>
+      </div>
+
+      {/* Footer Portal Gateway */}
+      <div className="mt-12 border-2 border-bone p-6 sm:p-7 bg-ink-2/80 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 shadow-2xl">
+        <div className="space-y-1">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-crimson font-bold uppercase block">
+            Central Communications Gateway
+          </span>
+          <h4 className="font-display text-xl sm:text-2xl text-bone uppercase">
+            Ready to review problem prompts or submit deliverables?
+          </h4>
+          <p className="font-label text-xs sm:text-sm text-bone-dim max-w-xl">
+            Access the Round 1 transmission terminal for countdown clocks, downloadable prompts, stability tools, and encrypted deposit vaults.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">
+          <Link
+            to="/prompts"
+            className="flex-1 sm:flex-initial px-5 py-2.5 border-2 border-bone bg-bone text-ink hover:bg-crimson hover:text-bone-hi hover:border-crimson font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
+          >
+            <span>Prompts Page</span>
+            <span>&rarr;</span>
+          </Link>
+          <Link
+            to="/submissions"
+            className="flex-1 sm:flex-initial px-5 py-2.5 bg-crimson border-2 border-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
+          >
+            <span>Submission Page</span>
+            <span>&rarr;</span>
+          </Link>
+        </div>
       </div>
     </div>
   );

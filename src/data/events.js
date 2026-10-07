@@ -63,6 +63,8 @@ export const events = [
     ],
     regDeadline: '12 Oct 2026',
     poc: { name: 'Arshia Barsain', email: 'r24333arshia@dpsrkp.net' },
+    portalUrl: '/prompts/settlement',
+    portalLabel: 'SMT Prompt Dossier',
     isDraft: false
   },
   {
@@ -104,28 +106,30 @@ export const events = [
     ],
     regDeadline: '12 Oct 2026',
     poc: { name: 'Tarushi Tomar', email: 'r24564tarushi@dpsrkp.net' },
+    portalUrl: '/prompts/volatus',
+    portalLabel: 'Volatus Prompt Dossier',
     isDraft: false
   },
-  {
+    {
     id: '03',
     name: 'In Pursuit of Dispute',
     discipline: 'Quiz (Quizzitch) & Debate',
     mode: 'Hybrid',
     eligibility: 'Grades 9–12',
-    team: 'Team of 2 members',
-    schoolCap: '1 team per competition',
-    quote: '“It’s better to debate a question without settling it than to settle a question without debating it.”',
+    team: '1 student (Individual entry)',
+    schoolCap: '1 student per school',
+    quote: "“It’s better to debate a question without settling it than to settle a question without debating it.”",
     overview:
       'Qualify through an online aerospace quiz (Quizzitch), then prove your knowledge in a high-energy onsite parliamentary debate.',
     hook: 'Online Quizzitch screening into a high-energy live parliamentary debate on campus.',
     rounds: [
       {
-        title: 'Round 1 (Online Quiz — Quizzitch)',
-        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. Single correct (+3 / −1) (bonus questions if the rest of the quiz is finished before time). The top 10 teams advance. Note: Only one member of the team is to attempt the quiz.'
+        title: 'Round 1 (Online Quiz – Quizzitch)',
+        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. Single correct (+3 / -1) (bonus questions if the rest of the quiz is finished before time). The top 10 qualifiers advance to onsite debate rounds. Note: Exactly 1 student from the school participates in the competition.'
       },
       {
         title: 'Round 2 (Onsite Parliamentary Debate)',
-        desc: 'Motions are assigned 3 days before the event (21 Oct). Each team gets one stance, and paired teams debate the same motion from opposite sides. Total speaking time is 5 minutes per team, split between the two speakers as they wish, with warning bells at 4 and 5 minutes. Each debate is followed by 5 minutes of cross-questioning: POIs from the opposing team and other school teams, plus judges’ questions. Notes are allowed for reference.'
+        desc: 'Motions are assigned 3 days before the event (21 Oct). Each participant gets one stance, and paired students debate the same motion from opposite sides. Total speaking time is 5 minutes per speaker, with warning bells at 4 and 5 minutes. Each debate is followed by 5 minutes of cross-questioning: POIs from the opposing participant and other school delegates, plus judges’ questions. Notes are allowed for reference.'
       }
     ],
     criteria: [
@@ -143,6 +147,8 @@ export const events = [
     ],
     regDeadline: '12 Oct 2026',
     poc: { name: 'Manya Gupta', email: 'e11748manya@dpsrkp.net' },
+    portalUrl: '/prompts/dispute',
+    portalLabel: 'IPOD Prompt Dossier',
     isDraft: false
   },
   {
@@ -193,6 +199,8 @@ export const events = [
     ],
     regDeadline: '12 Oct 2026',
     poc: { name: 'Ryaan Namit Jain', email: 'r23542ryaan@dpsrkp.net' },
+    portalUrl: '/prompts/bpp',
+    portalLabel: 'BPP Prompt Dossier',
     isDraft: false
   },
   {
@@ -229,6 +237,8 @@ export const events = [
     ],
     regDeadline: '12 Oct 2026',
     poc: { name: 'Siddharth Srivastava', email: 'r24998siddharth@dpsrkp.net' },
+    portalUrl: '/prompts/theatre',
+    portalLabel: 'AeroTheatre Prompt Dossier',
     isDraft: false
   },
   {
@@ -277,6 +287,8 @@ export const events = [
     ],
     regDeadline: '20 Oct 2026',
     poc: { name: 'Kiara Kapoor', email: 'r24334kiara@dpsrkp.net' },
+    portalUrl: '/prompts/gamejam',
+    portalLabel: 'CelesteJam Prompt Dossier',
     isDraft: false
   },
   {
@@ -326,6 +338,8 @@ export const events = [
     ],
     regDeadline: '20 Oct 2026',
     poc: { name: 'Farzooque Hasan', email: 'r25246farzooque@dpsrkp.net' },
+    portalUrl: '/prompts/rocketry',
+    portalLabel: 'Rocketry',
     isDraft: false
   },
   {
@@ -375,6 +389,8 @@ export const events = [
     ],
     regDeadline: '20 Oct 2026',
     poc: { name: 'Anant Jha', email: 'v09759anant@dpsrkp.net' },
+    portalUrl: '/prompts/prix',
+    portalLabel: 'AEROSS Prix',
     isDraft: false
   }
 ];

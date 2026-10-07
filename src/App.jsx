@@ -6,6 +6,19 @@ import Comps from './pages/Comps';
 import Format from './pages/Format';
 import Sponsors from './pages/Sponsors';
 import Contact from './pages/Contact';
+import PromptsPortal from './pages/PromptsPortal';
+import SubmissionPortal from './pages/SubmissionPortal';
+import RocketryPrompt from './pages/RocketryPrompt';
+import AerossPrixPrompt from './pages/AerossPrixPrompt';
+import {
+  GenericPromptPortal,
+  SettlementPrompt,
+  VolatusPrompt,
+  DisputePrompt,
+  BppPrompt,
+  TheatrePrompt,
+  GameJamPrompt
+} from './pages/prompts';
 
 const Navbar = () => {
   const location = useLocation();
@@ -99,6 +112,26 @@ const Navbar = () => {
                     </div>
                     <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry portal.</p>
                   </a>
+                  <Link
+                    to="/prompts"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
+                  >
+                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider">
+                      Prompts Portal
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Problem statements &amp; event dossiers.</p>
+                  </Link>
+                  <Link
+                    to="/submissions"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
+                  >
+                    <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
+                      Submission Portal
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Upload deliverables &amp; verify UID.</p>
+                  </Link>
                   <a
                     href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
                     target="_blank"
@@ -187,12 +220,28 @@ const Navbar = () => {
                 <span>School Contingent Registration</span>
                 <span>↗</span>
               </a>
+              <Link
+                to="/prompts"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5"
+              >
+                <span>Prompts Portal</span>
+                <span>&rarr;</span>
+              </Link>
+              <Link
+                to="/submissions"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-crimson/60 text-crimson hover:border-crimson hover:bg-crimson hover:text-bone-hi transition-colors flex justify-between items-center bg-crimson/5 font-bold"
+              >
+                <span>Submission Portal</span>
+                <span>&rarr;</span>
+              </Link>
               <a
                 href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5"
+                className="text-sm font-label uppercase tracking-widest py-2 px-4 border border-bone/40 text-bone-dim hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5 text-xs"
               >
                 <span>Participant Brochure (PDF)</span>
                 <span>↗</span>
@@ -249,6 +298,8 @@ const Footer = () => {
             <ul className="space-y-1.5 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
               <li><Link to="/about" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">About AEROSS</Link></li>
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
+              <li><Link to="/prompts" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Prompts Portal</Link></li>
+              <li><Link to="/submissions" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Submission Portal</Link></li>
               <li><Link to="/format" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Format & Dates</Link></li>
               <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors & Partners</Link></li>
               <li><a href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Participant Brochure (PDF) ↗</a></li>
@@ -331,7 +382,39 @@ function App() {
             <Route path="/register" element={<RedirectTo to="/celestecon_registration.html" />} />
             <Route path="/register-school" element={<RedirectTo to="/celestecon_registration.html" />} />
             <Route path="/register-individual" element={<RedirectTo to="/celestecon_registration.html" />} />
-            <Route path="/individual-registration" element={<RedirectTo to="/celestecon_registration.html" />} />
+            <Route path="/prompts" element={<PromptsPortal />} />
+            <Route path="/submissions" element={<SubmissionPortal />} />
+            <Route path="/portal" element={<SubmissionPortal />} />
+            <Route path="/prompts/settlement" element={<SettlementPrompt />} />
+            <Route path="/prompts/smt" element={<SettlementPrompt />} />
+            <Route path="/prompts/01" element={<SettlementPrompt />} />
+            <Route path="/prompts/volatus" element={<VolatusPrompt />} />
+            <Route path="/prompts/vol" element={<VolatusPrompt />} />
+            <Route path="/prompts/02" element={<VolatusPrompt />} />
+            <Route path="/prompts/dispute" element={<DisputePrompt />} />
+            <Route path="/prompts/ipod" element={<DisputePrompt />} />
+            <Route path="/prompts/03" element={<DisputePrompt />} />
+            <Route path="/prompts/bpp" element={<BppPrompt />} />
+            <Route path="/prompts/pitch" element={<BppPrompt />} />
+            <Route path="/prompts/04" element={<BppPrompt />} />
+            <Route path="/prompts/theatre" element={<TheatrePrompt />} />
+            <Route path="/prompts/ath" element={<TheatrePrompt />} />
+            <Route path="/prompts/05" element={<TheatrePrompt />} />
+            <Route path="/prompts/gamejam" element={<GameJamPrompt />} />
+            <Route path="/prompts/cjam" element={<GameJamPrompt />} />
+            <Route path="/prompts/celestejam" element={<GameJamPrompt />} />
+            <Route path="/prompts/06" element={<GameJamPrompt />} />
+            <Route path="/prompts/rocketry" element={<RocketryPrompt />} />
+            <Route path="/prompts/roc" element={<RocketryPrompt />} />
+            <Route path="/prompts/07" element={<RocketryPrompt />} />
+            <Route path="/prompts/prix" element={<AerossPrixPrompt />} />
+            <Route path="/prompts/f1" element={<AerossPrixPrompt />} />
+            <Route path="/prompts/aeross-prix" element={<AerossPrixPrompt />} />
+            <Route path="/prompts/aprix" element={<AerossPrixPrompt />} />
+            <Route path="/prompts/08" element={<AerossPrixPrompt />} />
+            <Route path="/prompts/:eventId" element={<GenericPromptPortal />} />
+            <Route path="/Rocketry_CelesteCon2026.html" element={<Navigate to="/prompts/rocketry" replace />} />
+            <Route path="/AEROSS_Prix_CelesteCon2026.html" element={<Navigate to="/prompts/prix" replace />} />
             <Route path="/brochure" element={<RedirectTo to="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" />} />
           </Routes>
         </main>
