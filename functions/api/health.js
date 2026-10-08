@@ -1,43 +1,39 @@
 /**
  * Cloudflare Pages Function: /api/health
- * Inspects server health and verifies JotForm environment configuration.
+ * Public health check endpoint with security hardening (no sensitive internal ID leakage).
  */
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-};
-
-export async function onRequestOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: CORS_HEADERS
-  });
-}
+import { jsonResponse, checkRateLimit, verifyAdminAuth } from './_security.js';
 
 export async function onRequestGet(context) {
-  const env = context.env || {};
-  const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.JOTFORM_SECRET_KEY || env.apiKey;
-  const formId = env.JOTFORM_FORM_ID || "261896133006456";
-  const apiBase = env.JOTFORM_API_BASE || "https://api.jotform.com";
+  const { request, env = {} } = context;
 
-  return new Response(
-    JSON.stringify({
-      status: "ok",
-      platform: "cloudflare-pages",
-      jotform_configured: Boolean(apiKey),
-      form_id: formId,
-      form_url: `https://form.jotform.com/${formId}`,
-      api_base: apiBase,
-      timestamp: new Date().toISOString()
-    }, null, 2),
-    {
-      status: 200,
-      headers: {
-        ...CORS_HEADERS,
-        "Content-Type": "application/json"
-      }
-    }
-  );
+  // Rate Limiting: 30 health checks per minute per IP
+  const rateLimit = checkRateLimit(request, { limit: 30, windowSeconds: 60, prefix: 'health' });
+  if (!rateLimit.allowed) {
+    return jsonResponse({ error: 'Too Many Requests' }, 429, request, env);
+  }
+
+  const isAdmin = await verifyAdminAuth(request, env);
+  const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.JOTFORM_SECRET_KEY || env.apiKey;
+  const firebaseUrl = env.FIREBASE_DATABASE_URL || env.VITE_FIREBASE_DATABASE_URL;
+
+  // Public safe health payload
+  const payload = {
+    status: 'healthy',
+    conclave: 'CelesteCon 2026',
+    vaultActive: true,
+    timestamp: new Date().toISOString()
+  };
+
+  // Only authorized administrators receive internal infrastructure diagnostic telemetry
+  if (isAdmin) {
+    payload.diagnostics = {
+      jotformConfigured: Boolean(apiKey),
+      firebaseConfigured: Boolean(firebaseUrl),
+      platform: 'cloudflare-pages-edge'
+    };
+  }
+
+  return jsonResponse(payload, 200, request, env);
 }

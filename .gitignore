@@ -26,3 +26,18 @@ dist-ssr
 # Scratch & temporary development files
 scratch/
 scratch
+
+# Environment variables & secrets (CRITICAL)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.secret
+*.credentials
+secrets/
+private/
+
