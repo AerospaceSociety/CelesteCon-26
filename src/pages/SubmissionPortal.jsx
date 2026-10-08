@@ -706,7 +706,20 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
       {/* ========================================================================= */}
       {/* PHASE 1: MANDATORY ACCREDITATION GATE (IF NOT YET AUTHENTICATED BY UID) */}
       {/* ========================================================================= */}
-      {!verifiedSchool ? (
+      {windowState.status === 'PENDING' ? (
+        <div className="border-2 border-crimson bg-ink-2/70 p-6 sm:p-10 space-y-6 shadow-2xl text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-crimson/10 border border-crimson text-crimson font-mono text-xs uppercase font-bold tracking-widest">
+            <span className="w-2.5 h-2.5 rounded-full bg-crimson animate-pulse"></span>
+            <span>PORTAL LOCKED</span>
+          </div>
+          <h2 className="font-display text-3xl sm:text-5xl uppercase text-bone tracking-wide">
+            Submission Portal Opens 13 October
+          </h2>
+          <p className="font-label text-sm sm:text-base text-bone-dim max-w-2xl mx-auto leading-relaxed">
+            The submission gateway is currently closed. Please prepare your deliverables and return on 13 October 2026 to authenticate with your School UID.
+          </p>
+        </div>
+      ) : !verifiedSchool ? (
         <div className="border-2 border-bone bg-ink-2/70 p-6 sm:p-10 space-y-6 shadow-2xl">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-crimson/10 border border-crimson text-crimson font-mono text-xs uppercase font-bold tracking-widest">
             <span className="w-2.5 h-2.5 rounded-full bg-crimson animate-pulse"></span>
