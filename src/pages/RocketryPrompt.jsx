@@ -37,7 +37,12 @@ const CHECKLIST_ITEMS = [
   { id: 'c9', label: 'Present at Welcome Foyer, DPS R.K. Puram by 07:45 AM' }
 ];
 
-const VALID_TABS = ['brief', 'motor', 'flow', 'checklist', 'judging', 'stability', 'rules'];
+// Toggle flag to hide or show Barrowman Stability Lab without removing code
+const SHOW_STABILITY_LAB = false;
+
+const VALID_TABS = SHOW_STABILITY_LAB
+  ? ['brief', 'motor', 'flow', 'checklist', 'judging', 'stability', 'rules']
+  : ['brief', 'motor', 'flow', 'checklist', 'judging', 'rules'];
 
 export default function RocketryPrompt() {
   const [activeTab, setActiveTab] = useState(() => {
@@ -255,8 +260,8 @@ export default function RocketryPrompt() {
     { id: 'flow', num: '03', label: 'Event Day', sub: 'Inspect & simulate' },
     { id: 'checklist', num: '04', label: 'Checklist', sub: 'Readiness audit' },
     { id: 'judging', num: '05', label: 'Judging', sub: 'Points & rubric' },
-    { id: 'stability', num: '06', label: 'Stability Lab', sub: 'Barrowman solver' },
-    { id: 'rules', num: '07', label: 'Regulations', sub: 'Submission & POC' }
+    ...(SHOW_STABILITY_LAB ? [{ id: 'stability', num: '06', label: 'Stability Lab', sub: 'Barrowman solver' }] : []),
+    { id: 'rules', num: SHOW_STABILITY_LAB ? '07' : '06', label: 'Regulations', sub: 'Submission & POC' }
   ];
 
   return (
@@ -301,12 +306,21 @@ export default function RocketryPrompt() {
             On competition day, arbiters physically scrutineer your physical airframe, weigh dry parameters, and compute flight telemetry in OpenRocket. <strong className="text-bone font-bold">No real motors are fired on campus.</strong>
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
-            <button
-              onClick={() => handleTabChange('stability')}
-              className="px-5 py-2.5 bg-crimson text-bone font-label font-bold text-sm uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-all cursor-pointer shadow-lg hover:shadow-crimson/20"
-            >
-              Open Stability Estimator →
-            </button>
+            {SHOW_STABILITY_LAB ? (
+              <button
+                onClick={() => handleTabChange('stability')}
+                className="px-5 py-2.5 bg-crimson text-bone font-label font-bold text-sm uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-all cursor-pointer shadow-lg hover:shadow-crimson/20"
+              >
+                Open Stability Estimator →
+              </button>
+            ) : (
+              <button
+                onClick={() => handleTabChange('motor')}
+                className="px-5 py-2.5 bg-crimson text-bone font-label font-bold text-sm uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-all cursor-pointer shadow-lg hover:shadow-crimson/20"
+              >
+                Motor Specifications →
+              </button>
+            )}
             <button
               onClick={() => handleTabChange('checklist')}
               className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-sm uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-all cursor-pointer"
@@ -735,17 +749,17 @@ export default function RocketryPrompt() {
                   ← Previous: Checklist
                 </button>
                 <button
-                  onClick={() => handleTabChange('stability')}
+                  onClick={() => handleTabChange(SHOW_STABILITY_LAB ? 'stability' : 'rules')}
                   className="font-label text-xs uppercase tracking-widest text-crimson hover:text-bone transition-colors font-bold cursor-pointer"
                 >
-                  Next: Stability Lab →
+                  {SHOW_STABILITY_LAB ? 'Next: Stability Lab →' : 'Next: Regulations & Contacts →'}
                 </button>
               </div>
             </section>
           )}
 
-          {/* TAB 06: STABILITY LAB */}
-          {activeTab === 'stability' && (
+          {/* TAB 06: STABILITY LAB (HIDDEN - CODE PRESERVED) */}
+          {SHOW_STABILITY_LAB && activeTab === 'stability' && (
             <section className="space-y-6 animate-fadeIn">
               <div className="border-b border-bone/20 pb-4 flex justify-between items-end flex-wrap gap-2">
                 <div>
@@ -996,11 +1010,13 @@ export default function RocketryPrompt() {
             </section>
           )}
 
-          {/* TAB 07: REGULATIONS & CONTACTS */}
+          {/* TAB: REGULATIONS & CONTACTS */}
           {activeTab === 'rules' && (
             <section className="space-y-6 animate-fadeIn">
               <div className="border-b border-bone/20 pb-4">
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 07</span>
+                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                  {SHOW_STABILITY_LAB ? 'Section 07' : 'Section 06'}
+                </span>
                 <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                   Conclave Rules &amp; Key Contacts
                 </h2>
@@ -1054,10 +1070,10 @@ export default function RocketryPrompt() {
 
               <div className="border-t border-bone/20 pt-4 flex justify-between">
                 <button
-                  onClick={() => handleTabChange('stability')}
+                  onClick={() => handleTabChange(SHOW_STABILITY_LAB ? 'stability' : 'judging')}
                   className="font-label text-xs uppercase tracking-widest text-bone-dim hover:text-bone transition-colors cursor-pointer"
                 >
-                  ← Previous: Stability Lab
+                  {SHOW_STABILITY_LAB ? '← Previous: Stability Lab' : '← Previous: Judging'}
                 </button>
                 <Link
                   to="/submissions"

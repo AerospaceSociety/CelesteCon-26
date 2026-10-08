@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { events } from '../data/events';
 
@@ -377,6 +377,16 @@ const PromptsPortal = () => {
     isLive: false
   });
 
+  // Position live prompt dossiers (Rocketry & AEROSS Prix) at the top of the prompts roster
+  const sortedEvents = useMemo(() => {
+    const rocketry = events.find((e) => e.id === '07' || e.id === 'rocketry');
+    const prix = events.find((e) => e.id === '08' || e.id === 'f1');
+    const others = events.filter(
+      (e) => e.id !== '07' && e.id !== 'rocketry' && e.id !== '08' && e.id !== 'f1'
+    );
+    return [rocketry, prix, ...others].filter(Boolean);
+  }, []);
+
   useEffect(() => {
     function calculate() {
       const now = Date.now();
@@ -442,6 +452,97 @@ const PromptsPortal = () => {
         <p className="font-label font-medium text-sm sm:text-base tracking-[0.06em] text-bone-dim max-w-3xl leading-relaxed">
           The official central transmission terminal for all 8 CelesteCon 2026 competitions. Problem statements, engineering briefs, and digital deposit vaults unlock automatically according to the mission chronometer below.
         </p>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* LIVE PROMPTS ANNOUNCEMENT BULLETIN (ABOVE TIMER) */}
+      {/* ========================================================================= */}
+      <section className="mb-8 border-2 border-crimson bg-ink p-5 sm:p-7 shadow-2xl relative overflow-hidden animate-fadeIn">
+        {/* Glow accent */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-crimson/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+
+        <div className="relative z-10 space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-crimson/30 pb-3">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="font-mono text-xs uppercase tracking-[0.2em] font-bold text-bone">
+                OFFICIAL TRANSMISSION // LIVE PROMPTS BROADCAST
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] tracking-widest text-green-400 font-bold border border-green-500/40 px-2.5 py-0.5 bg-green-500/10 uppercase">
+                ● 2 PROMPT DOSSIERS UNLOCKED
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-7 space-y-2">
+              <h2 className="font-display text-2xl sm:text-3xl uppercase text-bone tracking-wide leading-tight">
+                Rocketry &amp; AEROSS Prix Prompts Are <span className="text-crimson">Now Live</span>
+              </h2>
+              <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
+                Ahead of the automated 13 October countdown for remaining tracks, the full interactive problem dossiers, dimensional constraints, and engineering regulations for <strong className="text-bone">Event 07 (Rocketry)</strong> and <strong className="text-bone">Event 08 (AEROSS Prix)</strong> are armed and open for team formulation.
+              </p>
+            </div>
+
+            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Event 07 Rocketry Mini-Card */}
+              <Link
+                to="/prompts/rocketry"
+                className="group border border-bone/40 hover:border-crimson bg-ink-2 p-3.5 transition-all flex flex-col justify-between shadow-md hover:bg-crimson/5"
+              >
+                <div>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-crimson text-bone-hi">
+                      07 · ROC
+                    </span>
+                    <span className="font-mono text-[9px] text-green-400 font-bold uppercase tracking-wider">
+                      ● LIVE
+                    </span>
+                  </div>
+                  <div className="font-display text-base text-bone uppercase group-hover:text-crimson transition-colors leading-tight">
+                    Rocketry Model &amp; Flight
+                  </div>
+                  <p className="font-mono text-[10px] text-bone-dim mt-1 line-clamp-2">
+                    Estes D12-5 motor rules &amp; OpenRocket .ork specs.
+                  </p>
+                </div>
+                <div className="mt-3 pt-2 border-t border-bone/20 flex items-center justify-between text-[11px] font-label font-bold text-crimson group-hover:text-bone transition-colors uppercase tracking-wider">
+                  <span>View Brief</span>
+                  <span>→</span>
+                </div>
+              </Link>
+
+              {/* Event 08 AEROSS Prix Mini-Card */}
+              <Link
+                to="/prompts/prix"
+                className="group border border-bone/40 hover:border-crimson bg-ink-2 p-3.5 transition-all flex flex-col justify-between shadow-md hover:bg-crimson/5"
+              >
+                <div>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-crimson text-bone-hi">
+                      08 · APRIX
+                    </span>
+                    <span className="font-mono text-[9px] text-green-400 font-bold uppercase tracking-wider">
+                      ● LIVE
+                    </span>
+                  </div>
+                  <div className="font-display text-base text-bone uppercase group-hover:text-crimson transition-colors leading-tight">
+                    AEROSS Prix
+                  </div>
+                  <p className="font-mono text-[10px] text-bone-dim mt-1 line-clamp-2">
+                    CO2 sprint track rules, 30-pg dossier &amp; ₹30k budget cap.
+                  </p>
+                </div>
+                <div className="mt-3 pt-2 border-t border-bone/20 flex items-center justify-between text-[11px] font-label font-bold text-crimson group-hover:text-bone transition-colors uppercase tracking-wider">
+                  <span>View Brief</span>
+                  <span>→</span>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ========================================================================= */}
@@ -519,116 +620,6 @@ const PromptsPortal = () => {
 
       {/* Prompts Overview */}
       <div className="space-y-8 mb-12">
-        {/* Featured Live Prompts Showcase */}
-        <div className="border-2 border-bone bg-ink-2/80 p-5 sm:p-7 shadow-2xl backdrop-blur-sm">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-bone/30 pb-3 mb-6">
-            <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-              <span className="font-mono text-xs uppercase tracking-widest font-bold text-bone">
-                ACTIVE TRANSMISSION // RELEASED PROMPTS
-              </span>
-            </div>
-            <span className="font-mono text-[10px] tracking-widest text-green-400 font-bold border border-green-500/50 px-2 py-0.5 bg-green-500/10 uppercase">
-              2 INTERACTIVE DOSSIERS LIVE
-            </span>
-          </div>
-
-          <p className="font-label text-sm text-bone-dim mb-6 leading-relaxed max-w-3xl">
-            The official interactive prompt dossiers, engineering calculators, and technical regulations for <strong>Event 07 (Rocketry)</strong> and <strong>Event 08 (AEROSS Prix)</strong> are now live and fully accessible. Review problem statements, dimensional checkers, OpenRocket guidelines, and scoring rubrics:
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Rocketry Card */}
-            <div className="border-2 border-bone bg-ink p-5 sm:p-6 flex flex-col justify-between hover:border-crimson transition-colors group">
-              <div>
-                <div className="flex justify-between items-start gap-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">
-                      07 · ROC
-                    </span>
-                    <span className="font-mono text-[10px] text-green-400 uppercase tracking-wider font-bold">
-                      ● LIVE
-                    </span>
-                  </div>
-                  <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 border border-bone/40 text-bone-dim">
-                    Onsite · Dual Track
-                  </span>
-                </div>
-
-                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase mb-2 group-hover:text-crimson transition-colors">
-                  Rocketry
-                </h3>
-                <p className="font-label text-xs sm:text-sm text-bone-dim mb-4 leading-relaxed">
-                  Build a scale model rocket around a supplied OpenRocket motor specification. Includes the interactive Center of Gravity (CG) vs Center of Pressure (CP) stability visualizer, motor rules, flight formulas, and simulation rubrics.
-                </p>
-
-                <div className="border-t border-bone/20 pt-3 space-y-1.5 font-mono text-[11px] mb-4">
-                  <div>
-                    <span className="text-crimson font-bold uppercase">Features: </span>
-                    <span className="text-bone">OpenRocket motor specs, Stability tool, Flight formula</span>
-                  </div>
-                  <div>
-                    <span className="text-bone-dim uppercase">Schedule: </span>
-                    <span className="text-bone-dim/90">20 Oct Reg · 22 Oct .ork upload · 24 Oct Onsite Scrutineering</span>
-                  </div>
-                </div>
-              </div>
-
-              <Link
-                to="/prompts/rocketry"
-                className="w-full py-3 px-4 bg-bone text-ink hover:bg-crimson hover:text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border-2 border-bone hover:border-crimson transition-colors flex items-center justify-center gap-2 mt-2"
-              >
-                <span>Open Rocketry</span>
-                <span>&rarr;</span>
-              </Link>
-            </div>
-
-            {/* AEROSS Prix Card */}
-            <div className="border-2 border-bone bg-ink p-5 sm:p-6 flex flex-col justify-between hover:border-crimson transition-colors group">
-              <div>
-                <div className="flex justify-between items-start gap-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">
-                      08 · APRIX
-                    </span>
-                    <span className="font-mono text-[10px] text-green-400 uppercase tracking-wider font-bold">
-                      ● LIVE
-                    </span>
-                  </div>
-                  <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 border border-bone/40 text-bone-dim">
-                    Onsite · Senior Track
-                  </span>
-                </div>
-
-                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase mb-2 group-hover:text-crimson transition-colors">
-                  AEROSS Prix
-                </h3>
-                <p className="font-label text-xs sm:text-sm text-bone-dim mb-4 leading-relaxed">
-                  Scale CO2-powered miniature F1 racing constructor challenge. Includes interactive technical scrutineering envelope checker, budget cap regulations (₹30,000), 20m sprint track specs, and 30-page dossier guidelines.
-                </p>
-
-                <div className="border-t border-bone/20 pt-3 space-y-1.5 font-mono text-[11px] mb-4">
-                  <div>
-                    <span className="text-crimson font-bold uppercase">Features: </span>
-                    <span className="text-bone">Dimensional envelope tool, Budget regulations, Race rubric</span>
-                  </div>
-                  <div>
-                    <span className="text-bone-dim uppercase">Schedule: </span>
-                    <span className="text-bone-dim/90">20 Oct Reg · 22 Oct Write-up &amp; CAD · 24 Oct Races</span>
-                  </div>
-                </div>
-              </div>
-
-              <Link
-                to="/prompts/prix"
-                className="w-full py-3 px-4 bg-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label font-bold text-xs uppercase tracking-widest text-center border-2 border-crimson transition-colors flex items-center justify-center gap-2 mt-2"
-              >
-                <span>Open AEROSS Prix</span>
-                <span>&rarr;</span>
-              </Link>
-            </div>
-          </div>
-        </div>
 
         {/* Release Schedule Notice */}
         <div className="border border-bone/30 p-4 bg-ink/40 font-mono text-xs text-bone-dim leading-relaxed flex items-start gap-3">
@@ -638,9 +629,9 @@ const PromptsPortal = () => {
           </div>
         </div>
 
-        {/* All 8 Events Roster */}
+        {/* All 8 Events Roster (Rocketry & AEROSS Prix prioritized at top) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {events.map((ev) => {
+          {sortedEvents.map((ev) => {
             const code = COMP_CODES[ev.id] || ev.id;
             const deliv = DELIVERABLE_INFO[ev.id] || {};
             const isDual = ev.categories && ev.categories.length > 0;

@@ -8,6 +8,7 @@ import Sponsors from './pages/Sponsors';
 import Contact from './pages/Contact';
 import PromptsPortal from './pages/PromptsPortal';
 import SubmissionPortal from './pages/SubmissionPortal';
+import AdminPortal from './pages/AdminPortal';
 import RocketryPrompt from './pages/RocketryPrompt';
 import AerossPrixPrompt from './pages/AerossPrixPrompt';
 import {
@@ -416,6 +417,7 @@ function App() {
             <Route path="/Rocketry_CelesteCon2026.html" element={<Navigate to="/prompts/rocketry" replace />} />
             <Route path="/AEROSS_Prix_CelesteCon2026.html" element={<Navigate to="/prompts/prix" replace />} />
             <Route path="/brochure" element={<RedirectTo to="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" />} />
+            <Route path="/admin" element={<AdminPortal />} />
           </Routes>
         </main>
         <Footer />

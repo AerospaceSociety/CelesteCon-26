@@ -1,8 +1,15 @@
 /**
  * Cloudflare Pages Function: /api/submit
  * Handles school registration submissions, assigns sequential unique UIDs,
- * and proxies registrations securely to JotForm.
+ * sanitizes input fields, enforces rate limiting, and proxies registrations securely to JotForm.
  */
+
+import {
+  jsonResponse,
+  checkRateLimit,
+  sanitizeText,
+  sanitizeUrl
+} from './_security.js';
 
 const DEFAULT_FIELD_MAP = {
   form_header: "1",
@@ -28,12 +35,6 @@ const EVENT_CODES = {
   f1: "APrix"
 };
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-};
-
 function getRandomLetters() {
   const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
   const c1 = letters.charAt(Math.floor(Math.random() * letters.length));
@@ -47,75 +48,140 @@ function generateSummary(events, schoolUID, multiEventStudents) {
   if (multiEventStudents && multiEventStudents.length > 0) {
     headerNote += '[SCHEDULE ADVISORY — MULTI-COMPETITION STUDENTS]\n';
     multiEventStudents.forEach(s => {
-      headerNote += '• ' + s.name + ' (' + s.email + ') → ' + (s.events || []).join(', ') + '\n  *Timing for offline rounds on campus may clash; student/school responsibility.\n';
+      headerNote += '• ' + sanitizeText(s.name, 80) + ' (' + sanitizeText(s.email, 80) + ') → ' + (s.events || []).map(e => sanitizeText(e, 40)).join(', ') + '\n  *Timing for offline rounds on campus may clash; student/school responsibility.\n';
     });
     headerNote += '\n';
   }
   const eventLines = events.map(e => {
     const teamLines = (e.teams || []).map((t, i) => {
-      const header = '  [' + (t.teamId || ('Team ' + (i + 1))) + '] Team: ' + (t.teamName || ('Team ' + (i + 1))) + (t.category ? ' / Track: ' + t.category : (e.trackLabel ? ' / ' + e.trackLabel : ''));
-      const members = (t.members || []).map((m, j) => '    ' + (j + 1) + '. ' + (m.name || '-') + ' [ID: ' + (m.memberId || 'ID Pending') + '] (' + (m.email || 'No email') + ', Class ' + (m.class || '-') + ', ' + (m.gender || '-') + ')').join('\n');
+      const header = '  [' + sanitizeText(t.teamId || ('Team ' + (i + 1)), 40) + '] Team: ' + sanitizeText(t.teamName || ('Team ' + (i + 1)), 60) + (t.category ? ' / Track: ' + sanitizeText(t.category, 30) : (e.trackLabel ? ' / ' + sanitizeText(e.trackLabel, 30) : ''));
+      const members = (t.members || []).map((m, j) => '    ' + (j + 1) + '. ' + sanitizeText(m.name || '-', 80) + ' [ID: ' + sanitizeText(m.memberId || 'ID Pending', 40) + '] (' + sanitizeText(m.email || 'No email', 80) + ', Class ' + sanitizeText(m.class || '-', 10) + ', ' + sanitizeText(m.gender || '-', 10) + ')').join('\n');
       return header + '\n' + members;
     }).join('\n');
-    return e.name + (e.trackLabel ? ' [' + e.trackLabel + ']' : '') + '\n' + teamLines;
+    return sanitizeText(e.name, 60) + (e.trackLabel ? ' [' + sanitizeText(e.trackLabel, 30) + ']' : '') + '\n' + teamLines;
   }).join('\n\n');
   return headerNote + eventLines;
 }
 
-export async function onRequestOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: CORS_HEADERS
-  });
-}
-
 export async function onRequestPost(context) {
+  const { request, env = {} } = context;
+
+  // 1. Rate Limiting: Max 10 registration/submission requests per minute per IP
+  const rateLimit = checkRateLimit(request, { limit: 10, windowSeconds: 60, prefix: 'submit' });
+  if (!rateLimit.allowed) {
+    return jsonResponse(
+      {
+        error: 'Too Many Requests',
+        message: 'Registration submission rate limit exceeded. Please wait a minute.'
+      },
+      429,
+      request,
+      env
+    );
+  }
+
   try {
-    const env = context.env || {};
     const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.JOTFORM_SECRET_KEY || env.apiKey;
     const formId = env.JOTFORM_FORM_ID || "261896133006456";
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
     if (!apiKey) {
-      return new Response(
-        JSON.stringify({
-          error: "JOTFORM_API_KEY is not configured on Cloudflare. Please add JOTFORM_API_KEY in Cloudflare Pages Environment Variables.",
+      return jsonResponse(
+        {
+          error: "Submission vault is currently completing maintenance. Please retry in a few moments or contact aeross@dpsrkp.net.",
           configured: false
-        }),
-        {
-          status: 500,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
-        }
+        },
+        503,
+        request,
+        env
       );
     }
 
-    const reg = await context.request.json();
-    if (!reg || !reg.school) {
-      return new Response(
-        JSON.stringify({ error: "Invalid registration payload: missing school data" }),
+    const reg = await request.json();
+    if (!reg) {
+      return jsonResponse({ error: "Invalid payload: empty request body" }, 400, request, env);
+    }
+
+    // 2. Deliverable submission forwarding
+    if (reg.driveUrl || reg.receiptToken || (reg.eventId && !reg.school)) {
+      const cleanUID = sanitizeText(reg.schoolUID || '', 30).toUpperCase();
+      const eventId = sanitizeText(reg.eventId || '07', 10).padStart(2, '0');
+      const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
+      const receiptToken = reg.receiptToken || `C26-DEP-${eventId}-${cleanUID.replace(/[^A-Z0-9]/g, '')}-${randomSuffix}`;
+      const cleanDrive = sanitizeUrl(reg.driveUrl || '', 1500);
+
+      try {
+        const params = new URLSearchParams();
+        params.append('submission[1]', `SUBMISSION: ${sanitizeText(reg.eventName || 'Event ' + eventId, 100)} - ${sanitizeText(reg.schoolName || cleanUID, 100)}`);
+        params.append('submission[2]', sanitizeText(reg.schoolName || cleanUID, 100));
+        params.append('submission[3]', sanitizeText(reg.leadName || '', 100));
+        params.append('submission[4]', sanitizeText(reg.leadEmail || '', 100));
+        params.append('submission[5]', sanitizeText(reg.leadPhone || '', 30));
+        params.append('submission[6]', sanitizeText(reg.eventName || ('Event ' + eventId), 100));
+        params.append('submission[7]', [
+          `TOKEN: ${receiptToken}`,
+          `UID: ${cleanUID}`,
+          `EVENT: ${sanitizeText(reg.eventName || eventId, 80)} (${sanitizeText(reg.division || 'Senior', 30)})`,
+          `TEAM: ${sanitizeText(reg.teamName || 'Team', 80)}`,
+          `PRIMARY DRIVE: ${cleanDrive}`,
+          `SUPPLEMENTARY LINKS: ${JSON.stringify(Array.isArray(reg.supplementaryLinks) ? reg.supplementaryLinks.slice(0, 10) : [])}`,
+          `ABSTRACT: ${sanitizeText(reg.projectAbstract || '', 2000)}`
+        ].join('\n'));
+        params.append('submission[8]', JSON.stringify(reg));
+
+        await fetch(`${apiBase}/form/${encodeURIComponent(formId)}/submissions`, {
+          method: 'POST',
+          headers: {
+            'APIKEY': apiKey,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: params.toString()
+        });
+      } catch (err) {
+        console.warn('JotForm deliverable log notice:', err.message);
+      }
+
+      return jsonResponse(
         {
-          status: 400,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
-        }
+          success: true,
+          receiptToken,
+          schoolUID: cleanUID,
+          message: 'Deliverable deposit logged successfully.'
+        },
+        200,
+        request,
+        env
       );
     }
 
-    // Determine unique serial starting from 0101 based on JotForm total submission count
+    if (!reg.school) {
+      return jsonResponse({ error: "Invalid registration payload: missing school data" }, 400, request, env);
+    }
+
+    // 3. Sanitized School Data
+    reg.school.name = sanitizeText(reg.school.name || '', 150);
+    reg.school.contact = sanitizeText(reg.school.contact || '', 100);
+    reg.school.email = sanitizeText(reg.school.email || '', 100);
+    reg.school.phone = sanitizeText(reg.school.phone || '', 30);
+    reg.school.city = sanitizeText(reg.school.city || '', 80);
+
+    // 4. Determine unique serial starting from 0101
     let serverSerialStr = null;
     try {
-      const countResp = await fetch(`${apiBase}/form/${encodeURIComponent(formId)}?apiKey=${encodeURIComponent(apiKey)}`);
+      const countResp = await fetch(`${apiBase}/form/${encodeURIComponent(formId)}`, {
+        headers: { 'APIKEY': apiKey }
+      });
       if (countResp.ok) {
         const formInfo = await countResp.json();
         const totalCount = parseInt(formInfo?.content?.count || '0', 10);
-        // e.g. 0 submissions -> 0101, 1 submission -> 0102
         const serialNum = 101 + totalCount;
         serverSerialStr = String(serialNum).padStart(4, '0');
       }
     } catch (e) {
-      console.warn("Could not query JotForm submission count:", e);
+      console.warn("Could not query JotForm submission count:", e.message);
     }
 
-    // Format School UID: C26-<Random_2_Letters>-<Serial>
+    // 5. Format School UID: C26-<Letters>-<Serial>
     let officialSchoolUID = reg.schoolUID;
     const clientLettersMatch = (reg.schoolUID || "").match(/^C26-([A-Za-z]{2})-/);
     const letters = clientLettersMatch ? clientLettersMatch[1].toUpperCase() : getRandomLetters();
@@ -128,7 +194,7 @@ export async function onRequestPost(context) {
 
     reg.schoolUID = officialSchoolUID;
 
-    // Resync teamId and memberId format: SchoolID-CompID-Sr/Jr-M1/2/3... or SchoolID-CompID-M1/2/3...
+    // 6. Resync teamId and memberId format
     if (Array.isArray(reg.events)) {
       reg.events.forEach(ev => {
         const code = EVENT_CODES[ev.id] || ev.id;
@@ -136,7 +202,7 @@ export async function onRequestPost(context) {
         const categoryCounts = {};
 
         if (Array.isArray(ev.teams)) {
-          ev.teams.forEach((t, tIdx) => {
+          ev.teams.forEach((t) => {
             let catTag = '';
             if (isDual) {
               const isSenior = t.rawCategory === 'senior' || t.category === 'senior' || String(t.category || '').toLowerCase().includes('senior');
@@ -160,7 +226,6 @@ export async function onRequestPost(context) {
         }
       });
 
-      // Synchronize summary text with officialSchoolUID and resynced IDs
       reg.summary = generateSummary(reg.events, officialSchoolUID, reg.multiEventStudents);
     }
 
@@ -170,50 +235,32 @@ export async function onRequestPost(context) {
         fieldMap = typeof env.JOTFORM_FIELD_MAP === 'string'
           ? JSON.parse(env.JOTFORM_FIELD_MAP)
           : env.JOTFORM_FIELD_MAP;
-      } catch (_) {}
+      } catch {}
     }
 
     const params = new URLSearchParams();
-
-    if (fieldMap.school_name) {
-      params.append(`submission[${fieldMap.school_name}]`, reg.school?.name || "");
-    }
-    if (fieldMap.contact_name) {
-      params.append(`submission[${fieldMap.contact_name}]`, reg.school?.contact || "");
-    }
-    if (fieldMap.contact_email) {
-      params.append(`submission[${fieldMap.contact_email}]`, reg.school?.email || "");
-    }
-    if (fieldMap.contact_phone) {
-      params.append(`submission[${fieldMap.contact_phone}]`, reg.school?.phone || "");
-    }
-    if (fieldMap.registration_summary) {
-      params.append(`submission[${fieldMap.registration_summary}]`, reg.summary || "");
-    }
-    if (fieldMap.registration_json) {
-      params.append(`submission[${fieldMap.registration_json}]`, JSON.stringify(reg));
-    }
-    if (fieldMap.total_teams) {
-      params.append(`submission[${fieldMap.total_teams}]`, String(reg.totals?.totalTeams ?? ""));
-    }
-    if (fieldMap.total_participants) {
-      params.append(`submission[${fieldMap.total_participants}]`, String(reg.totals?.totalParticipants ?? ""));
-    }
+    if (fieldMap.school_name) params.append(`submission[${fieldMap.school_name}]`, reg.school.name);
+    if (fieldMap.contact_name) params.append(`submission[${fieldMap.contact_name}]`, reg.school.contact);
+    if (fieldMap.contact_email) params.append(`submission[${fieldMap.contact_email}]`, reg.school.email);
+    if (fieldMap.contact_phone) params.append(`submission[${fieldMap.contact_phone}]`, reg.school.phone);
+    if (fieldMap.registration_summary) params.append(`submission[${fieldMap.registration_summary}]`, reg.summary || "");
+    if (fieldMap.registration_json) params.append(`submission[${fieldMap.registration_json}]`, JSON.stringify(reg));
+    if (fieldMap.total_teams) params.append(`submission[${fieldMap.total_teams}]`, String(reg.totals?.totalTeams ?? ""));
+    if (fieldMap.total_participants) params.append(`submission[${fieldMap.total_participants}]`, String(reg.totals?.totalParticipants ?? ""));
 
     const eventsQid = fieldMap.events_selected;
     if (eventsQid && Array.isArray(reg.events)) {
       for (const ev of reg.events) {
         if (ev && ev.name) {
-          params.append(`submission[${eventsQid}][]`, ev.name);
+          params.append(`submission[${eventsQid}][]`, sanitizeText(ev.name, 60));
         }
       }
     }
 
-    const targetUrl = `${apiBase}/form/${encodeURIComponent(formId)}/submissions?apiKey=${encodeURIComponent(apiKey)}`;
-
-    const jotformResp = await fetch(targetUrl, {
+    const jotformResp = await fetch(`${apiBase}/form/${encodeURIComponent(formId)}/submissions`, {
       method: "POST",
       headers: {
+        "APIKEY": apiKey,
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: params.toString()
@@ -222,54 +269,28 @@ export async function onRequestPost(context) {
     let body;
     try {
       body = await jotformResp.json();
-    } catch (_) {
-      return new Response(
-        JSON.stringify({
-          error: `JotForm returned a non-JSON response (HTTP status ${jotformResp.status})`
-        }),
-        {
-          status: 502,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
-        }
-      );
+    } catch {
+      return jsonResponse({ error: "Registration vault returned unexpected gateway response" }, 502, request, env);
     }
 
     if (!jotformResp.ok || (body.responseCode && body.responseCode !== 200 && body.responseCode !== 201)) {
-      return new Response(
-        JSON.stringify({
-          error: body.message || "JotForm rejected the submission",
-          details: body
-        }),
-        {
-          status: 502,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
-        }
-      );
+      return jsonResponse({ error: "Registration could not be accepted by vault. Please verify fields and retry." }, 502, request, env);
     }
 
     const submissionID = body.content?.submissionID || body.content?.id || (typeof body.content === 'string' ? body.content : null);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        submissionID: submissionID,
-        schoolUID: officialSchoolUID,
-        jotform: body
-      }),
+    return jsonResponse(
       {
-        status: 200,
-        headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
-      }
+        success: true,
+        submissionID,
+        schoolUID: officialSchoolUID
+      },
+      200,
+      request,
+      env
     );
   } catch (err) {
-    return new Response(
-      JSON.stringify({
-        error: err.message || "Internal server error during JotForm submission"
-      }),
-      {
-        status: 500,
-        headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
-      }
-    );
+    console.error('Registration processing error:', err);
+    return jsonResponse({ error: "Internal server error occurred while processing registration." }, 500, request, env);
   }
 }
