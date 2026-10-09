@@ -116,8 +116,8 @@ export const events = [
     discipline: 'Quiz (Quizzitch) & Debate',
     mode: 'Hybrid',
     eligibility: 'Grades 9–12',
-    team: '1 student (Individual entry)',
-    schoolCap: '1 student per school',
+    team: '2 students per team',
+    schoolCap: '1 team (2 students) per school',
     quote: "“It’s better to debate a question without settling it than to settle a question without debating it.”",
     overview:
       'Qualify through an online aerospace quiz (Quizzitch), then prove your knowledge in a high-energy onsite parliamentary debate.',
@@ -125,7 +125,7 @@ export const events = [
     rounds: [
       {
         title: 'Round 1 (Online Quiz – Quizzitch)',
-        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. Single correct (+3 / -1) (bonus questions if the rest of the quiz is finished before time). The top 10 qualifiers advance to onsite debate rounds. Note: Exactly 1 student from the school participates in the competition.'
+        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. Single correct (+3 / -1) (bonus questions if the rest of the quiz is finished before time). The top 10 qualifiers advance to onsite debate rounds. Note: Exactly 2 students from the school participate in the competition.'
       },
       {
         title: 'Round 2 (Onsite Parliamentary Debate)',
