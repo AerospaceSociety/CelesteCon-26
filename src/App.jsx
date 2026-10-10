@@ -8,6 +8,7 @@ import Sponsors from './pages/Sponsors';
 import Contact from './pages/Contact';
 import PromptsPortal from './pages/PromptsPortal';
 import SubmissionPortal from './pages/SubmissionPortal';
+import InternalRegistration from './pages/InternalRegistration';
 
 import RocketryPrompt from './pages/RocketryPrompt';
 import AerossPrixPrompt from './pages/AerossPrixPrompt';
@@ -418,6 +419,13 @@ function App() {
             <Route path="/AEROSS_Prix_CelesteCon2026.html" element={<Navigate to="/prompts/prix" replace />} />
             <Route path="/brochure" element={<RedirectTo to="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" />} />
 
+            {/* Unlisted Internal Registration Routes (No website links/buttons) */}
+            <Route path="/internal" element={<InternalRegistration />} />
+            <Route path="/internal-registration" element={<InternalRegistration />} />
+            <Route path="/internal-register" element={<InternalRegistration />} />
+            <Route path="/internal/register" element={<InternalRegistration />} />
+            <Route path="/internal_registration.html" element={<InternalRegistration />} />
+            <Route path="/celestecon_internal_registration.html" element={<InternalRegistration />} />
           </Routes>
         </main>
         <Footer />

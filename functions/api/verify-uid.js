@@ -32,6 +32,29 @@ const SEED_DELEGATIONS = {
     totals: { totalTeams: 4, totalParticipants: 12 },
     isBenchmark: true
   },
+  'C26-INT-0101': {
+    schoolUID: 'C26-INT-0101',
+    school: {
+      name: 'Delhi Public School, R.K. Puram (Host Contingent)',
+      contact: 'Internal Student Contingent',
+      email: 'aeross@dpsrkp.net',
+      phone: '+91 89290 20721',
+      city: 'New Delhi'
+    },
+    events: [
+      { id: 'rocketry', name: 'Rocketry (Model & Flight)', category: 'Senior' },
+      { id: 'f1', name: 'AEROSS Prix (CO2 Constructor Challenge)', category: 'Senior' },
+      { id: 'settle', name: 'Settle-Me-This (Space Settlement)', category: 'Senior' },
+      { id: 'volatus', name: 'Volatus (Aviation & 3D CAD)', category: 'Senior' },
+      { id: 'dispute', name: 'In Pursuit of Dispute (IPOD)', category: 'Senior' },
+      { id: 'bpp', name: 'Business Power Pitch (BPP)', category: 'Senior' },
+      { id: 'theatre', name: 'AEROSS Theatre', category: 'Senior' },
+      { id: 'gamejam', name: 'CelesteJam', category: 'Senior' }
+    ],
+    totals: { totalTeams: 8, totalParticipants: 24 },
+    isBenchmark: true,
+    isInternal: true
+  },
   'C26-HR-0102': {
     schoolUID: 'C26-HR-0102',
     school: {
@@ -111,12 +134,12 @@ async function handleVerification(request, rawUID, env) {
     );
   }
 
-  // 2. Strict syntax check for C26 UID format
-  if (!/^C26-[A-Z]{2}-\d{4}$/.test(cleanUID)) {
+  // 2. Strict syntax check for C26 UID format (allowing 2-4 letter region/tag codes, e.g. C26-DL-0101 or C26-INT-0101)
+  if (!/^C26-[A-Z]{2,4}-\d{4}$/.test(cleanUID)) {
     return jsonResponse(
       {
         verified: false,
-        error: `Invalid UID format: "${cleanUID}". Expected syntax: C26-XX-0000 (e.g. C26-DL-0101).`
+        error: `Invalid UID format: "${cleanUID}". Expected syntax: C26-XX-0000 or C26-INT-0000.`
       },
       400,
       request,
