@@ -249,7 +249,17 @@ const Navbar = () => {
                 <span>↗</span>
               </a>
 
-              <div className="pt-3 border-t border-bone/20 flex items-center justify-between font-mono text-[11px] px-1">
+              <div className="pt-3 border-t border-bone/20 flex items-center justify-between font-mono text-[11px] px-1 flex-wrap gap-2">
+                <a
+                  href="https://discord.gg/5RAF4xVB3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-crimson hover:text-bone font-bold transition-colors flex items-center gap-0.5"
+                >
+                  <span>Discord</span>
+                  <span className="text-[9px]">↗</span>
+                </a>
+                <span className="text-bone-dim/40">•</span>
                 <a
                   href="https://www.instagram.com/aerospace_society/"
                   target="_blank"
@@ -310,6 +320,17 @@ const Footer = () => {
           <div>
             <h4 className="font-mono text-[10px] text-crimson-deep mb-2 tracking-[0.2em] font-bold uppercase">Contact &amp; Social</h4>
             <ul className="space-y-1.5 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
+              <li>
+                <a
+                  href="https://discord.gg/5RAF4xVB3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-crimson hover:text-ink transition-colors border-b border-transparent hover:border-crimson inline-flex items-center gap-1 font-bold"
+                >
+                  <span>Discord Server</span>
+                  <span className="text-[10px]">↗</span>
+                </a>
+              </li>
               <li><a href="mailto:aeross@dpsrkp.net" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">aeross@dpsrkp.net</a></li>
               <li>
                 <a

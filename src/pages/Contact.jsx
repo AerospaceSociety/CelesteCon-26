@@ -397,26 +397,38 @@ const Contact = () => {
                   <ExternalLink size={9} />
                 </a>
               </dd>
+              <dt className="text-crimson font-bold uppercase whitespace-nowrap">Discord Server</dt>
+              <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5">
+                <a
+                  href="https://discord.gg/5RAF4xVB3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-bone font-bold text-crimson transition-colors inline-flex items-center gap-1"
+                >
+                  <span>discord.gg/5RAF4xVB3</span>
+                  <ExternalLink size={9} />
+                </a>
+              </dd>
               <dt className="text-crimson font-bold uppercase whitespace-nowrap">Event Venue</dt>
               <dd className="text-bone border-b border-dotted border-bone/40 pb-0.5 leading-relaxed">
                 Delhi Public School, Sector 12, R.K. Puram<br />
                 New Delhi — 110022
-              </dd> 
+              </dd>
             </dl>
           </div>
 
-          {/* Official Registration Portals */}
+          {/* Official Registration & Community Portals */}
           <div className="border-2 border-crimson bg-crimson/5 p-4 sm:p-5 space-y-4 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-widest">Official Registration</span>
+                <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-widest">Official Registration &amp; Discord</span>
                 <span className="font-mono text-[9px] text-bone-dim uppercase font-bold">CelesteCon 2026</span>
               </div>
               <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
-                School contingents may register official delegations across all 8 competitive conclave events through the portal or download the complete technical dossier.
+                Register official school delegations across all 8 conclave competitions, join our official Discord server for real-time announcements, or access the technical dossier.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
               <a
                 href="/celestecon_registration.html"
                 className="p-3 border border-crimson bg-ink hover:bg-crimson/10 transition-colors block text-left"
@@ -425,8 +437,21 @@ const Contact = () => {
                   <span>School Contingent</span>
                   <span className="text-crimson font-mono text-xs">↗</span>
                 </div>
-                <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry across all 8 competitions (1 team per category).</p>
-                <span className="font-mono text-[10px] text-crimson mt-2 inline-block font-bold">Open Registration Portal &rarr;</span>
+                <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry across 8 competitions.</p>
+                <span className="font-mono text-[10px] text-crimson mt-2 inline-block font-bold">Registration Portal &rarr;</span>
+              </a>
+              <a
+                href="https://discord.gg/5RAF4xVB3"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 border border-[#5865F2] bg-ink hover:bg-[#5865F2]/10 transition-colors block text-left"
+              >
+                <div className="font-label font-bold text-sm text-bone uppercase tracking-wider flex items-center justify-between">
+                  <span className="text-[#5865F2]">Discord Server</span>
+                  <span className="text-[#5865F2] font-mono text-xs">↗</span>
+                </div>
+                <p className="font-label text-xs text-bone-dim mt-0.5">Official server for live updates, prompt Q&amp;A &amp; queries.</p>
+                <span className="font-mono text-[10px] text-[#5865F2] mt-2 inline-block font-bold">Join Server &rarr;</span>
               </a>
               <a
                 href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
@@ -438,8 +463,8 @@ const Contact = () => {
                   <span>Brochure (PDF)</span>
                   <span className="font-mono text-xs">↗</span>
                 </div>
-                <p className="font-label text-xs text-bone-dim mt-0.5">Full 11-page dossier with technical specs, rules, criteria &amp; schedules.</p>
-                <span className="font-mono text-[10px] text-bone-dim group-hover:text-crimson mt-2 inline-block font-bold">Download Official PDF &rarr;</span>
+                <p className="font-label text-xs text-bone-dim mt-0.5">Full 11-page dossier with technical specs &amp; rules.</p>
+                <span className="font-mono text-[10px] text-bone-dim group-hover:text-crimson mt-2 inline-block font-bold">Download PDF &rarr;</span>
               </a>
             </div>
           </div>
