@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 import { events } from '../../data/events';
 
 const TARGET_RELEASE_IST = new Date('2026-10-13T00:00:00+05:30').getTime();
@@ -47,6 +47,16 @@ export default function GenericPromptPortal({ eventId: propEventId }) {
     const targetId = SLUG_MAP[slugOrId.toLowerCase()] || slugOrId;
     return events.find(e => e.id === targetId) || events[0];
   }, [slugOrId]);
+
+  if (event.id === '06') {
+    return <Navigate to="/prompts/gamejam" replace />;
+  }
+  if (event.id === '07') {
+    return <Navigate to="/prompts/rocketry" replace />;
+  }
+  if (event.id === '08') {
+    return <Navigate to="/prompts/prix" replace />;
+  }
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
