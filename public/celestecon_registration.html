@@ -6,7 +6,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CHE0EZ6NN1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-CHE0EZ6NN1');
@@ -1075,6 +1075,7 @@
       text-align: left;
       color: #E8E1CE;
     }
+
     .mech-timer-terminal::before,
     .mech-timer-terminal::after {
       content: '+';
@@ -1084,8 +1085,16 @@
       color: rgba(232, 225, 206, 0.4);
       pointer-events: none;
     }
-    .mech-timer-terminal::before { top: 6px; left: 8px; }
-    .mech-timer-terminal::after { bottom: 6px; right: 8px; }
+
+    .mech-timer-terminal::before {
+      top: 6px;
+      left: 8px;
+    }
+
+    .mech-timer-terminal::after {
+      bottom: 6px;
+      right: 8px;
+    }
 
     .mech-terminal-header {
       display: flex;
@@ -1097,6 +1106,7 @@
       padding-bottom: 10px;
       margin-bottom: 14px;
     }
+
     .mech-badge {
       display: flex;
       align-items: center;
@@ -1108,6 +1118,7 @@
       text-transform: uppercase;
       color: #E8E1CE;
     }
+
     .mech-led-pulse {
       width: 8px;
       height: 8px;
@@ -1116,10 +1127,21 @@
       box-shadow: 0 0 8px #C23A1E;
       animation: mechLedBlink 1.4s infinite ease-in-out;
     }
+
     @keyframes mechLedBlink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.35;
+        transform: scale(0.85);
+      }
     }
+
     .mech-target-tag {
       font-family: var(--font-mono);
       font-size: 10px;
@@ -1131,6 +1153,7 @@
       color: #F2EDDD;
       padding: 3px 8px;
     }
+
     .mech-terminal-title h3 {
       font-family: var(--font-label);
       font-size: 18px;
@@ -1140,6 +1163,7 @@
       margin: 0 0 4px;
       color: #F2EDDD;
     }
+
     .mech-terminal-title p {
       font-size: 12.5px;
       color: #DDD4BC;
@@ -1147,6 +1171,7 @@
       line-height: 1.5;
       text-align: left !important;
     }
+
     .mech-clock-frame {
       display: flex;
       justify-content: center;
@@ -1157,6 +1182,7 @@
       padding: 16px 12px;
       margin: 14px 0;
     }
+
     .mech-unit-box {
       display: flex;
       flex-direction: column;
@@ -1164,6 +1190,7 @@
       flex: 1;
       max-width: 90px;
     }
+
     .mech-code-tag {
       font-family: var(--font-mono);
       font-size: 10px;
@@ -1172,12 +1199,17 @@
       letter-spacing: 0.1em;
       margin-bottom: 4px;
     }
-    .mech-code-tag.crimson { color: #C23A1E; }
+
+    .mech-code-tag.crimson {
+      color: #C23A1E;
+    }
+
     .c26-flip-unit {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
     .c26-rotor-pair {
       display: flex;
       gap: 3px;
@@ -1185,8 +1217,9 @@
       padding: 4px;
       border: 1.5px solid #2b2520;
       border-radius: 4px;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.6);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 4px 10px rgba(0, 0, 0, 0.6);
     }
+
     .c26-rotor {
       position: relative;
       width: 26px;
@@ -1197,17 +1230,20 @@
       overflow: hidden;
       perspective: 350px;
       user-select: none;
-      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.04), 0 3px 6px rgba(0,0,0,0.6);
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.04), 0 3px 6px rgba(0, 0, 0, 0.6);
     }
+
     @media (min-width: 600px) {
       .c26-rotor {
         width: 34px;
         height: 56px;
       }
     }
+
     .c26-rotor.crimson {
       border-color: #C23A1E;
     }
+
     .c26-rotor-half {
       position: absolute;
       left: 0;
@@ -1215,15 +1251,18 @@
       height: 50%;
       overflow: hidden;
     }
+
     .c26-rotor-half.top {
       top: 0;
       background: linear-gradient(180deg, #25201b 0%, #171411 100%);
       border-bottom: 1px solid #000;
     }
+
     .c26-rotor-half.bottom {
       bottom: 0;
       background: linear-gradient(180deg, #13100e 0%, #1e1915 100%);
     }
+
     .c26-rotor-num-inner {
       width: 100%;
       height: 200%;
@@ -1231,9 +1270,11 @@
       align-items: center;
       justify-content: center;
     }
+
     .c26-rotor-num-inner.bottom-shift {
       transform: translateY(-50%);
     }
+
     .c26-rotor-glyph {
       font-family: var(--font-mono, monospace);
       font-weight: 700;
@@ -1242,14 +1283,17 @@
       color: #F5EFE0;
       letter-spacing: -0.02em;
     }
+
     @media (min-width: 600px) {
       .c26-rotor-glyph {
         font-size: 34px;
       }
     }
+
     .c26-rotor-glyph.crimson {
       color: #C23A1E;
     }
+
     .c26-rotor-leaf-top {
       position: absolute;
       top: 0;
@@ -1263,6 +1307,7 @@
       animation: rotorFlipTop 0.24s cubic-bezier(0.4, 0, 0.7, 1) forwards;
       z-index: 20;
     }
+
     .c26-rotor-leaf-bottom {
       position: absolute;
       bottom: 0;
@@ -1275,26 +1320,31 @@
       animation: rotorFlipBottom 0.24s cubic-bezier(0.15, 0.6, 0.4, 1) 0.20s both;
       z-index: 30;
     }
+
     @keyframes rotorFlipTop {
       0% {
         transform: perspective(350px) rotateX(0deg);
         filter: brightness(1);
       }
+
       100% {
         transform: perspective(350px) rotateX(-90deg);
         filter: brightness(0.6);
       }
     }
+
     @keyframes rotorFlipBottom {
       0% {
         transform: perspective(350px) rotateX(90deg);
         filter: brightness(0.7);
       }
+
       100% {
         transform: perspective(350px) rotateX(0deg);
         filter: brightness(1);
       }
     }
+
     .c26-rotor-seam {
       position: absolute;
       top: 50%;
@@ -1306,6 +1356,7 @@
       z-index: 40;
       pointer-events: none;
     }
+
     .c26-rotor-hinge {
       position: absolute;
       top: 50%;
@@ -1316,9 +1367,19 @@
       z-index: 45;
       pointer-events: none;
     }
-    .c26-rotor-hinge.left { left: 0; }
-    .c26-rotor-hinge.right { right: 0; }
-    .c26-rotor-hinge.crimson { background: #C23A1E; }
+
+    .c26-rotor-hinge.left {
+      left: 0;
+    }
+
+    .c26-rotor-hinge.right {
+      right: 0;
+    }
+
+    .c26-rotor-hinge.crimson {
+      background: #C23A1E;
+    }
+
     .mech-label-tag {
       font-family: var(--font-mono);
       font-size: 9px;
@@ -1328,7 +1389,11 @@
       margin-top: 6px;
       text-transform: uppercase;
     }
-    .mech-label-tag.crimson { color: #C23A1E; }
+
+    .mech-label-tag.crimson {
+      color: #C23A1E;
+    }
+
     .mech-colon {
       display: flex;
       flex-direction: column;
@@ -1337,6 +1402,7 @@
       padding: 10px 2px;
       opacity: 0.7;
     }
+
     .mech-colon-dot {
       width: 5px;
       height: 5px;
@@ -1344,6 +1410,7 @@
       background: #DDD4BC;
       box-shadow: 0 0 6px rgba(221, 212, 188, 0.5);
     }
+
     .mech-terminal-footer {
       display: flex;
       justify-content: space-between;
@@ -1359,6 +1426,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
+
     .status-indicator-dot {
       display: inline-block;
       width: 7px;
@@ -1367,11 +1435,24 @@
       border-radius: 50%;
       margin-right: 5px;
     }
+
     @media (max-width: 600px) {
-      .mech-timer-terminal { padding: 18px 14px; }
-      .mech-clock-frame { gap: 2px; padding: 12px 4px; }
-      .mech-label-tag { font-size: 8px; }
-      .mech-code-tag { font-size: 9px; }
+      .mech-timer-terminal {
+        padding: 18px 14px;
+      }
+
+      .mech-clock-frame {
+        gap: 2px;
+        padding: 12px 4px;
+      }
+
+      .mech-label-tag {
+        font-size: 8px;
+      }
+
+      .mech-code-tag {
+        font-size: 9px;
+      }
     }
 
     footer {
@@ -1531,8 +1612,10 @@
       <a class="brand" href="/">AEROSS</a>
       <div class="nav-right">
         <span class="nav-note">CelesteCon 2026 registration</span>
+        <a href="https://discord.gg/5RAF4xVB3" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-ghost"
+          style="color: #5865F2 !important; border-color: rgba(88, 101, 242, 0.4) !important;">Discord ↗</a>
         <a href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" target="_blank"
-          rel="noopener noreferrer" class="nav-btn" style="margin-left: 12px;">Brochure (PDF) ↗</a>
+          rel="noopener noreferrer" class="nav-btn" style="margin-left: 8px;">Brochure (PDF) ↗</a>
         <a href="/" class="nav-btn nav-btn-ghost" style="margin-left: 8px;">Home</a>
       </div>
     </div>
@@ -1567,6 +1650,33 @@
           Rocketry). For single-category competitions (Volatus, In Pursuit of Dispute, AEROSS Theatre, and AEROSS Prix),
           schools may enter strictly 1 team.<br> The portal locks at 11:59 PM IST on 12th October 2026 (no on-spot
           additions).</p>
+      </div>
+
+      <!-- Official Discord Server Callout -->
+      <div class="discord-hero-banner"
+        style="background: rgba(88, 101, 242, 0.08); border: 1.5px solid #5865F2; padding: 14px 20px; margin: 18px 0 24px; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span
+            style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #5865F2; color: #fff; flex-shrink: 0;">
+            <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24">
+              <path
+                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+            </svg>
+          </span>
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--text); font-family: var(--font-mono);">
+              Official CelesteCon Discord Server Active
+            </div>
+            <div style="font-size: 12px; color: var(--muted); font-family: var(--font-mono); margin-top: 2px;">
+              Join for real-time announcements, prompt releases &amp; technical queries.
+            </div>
+          </div>
+        </div>
+        <a href="https://discord.gg/5RAF4xVB3" target="_blank" rel="noopener noreferrer"
+          style="padding: 8px 16px; background: #5865F2; color: #fff !important; text-decoration: none; border-radius: 4px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 8px rgba(88, 101, 242, 0.35);">
+          <span>Join Discord Server</span>
+          <span>↗</span>
+        </a>
       </div>
       <hr class="divider">
     </header>
@@ -1656,7 +1766,12 @@
       </div>
     </section>
 
-    <footer>CelesteCon 2026 registration. Organised by AEROSS Aerospace Society.</footer>
+    <footer>
+      CelesteCon 2026 registration. Organised by AEROSS Aerospace Society.
+      <span style="margin: 0 8px;">•</span>
+      <a href="https://discord.gg/5RAF4xVB3" target="_blank" rel="noopener"
+        style="color: var(--crimson); text-decoration: underline; font-weight: 600;">Join Official Discord Server ↗</a>
+    </footer>
   </div>
 
   <main class="success-page" id="success-page" hidden>
@@ -1669,7 +1784,9 @@
       <div class="reference-label">School ID (UID)</div>
       <div class="reference-id" id="success-ref" style="font-size: 26px; color: var(--crimson); font-weight: 700;">
         C26-XY-0101</div>
-      <div id="success-sub-id" style="font-family: var(--font-mono); font-size: 12px; color: var(--secondary); margin-top: 6px; font-weight: 600;" hidden></div>
+      <div id="success-sub-id"
+        style="font-family: var(--font-mono); font-size: 12px; color: var(--secondary); margin-top: 6px; font-weight: 600;"
+        hidden></div>
     </div>
 
     <div class="clash-advisory-box" style="margin-bottom: 24px;">
@@ -1714,6 +1831,34 @@
       </div>
     </div>
 
+    <!-- Official Discord Server Invite on Successful Submission -->
+    <div class="discord-success-box"
+      style="margin: 24px 0; padding: 22px 26px; background: rgba(88, 101, 242, 0.09); border: 2px solid #5865F2; border-radius: 4px; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div
+          style="width: 44px; height: 44px; border-radius: 50%; background: #5865F2; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; box-shadow: 0 4px 14px rgba(88, 101, 242, 0.45);">
+          <svg style="width: 26px; height: 26px; fill: currentColor;" viewBox="0 0 24 24">
+            <path
+              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+          </svg>
+        </div>
+        <div>
+          <div
+            style="font-family: var(--font-display); font-size: 22px; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.2;">
+            Join Discord Server For Updates
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 12.5px; color: var(--secondary); margin-top: 3px;">
+            Join the official CelesteCon server for live conclave broadcasts, mentor support, and slot updates.
+          </div>
+        </div>
+      </div>
+      <a href="https://discord.gg/5RAF4xVB3" target="_blank" rel="noopener noreferrer"
+        style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #5865F2; color: #ffffff !important; border: 1px solid #5865F2; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; box-shadow: 0 4px 14px rgba(88, 101, 242, 0.4); flex-shrink: 0;">
+        <span>Join Discord Server</span>
+        <span>↗</span>
+      </a>
+    </div>
+
     <!-- Prompts & Submission Portal Launch Terminal with Mechanical Timer -->
     <div class="mech-timer-terminal">
       <div class="mech-terminal-header">
@@ -1726,25 +1871,35 @@
 
       <div class="mech-terminal-title">
         <h3>Round 1 Prompts &amp; Submission Launch Clock</h3>
-        <p>Problem statements, CAD reference packs, and submission upload gates arm and activate at midnight on 13 October. Ticking in live Indian Standard Time.</p>
+        <p>Problem statements, CAD reference packs, and submission upload gates arm and activate at midnight on 13
+          October. Ticking in live Indian Standard Time.</p>
       </div>
 
       <!-- Mechanical Timer Display (MM:DD:HH:SS) using FlipDown Rotors -->
-      <div class="mech-clock-frame" aria-label="Countdown to Prompts Launch" style="display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;">
+      <div class="mech-clock-frame" aria-label="Countdown to Prompts Launch"
+        style="display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;">
         <!-- MM: Months -->
         <div class="c26-flip-unit">
           <div class="mech-code-tag">MM</div>
           <div class="c26-rotor-pair">
             <div class="c26-rotor" id="rotor-m0" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
             </div>
             <div class="c26-rotor" id="rotor-m1" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
@@ -1760,15 +1915,23 @@
           <div class="mech-code-tag">DD</div>
           <div class="c26-rotor-pair">
             <div class="c26-rotor" id="rotor-d0" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
             </div>
             <div class="c26-rotor" id="rotor-d1" data-val="6">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">6</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">6</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">6</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">6</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
@@ -1784,15 +1947,23 @@
           <div class="mech-code-tag">HH</div>
           <div class="c26-rotor-pair">
             <div class="c26-rotor" id="rotor-h0" data-val="0">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">0</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">0</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
             </div>
             <div class="c26-rotor" id="rotor-h1" data-val="3">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">3</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">3</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">3</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">3</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
@@ -1808,15 +1979,23 @@
           <div class="mech-code-tag">MM</div>
           <div class="c26-rotor-pair">
             <div class="c26-rotor" id="rotor-min0" data-val="2">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">2</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">2</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">2</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">2</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
             </div>
             <div class="c26-rotor" id="rotor-min1" data-val="7">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">7</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">7</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph">7</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph">7</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left"></div>
               <div class="c26-rotor-hinge right"></div>
@@ -1832,15 +2011,23 @@
           <div class="mech-code-tag crimson">SS</div>
           <div class="c26-rotor-pair">
             <div class="c26-rotor crimson" id="rotor-s0" data-val="5">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">5</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">5</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">5</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">5</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left crimson"></div>
               <div class="c26-rotor-hinge right crimson"></div>
             </div>
             <div class="c26-rotor crimson" id="rotor-s1" data-val="9">
-              <div class="c26-rotor-half top"><div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">9</span></div></div>
-              <div class="c26-rotor-half bottom"><div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">9</span></div></div>
+              <div class="c26-rotor-half top">
+                <div class="c26-rotor-num-inner"><span class="c26-rotor-glyph crimson">9</span></div>
+              </div>
+              <div class="c26-rotor-half bottom">
+                <div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph crimson">9</span></div>
+              </div>
               <div class="c26-rotor-seam"></div>
               <div class="c26-rotor-hinge left crimson"></div>
               <div class="c26-rotor-hinge right crimson"></div>
@@ -2714,7 +2901,7 @@
             try {
               const errObj = await res.json();
               if (errObj && (errObj.error || errObj.message)) errMsg = errObj.error || errObj.message;
-            } catch (_) {}
+            } catch (_) { }
             throw new Error(errMsg);
           }
           const data = await res.json();
@@ -3191,9 +3378,9 @@
           el.setAttribute('data-val', nextDigit);
 
           const glyphs = el.querySelectorAll('.c26-rotor-half .c26-rotor-glyph');
-          glyphs.forEach(function(g) { g.textContent = nextDigit; });
+          glyphs.forEach(function (g) { g.textContent = nextDigit; });
 
-          el.querySelectorAll('.c26-rotor-leaf-top, .c26-rotor-leaf-bottom').forEach(function(l) { l.remove(); });
+          el.querySelectorAll('.c26-rotor-leaf-top, .c26-rotor-leaf-bottom').forEach(function (l) { l.remove(); });
 
           const leafTop = document.createElement('div');
           leafTop.className = 'c26-rotor-leaf-top';
@@ -3205,7 +3392,7 @@
           leafBottom.innerHTML = '<div class="c26-rotor-num-inner bottom-shift"><span class="c26-rotor-glyph ' + (isCrimson ? 'crimson' : '') + '">' + nextDigit + '</span></div>';
           el.appendChild(leafBottom);
 
-          setTimeout(function() {
+          setTimeout(function () {
             if (leafTop.parentNode === el) leafTop.remove();
             if (leafBottom.parentNode === el) leafBottom.remove();
           }, 480);
