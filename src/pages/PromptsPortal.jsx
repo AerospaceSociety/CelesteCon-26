@@ -62,9 +62,10 @@ const DELIVERABLE_INFO = {
   '06': {
     format: 'Playable Build (Windows/Web ZIP) + Gameplay Video',
     submissionMode: 'Online Upload',
-    details: 'Theme released on portal. Develop an aerospace minigame in any engine (Godot, Unity, Unreal, WebGL). Onsite peer review & jury evaluation.',
+    details: 'Theme: "Retrogression". Develop an aerospace minigame in any engine (Godot, Unity, Unreal, WebGL). Onsite peer review & jury evaluation.',
     portalUrl: '/prompts/gamejam',
-    portalLabel: 'CelesteJam Prompt Dossier'
+    isLive: true,
+    portalLabel: 'CelesteJam (Game Jam)'
   },
   '07': {
     format: 'Technical Report + OpenRocket Simulation (.ork)',
@@ -377,14 +378,15 @@ const PromptsPortal = () => {
     isLive: false
   });
 
-  // Position live prompt dossiers (Rocketry & AEROSS Prix) at the top of the prompts roster
+  // Position live prompt dossiers (CelesteJam, Rocketry & AEROSS Prix) at the top of the prompts roster
   const sortedEvents = useMemo(() => {
+    const gamejam = events.find((e) => e.id === '06' || e.id === 'gamejam');
     const rocketry = events.find((e) => e.id === '07' || e.id === 'rocketry');
     const prix = events.find((e) => e.id === '08' || e.id === 'f1');
     const others = events.filter(
-      (e) => e.id !== '07' && e.id !== 'rocketry' && e.id !== '08' && e.id !== 'f1'
+      (e) => e.id !== '06' && e.id !== 'gamejam' && e.id !== '07' && e.id !== 'rocketry' && e.id !== '08' && e.id !== 'f1'
     );
-    return [rocketry, prix, ...others].filter(Boolean);
+    return [gamejam, rocketry, prix, ...others].filter(Boolean);
   }, []);
 
   useEffect(() => {
@@ -471,22 +473,49 @@ const PromptsPortal = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-[10px] tracking-widest text-green-400 font-bold border border-green-500/40 px-2.5 py-0.5 bg-green-500/10 uppercase">
-                ● 2 PROMPT DOSSIERS UNLOCKED
+                ● 3 PROMPT DOSSIERS UNLOCKED
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <div className="lg:col-span-7 space-y-2">
+            <div className="lg:col-span-5 space-y-2">
               <h2 className="font-display text-2xl sm:text-3xl uppercase text-bone tracking-wide leading-tight">
-                Rocketry &amp; AEROSS Prix Prompts Are <span className="text-crimson">Now Live</span>
+                CelesteJam, Rocketry &amp; AEROSS Prix Are <span className="text-crimson">Now Live</span>
               </h2>
               <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
-                Ahead of the automated 13 October countdown for remaining tracks, the full interactive problem dossiers, dimensional constraints, and engineering regulations for <strong className="text-bone">Event 07 (Rocketry)</strong> and <strong className="text-bone">Event 08 (AEROSS Prix)</strong> are armed and open for team formulation.
+                Ahead of the automated 13 October countdown for remaining tracks, the full interactive problem dossiers for <strong className="text-bone">Event 06 (CelesteJam &middot; Theme: &ldquo;Retrogression&rdquo;)</strong>, <strong className="text-bone">Event 07 (Rocketry)</strong>, and <strong className="text-bone">Event 08 (AEROSS Prix)</strong> are armed and open for development.
               </p>
             </div>
 
-            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Event 06 CelesteJam Mini-Card */}
+              <Link
+                to="/prompts/gamejam"
+                className="group border border-bone/40 hover:border-crimson bg-ink-2 p-3.5 transition-all flex flex-col justify-between shadow-md hover:bg-crimson/5"
+              >
+                <div>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-crimson text-bone-hi">
+                      06 · CJAM
+                    </span>
+                    <span className="font-mono text-[9px] text-green-400 font-bold uppercase tracking-wider">
+                      ● LIVE
+                    </span>
+                  </div>
+                  <div className="font-display text-base text-bone uppercase group-hover:text-crimson transition-colors leading-tight">
+                    CelesteJam (Game Jam)
+                  </div>
+                  <p className="font-mono text-[10px] text-bone-dim mt-1 line-clamp-2">
+                    Theme: &ldquo;Retrogression&rdquo; · 22 Oct sprint deadline.
+                  </p>
+                </div>
+                <div className="mt-3 pt-2 border-t border-bone/20 flex items-center justify-between text-[11px] font-label font-bold text-crimson group-hover:text-bone transition-colors uppercase tracking-wider">
+                  <span>View Brief</span>
+                  <span>→</span>
+                </div>
+              </Link>
+
               {/* Event 07 Rocketry Mini-Card */}
               <Link
                 to="/prompts/rocketry"
@@ -625,7 +654,7 @@ const PromptsPortal = () => {
         <div className="border border-bone/30 p-4 bg-ink/40 font-mono text-xs text-bone-dim leading-relaxed flex items-start gap-3">
           <span className="text-crimson font-bold text-base">ℹ</span>
           <div>
-            <strong className="text-bone uppercase">Remaining Competitions Release Schedule:</strong> Problem statements, engineering prompts, CAD references, and case themes for Settle-Me-This, Volatus, Quizzitch, Business Power Pitch, AEROSS Theatre, and CelesteJam will unlock automatically directly on this page at <strong>00:00:00 IST on 13 October 2026</strong>.
+            <strong className="text-bone uppercase">Remaining Competitions Release Schedule:</strong> Problem statements, engineering prompts, CAD references, and case themes for Settle-Me-This, Volatus, Quizzitch, Business Power Pitch, and AEROSS Theatre will unlock automatically directly on this page at <strong>00:00:00 IST on 13 October 2026</strong>.
           </div>
         </div>
 
