@@ -40,4 +40,5 @@ scratch
 *.credentials
 secrets/
 private/
-
+# Promotional videos
+promotion_videos/

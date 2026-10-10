@@ -81,11 +81,113 @@ export async function onRequestPost(context) {
   }
 
   try {
+    const reg = await request.json();
+    if (!reg) {
+      return jsonResponse({ error: "Invalid payload: empty request body" }, 400, request, env);
+    }
+
     const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.JOTFORM_SECRET_KEY || env.apiKey;
-    const formId = env.JOTFORM_FORM_ID || "261896133006456";
+    const internalFormId = env.JOTFORM_INTERNAL_FORM_ID || "262820575510050";
+    const externalFormId = env.JOTFORM_FORM_ID || "261896133006456";
+    const formId = (reg.isInternal || reg.formId === internalFormId) ? internalFormId : externalFormId;
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
     if (!apiKey) {
+      // If frontend already submitted directly to JotForm via browser iframe, avoid double entry
+      if (reg.clientDirect) {
+        return jsonResponse({
+          success: true,
+          submissionID: `JF-${Date.now()}`,
+          schoolUID: reg.schoolUID || `C26-INT-${Math.floor(1000 + Math.random() * 9000)}`,
+          source: 'jotform_direct_client'
+        }, 200, request, env);
+      }
+
+      try {
+        const directParams = new URLSearchParams();
+        directParams.append('formID', formId);
+        directParams.append('simple_spc', `${formId}-${formId}`);
+        if (formId === internalFormId) {
+          const team = reg.events?.[0]?.teams?.[0];
+          const lead = team?.members?.[0] || reg.school?.contact;
+          const leadName = typeof lead === 'object' ? lead.name : (reg.school?.contact || '');
+          const leadEmail = typeof lead === 'object' ? lead.email : (reg.school?.email || '');
+          const leadPhone = typeof lead === 'object' ? lead.phone : (reg.school?.phone || '');
+          const leadClass = typeof lead === 'object' ? lead.class : '';
+          const leadAdm = typeof lead === 'object' ? lead.admissionNo : '';
+          const teamName = team?.teamName || reg.school?.name || 'Internal Team';
+          const eventName = reg.events?.[0]?.name || '';
+          const category = team?.category?.toUpperCase() || 'SENIOR';
+          const uid = team?.teamId || reg.schoolUID || '';
+          const summary = reg.summary || JSON.stringify(reg);
+
+          // EXACT QIDs matching form 262820575510050
+          directParams.append('q3', sanitizeText(teamName, 100));
+          directParams.append('q4', sanitizeText(leadName, 100));
+          directParams.append('q5', sanitizeText(leadEmail, 100));
+          directParams.append('q6', sanitizeText(leadPhone, 30));
+          directParams.append('q6_phone[phone]', sanitizeText(leadPhone, 30));
+          directParams.append('q7', sanitizeText(leadClass, 30));
+          directParams.append('q8', sanitizeText(leadAdm, 30));
+          directParams.append('q9', sanitizeText(eventName, 80));
+          directParams.append('q10', sanitizeText(category, 30));
+          directParams.append('q11', sanitizeText(uid, 50));
+          directParams.append('q12', sanitizeText(summary, 8000));
+          directParams.append('q13', JSON.stringify(reg));
+
+          // Submission indices
+          directParams.append('submission[3]', sanitizeText(teamName, 100));
+          directParams.append('submission[4]', sanitizeText(leadName, 100));
+          directParams.append('submission[5]', sanitizeText(leadEmail, 100));
+          directParams.append('submission[6]', sanitizeText(leadPhone, 30));
+          directParams.append('submission[7]', sanitizeText(leadClass, 30));
+          directParams.append('submission[8]', sanitizeText(leadAdm, 30));
+          directParams.append('submission[9]', sanitizeText(eventName, 80));
+          directParams.append('submission[10]', sanitizeText(category, 30));
+          directParams.append('submission[11]', sanitizeText(uid, 50));
+          directParams.append('submission[12]', sanitizeText(summary, 8000));
+          directParams.append('submission[13]', JSON.stringify(reg));
+        } else {
+          // Standard external form 261896133006456
+          if (reg.school?.name) directParams.append('submission[2]', sanitizeText(reg.school.name, 100));
+          if (reg.school?.contact) directParams.append('submission[3]', sanitizeText(reg.school.contact, 100));
+          if (reg.school?.email) directParams.append('submission[4]', sanitizeText(reg.school.email, 100));
+          if (reg.school?.phone) directParams.append('submission[5]', sanitizeText(reg.school.phone, 30));
+          if (reg.events?.[0]?.name) directParams.append('submission[6]', sanitizeText(reg.events[0].name, 80));
+          directParams.append('submission[7]', sanitizeText(reg.summary || JSON.stringify(reg), 5000));
+          directParams.append('submission[8]', JSON.stringify(reg));
+
+          if (reg.school?.name) directParams.append('q2', sanitizeText(reg.school.name, 100));
+          if (reg.school?.contact) directParams.append('q3', sanitizeText(reg.school.contact, 100));
+          if (reg.school?.email) directParams.append('q4', sanitizeText(reg.school.email, 100));
+          if (reg.school?.phone) directParams.append('q5', sanitizeText(reg.school.phone, 30));
+          if (reg.events?.[0]?.name) directParams.append('q6', sanitizeText(reg.events[0].name, 80));
+          directParams.append('q7', sanitizeText(reg.summary || JSON.stringify(reg), 5000));
+          directParams.append('q8', JSON.stringify(reg));
+        }
+
+        const directResp = await fetch(`https://submit.jotform.com/submit/${encodeURIComponent(formId)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://form.jotform.com',
+            'Referer': `https://form.jotform.com/${encodeURIComponent(formId)}`
+          },
+          body: directParams.toString()
+        });
+
+        if (directResp.ok) {
+          return jsonResponse({
+            success: true,
+            submissionID: `JF-${Date.now()}`,
+            schoolUID: reg.schoolUID || `C26-INT-${Math.floor(1000 + Math.random() * 9000)}`,
+            source: 'jotform_direct'
+          }, 200, request, env);
+        }
+      } catch (directErr) {
+        console.warn('JotForm direct gateway notice:', directErr.message);
+      }
+
       return jsonResponse(
         {
           error: "Submission vault is currently completing maintenance. Please retry in a few moments or contact aeross@dpsrkp.net.",
@@ -95,11 +197,6 @@ export async function onRequestPost(context) {
         request,
         env
       );
-    }
-
-    const reg = await request.json();
-    if (!reg) {
-      return jsonResponse({ error: "Invalid payload: empty request body" }, 400, request, env);
     }
 
     // 2. Deliverable submission forwarding
@@ -183,8 +280,8 @@ export async function onRequestPost(context) {
 
     // 5. Format School UID: C26-<Letters>-<Serial>
     let officialSchoolUID = reg.schoolUID;
-    const clientLettersMatch = (reg.schoolUID || "").match(/^C26-([A-Za-z]{2})-/);
-    const letters = clientLettersMatch ? clientLettersMatch[1].toUpperCase() : getRandomLetters();
+    const clientLettersMatch = (reg.schoolUID || "").match(/^C26-([A-Za-z]{2,4})-/);
+    const letters = clientLettersMatch ? clientLettersMatch[1].toUpperCase() : (reg.isInternal ? 'INT' : getRandomLetters());
 
     if (serverSerialStr) {
       officialSchoolUID = `C26-${letters}-${serverSerialStr}`;
