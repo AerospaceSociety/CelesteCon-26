@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { events } from '../../data/events';
 
-const TARGET_RELEASE_IST = new Date('2026-10-13T00:00:00+05:30').getTime();
+const TARGET_RELEASE_IST = new Date('2026-10-13T18:00:00+05:30').getTime();
 
 export default function GenericPromptPortal({ eventId: propEventId }) {
   const params = useParams();
@@ -145,7 +145,7 @@ export default function GenericPromptPortal({ eventId: propEventId }) {
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
               <span className="text-bone-dim uppercase">Prompt Status</span>
               <span className={`font-bold ${timeLeft.unlocked ? 'text-green-400' : 'text-amber-400'}`}>
-                {timeLeft.unlocked ? '● RELEASED' : 'PROMPT RELEASES 13 OCT'}
+                {timeLeft.unlocked ? '● RELEASED' : 'PROMPT RELEASES 13 OCT · 18:00 IST'}
               </span>
             </div>
 

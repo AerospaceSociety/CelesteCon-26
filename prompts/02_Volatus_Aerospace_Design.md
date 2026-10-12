@@ -16,7 +16,7 @@ Volatus merges aerodynamic sizing theory with digital manufacturing and mechanic
 ## 2. Round Structure & Deliverables
 
 ### Round 1: Online Technical Proposal & 3D CAD
-- **Prompt Release:** 13 October 2026, 00:00:00 IST (3 Mission Briefs Published)
+- **Prompt Release:** 13 October 2026, 18:00:00 IST (3 Mission Briefs Published)
 - **Submission Deadline:** 18 October 2026, 23:59:59 IST
 - **Deliverable Package:**
   1. **Engineering Proposal (PDF):** Max 20 pages detailing mission analysis, airfoil profile selection (NACA series), drag polar curves, center of gravity (CG) vs center of lift (CL) static margin, thrust-to-weight ratio, and avionics suite.

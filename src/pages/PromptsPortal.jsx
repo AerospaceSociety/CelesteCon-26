@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { events } from '../data/events';
 
-const TARGET_DATE_IST = new Date('2026-10-13T00:00:00+05:30').getTime();
+const TARGET_DATE_IST = new Date('2026-10-13T18:00:00+05:30').getTime();
 
 const COMP_CODES = {
   '01': 'SMT',
@@ -27,14 +27,14 @@ const DELIVERABLE_INFO = {
   '01': {
     format: 'PDF Proposal (Max 25 pages Jr / 35 pages Sr)',
     submissionMode: 'Online Upload',
-    details: 'Engineering proposal for a habitable free-space settlement. Case prompts release 13 Oct. Top 5 teams per division advance to onsite oral defense.',
+    details: 'Engineering proposal for a habitable free-space settlement. Case prompts release 13 Oct 18:00 IST. Top 5 teams per division advance to onsite oral defense.',
     portalUrl: '/prompts/settlement',
     portalLabel: 'SMT Prompt Dossier'
   },
   '02': {
     format: 'Online Proposal + 3D CAD (.step / .stl / .f3d)',
     submissionMode: 'Online Upload',
-    details: 'Choose 1 of 3 case prompts released 13 Oct. Submit aerodynamic sizing, weight & balance study, and digital 3D model. Top teams exhibit on campus.',
+    details: 'Choose 1 of 3 case prompts released 13 Oct 18:00 IST. Submit aerodynamic sizing, weight & balance study, and digital 3D model. Top teams exhibit on campus.',
     portalUrl: '/prompts/volatus',
     portalLabel: 'Volatus Prompt Dossier'
   },
@@ -443,7 +443,7 @@ const PromptsPortal = () => {
             {timeLeft.isLive ? 'GATE UNLOCKED // LIVE' : 'ARMED CHRONOMETER // T-MINUS'}
           </span>
           <span className="font-mono text-xs text-bone-dim tracking-wider uppercase">
-            TARGET: 13 OCT 2026 00:00:00 IST
+            TARGET: 13 OCT 2026 18:00:00 IST
           </span>
         </div>
 
@@ -620,7 +620,7 @@ const PromptsPortal = () => {
             <span>ENCRYPTION: AES-256 ACTIVE // AUTOMATED RELEASE PROTOCOL</span>
           </div>
           <div>
-            SUBMISSION WINDOW: <strong>13 OCT 00:00 &mdash; 20 OCT 23:59 IST</strong>
+            SUBMISSION WINDOW: <strong>13 OCT 18:00 &mdash; 20 OCT 23:59 IST</strong>
           </div>
         </div>
       </div>
@@ -654,7 +654,7 @@ const PromptsPortal = () => {
         <div className="border border-bone/30 p-4 bg-ink/40 font-mono text-xs text-bone-dim leading-relaxed flex items-start gap-3">
           <span className="text-crimson font-bold text-base">ℹ</span>
           <div>
-            <strong className="text-bone uppercase">Remaining Competitions Release Schedule:</strong> Problem statements, engineering prompts, CAD references, and case themes for Settle-Me-This, Volatus, Quizzitch, Business Power Pitch, and AEROSS Theatre will unlock automatically directly on this page at <strong>00:00:00 IST on 13 October 2026</strong>.
+            <strong className="text-bone uppercase">Remaining Competitions Release Schedule:</strong> Problem statements, engineering prompts, CAD references, and case themes for Settle-Me-This, Volatus, Quizzitch, Business Power Pitch, and AEROSS Theatre will unlock automatically directly on this page at <strong>18:00:00 IST on 13 October 2026</strong>.
           </div>
         </div>
 
@@ -710,7 +710,7 @@ const PromptsPortal = () => {
                       </>
                     ) : (
                       <>
-                        Status: <strong className="text-amber-500">Unlocks 13 Oct</strong>
+                        Status: <strong className="text-amber-500">Unlocks 13 Oct 18:00</strong>
                       </>
                     )}
                   </span>

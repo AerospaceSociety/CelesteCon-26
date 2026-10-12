@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { events } from '../data/events';
 
-const TARGET_SUBMISSION_START = new Date('2026-10-13T00:00:00+05:30').getTime();
+const TARGET_SUBMISSION_START = new Date('2026-10-13T18:00:00+05:30').getTime();
 const TARGET_SUBMISSION_DEADLINE = new Date('2026-10-20T23:59:59+05:30').getTime();
 
 const SEED_DELEGATIONS = {
@@ -553,7 +553,7 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
             OFFICIAL DEPOSIT TERMINAL
           </span>
           <span className="font-mono text-xs text-bone-dim uppercase">
-            WINDOW: 13 OCT 00:00 &mdash; 20 OCT 23:59 IST · (LIVE PROMPTS OPEN FOR EARLY DEPOSIT)
+            WINDOW: 13 OCT 18:00 &mdash; 20 OCT 23:59 IST · (LIVE PROMPTS OPEN FOR EARLY DEPOSIT)
           </span>
         </div>
 
@@ -713,10 +713,10 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
             <span>PORTAL LOCKED</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl uppercase text-bone tracking-wide">
-            Submission Portal Opens 13 October
+            Submission Portal Opens 13 October (18:00 IST)
           </h2>
           <p className="font-label text-sm sm:text-base text-bone-dim max-w-2xl mx-auto leading-relaxed">
-            The submission gateway is currently closed. Please prepare your deliverables and return on 13 October 2026 to authenticate with your School UID.
+            The submission gateway is currently closed. Please prepare your deliverables and return on 13 October 2026 at 18:00 IST to authenticate with your School UID.
           </p>
         </div>
       ) : !verifiedSchool ? (
