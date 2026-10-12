@@ -6,8 +6,8 @@ export const eventOutline = {
 
 export const masterMilestones = {
   regOpens: '01 Oct',
-  regDeadlineRegular: '12 Oct 11:59 PM IST',
-  r1Commences: '13 Oct',
+  regDeadlineRegular: '13 Oct 11:59 PM IST',
+  r1Commences: '13 Oct 18:00 IST',
   r1SubmissionDeadline: '18 Oct 11:59 PM IST',
   r1Results: '20 Oct',
   regDeadlineExtended: '20 Oct 11:59 PM IST (Rocketry, AEROSS Prix, CelesteJam)',
@@ -61,7 +61,7 @@ export const events = [
       { label: 'Finalists Announcement (Top 5 / Category)', date: '20 Oct' },
       { label: 'Onsite Presentation & Defense', date: '24 Oct (CelesteCon 2026)' }
     ],
-    regDeadline: '12 Oct 2026',
+    regDeadline: '13 Oct 2026',
     poc: { name: 'Arshia Barsain', email: 'r24333arshia@dpsrkp.net' },
     portalUrl: '/prompts/settlement',
     portalLabel: 'SMT Prompt Dossier',
@@ -104,7 +104,7 @@ export const events = [
       { label: 'Shortlist Notification', date: '20 Oct' },
       { label: 'Onsite Science-Fair Exhibition', date: '24 Oct (CelesteCon 2026)' }
     ],
-    regDeadline: '12 Oct 2026',
+    regDeadline: '13 Oct 2026',
     poc: { name: 'Tarushi Tomar', email: 'r24564tarushi@dpsrkp.net' },
     portalUrl: '/prompts/volatus',
     portalLabel: 'Volatus Prompt Dossier',
@@ -145,7 +145,7 @@ export const events = [
       { label: 'Motions Assigned (3 Days Prior)', date: '21 Oct' },
       { label: 'Live Debate Chambers', date: '24 Oct (CelesteCon 2026)' }
     ],
-    regDeadline: '12 Oct 2026',
+    regDeadline: '13 Oct 2026',
     poc: { name: 'Manya Gupta', email: 'e11748manya@dpsrkp.net' },
     portalUrl: '/prompts/dispute',
     portalLabel: 'IPOD Prompt Dossier',
@@ -197,7 +197,7 @@ export const events = [
       { label: 'Finalists Announcement', date: '20 Oct' },
       { label: 'Live Investor Pitches', date: '24 Oct (CelesteCon 2026)' }
     ],
-    regDeadline: '12 Oct 2026',
+    regDeadline: '13 Oct 2026',
     poc: { name: 'Ryaan Namit Jain', email: 'r23542ryaan@dpsrkp.net' },
     portalUrl: '/prompts/bpp',
     portalLabel: 'BPP Prompt Dossier',
@@ -235,7 +235,7 @@ export const events = [
       { label: 'Finalists Announcement', date: '20 Oct' },
       { label: 'Live Stage Showcase & Improv', date: '24 Oct (CelesteCon 2026)' }
     ],
-    regDeadline: '12 Oct 2026',
+    regDeadline: '13 Oct 2026',
     poc: { name: 'Siddharth Srivastava', email: 'r24998siddharth@dpsrkp.net' },
     portalUrl: '/prompts/theatre',
     portalLabel: 'AeroTheatre Prompt Dossier',

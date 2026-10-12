@@ -109,12 +109,12 @@ const Format = () => {
               </div>
               <div>
                 <dt className="text-crimson font-bold uppercase mb-0.5">Regular Registration Deadline</dt>
-                <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold">12 Oct · 11:59 PM IST</dd>
+                <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold">13 Oct · 11:59 PM IST</dd>
                 <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Portal locks; no on-spot additions.</span>
               </div>
               <div>
                 <dt className="text-crimson font-bold uppercase mb-0.5">Round 1 Commences</dt>
-                <dd className="text-bone border-b border-dotted border-bone/40 pb-1">13 Oct 2026</dd>
+                <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold">13 Oct · 18:00 IST</dd>
                 <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Prompts, themes & deliverables announced via portal.</span>
               </div>
               <div>
