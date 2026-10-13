@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const R1_DEADLINE = new Date('2026-10-18T23:59:00+05:30').getTime();
-const VALID_SECTIONS = ['brief', 'format', 'tracks', 'calc', 'template', 'rules', 'rubrics'];
+const VALID_SECTIONS = ['brief', 'tracks', 'template', 'checklist'];
 
 const JUNIOR_PROMPTS = [
   {
@@ -23,14 +22,13 @@ const JUNIOR_PROMPTS = [
       { val: '~38 of 49', label: 'Starlink satellites lost to storm drag, Feb 2022' },
       { val: '~11 years', label: 'Solar cycle duration (peak drag during solar maximum)' }
     ],
-    curveball: 'NOAA\'s space-weather forecasts are free and SpaceX has its own engineers. Name one customer who would pay you this month, and how much.',
     mustCover: [
-      { code: 'J-TH.1', title: 'The Service', desc: 'Exact deliverable, frequency, and delivery format (alerts, thruster schedules, monthly API feed). Walk through one customer\'s week.', link: '1.0 · 3.2' },
-      { code: 'J-TH.2', title: 'Thermosphere Science', desc: 'How solar irradiance expands the thermosphere, aerodynamic drag equations, and input data streams used.', link: '3.1 · 3.3' },
-      { code: 'J-TH.3', title: 'Target Customers', desc: 'University cubesat labs, commercial Earth-imaging constellations, small telecom operators. Pick your beachhead.', link: '5.1 · 5.2' },
-      { code: 'J-TH.4', title: 'Competitive Edge', desc: 'Why pay for your service instead of free NOAA data or in-house calculations.', link: '4.4 · 5.5' },
-      { code: 'J-TH.5', title: 'Unit Economics', desc: 'Monthly fee per satellite/fleet, monthly operating expenses, profit margin, and break-even satellite count.', link: '4.0' },
-      { code: 'J-TH.6', title: 'Scaling Up', desc: 'Scaling from 10 university cubesats to 5,000 constellation satellites without runaway computational overhead.', link: '3.5 · 4.5' }
+      { code: 'J-TH.1', title: 'The Service', desc: 'Exact deliverable, frequency, and delivery format (alerts, thruster schedules, monthly API feed). Walk through one customer\'s week.' },
+      { code: 'J-TH.2', title: 'Thermosphere Science', desc: 'How solar irradiance expands the thermosphere, aerodynamic drag equations, and input data streams used.' },
+      { code: 'J-TH.3', title: 'Target Customers', desc: 'University cubesat labs, commercial Earth-imaging constellations, small telecom operators. Pick your beachhead.' },
+      { code: 'J-TH.4', title: 'Competitive Edge', desc: 'Why pay for your service instead of free NOAA data or in-house calculations.' },
+      { code: 'J-TH.5', title: 'Unit Economics', desc: 'Monthly fee per satellite/fleet, monthly operating expenses, profit margin, and break-even satellite count.' },
+      { code: 'J-TH.6', title: 'Scaling Up', desc: 'Scaling from 10 university cubesats to 5,000 constellation satellites without runaway computational overhead.' }
     ]
   },
   {
@@ -51,14 +49,13 @@ const JUNIOR_PROMPTS = [
       { val: '1987', label: 'Montreal Protocol international signing date' },
       { val: '~2066', label: 'Expected Antarctic ozone recovery to 1980 levels (WMO/UNEP)' }
     ],
-    curveball: 'NASA and Copernicus publish ozone column data for free. What does your paying client get that cannot be downloaded from NASA Worldview?',
     mustCover: [
-      { code: 'J-ST.1', title: 'The Service', desc: 'Exact commercial offering and how it protects/monitors the stratosphere. Client monthly workflow.', link: '1.0 · 3.2' },
-      { code: 'J-ST.2', title: 'Atmospheric Chemistry', desc: 'Chapman mechanism, catalytic destruction cycles, sensor technology (ozonesondes, UV spectroscopy, Lidar).', link: '3.1 · 3.3' },
-      { code: 'J-ST.3', title: 'Target Customers', desc: 'Environmental ministries, carbon registries, industrial chemical compliance auditors, launch operators.', link: '5.1' },
-      { code: 'J-ST.4', title: 'Competitive Advantage', desc: 'Differentiation over free public satellite feeds: higher spatial resolution, rapid response, or legal audit validity.', link: '4.4 · 5.5' },
-      { code: 'J-ST.5', title: 'Unit Economics', desc: 'Hardware balloon/sensor costs, helium/hydrogen gas expenses, subscription pricing, break-even customer count.', link: '4.0' },
-      { code: 'J-ST.6', title: 'Geographic Scale', desc: 'Transitioning from a single launch base to multi-regional balloon monitoring networks.', link: '3.5 · 4.5' }
+      { code: 'J-ST.1', title: 'The Service', desc: 'Exact commercial offering and how it protects/monitors the stratosphere. Client monthly workflow.' },
+      { code: 'J-ST.2', title: 'Atmospheric Chemistry', desc: 'Chapman mechanism, catalytic destruction cycles, sensor technology (ozonesondes, UV spectroscopy, Lidar).' },
+      { code: 'J-ST.3', title: 'Target Customers', desc: 'Environmental ministries, carbon registries, industrial chemical compliance auditors, launch operators.' },
+      { code: 'J-ST.4', title: 'Competitive Advantage', desc: 'Differentiation over free public satellite feeds: higher spatial resolution, rapid response, or legal audit validity.' },
+      { code: 'J-ST.5', title: 'Unit Economics', desc: 'Hardware balloon/sensor costs, helium/hydrogen gas expenses, subscription pricing, break-even customer count.' },
+      { code: 'J-ST.6', title: 'Geographic Scale', desc: 'Transitioning from a single launch base to multi-regional balloon monitoring networks.' }
     ]
   },
   {
@@ -79,18 +76,17 @@ const JUNIOR_PROMPTS = [
       { val: '~20 m', label: 'Diameter of the 2013 Chelyabinsk superbolide' },
       { val: 'Raspberry Pi', label: 'Core processing hardware used in the Global Meteor Network' }
     ],
-    curveball: 'Most meteors burn up harmlessly. Name one specific customer this year who would have paid at least ₹5,00,000 for your detection data, and why.',
     mustCover: [
-      { code: 'J-ME.1', title: 'The Solution', desc: 'Sensor modalities (all-sky optical cameras, radio forward scatter, infrasound) and data deliverable.', link: '1.0 · 3.2' },
-      { code: 'J-ME.2', title: 'Mesospheric Physics', desc: 'Ablation thermodynamics, ionization streaks, and trajectory/velocity triangulation.', link: '3.3' },
-      { code: 'J-ME.3', title: 'Trajectory Pipeline', desc: 'Triangulation algorithms, dark-flight atmospheric wind drift, and ground strewn-field calculation.', link: '3.1 · 3.4' },
-      { code: 'J-ME.4', title: 'Customer Personas', desc: 'Research observatories, mineralogical museums, satellite constellation fleet directors, defense radar operators.', link: '5.1 · 5.2' },
-      { code: 'J-ME.5', title: 'Technical Feasibility', desc: 'Off-the-shelf vs proprietary hardware components, network infrastructure, and bandwidth constraints.', link: '3.1' },
-      { code: 'J-ME.6', title: 'Edge over Public Nets', desc: 'Why commercial clients pay you rather than scraping free open-source camera logs.', link: '5.5' },
-      { code: 'J-ME.7', title: 'Revenue & Costs', desc: 'Data subscription pricing, camera station fabrication/maintenance costs, unit contribution margin.', link: '4.0' },
-      { code: 'J-ME.8', title: 'CapEx Allocation', desc: 'Seed funding split across R&D, sensor deployment, cloud infrastructure, and operational overhead.', link: '4.6' },
-      { code: 'J-ME.9', title: '10-Year Growth Plan', desc: 'Phased expansion milestones for Years 1, 3, 5, and 10.', link: '3.5 · 4.5' },
-      { code: 'J-ME.10', title: 'Cost-Effective Scale', desc: 'Adding 1,000 detection nodes worldwide without exponential operational maintenance cost.', link: '4.5' }
+      { code: 'J-ME.1', title: 'The Solution', desc: 'Sensor modalities (all-sky optical cameras, radio forward scatter, infrasound) and data deliverable.' },
+      { code: 'J-ME.2', title: 'Mesospheric Physics', desc: 'Ablation thermodynamics, ionization streaks, and trajectory/velocity triangulation.' },
+      { code: 'J-ME.3', title: 'Trajectory Pipeline', desc: 'Triangulation algorithms, dark-flight atmospheric wind drift, and ground strewn-field calculation.' },
+      { code: 'J-ME.4', title: 'Customer Personas', desc: 'Research observatories, mineralogical museums, satellite constellation fleet directors, defense radar operators.' },
+      { code: 'J-ME.5', title: 'Technical Feasibility', desc: 'Off-the-shelf vs proprietary hardware components, network infrastructure, and bandwidth constraints.' },
+      { code: 'J-ME.6', title: 'Edge over Public Nets', desc: 'Why commercial clients pay you rather than scraping free open-source camera logs.' },
+      { code: 'J-ME.7', title: 'Revenue & Costs', desc: 'Data subscription pricing, camera station fabrication/maintenance costs, unit contribution margin.' },
+      { code: 'J-ME.8', title: 'CapEx Allocation', desc: 'Seed funding split across R&D, sensor deployment, cloud infrastructure, and operational overhead.' },
+      { code: 'J-ME.9', title: '10-Year Growth Plan', desc: 'Phased expansion milestones for Years 1, 3, 5, and 10.' },
+      { code: 'J-ME.10', title: 'Cost-Effective Scale', desc: 'Adding 1,000 detection nodes worldwide without exponential operational maintenance cost.' }
     ]
   },
   {
@@ -111,44 +107,16 @@ const JUNIOR_PROMPTS = [
       { val: '1994', label: 'MOZAIC / IAGOS civil airliner atmospheric research inception' },
       { val: 'Hundreds', label: 'Fleet sizes of major Indian air carriers (IndiGo, Air India)' }
     ],
-    curveball: 'An airline can buy pre-flight ozone weather maps for free. What specific line item on your monthly report saves them more money than your subscription costs?',
     mustCover: [
-      { code: 'J-OZ.1', title: 'The Service', desc: 'Onboard pod sensing, data telemetry, and airline operational dispatcher dashboard.', link: '1.0 · 3.2' },
-      { code: 'J-OZ.2', title: 'Sensor & Airframe Integration', desc: 'Pitot static port or fuselage skin probe, UV photometer sensor, avionics power draw, and DGCA STC path.', link: '3.1 · 3.3' },
-      { code: 'J-OZ.3', title: 'Customer Segments', desc: 'Airline flight operations, fleet maintenance managers, meteorological research agencies.', link: '5.1' },
-      { code: 'J-OZ.4', title: 'Competitive Advantage', desc: 'Why airlines prefer your real-time hardware data over weather models or IAGOS research feeds.', link: '5.5' },
-      { code: 'J-OZ.5', title: 'Revenue Model', desc: 'Hardware lease/sale + monthly SaaS fee per tail, sensor maintenance cycle, and unit margins.', link: '4.0' },
-      { code: 'J-OZ.6', title: 'CapEx Split', desc: 'Seed funding allocation across aviation certification, hardware production, cloud analytics, and team.', link: '4.6' },
-      { code: 'J-OZ.7', title: '5-Year Plan', desc: 'Tail fleet adoption curve, revenue, operating expenditure, and net profitability timeline.', link: '4.5' },
-      { code: 'J-OZ.8', title: 'Success Metrics', desc: '3–5 key performance indicators (sensor uptime, airline fuel savings, catalytic converter MTBF extension).', link: '2.2' },
-      { code: 'J-OZ.9', title: 'Fleet Scalability', desc: 'Economics of outfitting 20 aircraft vs scaling to 500 aircraft across global airline alliances.', link: '3.5 · 4.5' }
-    ]
-  },
-  {
-    id: 'j-bonus',
-    code: 'J-BX',
-    layer: 'Open Track · Bonus Addendum (+10 pts)',
-    title: 'From Imagination to Impact',
-    log: 'Find a problem everyone around you has learned to live with. Build the business that fixes it.',
-    story: {
-      bg: 'Society accepts countless chronic inefficiencies: school gate traffic gridlocks, unpredictable water tankers, broken cold-chain vaccine logistics, agricultural waste burning, or unmonitored solar roof degradation. Every chronic inconvenience represents a commercial venture.',
-      challenge: 'Create a business solving an overlooked real-world problem that customers didn\'t realize had an elegant commercial solution.',
-      hard: 'A cute idea is not a business. You must prove real willingness to pay, survey at least 20 prospective buyers, calculate unit cost to make vs price, and defend break-even numbers.'
-    },
-    numbers: [
-      { val: '20+ people', label: 'Minimum customer interviews required before submission' },
-      { val: '1 unit', label: 'Must compute rigorous cost of 1 physical or digital unit' },
-      { val: '4 pages', label: 'Maximum page limit for Junior bonus addendum PDF' },
-      { val: '+10 pts', label: 'Maximum bonus score added directly to Round 1 total' }
-    ],
-    curveball: 'What do people do about this problem today, and why would they stop doing that and pay you instead of continuing to do nothing?',
-    mustCover: [
-      { code: 'J-BX.1', title: 'The Problem', desc: 'Pain point, frequency, and verified customer interview evidence.', link: 'Addendum B.1' },
-      { code: 'J-BX.2', title: 'The Solution', desc: 'Product/service architecture, bill of materials, and labelled schematics.', link: 'Addendum B.2' },
-      { code: 'J-BX.3', title: 'Customer Profile', desc: 'Economic buyer vs daily user, beachhead customer acquisition plan.', link: 'Addendum B.3' },
-      { code: 'J-BX.4', title: 'Unit Economics', desc: 'Cost of goods sold (COGS), selling price, unit contribution, monthly fixed overhead, break-even.', link: 'Addendum B.4' },
-      { code: 'J-BX.5', title: 'Defensibility', desc: 'Why competitors or incumbents cannot replicate your offering within 6 months.', link: 'Addendum B.5' },
-      { code: 'J-BX.6', title: 'Growth Engine', desc: 'Pathway from 50 pilot customers to municipal or regional scale.', link: 'Addendum B.5' }
+      { code: 'J-OZ.1', title: 'The Service', desc: 'Onboard pod sensing, data telemetry, and airline operational dispatcher dashboard.' },
+      { code: 'J-OZ.2', title: 'Sensor & Airframe Integration', desc: 'Pitot static port or fuselage skin probe, UV photometer sensor, avionics power draw, and DGCA STC path.' },
+      { code: 'J-OZ.3', title: 'Customer Segments', desc: 'Airline flight operations, fleet maintenance managers, meteorological research agencies.' },
+      { code: 'J-OZ.4', title: 'Competitive Advantage', desc: 'Why airlines prefer your real-time hardware data over weather models or IAGOS research feeds.' },
+      { code: 'J-OZ.5', title: 'Revenue Model', desc: 'Hardware lease/sale + monthly SaaS fee per tail, sensor maintenance cycle, and unit margins.' },
+      { code: 'J-OZ.6', title: 'CapEx Split', desc: 'Seed funding allocation across aviation certification, hardware production, cloud analytics, and team.' },
+      { code: 'J-OZ.7', title: '5-Year Plan', desc: 'Tail fleet adoption curve, revenue, operating expenditure, and net profitability timeline.' },
+      { code: 'J-OZ.8', title: 'Success Metrics', desc: '3–5 key performance indicators (sensor uptime, airline fuel savings, catalytic converter MTBF extension).' },
+      { code: 'J-OZ.9', title: 'Fleet Scalability', desc: 'Economics of outfitting 20 aircraft vs scaling to 500 aircraft across global airline alliances.' }
     ]
   }
 ];
@@ -172,17 +140,16 @@ const SENIOR_PROMPTS = [
       { val: '$ thousands/kg', label: 'Commercial rideshare launch costs to Low Earth Orbit' },
       { val: 'SAA', label: 'South Atlantic Anomaly: trapped Van Allen radiation dip' }
     ],
-    curveball: 'How many usable watts does your system recover per kilogram added, and how does that compare with simply launching an extra square metre of solar panel?',
     mustCover: [
-      { code: 'S-TH.1', title: 'Physical Mechanism', desc: 'Deflection (magnetic/electrostatic Lorentz force) vs absorption (borated hydrides, liquid hydrogen, graphene) + energy harvesting mechanism.', link: '3.1' },
-      { code: 'S-TH.2', title: 'Energy & Mass Budget', desc: 'Watts harvested vs parasitic mass added. Radiation dosage reduction (Sieverts / rads) compared with equivalent aluminum shielding.', link: '3.3 · 4.3' },
-      { code: 'S-TH.3', title: 'Launch Mass Savings', desc: 'Parasitic shielding mass eliminated × launch price per kg ($/kg) = net launch cash savings per satellite across 2 standard bus sizes.', link: '4.3' },
-      { code: 'S-TH.4', title: 'Market Segmentation', desc: 'Initial beachhead in commercial LEO megaconstellations scaling to lunar cislunar tugs and deep-space science probes.', link: '5.1 · 5.2' },
-      { code: 'S-TH.5', title: 'Competitive Defense', desc: 'Why your system outperforms redundant rad-hard silicon, spot-shielding, and ECC memory algorithms.', link: '5.5' },
-      { code: 'S-TH.6', title: 'Pricing & Licensing', desc: 'Hardware bus OEM sales vs IP patent licensing vs dollar-per-kilogram-saved performance pricing.', link: '4.4' },
-      { code: 'S-TH.7', title: 'CapEx & Flight Testing', desc: 'Cyclotron radiation beam testing, CubeSat in-orbit demonstration (IOD) launch costs, and break-even milestones.', link: '4.6' },
-      { code: 'S-TH.8', title: 'Risk, ITAR & IN-SPACe', desc: 'Space regulatory licensing under Indian Space Policy 2023 / IN-SPACe, export compliance, patent moats.', link: '2.1 · 5.6' },
-      { code: 'S-TH.9', title: '5-Year Pro-Forma', desc: 'Detailed 5-year financial statement: R&D phase, IOD flight, commercial OEM rollout, cash burn, and EBITDA.', link: '4.5' }
+      { code: 'S-TH.1', title: 'Physical Mechanism', desc: 'Deflection (magnetic/electrostatic Lorentz force) vs absorption (borated hydrides, liquid hydrogen, graphene) + energy harvesting mechanism.' },
+      { code: 'S-TH.2', title: 'Energy & Mass Budget', desc: 'Watts harvested vs parasitic mass added. Radiation dosage reduction (Sieverts / rads) compared with equivalent aluminum shielding.' },
+      { code: 'S-TH.3', title: 'Launch Mass Savings', desc: 'Parasitic shielding mass eliminated × launch price per kg ($/kg) = net launch cash savings per satellite across 2 standard bus sizes.' },
+      { code: 'S-TH.4', title: 'Market Segmentation', desc: 'Initial beachhead in commercial LEO megaconstellations scaling to lunar cislunar tugs and deep-space science probes.' },
+      { code: 'S-TH.5', title: 'Competitive Defense', desc: 'Why your system outperforms redundant rad-hard silicon, spot-shielding, and ECC memory algorithms.' },
+      { code: 'S-TH.6', title: 'Pricing & Licensing', desc: 'Hardware bus OEM sales vs IP patent licensing vs dollar-per-kilogram-saved performance pricing.' },
+      { code: 'S-TH.7', title: 'CapEx & Flight Testing', desc: 'Cyclotron radiation beam testing, CubeSat in-orbit demonstration (IOD) launch costs, and break-even milestones.' },
+      { code: 'S-TH.8', title: 'Risk, ITAR & IN-SPACe', desc: 'Space regulatory licensing under Indian Space Policy 2023 / IN-SPACe, export compliance, patent moats.' },
+      { code: 'S-TH.9', title: '5-Year Pro-Forma', desc: 'Detailed 5-year financial statement: R&D phase, IOD flight, commercial OEM rollout, cash burn, and EBITDA.' }
     ]
   },
   {
@@ -204,18 +171,17 @@ const SENIOR_PROMPTS = [
       { val: '~0.001 kg/m³', label: 'Air density at 50 km (stratopause / lower mesosphere)' },
       { val: '~10 m', label: 'Wingspan of Quetzalcoatlus northropi' }
     ],
-    curveball: 'Double your dinosaur\'s wingspan. What happens to its structural mass, its stall speed in thin air, and its daily metabolic food caloric requirement?',
     mustCover: [
-      { code: 'S-ME.1', title: 'Biomimetic Airframe', desc: 'Skeletal anatomy, pneumatic hollow bones, skin membrane elastodynamics, wingspan, chord, aspect ratio, mass budget.', link: '3.1' },
-      { code: 'S-ME.2', title: 'Flight Mechanics', desc: 'Wing loading (W/S), lift coefficient (CL_max), flapping kinematic cycles vs dynamic thermal soaring regimes.', link: '3.3' },
-      { code: 'S-ME.3', title: 'Aerodynamic Drag Profile', desc: 'Parasite, profile, and induced drag breakdown (CD = CD0 + CL²/π·AR·e), wingtip vortices, Reynolds number.', link: '3.3' },
-      { code: 'S-ME.4', title: 'Performance Envelope', desc: 'Stall speed (v_stall), cruise speed, maximum ceiling, turn radius at load factor n, power required curve.', link: '3.3' },
-      { code: 'S-ME.5', title: 'Bio-Energetics', desc: 'Basal metabolic rate (BMR), active flight muscle power (W/kg), daily caloric intake (Joules/day), feeding logistics.', link: '3.4' },
-      { code: 'S-ME.6', title: 'Atmospheric Boundary', desc: 'Performance degradation across altitudes (0 km to 20 km ceiling); show why it cannot fly in the mesosphere.', link: '3.3' },
-      { code: 'S-ME.7', title: 'Proprietary Innovation', desc: 'Novel aerodynamic feature: passive gust-alleviating aeroelastic wingtips, leading-edge tubercles, or riblets.', link: '3.2' },
-      { code: 'S-ME.8', title: 'Engineering Trade-offs', desc: 'Three quantified trade-offs (e.g. wing aspect ratio vs roll rate vs spar root bending moment).', link: '3.3' },
-      { code: 'S-ME.9', title: 'Commercial Spin-Off', desc: 'Licensing biomimetic morphing wing skins or gust-alleviation control algorithms to HAPS drone makers.', link: '3.5 · 5.1' },
-      { code: 'S-ME.10', title: 'Venture Financials', desc: 'AeroGenesis business model: patent royalties, R&D government grants, unit economics, 5-year pro-forma.', link: '4.0 · 5.5' }
+      { code: 'S-ME.1', title: 'Biomimetic Airframe', desc: 'Skeletal anatomy, pneumatic hollow bones, skin membrane elastodynamics, wingspan, chord, aspect ratio, mass budget.' },
+      { code: 'S-ME.2', title: 'Flight Mechanics', desc: 'Wing loading (W/S), lift coefficient (CL_max), flapping kinematic cycles vs dynamic thermal soaring regimes.' },
+      { code: 'S-ME.3', title: 'Aerodynamic Drag Profile', desc: 'Parasite, profile, and induced drag breakdown (CD = CD0 + CL²/π·AR·e), wingtip vortices, Reynolds number.' },
+      { code: 'S-ME.4', title: 'Performance Envelope', desc: 'Stall speed (v_stall), cruise speed, maximum ceiling, turn radius at load factor n, power required curve.' },
+      { code: 'S-ME.5', title: 'Bio-Energetics', desc: 'Basal metabolic rate (BMR), active flight muscle power (W/kg), daily caloric intake (Joules/day), feeding logistics.' },
+      { code: 'S-ME.6', title: 'Atmospheric Boundary', desc: 'Performance degradation across altitudes (0 km to 20 km ceiling); show why it cannot fly in the mesosphere.' },
+      { code: 'S-ME.7', title: 'Proprietary Innovation', desc: 'Novel aerodynamic feature: passive gust-alleviating aeroelastic wingtips, leading-edge tubercles, or riblets.' },
+      { code: 'S-ME.8', title: 'Engineering Trade-offs', desc: 'Three quantified trade-offs (e.g. wing aspect ratio vs roll rate vs spar root bending moment).' },
+      { code: 'S-ME.9', title: 'Commercial Spin-Off', desc: 'Licensing biomimetic morphing wing skins or gust-alleviation control algorithms to HAPS drone makers.' },
+      { code: 'S-ME.10', title: 'Venture Financials', desc: 'AeroGenesis business model: patent royalties, R&D government grants, unit economics, 5-year pro-forma.' }
     ]
   },
   {
@@ -236,18 +202,17 @@ const SENIOR_PROMPTS = [
       { val: '1,361 ÷ r² W/m²', label: 'Solar irradiance at r Astronomical Units (AU) from the Sun' },
       { val: '~120 g · ~5 g', label: 'OSIRIS-REx (Bennu) and Hayabusa2 (Ryugu) sample masses' }
     ],
-    curveball: 'Your mass budget closes with 20% margin. Then your asteroid extraction yield comes in at 50% of nominal. What breaks first: the mission timeline or the venture balance sheet?',
     mustCover: [
-      { code: 'S-EX.1', title: 'Asteroid Target', desc: 'Specific target chosen from JPL Small-Body Database: designation, spectral type, semi-major axis, eccentricity, rotation period.', link: '3.1' },
-      { code: 'S-EX.2', title: 'Resource & Customer', desc: 'Single target resource (e.g. water ice for LOX/LH2 propellant or nickel-iron), delivery form, and first in-orbit client.', link: '1.0 · 5.1' },
-      { code: 'S-EX.3', title: 'Mission Architecture', desc: 'Trajectory delta-v breakdown (LEO escape, transfer, rendezvous, return, Earth capture), launch windows.', link: '3.3' },
-      { code: 'S-EX.4', title: 'Rocket Equation Proof', desc: 'Full mathematical application of Tsiolkovsky equation with engine Isp, propellant mass, dry mass for each burn.', link: '3.3' },
-      { code: 'S-EX.5', title: 'Spacecraft Mass Table', desc: 'Subsystem mass breakdown (structures, thermal, power, avionics, mining payload, propellant) with ≥20% margin.', link: '3.1' },
-      { code: 'S-EX.6', title: 'Power Subsystem', desc: 'Solar array sizing computed via inverse-square law at aphelion vs battery storage vs nuclear RTG/fission.', link: '3.3' },
-      { code: 'S-EX.7', title: 'Extraction Physics', desc: 'Anchoring in microgravity, optical mining sublimation vs mechanical cutting, daily yield (kg/day), dust handling.', link: '3.4' },
-      { code: 'S-EX.8', title: 'Delivered Unit Economics', desc: 'All-in cost per kilogram delivered to LEO/EML-1 vs predicted 2045 Earth launch price per kilogram.', link: '4.3' },
-      { code: 'S-EX.9', title: 'Staged Capitalization', desc: 'Tranche funding (Seed/A/B) tied to flight milestones: prospector flyby, rendezvous demo, extraction return.', link: '4.5 · 4.6' },
-      { code: 'S-EX.10', title: 'Outer Space Law & Risk', desc: 'Compliance with OST Articles II & VI, national space resource ownership laws (US 2015, India Space Policy 2023).', link: '2.1 · 5.6' }
+      { code: 'S-EX.1', title: 'Asteroid Target', desc: 'Specific target chosen from JPL Small-Body Database: designation, spectral type, semi-major axis, eccentricity, rotation period.' },
+      { code: 'S-EX.2', title: 'Resource & Customer', desc: 'Single target resource (e.g. water ice for LOX/LH2 propellant or nickel-iron), delivery form, and first in-orbit client.' },
+      { code: 'S-EX.3', title: 'Mission Architecture', desc: 'Trajectory delta-v breakdown (LEO escape, transfer, rendezvous, return, Earth capture), launch windows.' },
+      { code: 'S-EX.4', title: 'Rocket Equation Proof', desc: 'Full mathematical application of Tsiolkovsky equation with engine Isp, propellant mass, dry mass for each burn.' },
+      { code: 'S-EX.5', title: 'Spacecraft Mass Table', desc: 'Subsystem mass breakdown (structures, thermal, power, avionics, mining payload, propellant) with ≥20% margin.' },
+      { code: 'S-EX.6', title: 'Power Subsystem', desc: 'Solar array sizing computed via inverse-square law at aphelion vs battery storage vs nuclear RTG/fission.' },
+      { code: 'S-EX.7', title: 'Extraction Physics', desc: 'Anchoring in microgravity, optical mining sublimation vs mechanical cutting, daily yield (kg/day), dust handling.' },
+      { code: 'S-EX.8', title: 'Delivered Unit Economics', desc: 'All-in cost per kilogram delivered to LEO/EML-1 vs predicted 2045 Earth launch price per kilogram.' },
+      { code: 'S-EX.9', title: 'Staged Capitalization', desc: 'Tranche funding (Seed/A/B) tied to flight milestones: prospector flyby, rendezvous demo, extraction return.' },
+      { code: 'S-EX.10', title: 'Outer Space Law & Risk', desc: 'Compliance with OST Articles II & VI, national space resource ownership laws (US 2015, India Space Policy 2023).' }
     ]
   },
   {
@@ -268,41 +233,14 @@ const SENIOR_PROMPTS = [
       { val: '1976', label: 'UN ENMOD convention banning hostile environmental modification' },
       { val: '2017', label: 'SNOWIE field campaign proving radar-verified seeded snowfall' }
     ],
-    curveball: 'It rained 15 millimetres after your seeding plane flew over. How do you prove in court or to your client that it wouldn\'t have rained anyway?',
     mustCover: [
-      { code: 'S-TR.1', title: 'The Technology', desc: 'Nucleation agent (hygroscopic flares, liquid propane, ionized particles, acoustic cannons), delivery drone/aircraft, targeted area.', link: '1.0 · 3.1' },
-      { code: 'S-TR.2', title: 'Atmospheric Physics', desc: 'Cloud thermodynamics: convective available potential energy (CAPE), dewpoint depression, supercooled liquid water.', link: '3.3' },
-      { code: 'S-TR.3', title: 'Addressable Market', desc: 'Airport fog-dispersal contracts, agricultural hail-suppression cooperatives, municipal reservoir managers.', link: '5.1 · 5.2' },
-      { code: 'S-TR.4', title: 'Business Model', desc: 'Readiness retainer fee + success fee per operational clearance event; weather-indexed performance contracts.', link: '4.4 · 5.5' },
-      { code: 'S-TR.5', title: 'Environmental & Legal Risks', desc: 'Toxicity of seeding chemical agents, neighboring rainfall depletion (rain shadow accusations), DGCA flight clearance.', link: '5.6' },
-      { code: 'S-TR.6', title: 'Statistical Attribution', desc: 'Dual-polarization Doppler radar differential reflectivity (ZDR), randomized target/control crossover experimental design.', link: '3.4' },
-      { code: 'S-TR.7', title: 'Financial Modeling', desc: 'Aircraft/drone fleet CapEx, flare consumables OpEx, insurance premiums, per-operation cost, and 5-year EBITDA.', link: '4.0' }
-    ]
-  },
-  {
-    id: 's-bonus',
-    code: 'S-BX',
-    layer: 'Open Track · Bonus Addendum (+10 pts)',
-    title: 'The Big Idea',
-    log: 'Every company starts with a question that begins "What if". Find one nobody is asking and make it pay.',
-    story: {
-      bg: 'Aerospace, quantum communications, advanced materials, and climate tech are riddled with hidden bottlenecks: single-source supply chain vulnerabilities, testing facilities that charge exorbitant fees, or raw telemetry data that sits unmined. Any domain is eligible—from orbital robotics to industrial biology.',
-      challenge: 'Identify an overlooked high-impact technological or industrial bottleneck, engineer a commercial solution, and prove its financial viability.',
-      hard: '"Nobody has done this before" is often a red flag, not a badge of honor. You must demonstrate why incumbents failed, why the technological or market timing is right now, and prove defensibility against copycats.'
-    },
-    numbers: [
-      { val: '6 pages', label: 'Maximum page limit for Senior bonus addendum PDF' },
-      { val: '1 client', label: 'Must name specific real-world corporate or institutional buyer' },
-      { val: '3 years', label: 'Minimum duration of financial cash flow projection' },
-      { val: '+10 pts', label: 'Maximum score added directly to Round 1 written total' }
-    ],
-    curveball: 'Why hasn\'t Boeing, ISRO, or a venture-backed startup in Silicon Valley already built this, and what stops them copying you the month you launch?',
-    mustCover: [
-      { code: 'S-BX.1', title: 'Market Opportunity', desc: 'The industrial or technological bottleneck, quantified commercial cost of status quo, evidence.', link: 'Addendum B.1' },
-      { code: 'S-BX.2', title: 'The Innovation', desc: 'System architecture, proprietary intellectual property, TRL level, development pathway.', link: 'Addendum B.2' },
-      { code: 'S-BX.3', title: 'Market Sizing', desc: 'TAM / SAM / SOM derived bottom-up with verified industry price points and sales cycle duration.', link: 'Addendum B.3' },
-      { code: 'S-BX.4', title: 'Unit Economics & Cash', desc: 'Gross margin per unit, customer acquisition cost (CAC), lifetime value (LTV), 3-year cash flow forecast.', link: 'Addendum B.4' },
-      { code: 'S-BX.5', title: 'Defensible Moat', desc: 'Patents, network effects, high switching costs, or proprietary datasets preventing fast-follower replication.', link: 'Addendum B.5' }
+      { code: 'S-TR.1', title: 'The Technology', desc: 'Nucleation agent (hygroscopic flares, liquid propane, ionized particles, acoustic cannons), delivery drone/aircraft, targeted area.' },
+      { code: 'S-TR.2', title: 'Atmospheric Physics', desc: 'Cloud thermodynamics: convective available potential energy (CAPE), dewpoint depression, supercooled liquid water.' },
+      { code: 'S-TR.3', title: 'Addressable Market', desc: 'Airport fog-dispersal contracts, agricultural hail-suppression cooperatives, municipal reservoir managers.' },
+      { code: 'S-TR.4', title: 'Business Model', desc: 'Readiness retainer fee + success fee per operational clearance event; weather-indexed performance contracts.' },
+      { code: 'S-TR.5', title: 'Environmental & Legal Risks', desc: 'Toxicity of seeding chemical agents, neighboring rainfall depletion (rain shadow accusations), DGCA flight clearance.' },
+      { code: 'S-TR.6', title: 'Statistical Attribution', desc: 'Dual-polarization Doppler radar differential reflectivity (ZDR), randomized target/control crossover experimental design.' },
+      { code: 'S-TR.7', title: 'Financial Modeling', desc: 'Aircraft/drone fleet CapEx, flare consumables OpEx, insurance premiums, per-operation cost, and 5-year EBITDA.' }
     ]
   }
 ];
@@ -314,8 +252,8 @@ const CHECKLIST_ITEMS = [
   { id: 'bpp4', label: 'Executive Summary (1.1) contains one-liner, customer persona, and break-even units.' },
   { id: 'bpp5', label: 'Physics & Environment Log (3.3) cites real atmospheric data with source citations.' },
   { id: 'bpp6', label: 'CapEx (4.1) and monthly OpEx (4.2) itemized with manufacturer price lists or salary references.' },
-  { id: 'bpp7', label: 'Complete Key Figures Table (4.7) matching all 8 Junior (J-K1..J-K8) or 10 Senior (S-K1..S-K10) metrics.' },
-  { id: 'bpp8', label: 'Bottom-up market sizing (5.2) without generic top-down "1% of a huge market" handwaving.' },
+  { id: 'bpp7', label: 'Complete Key Figures Table (4.7) matching all Junior (J-K1..J-K8) or Senior (S-K1..S-K10) metrics.' },
+  { id: 'bpp8', label: 'Bottom-up market sizing (5.2) without generic top-down "1% of a huge market" assumptions.' },
   { id: 'bpp9', label: 'Risk Register (5.6) includes technical, regulatory, and financial risks with clear triggers.' },
   { id: 'bpp10', label: 'Assumption Ledger (6.1) lists every numerical assumption with confidence rating (L/M/H).' },
   { id: 'bpp11', label: 'All references formatted in APA 7th edition (6.2) and Tier 2 AI use disclosed (6.3).' },
@@ -332,40 +270,6 @@ export default function BppPrompt() {
   const [division, setDivision] = useState('senior');
   const [activeJuniorPrompt, setActiveJuniorPrompt] = useState('j-thermo');
   const [activeSeniorPrompt, setActiveSeniorPrompt] = useState('s-thermo');
-
-  // Interactive Financial Modeling Lab State
-  const [calcUnitPrice, setCalcUnitPrice] = useState(50000);
-  const [calcVarCost, setCalcVarCost] = useState(12000);
-  const [calcFixedCost, setCalcFixedCost] = useState(250000);
-  const [calcSalesVolume, setCalcSalesVolume] = useState(15);
-  const [calcCapEx, setCalcCapEx] = useState(1500000);
-
-  // Preflight Checklist State
-  const [checklist, setChecklist] = useState(() => {
-    try {
-      const saved = localStorage.getItem('c26-bpp-checklist');
-      return saved ? JSON.parse(saved) : { bpp1: true, bpp2: true };
-    } catch {
-      return { bpp1: true, bpp2: true };
-    }
-  });
-
-  // Countdown timer
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, isLive: true });
-
-  useEffect(() => {
-    const update = () => {
-      const now = Date.now();
-      const diff = Math.max(0, R1_DEADLINE - now);
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / (1000 * 60)) % 60);
-      setTimeLeft({ days: d, hours: h, minutes: m, isLive: diff > 0 });
-    };
-    update();
-    const timer = setInterval(update, 60000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Sync hash routing
   useEffect(() => {
@@ -384,69 +288,37 @@ export default function BppPrompt() {
     window.history.replaceState(null, '', `#${secId}`);
   };
 
-  const toggleCheck = (id) => {
-    setChecklist((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      try {
-        localStorage.setItem('c26-bpp-checklist', JSON.stringify(next));
-      } catch (err) {
-        console.warn('Storage failed', err);
-      }
-      return next;
-    });
-  };
-
-  const resetChecklist = () => {
-    setChecklist({});
-    try {
-      localStorage.setItem('c26-bpp-checklist', JSON.stringify({}));
-    } catch {}
-  };
-
-  const completedCount = useMemo(() => {
-    return Object.values(checklist).filter(Boolean).length;
-  }, [checklist]);
-
-  // Unit Economics Computations
-  const unitContribution = Math.max(0, calcUnitPrice - calcVarCost);
-  const contributionMarginPct = calcUnitPrice > 0 ? ((unitContribution / calcUnitPrice) * 100).toFixed(1) : 0;
-  const breakEvenUnits = unitContribution > 0 ? Math.ceil(calcFixedCost / unitContribution) : '∞';
-  const monthlyProfit = calcSalesVolume * unitContribution - calcFixedCost;
-  const paybackMonths = monthlyProfit > 0 ? (calcCapEx / monthlyProfit).toFixed(1) : 'Never (Deficit)';
-
   const currentPrompts = division === 'junior' ? JUNIOR_PROMPTS : SENIOR_PROMPTS;
   const currentPromptId = division === 'junior' ? activeJuniorPrompt : activeSeniorPrompt;
   const selectedPrompt = currentPrompts.find((p) => p.id === currentPromptId) || currentPrompts[0];
 
   return (
-    <div className="space-y-8 animate-fadeIn pb-16">
+    <div className="space-y-8 pb-16">
       {/* Top Breadcrumb & Status */}
       <div className="border-b-2 border-bone/30 pb-3 flex flex-wrap justify-between items-center gap-3 font-mono text-xs text-bone-dim">
         <div className="flex items-center gap-2 flex-wrap">
-          <Link to="/" className="hover:text-crimson transition-colors">CELESTECON 2026</Link>
+          <Link to="/" className="text-bone-dim hover:text-crimson">CELESTECON 2026</Link>
           <span>/</span>
-          <Link to="/comps" className="hover:text-crimson transition-colors">COMPETITIONS</Link>
+          <Link to="/comps" className="text-bone-dim hover:text-crimson">COMPETITIONS</Link>
           <span>/</span>
-          <Link to="/prompts" className="hover:text-crimson transition-colors">PROMPTS</Link>
+          <Link to="/prompts" className="text-bone-dim hover:text-crimson">PROMPTS</Link>
           <span>/</span>
           <span className="text-crimson font-bold uppercase">EVENT 04 · BUSINESS POWER PITCH</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
+          <Link to="/submissions" className="text-crimson font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
             <span>Submission Vault</span>
             <span>→</span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">DOSSIER UNLOCKED</span>
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">PROMPTS RELEASED</span>
           </div>
         </div>
       </div>
 
       {/* Main Hero Header */}
-      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-28 -mt-28"></div>
-
+      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 relative z-10">
           <div className="space-y-4 max-w-3xl">
             <div className="flex items-center gap-2 flex-wrap">
@@ -460,7 +332,7 @@ export default function BppPrompt() {
                 Junior (Grades 6–8) · Senior (Grades 9–12)
               </span>
               <span className="font-mono text-xs uppercase px-2.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/40 font-bold">
-                ● 10 PROMPTS ACTIVE
+                ● 8 PROMPTS ACTIVE
               </span>
             </div>
 
@@ -468,68 +340,45 @@ export default function BppPrompt() {
               Business Power Pitch <span className="text-crimson">2026</span>
             </h1>
 
-            <div className="p-3 bg-amber-500/10 border-l-4 border-amber-500 font-mono text-xs sm:text-sm text-bone">
-              <span className="text-amber-400 font-bold uppercase tracking-widest block mb-0.5">
-                // OFFICIAL VENTURE MOTTO
-              </span>
-              <span className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wider">
-                &ldquo;Pick a layer of the sky. Find someone who will pay for it. Prove the numbers.&rdquo;
-              </span>
-            </div>
-
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              An inter-school competition that brings together aspiring innovators and entrepreneurs to develop solutions with real-world impact. Design a commercially viable aerospace product or service across the atmospheric layers, supported by technical feasibility, financial planning, and a go-to-market strategy.
+              An inter-school competition that brings together aspiring innovators and entrepreneurs to develop solutions with real-world impact. Design a commercially viable aerospace product or service across atmospheric layers, supported by technical feasibility, financial planning, and a go-to-market strategy.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
               <button
                 onClick={() => handleSectionChange('tracks')}
-                className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-all cursor-pointer shadow-md"
+                className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson cursor-pointer"
               >
-                Explore 10 Prompt Tracks →
-              </button>
-              <button
-                onClick={() => handleSectionChange('calc')}
-                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-all cursor-pointer"
-              >
-                Unit Economics Lab
+                Explore Prompt Tracks →
               </button>
               <button
                 onClick={() => handleSectionChange('template')}
-                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-bone transition-all cursor-pointer"
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
                 Proposal Template
+              </button>
+              <button
+                onClick={() => handleSectionChange('checklist')}
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
+              >
+                Preflight Checklist
               </button>
             </div>
           </div>
 
           {/* Telemetry Aside Box */}
-          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0 shadow-xl">
+          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
-              <span className="text-bone-dim uppercase">Round 1 Proposal Window</span>
+              <span className="text-bone-dim uppercase">Proposal Window</span>
               <span className="font-bold text-green-400 uppercase">
-                {timeLeft.isLive ? '● SUBMISSIONS OPEN' : 'WINDOW CLOSED'}
+                Round 1 Online
               </span>
             </div>
 
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-bone-dim uppercase block">
-                Deadline: 18 Oct 23:59:59 IST
-              </span>
-              <div className="grid grid-cols-3 gap-1.5 text-center font-mono">
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.days}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Days Left</span>
-                </div>
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.hours}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Hours</span>
-                </div>
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-crimson block leading-tight">{timeLeft.minutes}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Mins</span>
-                </div>
-              </div>
+            <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
+              <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
+              <strong className="text-bone text-sm block">18 October 2026 · 23:59 IST</strong>
+              <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
             <div className="space-y-1.5 font-mono text-[11px] text-bone-dim pt-2 border-t border-bone/20">
@@ -553,7 +402,7 @@ export default function BppPrompt() {
 
             <Link
               to="/submissions"
-              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block shadow-md"
+              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson block"
             >
               Deposit Proposal PDF →
             </Link>
@@ -565,18 +414,16 @@ export default function BppPrompt() {
       <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
         {[
           { id: 'brief', label: '01 · The Brief' },
-          { id: 'format', label: '02 · Format & Scoring' },
-          { id: 'tracks', label: '03 · Prompt Tracks' },
-          { id: 'calc', label: '04 · Unit Economics Lab' },
-          { id: 'template', label: '05 · Proposal Guide' },
-          { id: 'rules', label: '06 · Rules & Rubric' }
+          { id: 'tracks', label: '02 · Prompt Tracks' },
+          { id: 'template', label: '03 · Proposal Guide' },
+          { id: 'checklist', label: '04 · Checklist' }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleSectionChange(tab.id)}
-            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${
-              activeSection === tab.id || (tab.id === 'rules' && activeSection === 'rubrics')
-                ? 'bg-crimson text-bone-hi shadow-md'
+            className={`flex-1 sm:flex-initial px-4 py-2 font-bold cursor-pointer text-center ${
+              activeSection === tab.id
+                ? 'bg-crimson text-bone-hi'
                 : 'text-bone-dim hover:text-bone hover:bg-ink'
             }`}
           >
@@ -589,7 +436,7 @@ export default function BppPrompt() {
       {/* SECTION 01: THE BRIEF */}
       {/* ======================================================== */}
       {activeSection === 'brief' && (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
             {/* Header */}
             <div className="border-b border-bone/20 pb-4">
@@ -646,7 +493,7 @@ export default function BppPrompt() {
                     Juniors: <span className="text-crimson">25 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Strict maximum page limit of <strong>25 pages</strong> (15–20 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 layer challenges + 1 open bonus prompt.
+                    Strict maximum page limit of <strong>25 pages</strong> (15–20 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 atmospheric layer challenges.
                   </p>
                 </div>
 
@@ -660,14 +507,14 @@ export default function BppPrompt() {
                     Seniors: <span className="text-crimson">30 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Strict maximum page limit of <strong>30 pages</strong> (20–25 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 deep-tech challenges + 1 open bonus prompt.
+                    Strict maximum page limit of <strong>30 pages</strong> (20–25 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 deep-tech atmospheric challenges.
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-wrap justify-between items-center gap-2 pt-1 font-mono text-xs text-bone-dim">
                 <span>Deliverable: Proposal Dossier PDF + 12-Slide Deck PDF (English only, INR or USD with declared exchange rate).</span>
-                <span className="text-amber-400">Optional Bonus Challenge: Max 4 pp (Jr) or 6 pp (Sr) for +10 bonus pts.</span>
+                <span className="text-bone-dim">Submission via official CelesteCon portal before 18 Oct 23:59 IST.</span>
               </div>
             </div>
 
@@ -681,13 +528,13 @@ export default function BppPrompt() {
                   The Four Commercial Investment Tests
                 </h3>
                 <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
-                  The Round 2 evaluation panel includes aerospace engineers, industrial executives, and venture investors. Your venture must pass each test:
+                  The evaluation panel includes aerospace engineers, industrial executives, and venture investors. Your venture must pass each test:
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 01 Customer */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
                   <span className="font-mono text-xs font-bold text-crimson uppercase block">01 · Customer Test</span>
                   <h4 className="font-display text-lg text-bone uppercase">Name Who Pays</h4>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
@@ -696,7 +543,7 @@ export default function BppPrompt() {
                 </div>
 
                 {/* 02 Unit Cost */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
                   <span className="font-mono text-xs font-bold text-amber-400 uppercase block">02 · Unit Cost Test</span>
                   <h4 className="font-display text-lg text-bone uppercase">Price One Unit</h4>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
@@ -705,7 +552,7 @@ export default function BppPrompt() {
                 </div>
 
                 {/* 03 Physics */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
                   <span className="font-mono text-xs font-bold text-green-400 uppercase block">03 · Physics Test</span>
                   <h4 className="font-display text-lg text-bone uppercase">Layer Boundaries</h4>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
@@ -714,161 +561,161 @@ export default function BppPrompt() {
                 </div>
 
                 {/* 04 Cross-Exam */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
                   <span className="font-mono text-xs font-bold text-cyan-400 uppercase block">04 · Defense Test</span>
                   <h4 className="font-display text-lg text-bone uppercase">Defend Every Number</h4>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Any number in your proposal can be questioned during the Round 2 live pitch. If no team member can derive it on the whiteboard, delete it.
+                    Round 2 judges will probe your math. If your CAC exceeds LTV, or your payload mass violates your launch budget, your venture unravels.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Atmospheric Market Layers Map */}
-            <div className="space-y-3 pt-2">
-              <div className="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-bone-dim border-b border-bone/20 pb-2">
-                <span className="text-bone font-bold">Fig. 01 · Atmospheric Market Layers Spectrum</span>
-                <span className="text-amber-400">5 Distinct Operational Tiers</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 font-mono text-xs">
-                <div className="p-3 bg-ink-2 border-l-4 border-crimson">
-                  <span className="text-crimson font-bold block">EXOSPHERE</span>
-                  <span className="text-[10px] text-bone-dim block">600+ km</span>
-                  <p className="text-[11px] text-bone mt-1">S-EX · Asteroid Mining &amp; Deep Space</p>
-                </div>
-                <div className="p-3 bg-ink-2 border-l-4 border-amber-400">
-                  <span className="text-amber-400 font-bold block">THERMOSPHERE</span>
-                  <span className="text-[10px] text-bone-dim block">85–600 km</span>
-                  <p className="text-[11px] text-bone mt-1">J-TH &amp; S-TH · Drag Mitigation &amp; Power</p>
-                </div>
-                <div className="p-3 bg-ink-2 border-l-4 border-green-400">
-                  <span className="text-green-400 font-bold block">MESOSPHERE</span>
-                  <span className="text-[10px] text-bone-dim block">50–85 km</span>
-                  <p className="text-[11px] text-bone mt-1">J-ME &amp; S-ME · Meteor Tracking &amp; Flight</p>
-                </div>
-                <div className="p-3 bg-ink-2 border-l-4 border-cyan-400">
-                  <span className="text-cyan-400 font-bold block">STRATOSPHERE</span>
-                  <span className="text-[10px] text-bone-dim block">12–50 km</span>
-                  <p className="text-[11px] text-bone mt-1">J-ST · Clean Air &amp; Ozonesondes</p>
-                </div>
-                <div className="p-3 bg-ink-2 border-l-4 border-crimson">
-                  <span className="text-crimson font-bold block">TROPOSPHERE</span>
-                  <span className="text-[10px] text-bone-dim block">0–12 km</span>
-                  <p className="text-[11px] text-bone mt-1">J-OZ &amp; S-TR · Airline Ozone &amp; Weather</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Jump to Tracks CTA */}
-            <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
-              <div className="font-mono text-xs text-bone-dim">
-                Ready to examine the challenges? Review all 10 atmospheric problem statements.
-              </div>
-              <button
-                onClick={() => handleSectionChange('tracks')}
-                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink hover:text-crimson border border-crimson transition-colors cursor-pointer"
-              >
-                Explore 10 Prompt Tracks →
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 02: FORMAT & SCORING */}
-      {/* ======================================================== */}
-      {activeSection === 'format' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 02 · Format &amp; Scoring
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Two Rigorous Rounds. Both Count Toward Victory.
-              </h2>
-            </div>
-
-            {/* 5-Step Timeline */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-bone/30 divide-y sm:divide-y-0 sm:divide-x divide-bone/30 bg-ink-2 text-xs font-mono">
-              <div className="p-4 space-y-2">
-                <span className="text-2xl font-bold text-bone-dim">01</span>
-                <strong className="block text-sm text-bone">Team Registration</strong>
-                <p className="text-bone-dim text-[11px]">2–5 students from one school with faculty advisor on the portal.</p>
-              </div>
-              <div className="p-4 space-y-2">
-                <span className="text-2xl font-bold text-bone-dim">02</span>
-                <strong className="block text-sm text-bone">Venture Ideation</strong>
-                <p className="text-bone-dim text-[11px]">Pick 1 layer prompt from your division. Draft proposal and deck.</p>
-              </div>
-              <div className="p-4 space-y-2 bg-crimson/10 border-l border-crimson">
-                <span className="text-2xl font-bold text-crimson">03</span>
-                <strong className="block text-sm text-crimson">R1 Online Vault</strong>
-                <p className="text-bone text-[11px]">Upload proposal PDF + 12-slide deck by 18 Oct, 23:59 IST.</p>
-              </div>
-              <div className="p-4 space-y-2">
-                <span className="text-2xl font-bold text-bone-dim">04</span>
-                <strong className="block text-sm text-bone">Shortlisting</strong>
-                <p className="text-bone-dim text-[11px]">Double-blind jury evaluation. Top teams invited to on-campus finale.</p>
-              </div>
-              <div className="p-4 space-y-2 bg-amber-500/10 border-l border-amber-500">
-                <span className="text-2xl font-bold text-amber-400">05</span>
-                <strong className="block text-sm text-amber-400">R2 Live Finale</strong>
-                <p className="text-bone text-[11px]">24 Oct on-campus pitch defense, investor Q&amp;A + 2-min curveball card.</p>
-              </div>
-            </div>
-
-            {/* Round 1 vs Round 2 Breakdown */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">ROUND 1 · ONLINE</span>
-                  <span className="font-mono text-[11px] text-amber-400 font-bold">DUE 18 OCT 23:59 IST</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Venture Proposal &amp; Investor Deck</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Junior Length:</strong> 15–20 pages recommended (strict max 25 pages).</li>
-                  <li><strong className="text-bone">Senior Length:</strong> 20–25 pages recommended (strict max 30 pages).</li>
-                  <li><strong className="text-bone">Pitch Deck:</strong> Exactly 12 content slides (16:9 PDF format).</li>
-                  <li><strong className="text-bone">Bonus Challenge:</strong> Max 4 pp (Jr) or 6 pp (Sr) for up to 10 bonus points.</li>
-                  <li><strong className="text-bone">Scoring Weight:</strong> 100 points written proposal (+ 10 bonus).</li>
-                </ul>
-              </div>
-
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 border border-bone text-bone">ROUND 2 · ONSITE</span>
-                  <span className="font-mono text-[11px] text-green-400 font-bold">24 OCT · DPS R.K. PURAM</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Live Pitch &amp; Cross-Examination</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Oral Pitch:</strong> 6 minutes (Junior) or 8 minutes (Senior) formal presentation.</li>
-                  <li><strong className="text-bone">Investor Q&amp;A:</strong> ~10 minutes intensive questioning by aerospace investors.</li>
-                  <li><strong className="text-bone">Curveball Card:</strong> Real-time market/physics shock injected live (2 mins to respond).</li>
-                  <li><strong className="text-bone">Scoring Weight:</strong> 100 points oral defense and technical clarity.</li>
-                  <li><strong className="text-bone">Grand Total:</strong> R1 (100) + R2 (100) = 200 pts total + bonus.</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Grand Formula Equation Box */}
-            <div className="p-5 bg-ink border border-amber-500/50 flex flex-col md:flex-row items-center gap-6 justify-between">
-              <div className="space-y-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-amber-400 font-bold">
-                  Grand Championship Formula
+            {/* Atmospheric Layers Map */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
+                  Commercial Territory
                 </span>
-                <h3 className="font-display text-2xl uppercase text-bone">
-                  Round 1 Score Carries Directly into the Finale
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  Atmospheric Market Layers
                 </h3>
-                <p className="text-xs font-mono text-bone-dim">
-                  Total Championship Score = Round 1 (100 pts) + Round 2 (100 pts) + Bonus (+10 pts). R1 scores do NOT reset. A thorough written proposal preserves its full weight through the final podium ranking.
+              </div>
+
+              <div className="space-y-2 font-mono text-xs">
+                {[
+                  { name: 'Exosphere & Deep Space', alt: '600+ km', tech: 'Asteroid prospecting, propellant depots, interplanetary logistics', jr: '—', sr: 'S-EX' },
+                  { name: 'Thermosphere', alt: '85–600 km', tech: 'LEO constellations, solar storm drag mitigation, active radiation shielding', jr: 'J-TH', sr: 'S-TH' },
+                  { name: 'Mesosphere', alt: '50–85 km', tech: 'Meteor intelligence, infrasound sensing, thin-air biomimetic aerodynamics', jr: 'J-ME', sr: 'S-ME' },
+                  { name: 'Stratosphere', alt: '12–50 km', tech: 'Ozone monitoring, HAPS gliders, stratospheric aerosol tracking', jr: 'J-ST', sr: '—' },
+                  { name: 'Troposphere & Tropopause', alt: '0–12 km', tech: 'Airliner sensor networks, local weather modification, cloud nucleation', jr: 'J-OZ', sr: 'S-TR' }
+                ].map((l, i) => (
+                  <div key={i} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-crimson font-bold w-6">{5 - i}</span>
+                      <strong className="text-bone uppercase text-sm">{l.name}</strong>
+                      <span className="text-bone-dim text-[11px]">({l.alt})</span>
+                    </div>
+                    <div className="text-bone-dim text-[11px] font-sans flex-1 md:px-4">{l.tech}</div>
+                    <div className="flex gap-2">
+                      {l.jr !== '—' && <span className="px-2 py-0.5 bg-ink border border-bone/40 text-bone text-[10px] font-bold">JR: {l.jr}</span>}
+                      {l.sr !== '—' && <span className="px-2 py-0.5 bg-crimson/20 border border-crimson text-crimson text-[10px] font-bold">SR: {l.sr}</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Qualitative Evaluation Criteria */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
+                  Evaluation Standards
+                </span>
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  Qualitative Assessment Criteria
+                </h3>
+                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
+                  Proposals and presentations are judged across six core dimensions:
                 </p>
               </div>
-              <div className="text-center font-mono font-bold text-3xl text-amber-400 bg-ink-2 px-6 py-4 border border-bone/30 shrink-0">
-                100 + 100 = 200
-                <span className="block text-[10px] text-bone-dim font-normal uppercase tracking-wider mt-1">+ Up to 10 Bonus</span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-crimson font-bold uppercase block">// Problem &amp; Premise</span>
+                  <div className="font-display text-base text-bone uppercase">Customer Pain Point</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Evidence-backed pain point intrinsically rooted in atmospheric layer dynamics; clearly identified paying economic buyer.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-crimson font-bold uppercase block">// Technical Feasibility</span>
+                  <div className="font-display text-base text-bone uppercase">Atmospheric Science</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Verified physics formulas, atmospheric boundary equations, realistic bill of materials, and operational cycle feasibility.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-crimson font-bold uppercase block">// Unit Economics</span>
+                  <div className="font-display text-base text-bone uppercase">Financial Rigor</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Itemized CapEx and monthly OpEx, price per unit, contribution margin, break-even sales volume, and capital payback.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-crimson font-bold uppercase block">// Market &amp; Moat</span>
+                  <div className="font-display text-base text-bone uppercase">Commercial Defensibility</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Bottom-up addressable market calculation, customer acquisition path, and defensibility against incumbents or free data.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-crimson font-bold uppercase block">// Risk &amp; Resilience</span>
+                  <div className="font-display text-base text-bone uppercase">Contingency Planning</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Itemized technical, regulatory, and market risks with monitored operational triggers and proactive fallback measures.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-crimson font-bold uppercase block">// Jury Presentation</span>
+                  <div className="font-display text-base text-bone uppercase">Pitch &amp; Q&amp;A Defense</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Pitch deck clarity, persuasive delivery, arithmetic defense, and composure during panel cross-examination.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* AI Policy */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
+              <strong className="text-crimson block uppercase tracking-wider text-sm">
+                Academic Integrity &amp; Generative AI Directive
+              </strong>
+              <p className="text-bone-dim font-sans text-xs leading-relaxed">
+                Generative AI tools may be used strictly as conceptual research and editing aids (Tier 2 permitted with full disclosure). AI writing or rewriting of proposal text, automated pitch deck generation, and fabricated financial spreadsheets are strictly prohibited (Tier 3). All external software and prompts must be disclosed in Section 6.3.
+              </p>
+            </div>
+
+            {/* Rulebook Summary */}
+            <div className="space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                Rulebook Summary
+              </h3>
+              {[
+                { code: 'R-01', title: 'Eligibility', desc: 'Grades 6–12 across India. 2–5 students per team from one school with one faculty advisor.' },
+                { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email.' },
+                { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Future-dated scenarios require real cited facts.' },
+                { code: 'R-04', title: 'Submission Protocol', desc: 'PDF uploads only via CelesteCon portal before 18 Oct 2026, 23:59 IST. Selectable text required.' },
+                { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement.' },
+                { code: 'R-06', title: 'Round 2 Conduct', desc: 'Min 2 students in person. Presentation followed by Q&A panel cross-examination.' },
+                { code: 'R-07', title: 'Intellectual Property', desc: 'Teams retain 100% IP ownership of their ventures.' },
+                { code: 'R-08', title: 'Disqualification', desc: 'Plagiarism, undisclosed Tier 3 AI use, or code-of-conduct violations lead to forfeiture.' }
+              ].map((r) => (
+                <div key={r.code} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                  <span className="text-crimson font-bold w-16 shrink-0">{r.code}</span>
+                  <strong className="text-bone text-sm w-48 shrink-0 font-sans">{r.title}</strong>
+                  <p className="text-bone-dim leading-relaxed">{r.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
+              <div className="text-bone-dim">
+                Point of Contact: <strong className="text-bone">Ryaan Namit Jain</strong> · <a href="mailto:aeross@dpsrkp.net" className="text-crimson hover:underline">aeross@dpsrkp.net</a>
+              </div>
+              <div className="flex gap-3">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
+                  ← Back to Comps
+                </Link>
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
+                  Deposit Proposal →
+                </Link>
               </div>
             </div>
           </div>
@@ -876,20 +723,20 @@ export default function BppPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 03: PROMPT TRACKS */}
+      {/* SECTION 02: PROMPT TRACKS */}
       {/* ======================================================== */}
       {activeSection === 'tracks' && (
-        <div className="space-y-6 animate-fadeIn">
+        <div className="space-y-6">
           {/* Division Selector */}
           <div className="border-2 border-bone/40 bg-ink p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-wider block">Division Selection</span>
-              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 5 corresponding venture prompts.</span>
+              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 4 atmospheric layer prompts.</span>
             </div>
             <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
               <button
                 onClick={() => setDivision('junior')}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer ${
                   division === 'junior'
                     ? 'bg-bone text-ink border-bone'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -899,7 +746,7 @@ export default function BppPrompt() {
               </button>
               <button
                 onClick={() => setDivision('senior')}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer ${
                   division === 'senior'
                     ? 'bg-crimson text-bone-hi border-crimson'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -910,8 +757,8 @@ export default function BppPrompt() {
             </div>
           </div>
 
-          {/* Prompt Selector Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 font-mono text-xs">
+          {/* Prompt Selector Tabs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono text-xs">
             {currentPrompts.map((p) => {
               const isSelected = p.id === currentPromptId;
               return (
@@ -921,113 +768,87 @@ export default function BppPrompt() {
                     if (division === 'junior') setActiveJuniorPrompt(p.id);
                     else setActiveSeniorPrompt(p.id);
                   }}
-                  className={`p-3 border text-left transition-all cursor-pointer ${
+                  className={`p-4 border text-left cursor-pointer ${
                     isSelected
-                      ? 'bg-ink border-crimson shadow-lg'
+                      ? 'bg-ink border-crimson'
                       : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
                   }`}
                 >
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-bold text-crimson">{p.code}</span>
-                    <span className="text-[10px] text-bone-dim uppercase truncate ml-1">{p.layer.split(' ')[0]}</span>
+                    <span className="text-[10px] text-bone-dim truncate max-w-[120px]">{p.layer}</span>
                   </div>
-                  <div className="font-display text-sm text-bone uppercase leading-tight truncate">{p.title}</div>
+                  <div className="font-display text-base text-bone uppercase leading-tight">{p.title}</div>
                 </button>
               );
             })}
           </div>
 
-          {/* Prompt Details Card */}
+          {/* Detailed Prompt Dossier */}
           <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{selectedPrompt.code}</span>
-                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                    {division === 'junior' ? 'Junior Division' : 'Senior Division'}
-                  </span>
-                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-amber-500/40 text-amber-400">
-                    {selectedPrompt.layer}
-                  </span>
-                </div>
-                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
-                  {selectedPrompt.title}
-                </h2>
-                <p className="mt-1 text-sm text-amber-400 font-mono">
-                  &ldquo;{selectedPrompt.log}&rdquo;
-                </p>
+            <div className="border-b border-bone/20 pb-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{selectedPrompt.code}</span>
+                <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                  {selectedPrompt.layer}
+                </span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
+                {selectedPrompt.title}
+              </h2>
+              <p className="font-serif italic text-base sm:text-lg text-amber-300/90 mt-2">
+                &ldquo;{selectedPrompt.log}&rdquo;
+              </p>
+            </div>
+
+            {/* Story Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+              <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
+                <span className="text-crimson font-bold uppercase block">// The Physical Context</span>
+                <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.bg}</p>
+              </div>
+
+              <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
+                <span className="text-amber-400 font-bold uppercase block">// The Venture Mandate</span>
+                <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.challenge}</p>
+              </div>
+
+              <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
+                <span className="text-green-400 font-bold uppercase block">// The Hard Truth</span>
+                <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.hard}</p>
               </div>
             </div>
 
-            {/* Story & Background */}
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-8 space-y-4 text-sm text-bone-dim leading-relaxed">
-                <div>
-                  <h4 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold mb-1">
-                    Operational Context &amp; Science
-                  </h4>
-                  <p>{selectedPrompt.story.bg}</p>
-                </div>
-
-                <div className="p-4 bg-ink-2 border-l-4 border-crimson text-bone">
-                  <h4 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold mb-1">
-                    The Central Venture Challenge
-                  </h4>
-                  <p className="font-semibold text-sm">{selectedPrompt.story.challenge}</p>
-                </div>
-
-                <div>
-                  <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold mb-1">
-                    What Makes This Unforgiving
-                  </h4>
-                  <p>{selectedPrompt.story.hard}</p>
-                </div>
-              </div>
-
-              <div className="lg:col-span-4 space-y-4">
-                {/* Technical Benchmarks */}
-                <div className="p-4 bg-ink-2 border border-bone/30 space-y-3 font-mono text-xs">
-                  <span className="text-amber-400 font-bold block uppercase tracking-wider border-b border-bone/20 pb-1">
-                    Starting Technical Benchmarks
-                  </span>
-                  <div className="space-y-2">
-                    {selectedPrompt.numbers.map((num, i) => (
-                      <div key={i} className="flex justify-between items-baseline border-b border-bone/10 pb-1">
-                        <strong className="text-bone font-bold">{num.val}</strong>
-                        <span className="text-bone-dim text-[11px] text-right ml-2">{num.label}</span>
-                      </div>
-                    ))}
+            {/* Numbers that Matter */}
+            <div className="space-y-3 pt-2">
+              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">
+                // Critical Physics &amp; Industry Benchmarks
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 font-mono text-xs">
+                {selectedPrompt.numbers.map((n, i) => (
+                  <div key={i} className="bg-ink-2 p-3 border border-bone/20">
+                    <span className="text-base sm:text-lg font-bold text-bone block leading-tight">{n.val}</span>
+                    <span className="text-[10px] text-bone-dim block mt-1 leading-tight">{n.label}</span>
                   </div>
-                </div>
-
-                {/* Curveball Warning */}
-                <div className="p-4 bg-crimson/10 border-2 border-dashed border-crimson space-y-2 font-mono text-xs">
-                  <span className="text-crimson font-bold block uppercase tracking-wider">
-                    Round 2 Live Curveball Preview
-                  </span>
-                  <p className="text-bone italic text-[11px] leading-relaxed">
-                    &ldquo;{selectedPrompt.curveball}&rdquo;
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Must-Cover Deliverables */}
-            <div className="pt-6 border-t border-bone/20 space-y-4">
-              <div className="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-bone-dim">
-                <span className="text-bone font-bold">Mandatory Proposal Inclusions</span>
-                <span className="text-amber-400">{selectedPrompt.mustCover.length} Specific Section Requirements</span>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {selectedPrompt.mustCover.map((req) => (
-                  <div key={req.code} className="p-3 bg-ink-2 border border-bone/20 space-y-1 text-xs">
-                    <div className="flex justify-between font-mono text-[11px]">
-                      <span className="text-crimson font-bold">{req.code}</span>
-                      <span className="text-amber-400">&rarr; Sec {req.link}</span>
+            {/* Required Proposal Coverage */}
+            <div className="space-y-3 pt-2">
+              <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+                // Mandatory Technical &amp; Financial Coverage
+              </h3>
+              <div className="space-y-2 font-mono text-xs">
+                {selectedPrompt.mustCover.map((req, i) => (
+                  <div key={i} className="p-3 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-crimson font-bold">{req.code}</span>
+                        <strong className="text-bone uppercase">{req.title}</strong>
+                      </div>
+                      <p className="text-[11px] text-bone-dim font-sans">{req.desc}</p>
                     </div>
-                    <strong className="block text-bone text-sm">{req.title}</strong>
-                    <p className="text-bone-dim text-[11px] leading-relaxed">{req.desc}</p>
                   </div>
                 ))}
               </div>
@@ -1037,169 +858,14 @@ export default function BppPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 04: UNIT ECONOMICS LAB */}
-      {/* ======================================================== */}
-      {activeSection === 'calc' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 04 · Interactive Modeling Lab
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Venture Unit Economics Engine
-              </h2>
-            </div>
-
-            <p className="font-label text-sm text-bone-dim max-w-3xl leading-relaxed">
-              Use this interactive modeling tool to stress-test your unit selling price, variable costs, monthly operating overhead, and break-even volume. Reconcile these figures directly with your proposal’s Section 4.3 &amp; 4.7 Key Figures Table.
-            </p>
-
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
-              {/* Inputs */}
-              <div className="lg:col-span-6 bg-ink-2 border border-bone/30 p-6 space-y-5 font-mono text-xs">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
-                  Financial Model Parameters
-                </h3>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="flex justify-between text-bone-dim mb-1">
-                      <span>Selling Price per Unit (P):</span>
-                      <span className="text-bone font-bold">₹{calcUnitPrice.toLocaleString()}</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={calcUnitPrice}
-                      onChange={(e) => setCalcUnitPrice(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="flex justify-between text-bone-dim mb-1">
-                      <span>Variable Cost per Unit (V):</span>
-                      <span className="text-bone font-bold">₹{calcVarCost.toLocaleString()}</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={calcVarCost}
-                      onChange={(e) => setCalcVarCost(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="flex justify-between text-bone-dim mb-1">
-                      <span>Monthly Fixed OpEx (F):</span>
-                      <span className="text-bone font-bold">₹{calcFixedCost.toLocaleString()}</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={calcFixedCost}
-                      onChange={(e) => setCalcFixedCost(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="flex justify-between text-bone-dim mb-1">
-                      <span>Expected Units Sold / Month (Q):</span>
-                      <span className="text-bone font-bold">{calcSalesVolume} units</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={calcSalesVolume}
-                      onChange={(e) => setCalcSalesVolume(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="flex justify-between text-bone-dim mb-1">
-                      <span>Start-up Investment / CapEx:</span>
-                      <span className="text-bone font-bold">₹{calcCapEx.toLocaleString()}</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={calcCapEx}
-                      onChange={(e) => setCalcCapEx(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Dynamic Outputs */}
-              <div className="lg:col-span-6 bg-ink border-2 border-amber-500/60 p-6 space-y-6 font-mono text-xs">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400">
-                    Live Profitability Dashboard
-                  </h3>
-                  <span className="text-bone-dim">Automated Financial Calculus</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-3 bg-ink-2 border border-bone/30">
-                    <span className="text-bone-dim text-[10px] block uppercase">Unit Contribution</span>
-                    <strong className="text-xl font-bold text-bone block mt-1">
-                      ₹{unitContribution.toLocaleString()}
-                    </strong>
-                    <span className="text-green-400 text-[11px]">{contributionMarginPct}% Margin</span>
-                  </div>
-
-                  <div className="p-3 bg-ink-2 border border-bone/30">
-                    <span className="text-bone-dim text-[10px] block uppercase">Monthly Break-Even</span>
-                    <strong className="text-xl font-bold text-amber-400 block mt-1">
-                      {breakEvenUnits} {typeof breakEvenUnits === 'number' ? 'units' : ''}
-                    </strong>
-                    <span className="text-bone-dim text-[11px]">To reach ₹0 net income</span>
-                  </div>
-
-                  <div className="p-3 bg-ink-2 border border-bone/30">
-                    <span className="text-bone-dim text-[10px] block uppercase">Expected Monthly Net</span>
-                    <strong
-                      className={`text-xl font-bold block mt-1 ${
-                        monthlyProfit >= 0 ? 'text-green-400' : 'text-crimson'
-                      }`}
-                    >
-                      ₹{monthlyProfit.toLocaleString()}
-                    </strong>
-                    <span className="text-bone-dim text-[11px]">
-                      {monthlyProfit >= 0 ? 'Operating Profit' : 'Operating Deficit'}
-                    </span>
-                  </div>
-
-                  <div className="p-3 bg-ink-2 border border-bone/30">
-                    <span className="text-bone-dim text-[10px] block uppercase">Capital Payback</span>
-                    <strong className="text-xl font-bold text-bone block mt-1">
-                      {paybackMonths} {monthlyProfit > 0 ? 'months' : ''}
-                    </strong>
-                    <span className="text-bone-dim text-[11px]">To return initial CapEx</span>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-ink-2 border border-bone/30 space-y-1 text-[11px]">
-                  <span className="text-amber-400 font-bold block uppercase">Core Formulas Applied</span>
-                  <p className="text-bone-dim">Unit Contribution = Selling Price (P) − Variable Cost (V)</p>
-                  <p className="text-bone-dim">Break-Even Volume = Fixed OpEx (F) ÷ Unit Contribution</p>
-                  <p className="text-bone-dim">Payback Period = Total CapEx ÷ Monthly Net Profit</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 05: PROPOSAL GUIDE */}
+      {/* SECTION 03: PROPOSAL GUIDE */}
       {/* ======================================================== */}
       {activeSection === 'template' && (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 05 · Proposal Guide
+                Section 03 · Proposal Guide
               </span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Required Proposal Architecture
@@ -1347,9 +1013,9 @@ export default function BppPrompt() {
                 <p className="font-bold uppercase text-amber-400">Business Power Pitch 2026 · Originality &amp; AI Declaration</p>
                 <p>We, the undersigned members of team [team name] from [school name], declare that:</p>
                 <ol className="list-decimal pl-4 space-y-1 text-bone-dim">
-                  <li>This proposal, pitch deck, and addendum are our team&apos;s original work. The analysis, writing, and calculations were produced by our team members.</li>
+                  <li>This proposal and pitch deck are our team&apos;s original work. The analysis, writing, and calculations were produced by our team members.</li>
                   <li>Every source of data, image, or fact is cited in text and listed in references.</li>
-                  <li>We have read Rule R-06 (Original work &amp; AI use) in full. No prohibited AI tools were utilized, and all permitted Tier 2 queries are logged in Section 6.3.</li>
+                  <li>We have read the AI Use Policy in full. No prohibited AI tools were utilized, and all permitted Tier 2 queries are logged in Section 6.3.</li>
                   <li>No external person wrote, edited, calculated, or designed any part of our submission.</li>
                   <li>We will preserve our research drafts and commit to oral defense of our arithmetic upon request.</li>
                 </ol>
@@ -1360,260 +1026,47 @@ export default function BppPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 06: RULES, RUBRIC & CHECKLIST */}
+      {/* SECTION 04: CHECKLIST */}
       {/* ======================================================== */}
-      {(activeSection === 'rules' || activeSection === 'rubrics') && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
+      {activeSection === 'checklist' && (
+        <div className="space-y-8">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 06 · Official Rulebook &amp; Rubrics
+                Section 04
               </span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Rules, Academic Integrity &amp; Evaluation
+                Preflight Deliverables Checklist
               </h2>
             </div>
 
-            {/* R-06 AI Tier System Box */}
-            <div className="border-2 border-crimson bg-ink-2 p-6 space-y-4">
-              <div className="flex flex-wrap justify-between items-center border-b border-crimson/40 pb-3 gap-2">
-                <div>
-                  <span className="text-xs font-mono text-crimson uppercase tracking-widest font-bold">Rule R-06 Directive</span>
-                  <h3 className="text-2xl font-bold uppercase text-bone">Artificial Intelligence Policy</h3>
-                </div>
-                <span className="px-3 py-1 bg-crimson text-bone-hi font-mono text-xs uppercase tracking-wider font-bold">
-                  Mandatory For All Rounds
-                </span>
-              </div>
-
-              <p className="text-sm text-bone-dim leading-relaxed">
-                The competition evaluates your team’s independent scientific reasoning and financial acumen. AI tools cannot generate proposal text, build spreadsheets, or produce pitch decks. Below is the strict three-tier classification:
-              </p>
-
-              <div className="grid md:grid-cols-3 gap-4 text-xs font-mono">
-                {/* Tier 1 */}
-                <div className="p-4 bg-ink border border-green-500/40 space-y-2">
-                  <span className="text-green-400 font-bold block uppercase">Tier 1 · Permitted Free Use</span>
-                  <strong className="text-bone text-sm block">Standard Software</strong>
-                  <p className="text-bone-dim text-[11px] leading-relaxed">
-                    Word processors with AI features disabled, spreadsheets using formulas written by the team, basic spell-check, web search engines, and manual CAD modeling.
-                  </p>
-                </div>
-
-                {/* Tier 2 */}
-                <div className="p-4 bg-ink border border-amber-500/40 space-y-2">
-                  <span className="text-amber-400 font-bold block uppercase">Tier 2 · Permitted If Disclosed</span>
-                  <strong className="text-bone text-sm block">Conceptual Research</strong>
-                  <p className="text-bone-dim text-[11px] leading-relaxed">
-                    Querying chatbots for conceptual explanations (e.g., &ldquo;explain Chapman cycle&rdquo;), provided the primary scientific source is verified and cited in Section 6.3.
-                  </p>
-                </div>
-
-                {/* Tier 3 */}
-                <div className="p-4 bg-ink border border-crimson space-y-2">
-                  <span className="text-crimson font-bold block uppercase">Tier 3 · Strictly Prohibited</span>
-                  <strong className="text-bone text-sm block">Auto-Generation</strong>
-                  <p className="text-bone-dim text-[11px] leading-relaxed">
-                    AI writing or rewriting proposal text, auto-generating slide decks, fabricating financial spreadsheets, AI image generation for mockups, or AI use during Round 2.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Official Rubric Table */}
-            <div className="border border-bone/30 bg-ink-2 p-5 space-y-4">
-              <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                <h3 className="text-base font-bold uppercase text-bone">Round 1 · Dossier &amp; Pitch Deck (100 Points)</h3>
-                <span className="text-xs font-mono text-amber-400 font-bold">Decides Shortlist · Carried Forward</span>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-left font-mono text-xs border-collapse">
-                  <thead>
-                    <tr className="border-b border-bone/30 text-bone-dim uppercase text-[11px]">
-                      <th className="py-2 pr-4">Criterion</th>
-                      <th className="py-2 px-2 text-center text-bone">Jr Weight</th>
-                      <th className="py-2 px-2 text-center text-crimson">Sr Weight</th>
-                      <th className="py-2 pl-4">Exemplary Standard (85–100%)</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-bone/10 text-bone-dim">
-                    <tr>
-                      <td className="py-3 pr-4 font-bold text-bone">Problem &amp; Creative Premise</td>
-                      <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-crimson">15 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
-                        Evidence-backed pain point intrinsically rooted in atmospheric layer dynamics; novel market thesis.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 pr-4 font-bold text-bone">Technical &amp; Scientific Feasibility</td>
-                      <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-crimson">25 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
-                        Correct physics equations with verified numbers; clear distinction between current vs speculative hardware.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 pr-4 font-bold text-bone">Financial Plan &amp; Unit Economics</td>
-                      <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-crimson">25 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
-                        All key figures reconcile; rigorous CapEx/OpEx basis; defensible break-even volume and payback period.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 pr-4 font-bold text-bone">Customer, Market &amp; Strategy</td>
-                      <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-crimson">15 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
-                        Named commercial buyer; bottom-up addressable demand calculation; honest comparison with existing alternatives.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 pr-4 font-bold text-bone">Risk Register &amp; Resilience</td>
-                      <td className="py-3 px-2 text-center font-bold">10 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-crimson">10 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
-                        Itemized technical, regulatory, and financial risks with monitored triggers and quantified fallback procedures.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 pr-4 font-bold text-bone">Document Structure &amp; Deck</td>
-                      <td className="py-3 px-2 text-center font-bold">10 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-crimson">10 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
-                        Full template compliance; APA 7 citations; complete assumption ledger; clean 12-slide pitch deck matching metrics.
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Interactive Preflight Checklist */}
-            <div className="border border-bone/30 bg-ink-2 p-5 space-y-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-bone/20 pb-2">
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-amber-400">Submission Readiness Check</span>
-                  <h3 className="text-lg font-bold uppercase text-bone">Preflight Deliverables Checklist</h3>
-                </div>
-                <div className="flex items-center gap-3 font-mono text-xs">
-                  <span className="text-green-400 font-bold">{completedCount} of {CHECKLIST_ITEMS.length} Verified</span>
-                  <button
-                    onClick={resetChecklist}
-                    className="px-2 py-1 border border-bone/40 text-bone-dim hover:text-bone text-[11px] uppercase cursor-pointer"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-3 pt-2">
-                {CHECKLIST_ITEMS.map((item) => {
-                  const isChecked = !!checklist[item.id];
-                  return (
-                    <div
-                      key={item.id}
-                      onClick={() => toggleCheck(item.id)}
-                      className={`p-3 border cursor-pointer transition-all flex items-start gap-3 select-none text-xs font-mono ${
-                        isChecked
-                          ? 'border-bone/20 bg-ink/40 text-bone-dim'
-                          : 'border-bone bg-ink text-bone hover:border-crimson'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => {}}
-                        className="mt-0.5 accent-crimson cursor-pointer"
-                      />
-                      <span className={`leading-relaxed ${isChecked ? 'line-through text-bone-dim/60' : ''}`}>
-                        {item.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Rule Index */}
-            <div className="space-y-3 font-mono text-xs">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
-                Rulebook Summary
-              </h3>
-              {[
-                { code: 'R-01', title: 'Eligibility', desc: 'Grades 6–12 across India. 2–5 students per team from one school with one faculty advisor. Max 3 teams per school per division.' },
-                { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email. All deadlines in Indian Standard Time (IST).' },
-                { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Optional bonus prompt in separate PDF. Future-dated scenarios require real cited facts.' },
-                { code: 'R-04', title: 'Submission Protocol', desc: 'PDF uploads only via CelesteCon portal before 18 Oct 2026, 23:59 IST. Selectable text required; zero late allowances.' },
-                { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement. Commercial data sales to scientific/defense bodies permitted.' },
-                { code: 'R-07', title: 'Round 2 Conduct', desc: 'Min 2 students in person. Strict 6/8 min presentation timing. No external coaching, prompt signals, or smartwatches.' },
-                { code: 'R-08', title: 'Judging & Appeals', desc: 'Double-blind evaluation. Scores carried forward in full. Ties broken by Round 1 score, then Financial Plan.' },
-                { code: 'R-09', title: 'Intellectual Property', desc: 'Teams retain 100% IP ownership of their ventures. Organizers retain royalty-free reporting display rights.' },
-                { code: 'R-10', title: 'Disqualification', desc: 'Plagiarism, undisclosed Tier 3 AI use, or code-of-conduct violations lead to immediate forfeiture and principal notification.' }
-              ].map((r) => (
-                <div key={r.code} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                  <span className="text-crimson font-bold w-16 shrink-0">{r.code}</span>
-                  <strong className="text-bone text-sm w-48 shrink-0 font-sans">{r.title}</strong>
-                  <p className="text-bone-dim leading-relaxed">{r.desc}</p>
-                </div>
+            <div className="grid md:grid-cols-2 gap-3 pt-2">
+              {CHECKLIST_ITEMS.map((item) => (
+                <label
+                  key={item.id}
+                  className="p-3 border border-bone bg-ink text-bone flex items-start gap-3 select-none text-xs font-mono cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 accent-crimson cursor-pointer"
+                  />
+                  <span className="leading-relaxed">
+                    {item.label}
+                  </span>
+                </label>
               ))}
             </div>
 
-            {/* FAQ Accordions */}
-            <div className="space-y-3 font-mono text-xs">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
-                Frequently Asked Inquiries
-              </h3>
-
-              {[
-                {
-                  q: 'Who is eligible to participate, and which division do we join?',
-                  a: 'Any student enrolled in Grades 6–12 at a recognized school in India during the 2026–27 session. Teams must consist of 2 to 5 students from the same school with an official faculty advisor. Grades 6–8 compete in Junior; Grades 9–12 compete in Senior. Teams mixing grades must enter the Senior Division.'
-                },
-                {
-                  q: 'Is the bonus prompt mandatory?',
-                  a: 'No. Every team must attempt exactly one layer prompt in its division. The bonus prompt (J-BX or S-BX) is optional, submitted as a separate short addendum (Jr ≤4 pp, Sr ≤6 pp) and earns up to 10 bonus points added directly to your Round 1 total.'
-                },
-                {
-                  q: 'Should our financial model use Indian Rupees (INR) or US Dollars (USD)?',
-                  a: 'Either currency is acceptable. Satellite and orbital space ventures often quote in USD, whereas municipal drone or agricultural services operate in INR. Choose one currency consistently and declare the exchange rate with its date in Section 6.1.'
-                },
-                {
-                  q: 'What happens in the Round 2 finale if a team member cannot travel?',
-                  a: 'A minimum of two registered team members must attend and present live at DPS R.K. Puram on 24 October. Absent members remain on the official registration and share all certificates and awards won by the team.'
-                },
-                {
-                  q: 'Who should we contact for official competition clarifications?',
-                  a: 'All official inquiries must be sent by your school faculty advisor through the contact form on the CelesteCon portal. POC: Ryaan Namit Jain (Head of Competitions & Logistics) · aeross@dpsrkp.net.'
-                }
-              ].map((faq, idx) => (
-                <details key={idx} className="p-4 bg-ink-2 border border-bone/20 group">
-                  <summary className="font-bold text-bone cursor-pointer flex justify-between items-center text-sm font-sans uppercase">
-                    <span>{faq.q}</span>
-                    <span className="text-crimson text-base group-open:rotate-45 transition-transform">+</span>
-                  </summary>
-                  <p className="mt-3 text-bone-dim leading-relaxed pt-2 border-t border-bone/10 text-xs font-mono">
-                    {faq.a}
-                  </p>
-                </details>
-              ))}
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
-              <div className="text-bone-dim">
-                Point of Contact: <strong className="text-bone">Ryaan Namit Jain</strong> · <a href="mailto:aeross@dpsrkp.net" className="text-crimson hover:underline">aeross@dpsrkp.net</a>
-              </div>
-              <div className="flex gap-3">
-                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone hover:border-bone transition-colors uppercase">
-                  ← Back to Comps
-                </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold hover:bg-ink hover:text-crimson border border-crimson transition-colors uppercase">
-                  Deposit Proposal →
-                </Link>
-              </div>
+            <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
+              <span className="font-mono text-xs text-bone-dim">
+                Verify all technical and financial deliverables before final deposit.
+              </span>
+              <Link
+                to="/submissions"
+                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-crimson"
+              >
+                Go to Submission Vault →
+              </Link>
             </div>
           </div>
         </div>

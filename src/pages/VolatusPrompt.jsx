@@ -1,61 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const R1_DEADLINE = new Date('2026-10-18T23:59:00+05:30').getTime();
-const VALID_SECTIONS = ['brief', 'format', 'tracks', 'cad', 'calc', 'checklist', 'rules'];
+const VALID_SECTIONS = ['brief', 'tracks', 'checklist'];
 
-const JUNIOR_RFPS = [
-  {
-    id: 'j-fm',
-    code: 'J-FM',
-    trackName: 'Biomimetic Flight',
-    title: 'Flockmate · Urban Biomimetic UAV',
-    meta: '400 g take-off mass · 14 m/s cruise · Delhi Rooftops',
-    aircraftType: 'Flapping-Wing Ornithopter / Biomimetic Scout',
-    wingspan: '~0.65 – 0.85 m',
-    mtow: '≈ 400 g (0.4 kg)',
-    payload: '40 g HD micro-sensor gimbal & bird deterrent emitter',
-    endurance: '≥ 25 minutes continuous patrol',
-    flightRegime: 'Low altitude urban boundary layer (0 – 120 m AGL)',
-    background:
-      'Birds in urban skies navigate turbulent building wakes, thermal plumes, and wires effortlessly. Flockmate is an autonomous biomimetic flapping-wing drone designed to mimic rock pigeons. Its mission: fly alongside real flocks without causing distress, monitor avian diseases, and deter birds from airport approach runways using non-harmful acoustic patterns.',
-    rfpSummary:
-      'Design a lightweight ornithopter that matches avian wing kinematics. Calculate flapping frequency, stroke angle, lift-to-thrust coupling, and integrate micro-servos, gearboxes, carbon-fiber wing ribs, and elastic membrane wing skins into an ultra-compact CAD airframe.',
-    constraints: [
-      'Maximum take-off mass strictly capped at 500 grams.',
-      'Flapping kinematics: dual-action flapping-stroke mechanism with passive pitch rotation.',
-      'Acoustic signature: low noise emission under 55 dBA at 10 metres.',
-      'Battery safety: single 2S/3S LiPo pack fully enclosed in a fire-retardant fuselage compartment.',
-      'Fail-safe glide mode: auto-lock wings in dihedral position for unpowered gliding in case of motor failure.'
-    ]
-  },
-  {
-    id: 'j-fl',
-    code: 'J-FL',
-    trackName: 'Disaster Logistics',
-    title: 'Floodline · Amphibious Aid Courier',
-    meta: '5 kg MTOW · 18 m/s cruise · Brahmaputra River Islands',
-    aircraftType: 'Amphibious Fixed-Wing Aid Delivery UAV',
-    wingspan: '~1.8 – 2.2 m',
-    mtow: '≈ 5.0 kg',
-    payload: '1.0 kg emergency medical supplies, water purifiers & blood bags',
-    endurance: '≥ 60 minutes (35+ km mission radius)',
-    flightRegime: 'Sub-tropical monsoon, rain-resistant IP54 airframe',
-    background:
-      'During monsoon floods in the Brahmaputra river basin, isolated island settlements (Chars) are cut off from medical supplies. Roads are submerged and power boats take hours against swollen currents. Floodline is an amphibious, twin-motor fixed-wing drone engineered to take off from wet launch pads, navigate monsoon winds, and parachute-drop emergency supplies before landing safely on water.',
-    rfpSummary:
-      'Design a durable amphibious cargo aircraft. Calculate wing area for high lift at low speeds, size twin electric tractor motors, design sealed waterproof electronics bays with watertight silicone gaskets, and model an automated belly release hatch for cargo pods.',
-    constraints: [
-      'Water ingress protection: IP54 or higher for all internal avionics and battery compartments.',
-      'Payload bay: modular drop mechanism capable of deploying 1 kg pods via parachute.',
-      'Stall speed must not exceed 10 m/s for safe emergency water ditching.',
-      'Power: swappable 4S/6S Li-Ion or LiPo pack with real-world telemetry voltage monitoring.',
-      'Corrosion resistance: sealed carbon and marine-grade stainless hardware.'
-    ]
-  }
-];
-
-const SENIOR_RFPS = [
+const RFPS = [
   {
     id: 's-ta',
     code: 'S-TA',
@@ -107,14 +55,14 @@ const SENIOR_RFPS = [
 ];
 
 const CHECKLIST_ITEMS = [
-  { id: 'v1', label: 'Dossier PDF submitted with selectable text, numbered figures, and SI units.' },
-  { id: 'v2', label: 'Page limits respected: Junior max 20 pages · Senior max 25 pages.' },
-  { id: 'v3', label: 'Selected RFP from team’s own division clearly declared in executive summary.' },
+  { id: 'v1', label: 'Technical Dossier PDF submitted with selectable text, numbered figures, and SI units.' },
+  { id: 'v2', label: 'Page limit strictly respected: Senior division max 25 pages.' },
+  { id: 'v3', label: 'Selected RFP (Thin Air or Cloud Hauler) clearly declared in the executive summary.' },
   { id: 'v4', label: 'Airfoil section specified with NACA / Selig profile coordinates and Reynolds number rationale.' },
-  { id: 'v5', label: 'Complete aerodynamic sizing calculation table: Lift, Drag, CL, CD, Wing Loading (W/S).' },
-  { id: 'v6', label: 'Weight & Balance spreadsheet: CG vs Neutral Point calculation with static margin.' },
-  { id: 'v7', label: 'Native 3D CAD assembly file submitted (.step / .stl / .f3d / .blend).' },
-  { id: 'v8', label: 'Assembly tree clean: parts grouped, clear component hierarchy, zero unconstrained floating parts.' },
+  { id: 'v5', label: 'Complete aerodynamic sizing calculation table: Lift, Drag, CL, CD, and Wing Loading (W/S).' },
+  { id: 'v6', label: 'Weight & Balance spreadsheet: CG vs Neutral Point calculation with static longitudinal margin.' },
+  { id: 'v7', label: 'Native 3D CAD assembly file submitted (.step, .stl, .f3d, or .blend).' },
+  { id: 'v8', label: 'Clean assembly tree: proper component hierarchy, fasteners modeled, zero unconstrained floating parts.' },
   { id: 'v9', label: '3-View orthographic engineering blueprint included with overall dimensions in millimetres.' },
   { id: 'v10', label: 'Powerplant & battery matching calculations: Motor KV, propeller pitch/diameter, voltage & flight endurance.' },
   { id: 'v11', label: 'Generative AI and parametric CAD tools disclosed in the bibliography.' },
@@ -127,44 +75,7 @@ export default function VolatusPrompt() {
     return VALID_SECTIONS.includes(hash) ? hash : 'brief';
   });
 
-  const [division, setDivision] = useState('senior');
   const [selectedTrackId, setSelectedTrackId] = useState('s-ta');
-
-  // Interactive Aerodynamic Sizing Lab State
-  const [calcInputs, setCalcInputs] = useState({
-    mass: '5.0',
-    wingspan: '2.0',
-    chord: '0.25',
-    velocity: '18.0',
-    altitude: '0'
-  });
-
-  // Interactive Preflight Checklist State
-  const [checkedItems, setCheckedItems] = useState(() => {
-    try {
-      const saved = localStorage.getItem('c26-volatus-checklist');
-      return saved ? JSON.parse(saved) : { v1: true, v2: true };
-    } catch {
-      return { v1: true, v2: true };
-    }
-  });
-
-  // Countdown timer
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, isLive: true });
-
-  useEffect(() => {
-    const update = () => {
-      const now = Date.now();
-      const diff = Math.max(0, R1_DEADLINE - now);
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / (1000 * 60)) % 60);
-      setTimeLeft({ days: d, hours: h, minutes: m, isLive: diff > 0 });
-    };
-    update();
-    const timer = setInterval(update, 60000);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -182,93 +93,35 @@ export default function VolatusPrompt() {
     window.history.replaceState(null, '', `#${secId}`);
   };
 
-  const toggleCheck = (id) => {
-    setCheckedItems((prev) => {
-      const updated = { ...prev, [id]: !prev[id] };
-      try {
-        localStorage.setItem('c26-volatus-checklist', JSON.stringify(updated));
-      } catch { }
-      return updated;
-    });
-  };
-
-  const resetChecklist = () => {
-    setCheckedItems({});
-    try {
-      localStorage.setItem('c26-volatus-checklist', JSON.stringify({}));
-    } catch { }
-  };
-
-  // Aerodynamic sizing math
-  const aeroResults = useMemo(() => {
-    const m = parseFloat(calcInputs.mass) || 1;
-    const b = parseFloat(calcInputs.wingspan) || 1;
-    const c = parseFloat(calcInputs.chord) || 0.2;
-    const V = parseFloat(calcInputs.velocity) || 10;
-    const alt = parseFloat(calcInputs.altitude) || 0;
-
-    // ISA density approximation (kg/m³)
-    const rho = Math.max(0.05, 1.225 * Math.exp(-alt / 8500));
-    const W = m * 9.80665; // Weight in N
-    const S = b * c; // Wing area m²
-    const AR = (b * b) / S; // Aspect ratio
-    const wingLoading = m / S; // kg/m²
-
-    // Required cruise lift coefficient: L = W = 0.5 * rho * V^2 * S * CL => CL = 2W / (rho * V^2 * S)
-    const q = 0.5 * rho * V * V; // Dynamic pressure Pa
-    const requiredCL = q * S > 0 ? W / (q * S) : 0;
-
-    // Reynolds number: Re = rho * V * c / mu (mu ≈ 1.8e-5 Pa·s)
-    const Re = (rho * V * c) / 1.8e-5;
-
-    // Estimated stall speed assuming max CL = 1.3
-    const Vstall = Math.sqrt((2 * W) / (rho * S * 1.3));
-
-    return {
-      rho: rho.toFixed(3),
-      W: W.toFixed(1),
-      S: S.toFixed(2),
-      AR: AR.toFixed(1),
-      wingLoading: wingLoading.toFixed(1),
-      requiredCL: requiredCL.toFixed(3),
-      Re: Math.round(Re).toLocaleString(),
-      Vstall: Vstall.toFixed(1),
-      isFeasible: requiredCL > 0.15 && requiredCL < 1.1
-    };
-  }, [calcInputs]);
-
-  const activeRfps = division === 'junior' ? JUNIOR_RFPS : SENIOR_RFPS;
-  const currentRfp = activeRfps.find((r) => r.id === selectedTrackId) || activeRfps[0];
+  const currentRfp = RFPS.find((r) => r.id === selectedTrackId) || RFPS[0];
 
   return (
-    <div className="space-y-8 animate-fadeIn pb-16">
+    <div className="space-y-8 pb-16">
       {/* Top Breadcrumb & Status */}
       <div className="border-b-2 border-bone/30 pb-3 flex flex-wrap justify-between items-center gap-3 font-mono text-xs text-bone-dim">
         <div className="flex items-center gap-2 flex-wrap">
-          <Link to="/" className="hover:text-crimson transition-colors">CELESTECON 2026</Link>
+          <Link to="/" className="text-bone-dim hover:text-crimson">CELESTECON 2026</Link>
           <span>/</span>
-          <Link to="/comps" className="hover:text-crimson transition-colors">COMPETITIONS</Link>
+          <Link to="/comps" className="text-bone-dim hover:text-crimson">COMPETITIONS</Link>
           <span>/</span>
-          <Link to="/prompts" className="hover:text-crimson transition-colors">PROMPTS</Link>
+          <Link to="/prompts" className="text-bone-dim hover:text-crimson">PROMPTS</Link>
           <span>/</span>
           <span className="text-crimson font-bold uppercase">EVENT 02 · VOLATUS</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
+          <Link to="/submissions" className="text-crimson font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
             <span>Submission Vault</span>
             <span>→</span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span className="text-cyan-400 uppercase font-bold text-[10px] tracking-wider">CAD DOSSIER LIVE</span>
+            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span className="text-cyan-400 uppercase font-bold text-[10px] tracking-wider">CAD DOSSIER OPEN</span>
           </div>
         </div>
       </div>
 
       {/* Main Hero Header */}
-      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -mr-28 -mt-28"></div>
-
+      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 relative z-10">
           <div className="space-y-4 max-w-3xl">
             <div className="flex items-center gap-2 flex-wrap">
@@ -279,10 +132,10 @@ export default function VolatusPrompt() {
                 Aircraft Design &amp; 3D Prototyping
               </span>
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                Incorporating Dimension III
+                Senior Division (Grades 9–12)
               </span>
               <span className="font-mono text-xs uppercase px-2.5 py-0.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/40 font-bold">
-                ● 4 RFPs ACTIVE
+                ● 2 RFPs ACTIVE
               </span>
             </div>
 
@@ -290,74 +143,45 @@ export default function VolatusPrompt() {
               Volatus <span className="text-cyan-400">2026</span>
             </h1>
 
-            <div className="p-3 bg-cyan-500/10 border-l-4 border-cyan-500 font-mono text-xs sm:text-sm text-bone">
-              <span className="text-cyan-400 font-bold uppercase tracking-widest block mb-0.5">
-                // DA VINCI AVIATION MOTTO
-              </span>
-              <span className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wider">
-                &ldquo;Once you have tasted flight, you will forever walk the earth with your eyes turned skyward.&rdquo;
-              </span>
-            </div>
-
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              Design an aircraft that flies on paper, balances in CAD, and survives interrogation by aerospace engineers. Choose one of four mission RFPs across Junior &amp; Senior divisions (Flockmate, Floodline, Thin Air, and Cloud Hauler). Submit a complete technical dossier alongside native 3D CAD assemblies (.step, .stl, .f3d, .blend). Shortlisted teams defend their models and prototypes live at DPS R.K. Puram on 24 October 2026.
+              Design an aircraft that flies on paper, balances in CAD, and survives interrogation by aerospace engineers. Choose one of two mission RFPs (Thin Air or Cloud Hauler). Submit a complete technical dossier alongside native 3D CAD assemblies (.step, .stl, .f3d, .blend). Shortlisted teams defend their models and prototypes live at DPS R.K. Puram on 24 October 2026.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
               <button
                 onClick={() => handleSectionChange('tracks')}
-                className="px-5 py-2.5 bg-cyan-600 text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-cyan-600 hover:bg-ink hover:text-cyan-400 transition-all cursor-pointer shadow-md"
+                className="px-5 py-2.5 bg-cyan-600 text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-cyan-600 cursor-pointer"
               >
-                Inspect 4 Mission RFPs →
+                Inspect Mission RFPs →
               </button>
               <button
-                onClick={() => handleSectionChange('calc')}
-                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-cyan-400 hover:text-cyan-400 transition-all cursor-pointer"
+                onClick={() => handleSectionChange('checklist')}
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Aerodynamic Sizing Lab
-              </button>
-              <button
-                onClick={() => handleSectionChange('cad')}
-                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-bone transition-all cursor-pointer"
-              >
-                CAD &amp; Dimension III Specs
+                Submission Checklist
               </button>
             </div>
           </div>
 
           {/* Aside Telemetry Box */}
-          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0 shadow-xl">
+          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
-              <span className="text-bone-dim uppercase">Round 1 Dossier Window</span>
+              <span className="text-bone-dim uppercase">Dossier Window</span>
               <span className="font-bold text-cyan-400 uppercase">
-                {timeLeft.isLive ? '● SUBMISSIONS OPEN' : 'WINDOW CONCLUDED'}
+                Round 1 Online
               </span>
             </div>
 
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-bone-dim uppercase block">
-                Deadline: 18 Oct 23:59:59 IST
-              </span>
-              <div className="grid grid-cols-3 gap-1.5 text-center font-mono">
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.days}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Days Left</span>
-                </div>
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.hours}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Hours</span>
-                </div>
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-cyan-400 block leading-tight">{timeLeft.minutes}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Mins</span>
-                </div>
-              </div>
+            <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
+              <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
+              <strong className="text-bone text-sm block">18 October 2026 · 23:59 IST</strong>
+              <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
             <div className="space-y-1.5 font-mono text-[11px] text-bone-dim pt-2 border-t border-bone/20">
               <div className="flex justify-between">
                 <span>Eligibility:</span>
-                <strong className="text-bone">Jr (6–8) · Sr (9–12)</strong>
+                <strong className="text-bone">Senior (Grades 9–12)</strong>
               </div>
               <div className="flex justify-between">
                 <span>Team Size:</span>
@@ -365,17 +189,17 @@ export default function VolatusPrompt() {
               </div>
               <div className="flex justify-between">
                 <span>Deliverable:</span>
-                <strong className="text-bone">Dossier PDF + 3D CAD</strong>
+                <strong className="text-bone">Dossier PDF (≤25 pp) + 3D CAD</strong>
               </div>
               <div className="flex justify-between">
-                <span>Live Review:</span>
-                <strong className="text-cyan-400 font-bold">24 Oct · Science Fair</strong>
+                <span>Round 2 Finale:</span>
+                <strong className="text-cyan-400 font-bold">24 Oct · On Campus</strong>
               </div>
             </div>
 
             <Link
               to="/submissions"
-              className="w-full py-2.5 bg-cyan-600 text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-cyan-600 hover:bg-ink hover:text-cyan-400 transition-colors block shadow-md"
+              className="w-full py-2.5 bg-cyan-600 text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-cyan-600 block"
             >
               Deposit CAD &amp; Dossier →
             </Link>
@@ -387,20 +211,17 @@ export default function VolatusPrompt() {
       <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
         {[
           { id: 'brief', label: '01 · The Brief' },
-          { id: 'format', label: '02 · Format & Scoring' },
-          { id: 'tracks', label: '03 · Mission RFPs' },
-          { id: 'cad', label: '04 · CAD & Dimension III' },
-          { id: 'calc', label: '05 · Sizing Lab' },
-          { id: 'checklist', label: '06 · Checklist' },
-          { id: 'rules', label: '07 · Rules & Rubric' }
+          { id: 'tracks', label: '02 · Mission RFPs' },
+          { id: 'checklist', label: '03 · Checklist' }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleSectionChange(tab.id)}
-            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${activeSection === tab.id
-                ? 'bg-cyan-600 text-bone-hi shadow-md'
+            className={`flex-1 sm:flex-initial px-5 py-2.5 font-bold cursor-pointer text-center ${
+              activeSection === tab.id
+                ? 'bg-cyan-600 text-bone-hi'
                 : 'text-bone-dim hover:text-bone hover:bg-ink'
-              }`}
+            }`}
           >
             {tab.label}
           </button>
@@ -411,10 +232,10 @@ export default function VolatusPrompt() {
       {/* SECTION 01: THE BRIEF */}
       {/* ======================================================== */}
       {activeSection === 'brief' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+        <div className="space-y-8">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 01</span>
+              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 01 · Strategic Engineering Directive</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Lift Is Calculated. Fit Is Modelled.
               </h2>
@@ -426,34 +247,195 @@ export default function VolatusPrompt() {
                   A wing that flies on paper is useless if the battery bay doesn&apos;t clear the main spar. A stunning 3D render is useless if the airfoil stalls at launch. <em>Volatus rewards the team that proves both.</em>
                 </p>
                 <p>
-                  Volatus is built on the same engineering principles of Real World Design Challenge: an operator provides a mission profile with binding constraints, and your design bureau engineers an airframe from first principles.
+                  Volatus is built on the engineering principles of the Real World Design Challenge: an operator provides a mission profile with binding constraints, and your design bureau engineers an airframe from first principles.
                 </p>
                 <p>
                   Aircraft design is an iterative loop: you estimate mass, size a wing, compute lift and drag, choose motors, select batteries, lay it out in CAD, discover the CG sits behind the neutral point, shift components, and run the math again until your numbers and CAD assembly converge.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-cyan-400 font-bold block">// TEST 01 · FLIGHT</span>
+              <div className="space-y-4">
+                <div className="border border-cyan-500/30 bg-cyan-500/5 p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs uppercase text-bone-dim font-bold">Eligibility &amp; Limits</span>
+                    <span className="px-2 py-0.5 bg-cyan-600 text-bone-hi font-mono text-xs font-bold">SENIOR DIVISION</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Seniors: <span className="text-cyan-400">25 Pages</span> Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Senior Division (Grades 9–12). Dossier strictly capped at 25 pages (20 recommended) + native 3D CAD package (.step, .stl, .f3d, .blend) including orthographic 3-view blueprints.
+                  </p>
+                </div>
+
+                <div className="p-4 border border-bone/20 bg-ink-2 space-y-1 font-mono text-xs">
+                  <span className="text-cyan-400 font-bold uppercase block">// Competition Schedule</span>
+                  <p className="text-bone text-[11px]"><strong className="text-bone">Round 1 (Online):</strong> Proposal dossier and 3D CAD files submitted by 18 October 2026, 23:59 IST.</p>
+                  <p className="text-bone text-[11px]"><strong className="text-bone">Round 2 (Onsite):</strong> Shortlisted teams exhibit models and defend before an engineering panel at DPS R.K. Puram on 24 October 2026.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Core Engineering Disciplines */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest block">
+                  Design Architecture
+                </span>
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  The Four Engineering Pillars
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+                <div className="bg-ink-2 p-4 border border-bone/20 space-y-1">
+                  <span className="text-cyan-400 font-bold block">// 01 · AERODYNAMICS</span>
                   <strong className="text-bone block uppercase">Does It Fly?</strong>
-                  <p className="text-[11px] text-bone-dim">Lift, drag, wing loading, Reynolds number, and stall margin calculated at true operational air density.</p>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Lift, drag polar, wing loading, Reynolds number, and stall margin calculated at true operational air density.
+                  </p>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-cyan-400 font-bold block">// TEST 02 · FIT</span>
+
+                <div className="bg-ink-2 p-4 border border-bone/20 space-y-1">
+                  <span className="text-cyan-400 font-bold block">// 02 · 3D PACKAGING</span>
                   <strong className="text-bone block uppercase">Does It Fit in 3D?</strong>
-                  <p className="text-[11px] text-bone-dim">Every component modelled at true 1:1 scale with clearances, wiring channels, and CG balancing.</p>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Every component modelled at true 1:1 scale with tolerances, mechanical fasteners, wiring channels, and CG balancing.
+                  </p>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-cyan-400 font-bold block">// TEST 03 · ENERGY</span>
-                  <strong className="text-bone block uppercase">Energy Budget</strong>
-                  <p className="text-[11px] text-bone-dim">Motor KV, prop sizing, segment-by-segment amp draw, and 20% battery reserve upon landing.</p>
+
+                <div className="bg-ink-2 p-4 border border-bone/20 space-y-1">
+                  <span className="text-cyan-400 font-bold block">// 03 · PROPULSION</span>
+                  <strong className="text-bone block uppercase">Energy &amp; Power</strong>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Motor KV, propeller sizing, segment-by-segment amp draw, and 20% battery reserve margin upon landing.
+                  </p>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-cyan-400 font-bold block">// TEST 04 · DEFENSE</span>
-                  <strong className="text-bone block uppercase">Live Defense</strong>
-                  <p className="text-[11px] text-bone-dim">Whiteboard calculation re-derivation, section cuts through CAD on request, and handling trade-offs.</p>
+
+                <div className="bg-ink-2 p-4 border border-bone/20 space-y-1">
+                  <span className="text-cyan-400 font-bold block">// 04 · DEFENSE</span>
+                  <strong className="text-bone block uppercase">Jury Defense</strong>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Whiteboard calculation derivations, real-time section cuts through CAD on request, and handling engineering trade-offs.
+                  </p>
                 </div>
+              </div>
+            </div>
+
+            {/* CAD & Digital Prototyping Mandate */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest block">
+                  3D CAD Specifications
+                </span>
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  Digital Prototyping Standards
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
+                  <span className="text-cyan-400 font-bold text-sm block">1. Clean Assembly Tree</span>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Proper sub-assembly hierarchy: Fuselage, Wing Structure (spars, ribs, skin), Propulsion &amp; Nacelles, Avionics Bay, and Landing Gear. Zero unconstrained floating parts.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
+                  <span className="text-cyan-400 font-bold text-sm block">2. Fasteners &amp; Hardware</span>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Model real mechanical fasteners (M2/M3 bolts, threaded inserts, hinges, control horns, pushrods). No impossible glued joints or magical solid bodies.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
+                  <span className="text-cyan-400 font-bold text-sm block">3. 3-View Blueprint</span>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    A high-resolution 3-view orthographic drawing generated directly from the CAD assembly. Annotate wingspan, root/tip chord, dihedral angle, and overall length in millimetres.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Qualitative Evaluation Criteria */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest block">
+                  Assessment Focus
+                </span>
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  Qualitative Evaluation Criteria
+                </h3>
+                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
+                  Submissions are reviewed by aerospace engineering jurors across five core areas:
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-cyan-400 font-bold uppercase block">// Aerodynamic Sizing</span>
+                  <div className="font-display text-base text-bone uppercase">Airfoil &amp; Physics</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Airfoil polar curve, wing loading, Reynolds number matching, lift-to-drag estimation, and stall margin at operational air density.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-cyan-400 font-bold uppercase block">// CAD Modeling</span>
+                  <div className="font-display text-base text-bone uppercase">Assembly Hygiene</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Assembly hierarchy, 3D part tolerances, mechanical fasteners, wiring channels, and 3-view orthographic blueprint.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-cyan-400 font-bold uppercase block">// Mission Fit</span>
+                  <div className="font-display text-base text-bone uppercase">RFP Compliance</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Compliance with chosen RFP constraints: payload bay volume, flight endurance, and operational altitude regime.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
+                  <span className="text-cyan-400 font-bold uppercase block">// Physical Exhibit</span>
+                  <div className="font-display text-base text-bone uppercase">Models &amp; Prototypes</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Quality of scale models, 3D-printed components, hardware cutaways, and exhibition booth craftsmanship in Round 2.
+                  </p>
+                </div>
+
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1 sm:col-span-2 lg:col-span-2">
+                  <span className="text-cyan-400 font-bold uppercase block">// Jury Defense</span>
+                  <div className="font-display text-base text-bone uppercase">Live Cross-Examination</div>
+                  <p className="text-[11px] text-bone-dim font-sans">
+                    Handling jury questioning, whiteboard calculation re-derivations, trade-off explanations, and real-time CAD model section cuts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Academic Integrity & Contact */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
+              <strong className="text-cyan-400 block uppercase tracking-wider text-sm">
+                Academic Integrity &amp; Generative AI Policy
+              </strong>
+              <p className="text-bone-dim font-sans text-xs leading-relaxed">
+                Generative AI tools may be used as research and editing assistants only. All core calculations, mass budgets, aerodynamic trade-offs, and 3D CAD assemblies must be original student work. Disclose all external software and AI usage in the bibliography. Submitting unverified AI hallucinations or imported pre-made CAD models without parametric history will lead to disqualification.
+              </p>
+            </div>
+
+            {/* POC and Links */}
+            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
+              <div className="text-bone-dim">
+                Event Lead: <strong className="text-bone">Tarushi Tomar</strong> (<a href="mailto:r24564tarushi@dpsrkp.net" className="text-cyan-400 hover:underline">r24564tarushi@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
+              </div>
+              <div className="flex gap-3">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
+                  ← Back to Comps
+                </Link>
+                <Link to="/submissions" className="px-5 py-2 bg-cyan-600 text-bone-hi font-bold border border-cyan-600 uppercase">
+                  Deposit CAD &amp; Dossier →
+                </Link>
               </div>
             </div>
           </div>
@@ -461,102 +443,21 @@ export default function VolatusPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 02: FORMAT & SCORING */}
-      {/* ======================================================== */}
-      {activeSection === 'format' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 02</span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Format, Deadlines &amp; Progression
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Round 1 Card */}
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-cyan-600 text-bone-hi">ROUND 1 · ONLINE</span>
-                  <span className="font-mono text-[11px] text-amber-400 font-bold">DUE 18 OCT 23:59 IST</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Technical Proposal &amp; 3D CAD Package</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Dossier PDF:</strong> Max 20 pages (Junior) / 25 pages (Senior).</li>
-                  <li><strong className="text-bone">CAD Files:</strong> Standard export (<span className="text-cyan-400">.step, .stl, .f3d, .blend</span>) or native CAD archive.</li>
-                  <li><strong className="text-bone">Engineering Blueprint:</strong> 3-view orthographic drawing (top, front, side) with mm dimensions.</li>
-                  <li><strong className="text-bone">Calculations Ledger:</strong> Mass budget, aerodynamic drag polar, motor &amp; battery runtimes.</li>
-                </ul>
-              </div>
-
-              {/* Round 2 Card */}
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 border border-bone text-bone">ROUND 2 · ONSITE</span>
-                  <span className="font-mono text-[11px] text-green-400 font-bold">24 OCT · DPS R.K. PURAM</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Science-Fair Exhibition &amp; Live Jury Review</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Exhibition Booth:</strong> Shortlisted teams receive dedicated booth space to exhibit models and drawings.</li>
-                  <li><strong className="text-bone">Physical Prototypes:</strong> 3D-printed scale models, airframe skeletons, or RC demonstrators strongly encouraged.</li>
-                  <li><strong className="text-bone">Live CAD Sectioning:</strong> Jurors will inspect digital CAD models on your laptops and request real-time section cuts.</li>
-                  <li><strong className="text-bone">Whiteboard Defense:</strong> Defend airfoil selection, Reynolds number matching, and structural spar load paths.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 03: MISSION RFPS */}
+      {/* SECTION 02: MISSION RFPS */}
       {/* ======================================================== */}
       {activeSection === 'tracks' && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Division Selector */}
-          <div className="border-2 border-bone/40 bg-ink p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-wider block">Division Selection</span>
-              <span className="font-label text-sm text-bone-dim">Select your category to inspect the 2 corresponding aircraft mission RFPs.</span>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
-              <button
-                onClick={() => {
-                  setDivision('junior');
-                  setSelectedTrackId('j-fm');
-                }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${division === 'junior'
-                    ? 'bg-bone text-ink border-bone'
-                    : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
-                  }`}
-              >
-                Junior (Grades 6–8)
-              </button>
-              <button
-                onClick={() => {
-                  setDivision('senior');
-                  setSelectedTrackId('s-ta');
-                }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${division === 'senior'
-                    ? 'bg-cyan-600 text-bone-hi border-cyan-600'
-                    : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
-                  }`}
-              >
-                Senior (Grades 9–12)
-              </button>
-            </div>
-          </div>
-
-          {/* Track Tabs */}
+        <div className="space-y-6">
+          {/* Track Selection Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
-            {activeRfps.map((rfp) => (
+            {RFPS.map((rfp) => (
               <button
                 key={rfp.id}
                 onClick={() => setSelectedTrackId(rfp.id)}
-                className={`p-4 border text-left transition-all cursor-pointer ${selectedTrackId === rfp.id
-                    ? 'bg-ink border-cyan-400 shadow-lg'
+                className={`p-4 border text-left cursor-pointer ${
+                  selectedTrackId === rfp.id
+                    ? 'bg-ink border-cyan-400'
                     : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                  }`}
+                }`}
               >
                 <div className="flex justify-between items-center mb-1">
                   <span className="font-bold text-cyan-400">{rfp.code}</span>
@@ -634,320 +535,45 @@ export default function VolatusPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 04: CAD & DIMENSION III */}
-      {/* ======================================================== */}
-      {activeSection === 'cad' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 04</span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                CAD Modeling &amp; Dimension III Digital Prototyping
-              </h2>
-            </div>
-
-            <div className="prose font-label text-sm text-bone-dim leading-relaxed max-w-3xl space-y-3">
-              <p>
-                In professional aerospace engineering, the 3D digital model <strong className="text-bone">is the aircraft</strong> before any metal is cut. Aerodynamicists extract wing loft contours; structures engineers analyze rib load paths; avionics technicians plan harness runs; and manufacturing generates machine toolpaths.
-              </p>
-              <p>
-                Dimension III is now fully integrated inside Volatus. Jurors evaluate the digital CAD package on the same criteria used by aerospace design bureaus: parametric hygiene, realistic mechanical fasteners, material density assignment, and assembly hierarchy.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                <span className="text-cyan-400 font-bold text-sm block">1. Clean Assembly Tree</span>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Proper sub-assembly hierarchy: Fuselage, Wing Structure (spars, ribs, skin), Propulsion &amp; Nacelles, Avionics Bay, and Landing Gear. Zero floating components.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                <span className="text-cyan-400 font-bold text-sm block">2. Fasteners &amp; Hardware</span>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Model real mechanical fasteners (M2/M3 bolts, threaded inserts, hinges, control horns, pushrods). No impossible glued joints or magical solid bodies.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                <span className="text-cyan-400 font-bold text-sm block">3. 3-View Blueprint</span>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  A high-resolution 3-view orthographic drawing generated directly from the CAD assembly. Annotate wingspan, root/tip chord, dihedral angle, and overall length.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 05: AERODYNAMIC SIZING LAB */}
-      {/* ======================================================== */}
-      {activeSection === 'calc' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 05</span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Interactive Aerodynamic Sizing Lab
-              </h2>
-            </div>
-
-            <p className="font-label text-sm text-bone-dim leading-relaxed max-w-3xl">
-              Use this interactive aerodynamic sizing tool to calculate your aircraft&apos;s wing area, wing loading, required cruise lift coefficient ($C_L$), Reynolds number ($Re$), and stall speed ($V_{'{'}stall{'}'}$) at your target operational altitude.
-            </p>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-              {/* Inputs Form */}
-              <div className="lg:col-span-5 bg-ink-2 border border-bone/30 p-5 space-y-4 font-mono text-xs">
-                <h3 className="font-bold text-bone uppercase border-b border-bone/20 pb-2">
-                  Airframe Input Parameters
-                </h3>
-
-                <div className="space-y-1">
-                  <label className="text-bone-dim block">Take-Off Mass (kg):</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={calcInputs.mass}
-                    onChange={(e) => setCalcInputs({ ...calcInputs, mass: e.target.value })}
-                    className="w-full bg-ink p-2 border border-bone/40 text-bone font-mono"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-bone-dim block">Wingspan b (m):</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={calcInputs.wingspan}
-                    onChange={(e) => setCalcInputs({ ...calcInputs, wingspan: e.target.value })}
-                    className="w-full bg-ink p-2 border border-bone/40 text-bone font-mono"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-bone-dim block">Mean Aerodynamic Chord c (m):</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={calcInputs.chord}
-                    onChange={(e) => setCalcInputs({ ...calcInputs, chord: e.target.value })}
-                    className="w-full bg-ink p-2 border border-bone/40 text-bone font-mono"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-bone-dim block">Cruise Airspeed V (m/s):</label>
-                  <input
-                    type="number"
-                    step="0.5"
-                    value={calcInputs.velocity}
-                    onChange={(e) => setCalcInputs({ ...calcInputs, velocity: e.target.value })}
-                    className="w-full bg-ink p-2 border border-bone/40 text-bone font-mono"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-bone-dim block">Operational Altitude (m MSL):</label>
-                  <input
-                    type="number"
-                    step="500"
-                    value={calcInputs.altitude}
-                    onChange={(e) => setCalcInputs({ ...calcInputs, altitude: e.target.value })}
-                    className="w-full bg-ink p-2 border border-bone/40 text-bone font-mono"
-                  />
-                </div>
-              </div>
-
-              {/* Output Results Table */}
-              <div className="lg:col-span-7 bg-ink-2 border border-bone/30 p-5 space-y-4 font-mono text-xs">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <h3 className="font-bold text-bone uppercase">Computed Aerodynamic Telemetry</h3>
-                  <span className={`px-2 py-0.5 font-bold ${aeroResults.isFeasible ? 'bg-green-500/10 text-green-400 border border-green-500/40' : 'bg-red-500/10 text-red-400 border border-red-500/40'}`}>
-                    {aeroResults.isFeasible ? 'FEASIBLE CRUISE ENVELOPE' : 'REVIEW AIRFOIL SIZING'}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Air Density ρ</span>
-                    <strong className="text-bone text-base">{aeroResults.rho} kg/m³</strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Total Weight W</span>
-                    <strong className="text-bone text-base">{aeroResults.W} N</strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Wing Area S</span>
-                    <strong className="text-bone text-base">{aeroResults.S} m²</strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Aspect Ratio AR</span>
-                    <strong className="text-bone text-base">{aeroResults.AR}</strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Wing Loading (W/S)</span>
-                    <strong className="text-cyan-400 text-base">{aeroResults.wingLoading} kg/m²</strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Required Cruise CL</span>
-                    <strong className={`text-base ${aeroResults.isFeasible ? 'text-green-400' : 'text-crimson'}`}>
-                      {aeroResults.requiredCL}
-                    </strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Reynolds Number Re</span>
-                    <strong className="text-bone text-base">{aeroResults.Re}</strong>
-                  </div>
-                  <div className="bg-ink p-3 border border-bone/20">
-                    <span className="text-bone-dim text-[11px] block">Est. Stall Speed Vstall</span>
-                    <strong className="text-bone text-base">{aeroResults.Vstall} m/s</strong>
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-bone-dim font-sans leading-relaxed pt-2">
-                  * Cruise $C_L$ should ideally stay between 0.3 and 0.8 for conventional fixed-wing airfoils to maintain healthy stall margin ($C_{'{'}L,max{'}'} \approx 1.2 - 1.4$). High altitude designs require larger wing area to prevent excessive wing loading in thin air.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 06: CHECKLIST */}
+      {/* SECTION 03: CHECKLIST */}
       {/* ======================================================== */}
       {activeSection === 'checklist' && (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-              <div>
-                <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 06</span>
-                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                  Preflight Submission Checklist
-                </h2>
-              </div>
-              <div className="flex items-center gap-3 font-mono text-xs">
-                <span className="text-cyan-400 font-bold">
-                  {Object.values(checkedItems).filter(Boolean).length} of {CHECKLIST_ITEMS.length} verified
-                </span>
-                <button
-                  onClick={resetChecklist}
-                  className="px-2 py-1 border border-bone/40 text-bone-dim hover:text-bone text-[11px] uppercase cursor-pointer"
-                >
-                  Reset
-                </button>
-              </div>
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 03</span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Preflight Submission Checklist
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {CHECKLIST_ITEMS.map((item) => (
-                <div
+                <label
                   key={item.id}
-                  onClick={() => toggleCheck(item.id)}
-                  className={`p-3.5 border cursor-pointer transition-all flex items-start gap-3 select-none ${checkedItems[item.id]
-                      ? 'border-bone/20 bg-ink-2/40 text-bone-dim'
-                      : 'border-bone bg-ink-2 text-bone hover:border-cyan-400'
-                    }`}
+                  className="p-3.5 border border-bone bg-ink-2 text-bone flex items-start gap-3 select-none cursor-pointer"
                 >
                   <input
                     type="checkbox"
-                    checked={!!checkedItems[item.id]}
-                    onChange={() => { }}
                     className="mt-0.5 accent-cyan-500 cursor-pointer"
                   />
-                  <span className={`font-mono text-xs leading-relaxed ${checkedItems[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
+                  <span className="font-mono text-xs leading-relaxed">
                     {item.label}
                   </span>
-                </div>
+                </label>
               ))}
             </div>
 
             <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
               <span className="font-mono text-xs text-bone-dim">
-                Status automatically persisted in local browser storage.
+                Verify all technical deliverables before final deposit.
               </span>
               <Link
                 to="/submissions"
-                className="px-6 py-2.5 bg-cyan-600 text-bone-hi font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink hover:text-cyan-400 border border-cyan-600 transition-colors"
+                className="px-6 py-2.5 bg-cyan-600 text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-cyan-600"
               >
                 Go to Submission Vault →
               </Link>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 07: RULES & RUBRIC */}
-      {/* ======================================================== */}
-      {activeSection === 'rules' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 07</span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Evaluation Rubric &amp; Point Breakdown
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 font-mono text-xs">
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-cyan-400 font-bold text-xs uppercase block">// 25 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Aero Sizing</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Airfoil polar curve, wing loading, Reynolds number matching, lift-to-drag estimation, and stall margin.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-cyan-400 font-bold text-xs uppercase block">// 25 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">CAD Modeling</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Assembly hierarchy, 3D part tolerances, mechanical fasteners, wiring channels, and 3-view orthographic blueprint.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-cyan-400 font-bold text-xs uppercase block">// 20 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Mission Fit</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Compliance with the chosen RFP constraints: payload bay volume, flight endurance, and real operational environment.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-cyan-400 font-bold text-xs uppercase block">// 15 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Physical Exhibit</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Quality of scale models, 3D printed components, hardware cutaways, and exhibition booth craftsmanship.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-cyan-400 font-bold text-xs uppercase block">// 15 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Arbiters Defense</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Handling live jury questioning, whiteboard calculation defense, and live digital CAD model sectioning.
-                </p>
-              </div>
-            </div>
-
-            {/* POC and Links */}
-            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
-              <div className="text-bone-dim">
-                Event Lead: <strong className="text-bone">Tarushi Tomar</strong> (<a href="mailto:r24564tarushi@dpsrkp.net" className="text-cyan-400 hover:underline">r24564tarushi@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
-              </div>
-              <div className="flex gap-3">
-                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone hover:border-bone transition-colors uppercase">
-                  ← Back to Comps
-                </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-cyan-600 text-bone-hi font-bold hover:bg-ink hover:text-cyan-400 border border-cyan-600 transition-colors uppercase">
-                  Deposit CAD &amp; Dossier →
-                </Link>
-              </div>
             </div>
           </div>
         </div>

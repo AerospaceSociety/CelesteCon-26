@@ -51,15 +51,14 @@ export default function GameJamPrompt() {
             <span>→</span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">DOSSIER UNLOCKED</span>
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">SPRINT RELEASED</span>
           </div>
         </div>
       </div>
 
       {/* Main Hero Banner with Brutalist Arcade Aesthetic */}
-      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-crimson/10 rounded-full blur-3xl pointer-events-none -mr-28 -mt-28"></div>
+      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative">
 
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 relative z-10">
           <div className="space-y-3 max-w-3xl">
