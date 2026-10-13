@@ -33,7 +33,7 @@ const DELIVERABLE_INFO = {
   '02': {
     format: 'Technical Dossier PDF (Max 25 pages) + 3D CAD (.step / .stl / .f3d / .blend)',
     submissionMode: 'Online Upload',
-    details: 'Aeronautical design & 3D digital prototyping. Two mission RFPs in the Senior division: Thin Air & Cloud Hauler. Top teams exhibit on campus.',
+    details: 'Aeronautical design & 3D digital prototyping. Two mission RFPs in the Senior division: Thin Air & Flockmate. Top teams exhibit on campus.',
     portalUrl: '/prompts/volatus',
     isLive: true,
     portalLabel: 'Volatus'
