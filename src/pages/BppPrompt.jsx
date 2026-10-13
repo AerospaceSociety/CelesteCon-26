@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+
+const R1_DEADLINE = new Date('2026-10-18T23:59:00+05:30').getTime();
 const VALID_SECTIONS = ['brief', 'format', 'tracks', 'calc', 'template', 'rules', 'rubrics'];
 
 const JUNIOR_PROMPTS = [
@@ -322,7 +324,11 @@ const CHECKLIST_ITEMS = [
 ];
 
 export default function BppPrompt() {
-  const [activeSection, setActiveSection] = useState('brief');
+  const [activeSection, setActiveSection] = useState(() => {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    return VALID_SECTIONS.includes(hash) ? hash : 'brief';
+  });
+
   const [division, setDivision] = useState('senior');
   const [activeJuniorPrompt, setActiveJuniorPrompt] = useState('j-thermo');
   const [activeSeniorPrompt, setActiveSeniorPrompt] = useState('s-thermo');
@@ -338,11 +344,45 @@ export default function BppPrompt() {
   const [checklist, setChecklist] = useState(() => {
     try {
       const saved = localStorage.getItem('c26-bpp-checklist');
-      return saved ? JSON.parse(saved) : {};
+      return saved ? JSON.parse(saved) : { bpp1: true, bpp2: true };
     } catch {
-      return {};
+      return { bpp1: true, bpp2: true };
     }
   });
+
+  // Countdown timer
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, isLive: true });
+
+  useEffect(() => {
+    const update = () => {
+      const now = Date.now();
+      const diff = Math.max(0, R1_DEADLINE - now);
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / (1000 * 60)) % 60);
+      setTimeLeft({ days: d, hours: h, minutes: m, isLive: diff > 0 });
+    };
+    update();
+    const timer = setInterval(update, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Sync hash routing
+  useEffect(() => {
+    const handleHash = () => {
+      const h = (window.location.hash || '').replace('#', '').toLowerCase();
+      if (VALID_SECTIONS.includes(h)) {
+        setActiveSection(h);
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  const handleSectionChange = (secId) => {
+    setActiveSection(secId);
+    window.history.replaceState(null, '', `#${secId}`);
+  };
 
   const toggleCheck = (id) => {
     setChecklist((prev) => {
@@ -356,6 +396,13 @@ export default function BppPrompt() {
     });
   };
 
+  const resetChecklist = () => {
+    setChecklist({});
+    try {
+      localStorage.setItem('c26-bpp-checklist', JSON.stringify({}));
+    } catch {}
+  };
+
   const completedCount = useMemo(() => {
     return Object.values(checklist).filter(Boolean).length;
   }, [checklist]);
@@ -365,834 +412,841 @@ export default function BppPrompt() {
   const contributionMarginPct = calcUnitPrice > 0 ? ((unitContribution / calcUnitPrice) * 100).toFixed(1) : 0;
   const breakEvenUnits = unitContribution > 0 ? Math.ceil(calcFixedCost / unitContribution) : '∞';
   const monthlyProfit = calcSalesVolume * unitContribution - calcFixedCost;
-  const paybackMonths = monthlyProfit > 0 ? (calcCapEx / monthlyProfit).toFixed(1) : 'Never (Unprofitable)';
-
-  // Sync hash routing
-  useEffect(() => {
-    const handleHash = () => {
-      const h = (window.location.hash || '').replace('#', '').toLowerCase();
-      if (VALID_SECTIONS.includes(h)) {
-        setActiveSection(h);
-      }
-    };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
-
-  const switchSection = (sec) => {
-    setActiveSection(sec);
-    window.location.hash = sec;
-  };
+  const paybackMonths = monthlyProfit > 0 ? (calcCapEx / monthlyProfit).toFixed(1) : 'Never (Deficit)';
 
   const currentPrompts = division === 'junior' ? JUNIOR_PROMPTS : SENIOR_PROMPTS;
   const currentPromptId = division === 'junior' ? activeJuniorPrompt : activeSeniorPrompt;
   const selectedPrompt = currentPrompts.find((p) => p.id === currentPromptId) || currentPrompts[0];
 
   return (
-    <div className="min-h-screen bg-[#12100D] text-[#E8E1CE] font-sans selection:bg-[#C23A1E] selection:text-[#F2EDDD]">
-      {/* Top Breadcrumb Bar */}
-      <div className="border-b border-[#2E2A24] bg-[#0E0C0A] text-xs font-mono">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[#8F887A]">
-            <Link to="/" className="hover:text-[#E8E1CE] transition-colors">CelesteCon 2026</Link>
-            <span>/</span>
-            <Link to="/comps" className="hover:text-[#E8E1CE] transition-colors">Competitions</Link>
-            <span>/</span>
-            <Link to="/prompts" className="hover:text-[#E8E1CE] transition-colors">Prompts</Link>
-            <span>/</span>
-            <span className="text-[#E8E1CE] font-bold">Business Power Pitch</span>
-          </nav>
-          <div className="flex items-center gap-3">
-            <span className="text-[#8F887A] hidden sm:inline">Event 04 · BPP-26</span>
+    <div className="space-y-8 animate-fadeIn pb-16">
+      {/* Top Breadcrumb & Status */}
+      <div className="border-b-2 border-bone/30 pb-3 flex flex-wrap justify-between items-center gap-3 font-mono text-xs text-bone-dim">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link to="/" className="hover:text-crimson transition-colors">CELESTECON 2026</Link>
+          <span>/</span>
+          <Link to="/comps" className="hover:text-crimson transition-colors">COMPETITIONS</Link>
+          <span>/</span>
+          <Link to="/prompts" className="hover:text-crimson transition-colors">PROMPTS</Link>
+          <span>/</span>
+          <span className="text-crimson font-bold uppercase">EVENT 04 · BUSINESS POWER PITCH</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
+            <span>Submission Vault</span>
+            <span>→</span>
+          </Link>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">DOSSIER UNLOCKED</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Hero Header */}
+      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-28 -mt-28"></div>
+
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 relative z-10">
+          <div className="space-y-4 max-w-3xl">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">
+                EVENT 04 · BPP
+              </span>
+              <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                Aerospace Venture &amp; Pitch
+              </span>
+              <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                Junior (Grades 6–8) · Senior (Grades 9–12)
+              </span>
+              <span className="font-mono text-xs uppercase px-2.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/40 font-bold">
+                ● 10 PROMPTS ACTIVE
+              </span>
+            </div>
+
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl text-bone uppercase tracking-wide leading-none">
+              Business Power Pitch <span className="text-crimson">2026</span>
+            </h1>
+
+            <div className="p-3 bg-amber-500/10 border-l-4 border-amber-500 font-mono text-xs sm:text-sm text-bone">
+              <span className="text-amber-400 font-bold uppercase tracking-widest block mb-0.5">
+                // OFFICIAL VENTURE MOTTO
+              </span>
+              <span className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wider">
+                &ldquo;Pick a layer of the sky. Find someone who will pay for it. Prove the numbers.&rdquo;
+              </span>
+            </div>
+
+            <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
+              An inter-school competition that brings together aspiring innovators and entrepreneurs to develop solutions with real-world impact. Design a commercially viable aerospace product or service across the atmospheric layers, supported by technical feasibility, financial planning, and a go-to-market strategy.
+            </p>
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <button
+                onClick={() => handleSectionChange('tracks')}
+                className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-all cursor-pointer shadow-md"
+              >
+                Explore 10 Prompt Tracks →
+              </button>
+              <button
+                onClick={() => handleSectionChange('calc')}
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-all cursor-pointer"
+              >
+                Unit Economics Lab
+              </button>
+              <button
+                onClick={() => handleSectionChange('template')}
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-bone transition-all cursor-pointer"
+              >
+                Proposal Template
+              </button>
+            </div>
+          </div>
+
+          {/* Telemetry Aside Box */}
+          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0 shadow-xl">
+            <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
+              <span className="text-bone-dim uppercase">Round 1 Proposal Window</span>
+              <span className="font-bold text-green-400 uppercase">
+                {timeLeft.isLive ? '● SUBMISSIONS OPEN' : 'WINDOW CLOSED'}
+              </span>
+            </div>
+
+            <div className="space-y-1">
+              <span className="font-mono text-[10px] text-bone-dim uppercase block">
+                Deadline: 18 Oct 23:59:59 IST
+              </span>
+              <div className="grid grid-cols-3 gap-1.5 text-center font-mono">
+                <div className="bg-ink p-2 border border-bone/20">
+                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.days}</span>
+                  <span className="text-[9px] text-bone-dim uppercase">Days Left</span>
+                </div>
+                <div className="bg-ink p-2 border border-bone/20">
+                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.hours}</span>
+                  <span className="text-[9px] text-bone-dim uppercase">Hours</span>
+                </div>
+                <div className="bg-ink p-2 border border-bone/20">
+                  <span className="text-xl font-bold text-crimson block leading-tight">{timeLeft.minutes}</span>
+                  <span className="text-[9px] text-bone-dim uppercase">Mins</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-1.5 font-mono text-[11px] text-bone-dim pt-2 border-t border-bone/20">
+              <div className="flex justify-between">
+                <span>Eligibility:</span>
+                <strong className="text-bone">Jr (6–8) · Sr (9–12)</strong>
+              </div>
+              <div className="flex justify-between">
+                <span>Team Size:</span>
+                <strong className="text-bone">2–5 Members</strong>
+              </div>
+              <div className="flex justify-between">
+                <span>Deliverable:</span>
+                <strong className="text-bone">Proposal PDF + Pitch Deck</strong>
+              </div>
+              <div className="flex justify-between">
+                <span>Round 2 Finale:</span>
+                <strong className="text-crimson font-bold">24 Oct · On Campus</strong>
+              </div>
+            </div>
+
             <Link
-              to="/prompts"
-              className="px-2.5 py-1 border border-[#4A443A] text-[#C4BDAA] hover:border-[#E0512F] hover:text-[#E0512F] transition-colors uppercase tracking-wider text-[11px]"
+              to="/submissions"
+              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block shadow-md"
             >
-              &larr; Prompts Portal
+              Deposit Proposal PDF →
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Hero Header */}
-      <header className="border-b border-[#2E2A24] bg-[#161310] py-12 lg:py-16 relative overflow-hidden">
-        <div className="absolute right-6 top-8 hidden 2xl:block select-none pointer-events-none text-[#2E2A24] font-mono text-xs tracking-[0.5em] [writing-mode:vertical-rl]">
-          大気圏 · 事業提案 · CELESTECON 2026
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7 space-y-6">
-              <div className="flex flex-wrap gap-2 text-xs font-mono uppercase tracking-widest">
-                <span className="px-2.5 py-1 border border-[#4A443A] text-[#C4BDAA]">Ref. № BPP-26</span>
-                <span className="px-2.5 py-1 border border-[#4A443A] text-[#C4BDAA]">Edition VI</span>
-                <span className="px-2.5 py-1 border border-[#E0512F] text-[#E0512F] font-bold">Nationwide</span>
-                <span className="px-2.5 py-1 bg-[#2E2A24] text-[#E8E1CE]">Grades 6–12</span>
-              </div>
-
-              <div>
-                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight text-[#E8E1CE] leading-none">
-                  Business<br />
-                  <span className="text-[#E0512F]">Power</span><br />
-                  <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #E8E1CE' }}>Pitch</span>
-                </h1>
-                <p className="mt-4 text-xl sm:text-2xl font-bold uppercase tracking-wide text-[#C4BDAA] max-w-xl">
-                  Pick a layer of the sky. Find someone who will pay for it. Prove the numbers.
-                </p>
-              </div>
-
-              <p className="text-sm sm:text-base text-[#C4BDAA] leading-relaxed max-w-2xl">
-                The flagship aerospace entrepreneurship challenge of CelesteCon 2026 by AEROSS, DPS R.K. Puram. Build a commercial venture across the atmospheric layers—from Tropospheric weather modification to Exospheric asteroid mining. Submit your written proposal and investor deck in Round 1, then defend your unit economics live on campus in Round 2.
-              </p>
-
-              <div className="flex flex-wrap gap-3 pt-2">
-                <button
-                  onClick={() => switchSection('tracks')}
-                  className="px-5 py-3 bg-[#C23A1E] hover:bg-[#E0512F] text-[#F2EDDD] font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-2"
-                >
-                  Read the Challenges &rarr;
-                </button>
-                <button
-                  onClick={() => switchSection('calc')}
-                  className="px-5 py-3 border border-[#D9AE5B] text-[#D9AE5B] hover:bg-[#D9AE5B] hover:text-[#12100D] font-bold text-xs uppercase tracking-widest transition-colors"
-                >
-                  Unit Economics Lab
-                </button>
-                <button
-                  onClick={() => switchSection('template')}
-                  className="px-5 py-3 border border-[#4A443A] text-[#E8E1CE] hover:border-[#E8E1CE] font-bold text-xs uppercase tracking-widest transition-colors"
-                >
-                  Proposal Template
-                </button>
-              </div>
-            </div>
-
-            {/* Visual Atmospheric Map Plate */}
-            <div className="lg:col-span-5 bg-[#0B0A08] border border-[#2E2A24] p-5 space-y-4">
-              <div className="flex justify-between items-center text-[11px] font-mono uppercase tracking-wider text-[#8F887A] border-b border-[#2E2A24] pb-2">
-                <span>Fig. 01 · Atmospheric Market Layers</span>
-                <span className="text-[#D9AE5B]">Scale: Non-Linear</span>
-              </div>
-
-              <div className="space-y-1.5 font-mono text-xs">
-                {/* Exosphere */}
-                <div className="p-2.5 bg-[#15120F] border-l-2 border-[#E0512F] flex justify-between items-center">
-                  <div>
-                    <span className="text-[#E0512F] font-bold">EXOSPHERE</span>
-                    <span className="text-[#8F887A] text-[10px] ml-2">600 km+</span>
-                  </div>
-                  <span className="text-[11px] text-[#C4BDAA]">S-EX · Asteroid Prospecting</span>
-                </div>
-
-                {/* Thermosphere */}
-                <div className="p-2.5 bg-[#181410] border-l-2 border-[#D9AE5B] flex justify-between items-center">
-                  <div>
-                    <span className="text-[#D9AE5B] font-bold">THERMOSPHERE</span>
-                    <span className="text-[#8F887A] text-[10px] ml-2">85–600 km</span>
-                  </div>
-                  <span className="text-[11px] text-[#C4BDAA]">J-TH &amp; S-TH · Drag &amp; Radiation</span>
-                </div>
-
-                {/* Mesosphere */}
-                <div className="p-2.5 bg-[#1C1814] border-l-2 border-[#9DBF85] flex justify-between items-center">
-                  <div>
-                    <span className="text-[#9DBF85] font-bold">MESOSPHERE</span>
-                    <span className="text-[#8F887A] text-[10px] ml-2">50–85 km</span>
-                  </div>
-                  <span className="text-[11px] text-[#C4BDAA]">J-ME &amp; S-ME · Meteors &amp; Pterosaurs</span>
-                </div>
-
-                {/* Stratosphere */}
-                <div className="p-2.5 bg-[#201C17] border-l-2 border-[#D9AE5B] flex justify-between items-center">
-                  <div>
-                    <span className="text-[#D9AE5B] font-bold">STRATOSPHERE</span>
-                    <span className="text-[#8F887A] text-[10px] ml-2">12–50 km</span>
-                  </div>
-                  <span className="text-[11px] text-[#C4BDAA]">J-ST · Clean Air &amp; Ozonesondes</span>
-                </div>
-
-                {/* Troposphere */}
-                <div className="p-2.5 bg-[#25201A] border-l-2 border-[#E0512F] flex justify-between items-center">
-                  <div>
-                    <span className="text-[#E0512F] font-bold">TROPOSPHERE</span>
-                    <span className="text-[#8F887A] text-[10px] ml-2">0–12 km</span>
-                  </div>
-                  <span className="text-[11px] text-[#C4BDAA]">J-OZ &amp; S-TR · Airline Ozone &amp; Weather</span>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-[#2E2A24] flex items-center justify-between text-[11px] font-mono text-[#8F887A]">
-                <span>10 Atmospheric Prompts Available</span>
-                <span className="text-[#E0512F] font-bold">Round 1 Deadline: 18 Oct 2026</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Stats Grid */}
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border border-[#2E2A24] border-t-2 border-t-[#E8E1CE] divide-y sm:divide-y-0 sm:divide-x divide-[#2E2A24] bg-[#0E0C0A] text-xs font-mono">
-            <div className="p-4">
-              <span className="text-[#8F887A] block uppercase">Scope</span>
-              <strong className="text-sm text-[#E8E1CE] block mt-1">Nationwide</strong>
-              <span className="text-[#8F887A] text-[11px]">All Indian Schools</span>
-            </div>
-            <div className="p-4">
-              <span className="text-[#8F887A] block uppercase">Divisions</span>
-              <strong className="text-sm text-[#E8E1CE] block mt-1">Jr &amp; Sr</strong>
-              <span className="text-[#8F887A] text-[11px]">Grades 6–8 · 9–12</span>
-            </div>
-            <div className="p-4">
-              <span className="text-[#8F887A] block uppercase">Team Size</span>
-              <strong className="text-sm text-[#E8E1CE] block mt-1">2–5 Students</strong>
-              <span className="text-[#8F887A] text-[11px]">1 Faculty Advisor</span>
-            </div>
-            <div className="p-4">
-              <span className="text-[#8F887A] block uppercase">Round 1</span>
-              <strong className="text-sm text-[#E8E1CE] block mt-1">Dossier + Deck</strong>
-              <span className="text-[#8F887A] text-[11px]">PDF Upload</span>
-            </div>
-            <div className="p-4">
-              <span className="text-[#8F887A] block uppercase">Round 2</span>
-              <strong className="text-sm text-[#E8E1CE] block mt-1">Live Pitch</strong>
-              <span className="text-[#8F887A] text-[11px]">DPS R.K. Puram</span>
-            </div>
-            <div className="p-4 bg-[#1A140F]">
-              <span className="text-[#D9AE5B] block uppercase font-bold">Submissions Due</span>
-              <strong className="text-sm text-[#E0512F] block mt-1">18 Oct 2026</strong>
-              <span className="text-[#8F887A] text-[11px]">11:59 PM IST</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Navigation Tabs */}
-      <div className="sticky top-0 z-30 bg-[#12100D] border-b border-[#2E2A24] shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <nav className="flex space-x-1 overflow-x-auto py-2 font-mono text-xs uppercase tracking-wider scrollbar-none">
-            {[
-              { id: 'brief', label: '01 The Brief' },
-              { id: 'format', label: '02 Format & Scoring' },
-              { id: 'tracks', label: '03 The Challenges' },
-              { id: 'calc', label: '04 Unit Economics Lab' },
-              { id: 'template', label: '05 Proposal Template' },
-              { id: 'rules', label: '06 Rules & AI Policy' },
-              { id: 'rubrics', label: '07 Rubrics & FAQ' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => switchSection(tab.id)}
-                className={`px-3 py-2 border-b-2 whitespace-nowrap transition-colors ${
-                  activeSection === tab.id
-                    ? 'border-[#E0512F] text-[#E8E1CE] font-bold bg-[#1A1713]'
-                    : 'border-transparent text-[#8F887A] hover:text-[#C4BDAA]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </nav>
-        </div>
+      {/* Navigation Tabs Bar */}
+      <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
+        {[
+          { id: 'brief', label: '01 · The Brief' },
+          { id: 'format', label: '02 · Format & Scoring' },
+          { id: 'tracks', label: '03 · Prompt Tracks' },
+          { id: 'calc', label: '04 · Unit Economics Lab' },
+          { id: 'template', label: '05 · Proposal Guide' },
+          { id: 'rules', label: '06 · Rules & Rubric' }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => handleSectionChange(tab.id)}
+            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${
+              activeSection === tab.id || (tab.id === 'rules' && activeSection === 'rubrics')
+                ? 'bg-crimson text-bone-hi shadow-md'
+                : 'text-bone-dim hover:text-bone hover:bg-ink'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Main Body Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
-        {/* ================= 01 THE BRIEF ================= */}
-        {activeSection === 'brief' && (
-          <section className="space-y-10 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 01 · Master Brief</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  Find the customer. Count the cost. Survive the bad day.
-                </h2>
-              </div>
-              <span className="text-4xl font-extrabold font-mono text-[#E0512F] opacity-40">01</span>
+      {/* ======================================================== */}
+      {/* SECTION 01: THE BRIEF */}
+      {/* ======================================================== */}
+      {activeSection === 'brief' && (
+        <div className="space-y-8 animate-fadeIn">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
+            {/* Header */}
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                Section 01 · Strategic Venture Directive
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Where Innovation Meets Market Viability &amp; Real-World Impact
+              </h2>
             </div>
 
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-7 space-y-6 text-[#C4BDAA] leading-relaxed text-base">
-                <p className="text-xl font-bold uppercase tracking-wide text-[#E8E1CE] leading-snug">
-                  Plenty of teams can imagine a sensor on a balloon or an excavator on an asteroid. The teams that win can tell you <span className="text-[#E0512F]">who pays for it, what one unit costs</span>, and what happens to the business when the launch slips.
+            {/* Master Brief Narrative */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-bone-dim leading-relaxed">
+              <div className="space-y-4">
+                <p className="text-bone font-medium text-base leading-relaxed">
+                  Business Power Pitch, a flagship sub-event of CelesteCon’26, is an inter-school competition that brings together aspiring innovators and entrepreneurs from across the country. The event provides a dynamic platform for students to combine creativity, technical knowledge, and entrepreneurial thinking to develop solutions with real-world impact.
                 </p>
-
-                <h3 className="text-lg font-bold uppercase tracking-wider text-[#E8E1CE] pt-2">Why the atmosphere?</h3>
                 <p>
-                  Every prompt sits in a distinct layer of Earth’s atmosphere, from the weather-chaotic Troposphere out to the vacuum of the Exosphere. The physics of your layer sets your physical constraints: air density, aerodynamic drag, ionizing radiation, and communication latency dictate your technology. Treat atmospheric physics as a foundational design input, not a decorative backdrop.
-                </p>
-
-                <h3 className="text-lg font-bold uppercase tracking-wider text-[#E8E1CE] pt-2">Why the numbers matter so much</h3>
-                <p>
-                  The Round 2 evaluation panel includes aerospace engineers, industrial executives, and venture investors who have priced launches and managed factories. In Round 1, technical feasibility and financial unit economics account for <strong>50% of Senior marks and 40% of Junior marks</strong>. A modest idea with verified, defensible unit economics will consistently outscore an exotic concept with fictitious arithmetic.
+                  Participants will be given thought-provoking prompts that require them to design a product or service and support it with a detailed pitch deck covering technical feasibility, financial planning, and a go-to-market strategy. Over the course of three days, teams will brainstorm, ideate, and develop their proposals for submission in Round 1.
                 </p>
               </div>
+              <div className="space-y-4">
+                <p>
+                  After careful evaluation by the judges, shortlisted teams will move on to Round 2, where they will present their solutions before a panel, followed by a Q&amp;A session that will test their clarity, confidence, and ability to defend their ideas.
+                </p>
+                <p>
+                  The event encourages participants to think beyond conventional boundaries, blending imagination with practicality, while focusing on innovation, sustainability, and market viability. Business Power Pitch is the perfect stage for students to showcase their entrepreneurial spirit, analytical ability, and leadership skills.
+                </p>
+              </div>
+            </div>
 
-              {/* The Four Tests */}
-              <div className="lg:col-span-5 bg-[#15120F] border border-[#2E2A24] p-6 space-y-4">
-                <h3 className="text-xs font-mono uppercase tracking-widest text-[#D9AE5B] border-b border-[#2E2A24] pb-2">
-                  The Four Investment Tests
+            {/* Division Submission Standards Banner */}
+            <div className="border-2 border-crimson/80 bg-crimson/10 p-5 sm:p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-crimson/30 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-widest">
+                    OFFICIAL SUBMISSION LIMITS
+                  </span>
+                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Dossier &amp; Pitch Deck</span>
+                </div>
+                <span className="font-mono text-xs text-amber-400 font-bold uppercase">
+                  Due: 18 October 2026 · 23:59 IST
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono">
+                {/* Junior Card */}
+                <div className="border border-bone/30 bg-ink p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs uppercase text-bone-dim font-bold">Junior Division (Grades 6–8)</span>
+                    <span className="px-2 py-0.5 bg-bone text-ink text-xs font-bold">JR CATEGORY</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Juniors: <span className="text-crimson">25 Pages</span> Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Strict maximum page limit of <strong>25 pages</strong> (15–20 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 layer challenges + 1 open bonus prompt.
+                  </p>
+                </div>
+
+                {/* Senior Card */}
+                <div className="border border-bone/30 bg-ink p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs uppercase text-bone-dim font-bold">Senior Division (Grades 9–12)</span>
+                    <span className="px-2 py-0.5 bg-crimson text-bone-hi text-xs font-bold">SR CATEGORY</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Seniors: <span className="text-crimson">30 Pages</span> Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Strict maximum page limit of <strong>30 pages</strong> (20–25 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 deep-tech challenges + 1 open bonus prompt.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-between items-center gap-2 pt-1 font-mono text-xs text-bone-dim">
+                <span>Deliverable: Proposal Dossier PDF + 12-Slide Deck PDF (English only, INR or USD with declared exchange rate).</span>
+                <span className="text-amber-400">Optional Bonus Challenge: Max 4 pp (Jr) or 6 pp (Sr) for +10 bonus pts.</span>
+              </div>
+            </div>
+
+            {/* The Four Investment Tests */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
+                  Venture Evaluation Criteria
+                </span>
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  The Four Commercial Investment Tests
                 </h3>
+                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
+                  The Round 2 evaluation panel includes aerospace engineers, industrial executives, and venture investors. Your venture must pass each test:
+                </p>
+              </div>
 
-                <div className="space-y-4 text-xs font-mono">
-                  <div className="p-3 bg-[#0B0A08] border border-[#2E2A24]">
-                    <span className="text-[#E0512F] font-bold block uppercase">01 · The Customer Test</span>
-                    <strong className="text-sm text-[#E8E1CE] block mt-1">Name who signs the cheque</strong>
-                    <p className="text-[#8F887A] mt-1 text-[11px] leading-relaxed">
-                      "Governments" and "everyone" do not count. Name a specific organization, procurement officer, or fleet manager with a real operational budget.
-                    </p>
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 01 Customer */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <span className="font-mono text-xs font-bold text-crimson uppercase block">01 · Customer Test</span>
+                  <h4 className="font-display text-lg text-bone uppercase">Name Who Pays</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    "Governments" and "everyone" do not count. Name a specific organization, procurement officer, or fleet manager with a real operational budget.
+                  </p>
+                </div>
 
-                  <div className="p-3 bg-[#0B0A08] border border-[#2E2A24]">
-                    <span className="text-[#D9AE5B] font-bold block uppercase">02 · The Cost Test</span>
-                    <strong className="text-sm text-[#E8E1CE] block mt-1">Price one individual unit</strong>
-                    <p className="text-[#8F887A] mt-1 text-[11px] leading-relaxed">
-                      One alert feed, one monthly ozonesonde launch, or one kg delivered to orbit. If you cannot cost a single unit, you cannot model a thousand.
-                    </p>
-                  </div>
+                {/* 02 Unit Cost */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <span className="font-mono text-xs font-bold text-amber-400 uppercase block">02 · Unit Cost Test</span>
+                  <h4 className="font-display text-lg text-bone uppercase">Price One Unit</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Price one alert feed, one monthly ozonesonde launch, or one kg delivered to orbit. If you cannot cost a single unit, you cannot model a thousand.
+                  </p>
+                </div>
 
-                  <div className="p-3 bg-[#0B0A08] border border-[#2E2A24]">
-                    <span className="text-[#9DBF85] font-bold block uppercase">03 · The Physics Test</span>
-                    <strong className="text-sm text-[#E8E1CE] block mt-1">The layer sets the boundaries</strong>
-                    <p className="text-[#8F887A] mt-1 text-[11px] leading-relaxed">
-                      Solar constant, air density, Mach number, and orbital decay. If your business depends on physics bending, it fails immediately.
-                    </p>
-                  </div>
+                {/* 03 Physics */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <span className="font-mono text-xs font-bold text-green-400 uppercase block">03 · Physics Test</span>
+                  <h4 className="font-display text-lg text-bone uppercase">Layer Boundaries</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Air density, drag, Mach number, and orbital decay set your technological feasibility. If your venture violates atmospheric physics, it fails.
+                  </p>
+                </div>
 
-                  <div className="p-3 bg-[#0B0A08] border border-[#2E2A24]">
-                    <span className="text-[#E0512F] font-bold block uppercase">04 · The Cross-Exam Test</span>
-                    <strong className="text-sm text-[#E8E1CE] block mt-1">Defend every single figure</strong>
-                    <p className="text-[#8F887A] mt-1 text-[11px] leading-relaxed">
-                      Any number in your proposal can be questioned during the Round 2 live pitch. If no team member can derive it, delete it.
-                    </p>
-                  </div>
+                {/* 04 Cross-Exam */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <span className="font-mono text-xs font-bold text-cyan-400 uppercase block">04 · Defense Test</span>
+                  <h4 className="font-display text-lg text-bone uppercase">Defend Every Number</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Any number in your proposal can be questioned during the Round 2 live pitch. If no team member can derive it on the whiteboard, delete it.
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Division Comparison */}
-            <div className="grid md:grid-cols-2 gap-6 pt-6">
-              <div className="border border-[#2E2A24] bg-[#161310] p-6 space-y-3">
-                <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
-                  <h3 className="text-xl font-bold uppercase text-[#E8E1CE]">Junior Division</h3>
-                  <span className="text-xs font-mono px-2 py-0.5 bg-[#2E2A24] text-[#C4BDAA]">Grades 6–8</span>
-                </div>
-                <p className="text-sm text-[#C4BDAA]">
-                  4 layer challenges (Satellite Drag, Clean Air, Meteor Intel, Airline Ozone) plus 1 open bonus prompt.
-                </p>
-                <ul className="text-xs font-mono text-[#8F887A] space-y-1.5 list-disc pl-4">
-                  <li>Judges demand clear service delivery, a real customer, and transparent arithmetic.</li>
-                  <li>No prior business background expected: Section 04 provides a full worked template.</li>
-                  <li>Maximum proposal body: 25 pages (aim for 15–20).</li>
-                </ul>
+            {/* Atmospheric Market Layers Map */}
+            <div className="space-y-3 pt-2">
+              <div className="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-bone-dim border-b border-bone/20 pb-2">
+                <span className="text-bone font-bold">Fig. 01 · Atmospheric Market Layers Spectrum</span>
+                <span className="text-amber-400">5 Distinct Operational Tiers</span>
               </div>
 
-              <div className="border border-[#2E2A24] bg-[#161310] p-6 space-y-3">
-                <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
-                  <h3 className="text-xl font-bold uppercase text-[#E0512F]">Senior Division</h3>
-                  <span className="text-xs font-mono px-2 py-0.5 bg-[#C23A1E] text-[#F2EDDD]">Grades 9–12</span>
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 font-mono text-xs">
+                <div className="p-3 bg-ink-2 border-l-4 border-crimson">
+                  <span className="text-crimson font-bold block">EXOSPHERE</span>
+                  <span className="text-[10px] text-bone-dim block">600+ km</span>
+                  <p className="text-[11px] text-bone mt-1">S-EX · Asteroid Mining &amp; Deep Space</p>
                 </div>
-                <p className="text-sm text-[#C4BDAA]">
-                  4 deep-tech challenges (Radiation Harvesting, AeroGenesis Dinosaur, Asteroid Mining, Weather Intervention) plus 1 open bonus prompt.
-                </p>
-                <ul className="text-xs font-mono text-[#8F887A] space-y-1.5 list-disc pl-4">
-                  <li>Judges demand deep technical rigor (delta-v, lift-to-drag, Joules/kg) and full 5-year financials.</li>
-                  <li>Grades 9–10 judged on identical rubric to Grades 11–12; sound logic beats handwaving.</li>
-                  <li>Maximum proposal body: 30 pages (aim for 20–25).</li>
-                </ul>
+                <div className="p-3 bg-ink-2 border-l-4 border-amber-400">
+                  <span className="text-amber-400 font-bold block">THERMOSPHERE</span>
+                  <span className="text-[10px] text-bone-dim block">85–600 km</span>
+                  <p className="text-[11px] text-bone mt-1">J-TH &amp; S-TH · Drag Mitigation &amp; Power</p>
+                </div>
+                <div className="p-3 bg-ink-2 border-l-4 border-green-400">
+                  <span className="text-green-400 font-bold block">MESOSPHERE</span>
+                  <span className="text-[10px] text-bone-dim block">50–85 km</span>
+                  <p className="text-[11px] text-bone mt-1">J-ME &amp; S-ME · Meteor Tracking &amp; Flight</p>
+                </div>
+                <div className="p-3 bg-ink-2 border-l-4 border-cyan-400">
+                  <span className="text-cyan-400 font-bold block">STRATOSPHERE</span>
+                  <span className="text-[10px] text-bone-dim block">12–50 km</span>
+                  <p className="text-[11px] text-bone mt-1">J-ST · Clean Air &amp; Ozonesondes</p>
+                </div>
+                <div className="p-3 bg-ink-2 border-l-4 border-crimson">
+                  <span className="text-crimson font-bold block">TROPOSPHERE</span>
+                  <span className="text-[10px] text-bone-dim block">0–12 km</span>
+                  <p className="text-[11px] text-bone mt-1">J-OZ &amp; S-TR · Airline Ozone &amp; Weather</p>
+                </div>
               </div>
             </div>
-          </section>
-        )}
 
-        {/* ================= 02 FORMAT & SCORING ================= */}
-        {activeSection === 'format' && (
-          <section className="space-y-10 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 02 · Format &amp; Scoring</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  Two Rounds. Both Count.
-                </h2>
+            {/* Jump to Tracks CTA */}
+            <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
+              <div className="font-mono text-xs text-bone-dim">
+                Ready to examine the challenges? Review all 10 atmospheric problem statements.
               </div>
-              <span className="text-4xl font-extrabold font-mono text-[#E0512F] opacity-40">02</span>
+              <button
+                onClick={() => handleSectionChange('tracks')}
+                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink hover:text-crimson border border-crimson transition-colors cursor-pointer"
+              >
+                Explore 10 Prompt Tracks →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* SECTION 02: FORMAT & SCORING */}
+      {/* ======================================================== */}
+      {activeSection === 'format' && (
+        <div className="space-y-8 animate-fadeIn">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                Section 02 · Format &amp; Scoring
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Two Rigorous Rounds. Both Count Toward Victory.
+              </h2>
             </div>
 
             {/* 5-Step Timeline */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-[#2E2A24] divide-y sm:divide-y-0 sm:divide-x divide-[#2E2A24] bg-[#14110E] text-xs font-mono">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-bone/30 divide-y sm:divide-y-0 sm:divide-x divide-bone/30 bg-ink-2 text-xs font-mono">
               <div className="p-4 space-y-2">
-                <span className="text-2xl font-bold text-[#8F887A]">01</span>
-                <strong className="block text-sm text-[#E8E1CE]">Register</strong>
-                <p className="text-[#8F887A] text-[11px]">2–5 students from one school with one faculty advisor on the portal.</p>
-              </div>
-              <div className="p-4 space-y-2">
-                <span className="text-2xl font-bold text-[#8F887A]">02</span>
-                <strong className="block text-sm text-[#E8E1CE]">Build Venture</strong>
-                <p className="text-[#8F887A] text-[11px]">Pick 1 layer prompt from your division. Draft proposal dossier and pitch deck.</p>
-              </div>
-              <div className="p-4 space-y-2 bg-[#1C1814]">
-                <span className="text-2xl font-bold text-[#E0512F]">03</span>
-                <strong className="block text-sm text-[#E0512F]">R1 Submission</strong>
-                <p className="text-[#C4BDAA] text-[11px]">Upload PDF dossier + deck by 18 Oct 2026, 11:59 PM IST.</p>
+                <span className="text-2xl font-bold text-bone-dim">01</span>
+                <strong className="block text-sm text-bone">Team Registration</strong>
+                <p className="text-bone-dim text-[11px]">2–5 students from one school with faculty advisor on the portal.</p>
               </div>
               <div className="p-4 space-y-2">
-                <span className="text-2xl font-bold text-[#8F887A]">04</span>
-                <strong className="block text-sm text-[#E8E1CE]">Shortlist</strong>
-                <p className="text-[#8F887A] text-[11px]">Double-blind peer evaluation. Top teams invited to DPS R.K. Puram finale.</p>
+                <span className="text-2xl font-bold text-bone-dim">02</span>
+                <strong className="block text-sm text-bone">Venture Ideation</strong>
+                <p className="text-bone-dim text-[11px]">Pick 1 layer prompt from your division. Draft proposal and deck.</p>
               </div>
-              <div className="p-4 space-y-2 bg-[#1C1814]">
-                <span className="text-2xl font-bold text-[#D9AE5B]">05</span>
-                <strong className="block text-sm text-[#D9AE5B]">R2 Finale</strong>
-                <p className="text-[#C4BDAA] text-[11px]">Live pitch and 10-minute investor defense + curveball scenario card.</p>
+              <div className="p-4 space-y-2 bg-crimson/10 border-l border-crimson">
+                <span className="text-2xl font-bold text-crimson">03</span>
+                <strong className="block text-sm text-crimson">R1 Online Vault</strong>
+                <p className="text-bone text-[11px]">Upload proposal PDF + 12-slide deck by 18 Oct, 23:59 IST.</p>
+              </div>
+              <div className="p-4 space-y-2">
+                <span className="text-2xl font-bold text-bone-dim">04</span>
+                <strong className="block text-sm text-bone">Shortlisting</strong>
+                <p className="text-bone-dim text-[11px]">Double-blind jury evaluation. Top teams invited to on-campus finale.</p>
+              </div>
+              <div className="p-4 space-y-2 bg-amber-500/10 border-l border-amber-500">
+                <span className="text-2xl font-bold text-amber-400">05</span>
+                <strong className="block text-sm text-amber-400">R2 Live Finale</strong>
+                <p className="text-bone text-[11px]">24 Oct on-campus pitch defense, investor Q&amp;A + 2-min curveball card.</p>
               </div>
             </div>
 
             {/* Round 1 vs Round 2 Breakdown */}
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="border border-[#2E2A24] bg-[#15120F] p-6 space-y-4">
-                <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
-                  <h3 className="text-lg font-bold uppercase text-[#E8E1CE]">Round 1 · Proposal &amp; Pitch Deck</h3>
-                  <span className="text-xs font-mono px-2 py-0.5 bg-[#2E2A24] text-[#C4BDAA]">Online PDF Upload</span>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
+                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">ROUND 1 · ONLINE</span>
+                  <span className="font-mono text-[11px] text-amber-400 font-bold">DUE 18 OCT 23:59 IST</span>
                 </div>
-                <div className="space-y-3 text-xs font-mono text-[#C4BDAA]">
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Deliverables:</span>
-                    <span>Proposal PDF + Deck PDF (+ Bonus PDF)</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Page Limit:</span>
-                    <span>Jr max 25 pp · Sr max 30 pp</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Pitch Deck:</span>
-                    <span>Max 12 content slides (16:9 PDF)</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Scoring:</span>
-                    <span className="text-[#D9AE5B] font-bold">100 points (+ up to 10 bonus)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#8F887A]">Portal Deadline:</span>
-                    <span className="text-[#E0512F] font-bold">18 Oct 2026, 11:59 PM IST</span>
-                  </div>
-                </div>
+                <h3 className="font-display text-xl text-bone uppercase">Venture Proposal &amp; Investor Deck</h3>
+                <ul className="space-y-2 font-mono text-xs text-bone-dim">
+                  <li><strong className="text-bone">Junior Length:</strong> 15–20 pages recommended (strict max 25 pages).</li>
+                  <li><strong className="text-bone">Senior Length:</strong> 20–25 pages recommended (strict max 30 pages).</li>
+                  <li><strong className="text-bone">Pitch Deck:</strong> Exactly 12 content slides (16:9 PDF format).</li>
+                  <li><strong className="text-bone">Bonus Challenge:</strong> Max 4 pp (Jr) or 6 pp (Sr) for up to 10 bonus points.</li>
+                  <li><strong className="text-bone">Scoring Weight:</strong> 100 points written proposal (+ 10 bonus).</li>
+                </ul>
               </div>
 
-              <div className="border border-[#2E2A24] bg-[#15120F] p-6 space-y-4">
-                <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
-                  <h3 className="text-lg font-bold uppercase text-[#E0512F]">Round 2 · Pitch &amp; Defense</h3>
-                  <span className="text-xs font-mono px-2 py-0.5 bg-[#C23A1E] text-[#F2EDDD]">On Campus · DPS RKP</span>
+              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
+                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 border border-bone text-bone">ROUND 2 · ONSITE</span>
+                  <span className="font-mono text-[11px] text-green-400 font-bold">24 OCT · DPS R.K. PURAM</span>
                 </div>
-                <div className="space-y-3 text-xs font-mono text-[#C4BDAA]">
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Pitch Duration:</span>
-                    <span>Jr 6 mins · Sr 8 mins (strictly timed)</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Cross-Examination:</span>
-                    <span>~10 mins panel questioning</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Curveball Card:</span>
-                    <span>2 mins to respond to market/physics shock</span>
-                  </div>
-                  <div className="flex justify-between border-b border-[#2E2A24] pb-2">
-                    <span className="text-[#8F887A]">Scoring:</span>
-                    <span className="text-[#D9AE5B] font-bold">100 points</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#8F887A]">Total Grand Score:</span>
-                    <span className="text-[#9DBF85] font-bold">200 points (+ up to 10 bonus)</span>
-                  </div>
-                </div>
+                <h3 className="font-display text-xl text-bone uppercase">Live Pitch &amp; Cross-Examination</h3>
+                <ul className="space-y-2 font-mono text-xs text-bone-dim">
+                  <li><strong className="text-bone">Oral Pitch:</strong> 6 minutes (Junior) or 8 minutes (Senior) formal presentation.</li>
+                  <li><strong className="text-bone">Investor Q&amp;A:</strong> ~10 minutes intensive questioning by aerospace investors.</li>
+                  <li><strong className="text-bone">Curveball Card:</strong> Real-time market/physics shock injected live (2 mins to respond).</li>
+                  <li><strong className="text-bone">Scoring Weight:</strong> 100 points oral defense and technical clarity.</li>
+                  <li><strong className="text-bone">Grand Total:</strong> R1 (100) + R2 (100) = 200 pts total + bonus.</li>
+                </ul>
               </div>
             </div>
 
-            {/* Score Equation Box */}
-            <div className="p-6 bg-[#16120E] border border-[#D9AE5B] flex flex-col md:flex-row items-center gap-6 justify-between">
+            {/* Grand Formula Equation Box */}
+            <div className="p-5 bg-ink border border-amber-500/50 flex flex-col md:flex-row items-center gap-6 justify-between">
               <div className="space-y-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-[#D9AE5B]">Grand Championship Formula</span>
-                <h3 className="text-2xl font-bold uppercase text-[#E8E1CE]">Round 1 Carries Directly into the Final Ranking</h3>
-                <p className="text-xs font-mono text-[#C4BDAA]">
-                  Total Score = Round 1 (100 pts) + Round 2 (100 pts) + Bonus (+10 pts). R1 does NOT reset. A thorough written proposal preserves its full weight.
+                <span className="text-xs font-mono uppercase tracking-widest text-amber-400 font-bold">
+                  Grand Championship Formula
+                </span>
+                <h3 className="font-display text-2xl uppercase text-bone">
+                  Round 1 Score Carries Directly into the Finale
+                </h3>
+                <p className="text-xs font-mono text-bone-dim">
+                  Total Championship Score = Round 1 (100 pts) + Round 2 (100 pts) + Bonus (+10 pts). R1 scores do NOT reset. A thorough written proposal preserves its full weight through the final podium ranking.
                 </p>
               </div>
-              <div className="text-center font-mono font-bold text-3xl text-[#D9AE5B] bg-[#0E0C0A] px-6 py-4 border border-[#4A443A] shrink-0">
+              <div className="text-center font-mono font-bold text-3xl text-amber-400 bg-ink-2 px-6 py-4 border border-bone/30 shrink-0">
                 100 + 100 = 200
-                <span className="block text-[10px] text-[#8F887A] font-normal uppercase tracking-wider mt-1">+ Up to 10 Bonus</span>
+                <span className="block text-[10px] text-bone-dim font-normal uppercase tracking-wider mt-1">+ Up to 10 Bonus</span>
               </div>
             </div>
-          </section>
-        )}
+          </div>
+        </div>
+      )}
 
-        {/* ================= 03 CHALLENGES ================= */}
-        {activeSection === 'tracks' && (
-          <section className="space-y-8 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 03 · The Challenges</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  10 Atmospheric Venture Prompts
-                </h2>
-              </div>
-              <span className="text-4xl font-extrabold font-mono text-[#E0512F] opacity-40">03</span>
+      {/* ======================================================== */}
+      {/* SECTION 03: PROMPT TRACKS */}
+      {/* ======================================================== */}
+      {activeSection === 'tracks' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Division Selector */}
+          <div className="border-2 border-bone/40 bg-ink p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-wider block">Division Selection</span>
+              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 5 corresponding venture prompts.</span>
             </div>
-
-            {/* Division Selector */}
-            <div className="grid grid-cols-2 border border-[#2E2A24] bg-[#14110E] text-xs font-mono uppercase tracking-wider">
+            <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
               <button
                 onClick={() => setDivision('junior')}
-                className={`py-4 px-6 text-left transition-colors flex justify-between items-center ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
                   division === 'junior'
-                    ? 'bg-[#E8E1CE] text-[#12100D] font-bold'
-                    : 'text-[#8F887A] hover:text-[#E8E1CE] hover:bg-[#1A1713]'
+                    ? 'bg-bone text-ink border-bone'
+                    : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
                 }`}
               >
-                <div>
-                  <span className="text-base sm:text-lg block font-sans">Junior Division</span>
-                  <span className="text-[11px]">Grades 6–8 · 5 Prompts</span>
-                </div>
-                <span>&rarr;</span>
+                Junior (Grades 6–8)
               </button>
-
               <button
                 onClick={() => setDivision('senior')}
-                className={`py-4 px-6 text-left border-l border-[#2E2A24] transition-colors flex justify-between items-center ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
                   division === 'senior'
-                    ? 'bg-[#E8E1CE] text-[#12100D] font-bold'
-                    : 'text-[#8F887A] hover:text-[#E8E1CE] hover:bg-[#1A1713]'
+                    ? 'bg-crimson text-bone-hi border-crimson'
+                    : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
                 }`}
               >
-                <div>
-                  <span className="text-base sm:text-lg block font-sans">Senior Division</span>
-                  <span className="text-[11px]">Grades 9–12 · 5 Prompts</span>
-                </div>
-                <span>&rarr;</span>
+                Senior (Grades 9–12)
               </button>
             </div>
+          </div>
 
-            {/* Prompt Selector Bar */}
-            <div className="flex border border-[#2E2A24] bg-[#0E0C0A] overflow-x-auto text-xs font-mono scrollbar-none">
-              {currentPrompts.map((p) => {
-                const isSelected = p.id === currentPromptId;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => {
-                      if (division === 'junior') setActiveJuniorPrompt(p.id);
-                      else setActiveSeniorPrompt(p.id);
-                    }}
-                    className={`p-3 sm:p-4 text-left border-r border-[#2E2A24] whitespace-nowrap transition-colors min-w-[170px] ${
-                      isSelected
-                        ? 'bg-[#1D1914] border-b-2 border-b-[#E0512F] text-[#E8E1CE]'
-                        : 'text-[#8F887A] hover:text-[#C4BDAA]'
-                    }`}
-                  >
-                    <span className={`block font-bold text-[11px] ${isSelected ? 'text-[#E0512F]' : 'text-[#8F887A]'}`}>
-                      {p.code}
-                    </span>
-                    <span className="block font-bold text-sm text-[#E8E1CE] truncate">{p.title}</span>
-                    <span className="block text-[10px] text-[#8F887A] truncate">{p.layer}</span>
-                  </button>
-                );
-              })}
+          {/* Prompt Selector Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 font-mono text-xs">
+            {currentPrompts.map((p) => {
+              const isSelected = p.id === currentPromptId;
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => {
+                    if (division === 'junior') setActiveJuniorPrompt(p.id);
+                    else setActiveSeniorPrompt(p.id);
+                  }}
+                  className={`p-3 border text-left transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-ink border-crimson shadow-lg'
+                      : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-bold text-crimson">{p.code}</span>
+                    <span className="text-[10px] text-bone-dim uppercase truncate ml-1">{p.layer.split(' ')[0]}</span>
+                  </div>
+                  <div className="font-display text-sm text-bone uppercase leading-tight truncate">{p.title}</div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Prompt Details Card */}
+          <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{selectedPrompt.code}</span>
+                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                    {division === 'junior' ? 'Junior Division' : 'Senior Division'}
+                  </span>
+                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-amber-500/40 text-amber-400">
+                    {selectedPrompt.layer}
+                  </span>
+                </div>
+                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
+                  {selectedPrompt.title}
+                </h2>
+                <p className="mt-1 text-sm text-amber-400 font-mono">
+                  &ldquo;{selectedPrompt.log}&rdquo;
+                </p>
+              </div>
             </div>
 
-            {/* Prompt Details Card */}
-            <div className="border border-[#2E2A24] bg-[#161310] p-6 lg:p-8 space-y-8">
-              <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#2E2A24] pb-6">
+            {/* Story & Background */}
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              <div className="lg:col-span-8 space-y-4 text-sm text-bone-dim leading-relaxed">
                 <div>
-                  <div className="flex gap-2 text-xs font-mono uppercase mb-2">
-                    <span className="px-2 py-0.5 bg-[#2E2A24] text-[#C4BDAA]">{division.toUpperCase()}</span>
-                    <span className="px-2 py-0.5 border border-[#4A443A] text-[#D9AE5B]">{selectedPrompt.layer}</span>
+                  <h4 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold mb-1">
+                    Operational Context &amp; Science
+                  </h4>
+                  <p>{selectedPrompt.story.bg}</p>
+                </div>
+
+                <div className="p-4 bg-ink-2 border-l-4 border-crimson text-bone">
+                  <h4 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold mb-1">
+                    The Central Venture Challenge
+                  </h4>
+                  <p className="font-semibold text-sm">{selectedPrompt.story.challenge}</p>
+                </div>
+
+                <div>
+                  <h4 className="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold mb-1">
+                    What Makes This Unforgiving
+                  </h4>
+                  <p>{selectedPrompt.story.hard}</p>
+                </div>
+              </div>
+
+              <div className="lg:col-span-4 space-y-4">
+                {/* Technical Benchmarks */}
+                <div className="p-4 bg-ink-2 border border-bone/30 space-y-3 font-mono text-xs">
+                  <span className="text-amber-400 font-bold block uppercase tracking-wider border-b border-bone/20 pb-1">
+                    Starting Technical Benchmarks
+                  </span>
+                  <div className="space-y-2">
+                    {selectedPrompt.numbers.map((num, i) => (
+                      <div key={i} className="flex justify-between items-baseline border-b border-bone/10 pb-1">
+                        <strong className="text-bone font-bold">{num.val}</strong>
+                        <span className="text-bone-dim text-[11px] text-right ml-2">{num.label}</span>
+                      </div>
+                    ))}
                   </div>
-                  <h3 className="text-2xl sm:text-4xl font-extrabold uppercase text-[#E8E1CE]">
-                    {selectedPrompt.title}
-                  </h3>
-                  <p className="mt-2 text-sm sm:text-base text-[#D9AE5B] font-mono max-w-2xl">
-                    "{selectedPrompt.log}"
+                </div>
+
+                {/* Curveball Warning */}
+                <div className="p-4 bg-crimson/10 border-2 border-dashed border-crimson space-y-2 font-mono text-xs">
+                  <span className="text-crimson font-bold block uppercase tracking-wider">
+                    Round 2 Live Curveball Preview
+                  </span>
+                  <p className="text-bone italic text-[11px] leading-relaxed">
+                    &ldquo;{selectedPrompt.curveball}&rdquo;
                   </p>
                 </div>
-                <div className="text-right font-mono text-xs border-2 border-[#E0512F] text-[#E0512F] p-3 uppercase tracking-wider rotate-[-2deg]">
-                  <span>Venture Code</span>
-                  <strong className="block text-2xl font-bold">{selectedPrompt.code}</strong>
-                </div>
-              </div>
-
-              {/* Story & Background */}
-              <div className="grid lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-8 space-y-5 text-sm sm:text-base text-[#C4BDAA] leading-relaxed">
-                  <div>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#E0512F] mb-1">Operational Context</h4>
-                    <p>{selectedPrompt.story.bg}</p>
-                  </div>
-
-                  <div className="p-4 bg-[#0E0C0A] border-l-4 border-[#E0512F] text-[#E8E1CE]">
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#E0512F] mb-1">The Central Challenge</h4>
-                    <p className="font-semibold">{selectedPrompt.story.challenge}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#E0512F] mb-1">What Makes This Hard</h4>
-                    <p>{selectedPrompt.story.hard}</p>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-4 space-y-4">
-                  {/* Starting Numbers */}
-                  <div className="p-4 bg-[#0E0C0A] border border-[#2E2A24] space-y-3 font-mono text-xs">
-                    <span className="text-[#D9AE5B] font-bold block uppercase tracking-wider border-b border-[#2E2A24] pb-1">
-                      Starting Technical Benchmarks
-                    </span>
-                    <div className="space-y-2">
-                      {selectedPrompt.numbers.map((num, i) => (
-                        <div key={i} className="flex justify-between items-baseline border-b border-[#2E2A24]/50 pb-1">
-                          <strong className="text-[#D9AE5B] font-bold">{num.val}</strong>
-                          <span className="text-[#8F887A] text-[11px] text-right ml-2">{num.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Curveball Warning */}
-                  <div className="p-4 bg-[#1C1410] border border-[#E0512F] space-y-2 font-mono text-xs">
-                    <span className="text-[#E0512F] font-bold block uppercase tracking-wider">
-                      Round 2 Curveball Card Preview
-                    </span>
-                    <p className="text-[#E8E1CE] italic text-[11px] leading-relaxed">
-                      "{selectedPrompt.curveball}"
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Must-Cover Deliverables */}
-              <div className="pt-6 border-t border-[#2E2A24] space-y-4">
-                <div className="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-[#8F887A]">
-                  <span>Mandatory Proposal Inclusions</span>
-                  <span className="text-[#D9AE5B]">{selectedPrompt.mustCover.length} Specific Deliverables</span>
-                </div>
-
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {selectedPrompt.mustCover.map((req) => (
-                    <div key={req.code} className="p-3 bg-[#0E0C0A] border border-[#2E2A24] space-y-1 text-xs">
-                      <div className="flex justify-between font-mono text-[11px]">
-                        <span className="text-[#E0512F] font-bold">{req.code}</span>
-                        <span className="text-[#D9AE5B]">&rarr; Sec {req.link}</span>
-                      </div>
-                      <strong className="block text-[#E8E1CE] text-sm font-sans">{req.title}</strong>
-                      <p className="text-[#8F887A] text-[11px] leading-relaxed">{req.desc}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
-          </section>
-        )}
 
-        {/* ================= 04 UNIT ECONOMICS LAB ================= */}
-        {activeSection === 'calc' && (
-          <section className="space-y-10 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 04 · Interactive Modeling Lab</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  Venture Unit Economics Engine
-                </h2>
+            {/* Must-Cover Deliverables */}
+            <div className="pt-6 border-t border-bone/20 space-y-4">
+              <div className="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-bone-dim">
+                <span className="text-bone font-bold">Mandatory Proposal Inclusions</span>
+                <span className="text-amber-400">{selectedPrompt.mustCover.length} Specific Section Requirements</span>
               </div>
-              <span className="text-4xl font-extrabold font-mono text-[#D9AE5B] opacity-40">04</span>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {selectedPrompt.mustCover.map((req) => (
+                  <div key={req.code} className="p-3 bg-ink-2 border border-bone/20 space-y-1 text-xs">
+                    <div className="flex justify-between font-mono text-[11px]">
+                      <span className="text-crimson font-bold">{req.code}</span>
+                      <span className="text-amber-400">&rarr; Sec {req.link}</span>
+                    </div>
+                    <strong className="block text-bone text-sm">{req.title}</strong>
+                    <p className="text-bone-dim text-[11px] leading-relaxed">{req.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* SECTION 04: UNIT ECONOMICS LAB */}
+      {/* ======================================================== */}
+      {activeSection === 'calc' && (
+        <div className="space-y-8 animate-fadeIn">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                Section 04 · Interactive Modeling Lab
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Venture Unit Economics Engine
+              </h2>
             </div>
 
-            <p className="text-sm sm:text-base text-[#C4BDAA] max-w-3xl leading-relaxed">
-              Use this interactive modeling tool to stress-test your pricing, variable cost per unit, monthly operating overhead, and break-even volume. Compare these values with your proposal’s Section 4.3 &amp; 4.7 Key Figures Table.
+            <p className="font-label text-sm text-bone-dim max-w-3xl leading-relaxed">
+              Use this interactive modeling tool to stress-test your unit selling price, variable costs, monthly operating overhead, and break-even volume. Reconcile these figures directly with your proposal’s Section 4.3 &amp; 4.7 Key Figures Table.
             </p>
 
             <div className="grid lg:grid-cols-12 gap-8 items-start">
               {/* Inputs */}
-              <div className="lg:col-span-6 bg-[#161310] border border-[#2E2A24] p-6 space-y-5 font-mono text-xs">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-[#D9AE5B] border-b border-[#2E2A24] pb-2">
+              <div className="lg:col-span-6 bg-ink-2 border border-bone/30 p-6 space-y-5 font-mono text-xs">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
                   Financial Model Parameters
                 </h3>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="flex justify-between text-[#8F887A] mb-1">
+                    <label className="flex justify-between text-bone-dim mb-1">
                       <span>Selling Price per Unit (P):</span>
-                      <span className="text-[#E8E1CE] font-bold">₹{calcUnitPrice.toLocaleString()}</span>
+                      <span className="text-bone font-bold">₹{calcUnitPrice.toLocaleString()}</span>
                     </label>
                     <input
                       type="number"
                       value={calcUnitPrice}
                       onChange={(e) => setCalcUnitPrice(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-[#0E0C0A] border border-[#4A443A] px-3 py-2 text-[#E8E1CE] text-sm focus:border-[#D9AE5B] outline-none"
+                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="flex justify-between text-[#8F887A] mb-1">
+                    <label className="flex justify-between text-bone-dim mb-1">
                       <span>Variable Cost per Unit (V):</span>
-                      <span className="text-[#E8E1CE] font-bold">₹{calcVarCost.toLocaleString()}</span>
+                      <span className="text-bone font-bold">₹{calcVarCost.toLocaleString()}</span>
                     </label>
                     <input
                       type="number"
                       value={calcVarCost}
                       onChange={(e) => setCalcVarCost(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-[#0E0C0A] border border-[#4A443A] px-3 py-2 text-[#E8E1CE] text-sm focus:border-[#D9AE5B] outline-none"
+                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="flex justify-between text-[#8F887A] mb-1">
+                    <label className="flex justify-between text-bone-dim mb-1">
                       <span>Monthly Fixed OpEx (F):</span>
-                      <span className="text-[#E8E1CE] font-bold">₹{calcFixedCost.toLocaleString()}</span>
+                      <span className="text-bone font-bold">₹{calcFixedCost.toLocaleString()}</span>
                     </label>
                     <input
                       type="number"
                       value={calcFixedCost}
                       onChange={(e) => setCalcFixedCost(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-[#0E0C0A] border border-[#4A443A] px-3 py-2 text-[#E8E1CE] text-sm focus:border-[#D9AE5B] outline-none"
+                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="flex justify-between text-[#8F887A] mb-1">
+                    <label className="flex justify-between text-bone-dim mb-1">
                       <span>Expected Units Sold / Month (Q):</span>
-                      <span className="text-[#E8E1CE] font-bold">{calcSalesVolume} units</span>
+                      <span className="text-bone font-bold">{calcSalesVolume} units</span>
                     </label>
                     <input
                       type="number"
                       value={calcSalesVolume}
                       onChange={(e) => setCalcSalesVolume(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-[#0E0C0A] border border-[#4A443A] px-3 py-2 text-[#E8E1CE] text-sm focus:border-[#D9AE5B] outline-none"
+                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="flex justify-between text-[#8F887A] mb-1">
+                    <label className="flex justify-between text-bone-dim mb-1">
                       <span>Start-up Investment / CapEx:</span>
-                      <span className="text-[#E8E1CE] font-bold">₹{calcCapEx.toLocaleString()}</span>
+                      <span className="text-bone font-bold">₹{calcCapEx.toLocaleString()}</span>
                     </label>
                     <input
                       type="number"
                       value={calcCapEx}
                       onChange={(e) => setCalcCapEx(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-[#0E0C0A] border border-[#4A443A] px-3 py-2 text-[#E8E1CE] text-sm focus:border-[#D9AE5B] outline-none"
+                      className="w-full bg-ink border border-bone/40 px-3 py-2 text-bone text-sm focus:border-crimson outline-none"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Dynamic Outputs */}
-              <div className="lg:col-span-6 bg-[#0E0C0A] border border-[#D9AE5B] p-6 space-y-6 font-mono text-xs">
-                <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-[#D9AE5B]">
+              <div className="lg:col-span-6 bg-ink border-2 border-amber-500/60 p-6 space-y-6 font-mono text-xs">
+                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400">
                     Live Profitability Dashboard
                   </h3>
-                  <span className="text-[#8F887A]">Automated Calculus</span>
+                  <span className="text-bone-dim">Automated Financial Calculus</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-3 bg-[#15120F] border border-[#2E2A24]">
-                    <span className="text-[#8F887A] text-[10px] block uppercase">Unit Contribution</span>
-                    <strong className="text-xl font-bold text-[#E8E1CE] block mt-1">
+                  <div className="p-3 bg-ink-2 border border-bone/30">
+                    <span className="text-bone-dim text-[10px] block uppercase">Unit Contribution</span>
+                    <strong className="text-xl font-bold text-bone block mt-1">
                       ₹{unitContribution.toLocaleString()}
                     </strong>
-                    <span className="text-[#9DBF85] text-[11px]">{contributionMarginPct}% Margin</span>
+                    <span className="text-green-400 text-[11px]">{contributionMarginPct}% Margin</span>
                   </div>
 
-                  <div className="p-3 bg-[#15120F] border border-[#2E2A24]">
-                    <span className="text-[#8F887A] text-[10px] block uppercase">Monthly Break-Even</span>
-                    <strong className="text-xl font-bold text-[#D9AE5B] block mt-1">
+                  <div className="p-3 bg-ink-2 border border-bone/30">
+                    <span className="text-bone-dim text-[10px] block uppercase">Monthly Break-Even</span>
+                    <strong className="text-xl font-bold text-amber-400 block mt-1">
                       {breakEvenUnits} {typeof breakEvenUnits === 'number' ? 'units' : ''}
                     </strong>
-                    <span className="text-[#8F887A] text-[11px]">To reach ₹0 net</span>
+                    <span className="text-bone-dim text-[11px]">To reach ₹0 net income</span>
                   </div>
 
-                  <div className="p-3 bg-[#15120F] border border-[#2E2A24]">
-                    <span className="text-[#8F887A] text-[10px] block uppercase">Expected Monthly Net</span>
+                  <div className="p-3 bg-ink-2 border border-bone/30">
+                    <span className="text-bone-dim text-[10px] block uppercase">Expected Monthly Net</span>
                     <strong
                       className={`text-xl font-bold block mt-1 ${
-                        monthlyProfit >= 0 ? 'text-[#9DBF85]' : 'text-[#E0512F]'
+                        monthlyProfit >= 0 ? 'text-green-400' : 'text-crimson'
                       }`}
                     >
                       ₹{monthlyProfit.toLocaleString()}
                     </strong>
-                    <span className="text-[#8F887A] text-[11px]">
+                    <span className="text-bone-dim text-[11px]">
                       {monthlyProfit >= 0 ? 'Operating Profit' : 'Operating Deficit'}
                     </span>
                   </div>
 
-                  <div className="p-3 bg-[#15120F] border border-[#2E2A24]">
-                    <span className="text-[#8F887A] text-[10px] block uppercase">Capital Payback</span>
-                    <strong className="text-xl font-bold text-[#E8E1CE] block mt-1">
-                      {paybackMonths} {monthlyProfit > 0 ? 'mo' : ''}
+                  <div className="p-3 bg-ink-2 border border-bone/30">
+                    <span className="text-bone-dim text-[10px] block uppercase">Capital Payback</span>
+                    <strong className="text-xl font-bold text-bone block mt-1">
+                      {paybackMonths} {monthlyProfit > 0 ? 'months' : ''}
                     </strong>
-                    <span className="text-[#8F887A] text-[11px]">To return initial CapEx</span>
+                    <span className="text-bone-dim text-[11px]">To return initial CapEx</span>
                   </div>
                 </div>
 
-                <div className="p-3 bg-[#181410] border border-[#4A443A] space-y-1 text-[11px]">
-                  <span className="text-[#D9AE5B] font-bold block uppercase">Core Formulas Applied</span>
-                  <p className="text-[#8F887A]">Contribution = Price (P) − Variable Cost (V)</p>
-                  <p className="text-[#8F887A]">Break-Even Volume = Fixed OpEx (F) ÷ Unit Contribution</p>
-                  <p className="text-[#8F887A]">Payback Period = Total CapEx ÷ Monthly Net Profit</p>
+                <div className="p-3 bg-ink-2 border border-bone/30 space-y-1 text-[11px]">
+                  <span className="text-amber-400 font-bold block uppercase">Core Formulas Applied</span>
+                  <p className="text-bone-dim">Unit Contribution = Selling Price (P) − Variable Cost (V)</p>
+                  <p className="text-bone-dim">Break-Even Volume = Fixed OpEx (F) ÷ Unit Contribution</p>
+                  <p className="text-bone-dim">Payback Period = Total CapEx ÷ Monthly Net Profit</p>
                 </div>
               </div>
             </div>
-          </section>
-        )}
+          </div>
+        </div>
+      )}
 
-        {/* ================= 05 TEMPLATE ================= */}
-        {activeSection === 'template' && (
-          <section className="space-y-10 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 05 · Proposal Template</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  Required Proposal Architecture
-                </h2>
-              </div>
-              <span className="text-4xl font-extrabold font-mono text-[#E0512F] opacity-40">05</span>
+      {/* ======================================================== */}
+      {/* SECTION 05: PROPOSAL GUIDE */}
+      {/* ======================================================== */}
+      {activeSection === 'template' && (
+        <div className="space-y-8 animate-fadeIn">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                Section 05 · Proposal Guide
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Required Proposal Architecture
+              </h2>
             </div>
 
             {/* Document Order Table */}
-            <div className="border border-[#2E2A24] bg-[#14110E] p-6 space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-[#D9AE5B] border-b border-[#2E2A24] pb-2">
+            <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
+              <h3 className="text-xs font-mono uppercase tracking-widest text-amber-400 border-b border-bone/20 pb-2">
                 Document Sequence &amp; Page Limits
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-mono">
-                <div className="p-3 bg-[#0E0C0A] border border-[#2E2A24]">
-                  <span className="text-[#8F887A] block text-[10px]">Page 1</span>
-                  <strong className="text-[#E8E1CE] block mt-1">0.1 Cover</strong>
-                  <span className="text-[#8F887A] text-[10px]">Not counted</span>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">Page 1</span>
+                  <strong className="text-bone block mt-1">0.1 Cover</strong>
+                  <span className="text-bone-dim text-[10px]">Not counted</span>
                 </div>
-                <div className="p-3 bg-[#0E0C0A] border border-[#2E2A24]">
-                  <span className="text-[#8F887A] block text-[10px]">Page 2</span>
-                  <strong className="text-[#E8E1CE] block mt-1">0.2 Contents</strong>
-                  <span className="text-[#8F887A] text-[10px]">Numbered</span>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">Page 2</span>
+                  <strong className="text-bone block mt-1">0.2 Contents</strong>
+                  <span className="text-bone-dim text-[10px]">Numbered</span>
                 </div>
-                <div className="p-3 bg-[#1C1814] border border-[#E0512F]">
-                  <span className="text-[#E0512F] block text-[10px]">Main Body</span>
-                  <strong className="text-[#E8E1CE] block mt-1">1.0 &rarr; 6.1</strong>
-                  <span className="text-[#E0512F] text-[10px]">Jr ≤25pp · Sr ≤30pp</span>
+                <div className="p-3 bg-crimson/10 border border-crimson">
+                  <span className="text-crimson block text-[10px]">Main Body</span>
+                  <strong className="text-bone block mt-1">1.0 &rarr; 6.1</strong>
+                  <span className="text-crimson text-[10px]">Jr ≤25pp · Sr ≤30pp</span>
                 </div>
-                <div className="p-3 bg-[#0E0C0A] border border-[#2E2A24]">
-                  <span className="text-[#8F887A] block text-[10px]">End Matter</span>
-                  <strong className="text-[#E8E1CE] block mt-1">6.2 &amp; 6.3</strong>
-                  <span className="text-[#8F887A] text-[10px]">References &amp; AI</span>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">End Matter</span>
+                  <strong className="text-bone block mt-1">6.2 &amp; 6.3</strong>
+                  <span className="text-bone-dim text-[10px]">References &amp; AI</span>
                 </div>
-                <div className="p-3 bg-[#1C1814] border border-[#D9AE5B]">
-                  <span className="text-[#D9AE5B] block text-[10px]">Required</span>
-                  <strong className="text-[#E8E1CE] block mt-1">Declaration</strong>
-                  <span className="text-[#D9AE5B] text-[10px]">Signed on own page</span>
+                <div className="p-3 bg-amber-500/10 border border-amber-500">
+                  <span className="text-amber-400 block text-[10px]">Required</span>
+                  <strong className="text-bone block mt-1">Declaration</strong>
+                  <span className="text-amber-400 text-[10px]">Signed page</span>
                 </div>
-                <div className="p-3 bg-[#0E0C0A] border border-[#2E2A24]">
-                  <span className="text-[#8F887A] block text-[10px]">Separate PDF</span>
-                  <strong className="text-[#E8E1CE] block mt-1">Pitch Deck</strong>
-                  <span className="text-[#8F887A] text-[10px]">≤12 content slides</span>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">Separate PDF</span>
+                  <strong className="text-bone block mt-1">Pitch Deck</strong>
+                  <span className="text-bone-dim text-[10px]">12 content slides</span>
                 </div>
               </div>
             </div>
 
             {/* Template Sections */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {[
                 {
                   no: '1.0',
@@ -1260,19 +1314,19 @@ export default function BppPrompt() {
                   ]
                 }
               ].map((sec) => (
-                <div key={sec.no} className="border border-[#2E2A24] bg-[#15120F]">
-                  <div className="p-4 bg-[#1A1713] border-b border-[#2E2A24] flex justify-between items-center">
+                <div key={sec.no} className="border border-bone/30 bg-ink-2">
+                  <div className="p-3.5 bg-ink border-b border-bone/20 flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                      <span className="text-[#E0512F] font-mono font-bold">{sec.no}</span>
-                      <h4 className="text-base font-bold uppercase text-[#E8E1CE]">{sec.title}</h4>
+                      <span className="text-crimson font-mono font-bold">{sec.no}</span>
+                      <h4 className="text-sm font-bold uppercase text-bone">{sec.title}</h4>
                     </div>
                   </div>
-                  <div className="p-4 divide-y divide-[#2E2A24]/60">
+                  <div className="p-3.5 divide-y divide-bone/10">
                     {sec.fields.map((f) => (
-                      <div key={f.id} className="py-2.5 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 text-xs font-mono">
-                        <span className="text-[#D9AE5B] font-bold w-12 shrink-0">{f.id}</span>
-                        <strong className="text-[#E8E1CE] w-64 shrink-0 font-sans">{f.name}</strong>
-                        <span className="text-[#8F887A]">{f.note}</span>
+                      <div key={f.id} className="py-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 text-xs font-mono">
+                        <span className="text-amber-400 font-bold w-12 shrink-0">{f.id}</span>
+                        <strong className="text-bone w-64 shrink-0 font-sans">{f.name}</strong>
+                        <span className="text-bone-dim">{f.note}</span>
                       </div>
                     ))}
                   </div>
@@ -1281,19 +1335,19 @@ export default function BppPrompt() {
             </div>
 
             {/* Signed Declaration Block */}
-            <div className="p-6 bg-[#0E0C0A] border-2 border-[#E8E1CE] space-y-4 font-mono text-xs">
-              <div className="flex justify-between items-center text-[#E0512F] border-b border-[#2E2A24] pb-2 uppercase tracking-wider">
-                <span>Required · Dedicated Standalone Page</span>
+            <div className="p-5 bg-ink border-2 border-bone space-y-3 font-mono text-xs">
+              <div className="flex justify-between items-center text-crimson border-b border-bone/20 pb-2 uppercase tracking-wider">
+                <span>Required · Standalone Page</span>
                 <span>Originality &amp; Academic Integrity Declaration</span>
               </div>
-              <p className="text-[#C4BDAA]">
+              <p className="text-bone-dim">
                 Every submission must include the following text verbatim on its own page immediately following Section 6.3. All team members must sign, and the faculty advisor must countersign.
               </p>
-              <div className="p-4 bg-[#14110E] border-l-4 border-[#E0512F] text-[#E8E1CE] space-y-2 text-[11px] leading-relaxed">
-                <p className="font-bold uppercase text-[#D9AE5B]">Business Power Pitch 2026 · Originality &amp; AI Declaration</p>
+              <div className="p-4 bg-ink-2 border-l-4 border-crimson text-bone space-y-2 text-[11px] leading-relaxed">
+                <p className="font-bold uppercase text-amber-400">Business Power Pitch 2026 · Originality &amp; AI Declaration</p>
                 <p>We, the undersigned members of team [team name] from [school name], declare that:</p>
-                <ol className="list-decimal pl-4 space-y-1 text-[#8F887A]">
-                  <li>This proposal, pitch deck, and addendum are our team's original work. The analysis, writing, and calculations were produced by our team members.</li>
+                <ol className="list-decimal pl-4 space-y-1 text-bone-dim">
+                  <li>This proposal, pitch deck, and addendum are our team&apos;s original work. The analysis, writing, and calculations were produced by our team members.</li>
                   <li>Every source of data, image, or fact is cited in text and listed in references.</li>
                   <li>We have read Rule R-06 (Original work &amp; AI use) in full. No prohibited AI tools were utilized, and all permitted Tier 2 queries are logged in Section 6.3.</li>
                   <li>No external person wrote, edited, calculated, or designed any part of our submission.</li>
@@ -1301,167 +1355,134 @@ export default function BppPrompt() {
                 </ol>
               </div>
             </div>
-          </section>
-        )}
+          </div>
+        </div>
+      )}
 
-        {/* ================= 06 RULES & AI POLICY ================= */}
-        {activeSection === 'rules' && (
-          <section className="space-y-10 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 06 · Official Rulebook</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  Rules &amp; Academic Integrity Policy
-                </h2>
-              </div>
-              <span className="text-4xl font-extrabold font-mono text-[#E0512F] opacity-40">06</span>
+      {/* ======================================================== */}
+      {/* SECTION 06: RULES, RUBRIC & CHECKLIST */}
+      {/* ======================================================== */}
+      {(activeSection === 'rules' || activeSection === 'rubrics') && (
+        <div className="space-y-8 animate-fadeIn">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                Section 06 · Official Rulebook &amp; Rubrics
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Rules, Academic Integrity &amp; Evaluation
+              </h2>
             </div>
 
             {/* R-06 AI Tier System Box */}
-            <div className="border-2 border-[#E0512F] bg-[#15120F] p-6 space-y-6">
-              <div className="flex flex-wrap justify-between items-center border-b border-[#E0512F] pb-3 gap-2">
+            <div className="border-2 border-crimson bg-ink-2 p-6 space-y-4">
+              <div className="flex flex-wrap justify-between items-center border-b border-crimson/40 pb-3 gap-2">
                 <div>
-                  <span className="text-xs font-mono text-[#E0512F] uppercase tracking-widest font-bold">Rule R-06 Focus</span>
-                  <h3 className="text-2xl font-bold uppercase text-[#E8E1CE]">Artificial Intelligence Policy</h3>
+                  <span className="text-xs font-mono text-crimson uppercase tracking-widest font-bold">Rule R-06 Directive</span>
+                  <h3 className="text-2xl font-bold uppercase text-bone">Artificial Intelligence Policy</h3>
                 </div>
-                <span className="px-3 py-1 bg-[#C23A1E] text-[#F2EDDD] font-mono text-xs uppercase tracking-wider">
+                <span className="px-3 py-1 bg-crimson text-bone-hi font-mono text-xs uppercase tracking-wider font-bold">
                   Mandatory For All Rounds
                 </span>
               </div>
 
-              <p className="text-sm text-[#C4BDAA] leading-relaxed">
-                The competition evaluates your team’s independent scientific reasoning and financial acumen. AI tools cannot generate text, build spreadsheets, or produce pitch decks. Below is the strict three-tier classification:
+              <p className="text-sm text-bone-dim leading-relaxed">
+                The competition evaluates your team’s independent scientific reasoning and financial acumen. AI tools cannot generate proposal text, build spreadsheets, or produce pitch decks. Below is the strict three-tier classification:
               </p>
 
               <div className="grid md:grid-cols-3 gap-4 text-xs font-mono">
                 {/* Tier 1 */}
-                <div className="p-4 bg-[#0E0C0A] border border-[#9DBF85] space-y-2">
-                  <span className="text-[#9DBF85] font-bold block uppercase">Tier 1 · Permitted Free Use</span>
-                  <strong className="text-[#E8E1CE] text-sm block">Standard Software</strong>
-                  <p className="text-[#8F887A] text-[11px] leading-relaxed">
+                <div className="p-4 bg-ink border border-green-500/40 space-y-2">
+                  <span className="text-green-400 font-bold block uppercase">Tier 1 · Permitted Free Use</span>
+                  <strong className="text-bone text-sm block">Standard Software</strong>
+                  <p className="text-bone-dim text-[11px] leading-relaxed">
                     Word processors with AI features disabled, spreadsheets using formulas written by the team, basic spell-check, web search engines, and manual CAD modeling.
                   </p>
                 </div>
 
                 {/* Tier 2 */}
-                <div className="p-4 bg-[#0E0C0A] border border-[#D9AE5B] space-y-2">
-                  <span className="text-[#D9AE5B] font-bold block uppercase">Tier 2 · Permitted If Disclosed</span>
-                  <strong className="text-[#E8E1CE] text-sm block">Conceptual Research</strong>
-                  <p className="text-[#8F887A] text-[11px] leading-relaxed">
-                    Querying chatbots for conceptual explanations (e.g., "explain Chapman cycle"), provided the primary source is verified and cited in Section 6.3.
+                <div className="p-4 bg-ink border border-amber-500/40 space-y-2">
+                  <span className="text-amber-400 font-bold block uppercase">Tier 2 · Permitted If Disclosed</span>
+                  <strong className="text-bone text-sm block">Conceptual Research</strong>
+                  <p className="text-bone-dim text-[11px] leading-relaxed">
+                    Querying chatbots for conceptual explanations (e.g., &ldquo;explain Chapman cycle&rdquo;), provided the primary scientific source is verified and cited in Section 6.3.
                   </p>
                 </div>
 
                 {/* Tier 3 */}
-                <div className="p-4 bg-[#0E0C0A] border border-[#E0512F] space-y-2">
-                  <span className="text-[#E0512F] font-bold block uppercase">Tier 3 · Strictly Prohibited</span>
-                  <strong className="text-[#E8E1CE] text-sm block">Auto-Generation</strong>
-                  <p className="text-[#8F887A] text-[11px] leading-relaxed">
+                <div className="p-4 bg-ink border border-crimson space-y-2">
+                  <span className="text-crimson font-bold block uppercase">Tier 3 · Strictly Prohibited</span>
+                  <strong className="text-bone text-sm block">Auto-Generation</strong>
+                  <p className="text-bone-dim text-[11px] leading-relaxed">
                     AI writing or rewriting proposal text, auto-generating slide decks, fabricating financial spreadsheets, AI image generation for mockups, or AI use during Round 2.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Rule Index */}
-            <div className="space-y-4 font-mono text-xs">
-              {[
-                { code: 'R-01', title: 'Eligibility', desc: 'Grades 6–12 across India. 2–5 students per team from one school with one faculty advisor. Max 3 teams per school per division.' },
-                { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email. All deadlines in Indian Standard Time (IST).' },
-                { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Optional bonus prompt in separate PDF. Future-dated scenarios require real cited facts.' },
-                { code: 'R-04', title: 'Submission Protocol', desc: 'PDF uploads only via CelesteCon portal before 18 Oct 2026, 11:59 PM IST. Selectable text required; zero late allowances.' },
-                { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement. Commercial data sales to scientific/defense bodies permitted.' },
-                { code: 'R-07', title: 'Round 2 Conduct', desc: 'Min 2 students in person. Strict 6/8 min presentation timing. No external coaching, prompt signals, or smartwatches.' },
-                { code: 'R-08', title: 'Judging & Appeals', desc: 'Double-blind evaluation. Scores carried forward in full. Ties broken by Round 1 score, then Financial Plan.' },
-                { code: 'R-09', title: 'Intellectual Property', desc: 'Teams retain 100% IP ownership of their ventures. Organizers retain royalty-free reporting display rights.' },
-                { code: 'R-10', title: 'Disqualification', desc: 'Plagiarism, undisclosed Tier 3 AI use, or code-of-conduct violations lead to immediate forfeiture and principal notification.' }
-              ].map((r) => (
-                <div key={r.code} className="p-4 bg-[#15120F] border border-[#2E2A24] flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                  <span className="text-[#E0512F] font-bold w-16 shrink-0">{r.code}</span>
-                  <strong className="text-[#E8E1CE] text-sm w-48 shrink-0 font-sans">{r.title}</strong>
-                  <p className="text-[#8F887A] leading-relaxed">{r.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ================= 07 RUBRICS & FAQ ================= */}
-        {activeSection === 'rubrics' && (
-          <section className="space-y-10 animate-fade-in">
-            <div className="border-b-2 border-[#E8E1CE] pb-4 flex justify-between items-end flex-wrap gap-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#8F887A]">Section 07 · Evaluation &amp; FAQ</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#E8E1CE] mt-1">
-                  Evaluation Rubric &amp; Inquiries
-                </h2>
-              </div>
-              <span className="text-4xl font-extrabold font-mono text-[#D9AE5B] opacity-40">07</span>
-            </div>
-
-            {/* Round 1 Rubric */}
-            <div className="border border-[#2E2A24] bg-[#15120F] p-6 space-y-4">
-              <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
-                <h3 className="text-base font-bold uppercase text-[#E8E1CE]">Round 1 · Dossier &amp; Pitch Deck (100 Points)</h3>
-                <span className="text-xs font-mono text-[#D9AE5B]">Decides Shortlist · Carried Forward</span>
+            {/* Official Rubric Table */}
+            <div className="border border-bone/30 bg-ink-2 p-5 space-y-4">
+              <div className="flex justify-between items-center border-b border-bone/20 pb-2">
+                <h3 className="text-base font-bold uppercase text-bone">Round 1 · Dossier &amp; Pitch Deck (100 Points)</h3>
+                <span className="text-xs font-mono text-amber-400 font-bold">Decides Shortlist · Carried Forward</span>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left font-mono text-xs border-collapse">
                   <thead>
-                    <tr className="border-b border-[#4A443A] text-[#8F887A] uppercase text-[11px]">
+                    <tr className="border-b border-bone/30 text-bone-dim uppercase text-[11px]">
                       <th className="py-2 pr-4">Criterion</th>
-                      <th className="py-2 px-2 text-center text-[#E8E1CE]">Jr Wt</th>
-                      <th className="py-2 px-2 text-center text-[#E0512F]">Sr Wt</th>
+                      <th className="py-2 px-2 text-center text-bone">Jr Weight</th>
+                      <th className="py-2 px-2 text-center text-crimson">Sr Weight</th>
                       <th className="py-2 pl-4">Exemplary Standard (85–100%)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#2E2A24] text-[#C4BDAA]">
+                  <tbody className="divide-y divide-bone/10 text-bone-dim">
                     <tr>
-                      <td className="py-3 pr-4 font-bold text-[#E8E1CE]">Problem &amp; Creative Premise</td>
+                      <td className="py-3 pr-4 font-bold text-bone">Problem &amp; Creative Premise</td>
                       <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-[#E0512F]">15 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-[#8F887A]">
+                      <td className="py-3 px-2 text-center font-bold text-crimson">15 pts</td>
+                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
                         Evidence-backed pain point intrinsically rooted in atmospheric layer dynamics; novel market thesis.
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4 font-bold text-[#E8E1CE]">Technical &amp; Scientific Feasibility</td>
+                      <td className="py-3 pr-4 font-bold text-bone">Technical &amp; Scientific Feasibility</td>
                       <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-[#E0512F]">25 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-[#8F887A]">
+                      <td className="py-3 px-2 text-center font-bold text-crimson">25 pts</td>
+                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
                         Correct physics equations with verified numbers; clear distinction between current vs speculative hardware.
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4 font-bold text-[#E8E1CE]">Financial Plan &amp; Unit Economics</td>
+                      <td className="py-3 pr-4 font-bold text-bone">Financial Plan &amp; Unit Economics</td>
                       <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-[#E0512F]">25 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-[#8F887A]">
+                      <td className="py-3 px-2 text-center font-bold text-crimson">25 pts</td>
+                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
                         All key figures reconcile; rigorous CapEx/OpEx basis; defensible break-even volume and payback period.
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4 font-bold text-[#E8E1CE]">Customer, Market &amp; Strategy</td>
+                      <td className="py-3 pr-4 font-bold text-bone">Customer, Market &amp; Strategy</td>
                       <td className="py-3 px-2 text-center font-bold">20 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-[#E0512F]">15 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-[#8F887A]">
+                      <td className="py-3 px-2 text-center font-bold text-crimson">15 pts</td>
+                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
                         Named commercial buyer; bottom-up addressable demand calculation; honest comparison with existing alternatives.
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4 font-bold text-[#E8E1CE]">Risk Register &amp; Resilience</td>
+                      <td className="py-3 pr-4 font-bold text-bone">Risk Register &amp; Resilience</td>
                       <td className="py-3 px-2 text-center font-bold">10 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-[#E0512F]">10 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-[#8F887A]">
+                      <td className="py-3 px-2 text-center font-bold text-crimson">10 pts</td>
+                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
                         Itemized technical, regulatory, and financial risks with monitored triggers and quantified fallback procedures.
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4 font-bold text-[#E8E1CE]">Document Structure &amp; Deck</td>
+                      <td className="py-3 pr-4 font-bold text-bone">Document Structure &amp; Deck</td>
                       <td className="py-3 px-2 text-center font-bold">10 pts</td>
-                      <td className="py-3 px-2 text-center font-bold text-[#E0512F]">10 pts</td>
-                      <td className="py-3 pl-4 text-[11px] text-[#8F887A]">
+                      <td className="py-3 px-2 text-center font-bold text-crimson">10 pts</td>
+                      <td className="py-3 pl-4 text-[11px] text-bone-dim">
                         Full template compliance; APA 7 citations; complete assumption ledger; clean 12-slide pitch deck matching metrics.
                       </td>
                     </tr>
@@ -1471,14 +1492,20 @@ export default function BppPrompt() {
             </div>
 
             {/* Interactive Preflight Checklist */}
-            <div className="border border-[#2E2A24] bg-[#14110E] p-6 space-y-4">
-              <div className="flex justify-between items-center border-b border-[#2E2A24] pb-2">
+            <div className="border border-bone/30 bg-ink-2 p-5 space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-bone/20 pb-2">
                 <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-[#D9AE5B]">Submission Readiness Check</span>
-                  <h3 className="text-lg font-bold uppercase text-[#E8E1CE]">Preflight Deliverables Checklist</h3>
+                  <span className="text-xs font-mono uppercase tracking-widest text-amber-400">Submission Readiness Check</span>
+                  <h3 className="text-lg font-bold uppercase text-bone">Preflight Deliverables Checklist</h3>
                 </div>
-                <div className="font-mono text-xs">
-                  <span className="text-[#D9AE5B] font-bold">{completedCount}</span> / {CHECKLIST_ITEMS.length} Verified
+                <div className="flex items-center gap-3 font-mono text-xs">
+                  <span className="text-green-400 font-bold">{completedCount} of {CHECKLIST_ITEMS.length} Verified</span>
+                  <button
+                    onClick={resetChecklist}
+                    className="px-2 py-1 border border-bone/40 text-bone-dim hover:text-bone text-[11px] uppercase cursor-pointer"
+                  >
+                    Reset
+                  </button>
                 </div>
               </div>
 
@@ -1486,30 +1513,57 @@ export default function BppPrompt() {
                 {CHECKLIST_ITEMS.map((item) => {
                   const isChecked = !!checklist[item.id];
                   return (
-                    <button
+                    <div
                       key={item.id}
                       onClick={() => toggleCheck(item.id)}
-                      className={`p-3 text-left border transition-colors flex items-start gap-3 text-xs font-mono ${
+                      className={`p-3 border cursor-pointer transition-all flex items-start gap-3 select-none text-xs font-mono ${
                         isChecked
-                          ? 'border-[#9DBF85] bg-[#121A10] text-[#E8E1CE]'
-                          : 'border-[#2E2A24] bg-[#0E0C0A] text-[#8F887A] hover:border-[#4A443A]'
+                          ? 'border-bone/20 bg-ink/40 text-bone-dim'
+                          : 'border-bone bg-ink text-bone hover:border-crimson'
                       }`}
                     >
-                      <span className={`w-4 h-4 mt-0.5 rounded-sm flex items-center justify-center font-bold text-xs shrink-0 ${
-                        isChecked ? 'bg-[#9DBF85] text-[#12100D]' : 'border border-[#4A443A]'
-                      }`}>
-                        {isChecked ? '✓' : ''}
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => {}}
+                        className="mt-0.5 accent-crimson cursor-pointer"
+                      />
+                      <span className={`leading-relaxed ${isChecked ? 'line-through text-bone-dim/60' : ''}`}>
+                        {item.label}
                       </span>
-                      <span className="leading-relaxed">{item.label}</span>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* FAQ Accordion */}
+            {/* Rule Index */}
             <div className="space-y-3 font-mono text-xs">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-[#D9AE5B] border-b border-[#2E2A24] pb-2">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                Rulebook Summary
+              </h3>
+              {[
+                { code: 'R-01', title: 'Eligibility', desc: 'Grades 6–12 across India. 2–5 students per team from one school with one faculty advisor. Max 3 teams per school per division.' },
+                { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email. All deadlines in Indian Standard Time (IST).' },
+                { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Optional bonus prompt in separate PDF. Future-dated scenarios require real cited facts.' },
+                { code: 'R-04', title: 'Submission Protocol', desc: 'PDF uploads only via CelesteCon portal before 18 Oct 2026, 23:59 IST. Selectable text required; zero late allowances.' },
+                { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement. Commercial data sales to scientific/defense bodies permitted.' },
+                { code: 'R-07', title: 'Round 2 Conduct', desc: 'Min 2 students in person. Strict 6/8 min presentation timing. No external coaching, prompt signals, or smartwatches.' },
+                { code: 'R-08', title: 'Judging & Appeals', desc: 'Double-blind evaluation. Scores carried forward in full. Ties broken by Round 1 score, then Financial Plan.' },
+                { code: 'R-09', title: 'Intellectual Property', desc: 'Teams retain 100% IP ownership of their ventures. Organizers retain royalty-free reporting display rights.' },
+                { code: 'R-10', title: 'Disqualification', desc: 'Plagiarism, undisclosed Tier 3 AI use, or code-of-conduct violations lead to immediate forfeiture and principal notification.' }
+              ].map((r) => (
+                <div key={r.code} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                  <span className="text-crimson font-bold w-16 shrink-0">{r.code}</span>
+                  <strong className="text-bone text-sm w-48 shrink-0 font-sans">{r.title}</strong>
+                  <p className="text-bone-dim leading-relaxed">{r.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* FAQ Accordions */}
+            <div className="space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
                 Frequently Asked Inquiries
               </h3>
 
@@ -1528,44 +1582,42 @@ export default function BppPrompt() {
                 },
                 {
                   q: 'What happens in the Round 2 finale if a team member cannot travel?',
-                  a: 'A minimum of two registered team members must attend and present live at DPS R.K. Puram. Absent members remain on the official registration and share all certificates and awards won by the team.'
+                  a: 'A minimum of two registered team members must attend and present live at DPS R.K. Puram on 24 October. Absent members remain on the official registration and share all certificates and awards won by the team.'
                 },
                 {
                   q: 'Who should we contact for official competition clarifications?',
-                  a: 'All official inquiries must be sent by your school faculty advisor through the contact form on the CelesteCon portal. POC: Ryaan Namit Jain (Head of Competitions & Logistics).'
+                  a: 'All official inquiries must be sent by your school faculty advisor through the contact form on the CelesteCon portal. POC: Ryaan Namit Jain (Head of Competitions & Logistics) · aeross@dpsrkp.net.'
                 }
               ].map((faq, idx) => (
-                <details key={idx} className="p-4 bg-[#15120F] border border-[#2E2A24] group">
-                  <summary className="font-bold text-[#E8E1CE] cursor-pointer flex justify-between items-center text-sm font-sans uppercase">
+                <details key={idx} className="p-4 bg-ink-2 border border-bone/20 group">
+                  <summary className="font-bold text-bone cursor-pointer flex justify-between items-center text-sm font-sans uppercase">
                     <span>{faq.q}</span>
-                    <span className="text-[#E0512F] text-base group-open:rotate-45 transition-transform">+</span>
+                    <span className="text-crimson text-base group-open:rotate-45 transition-transform">+</span>
                   </summary>
-                  <p className="mt-3 text-[#C4BDAA] leading-relaxed pt-2 border-t border-[#2E2A24]/60 text-xs font-mono">
+                  <p className="mt-3 text-bone-dim leading-relaxed pt-2 border-t border-bone/10 text-xs font-mono">
                     {faq.a}
                   </p>
                 </details>
               ))}
             </div>
-          </section>
-        )}
-      </main>
 
-      {/* Footer */}
-      <footer className="border-t-2 border-[#E8E1CE] bg-[#0E0C0A] py-8 text-xs font-mono text-[#8F887A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div>
-            <strong className="text-[#E8E1CE]">Business Power Pitch 2026</strong> · Ref. № BPP-26 · Edition VI
-            <span className="block text-[11px] text-[#8F887A] mt-0.5">
-              CelesteCon 2026 · AEROSS · Delhi Public School, R.K. Puram, New Delhi
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link to="/prompts" className="hover:text-[#E8E1CE] uppercase tracking-wider text-[#D9AE5B]">
-              &larr; Return to Prompts Portal
-            </Link>
+            {/* Bottom Actions */}
+            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
+              <div className="text-bone-dim">
+                Point of Contact: <strong className="text-bone">Ryaan Namit Jain</strong> · <a href="mailto:aeross@dpsrkp.net" className="text-crimson hover:underline">aeross@dpsrkp.net</a>
+              </div>
+              <div className="flex gap-3">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone hover:border-bone transition-colors uppercase">
+                  ← Back to Comps
+                </Link>
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold hover:bg-ink hover:text-crimson border border-crimson transition-colors uppercase">
+                  Deposit Proposal →
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      </footer>
+      )}
     </div>
   );
 }
