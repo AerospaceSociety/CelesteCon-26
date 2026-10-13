@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const VALID_SECTIONS = ['brief', 'tracks', 'template', 'checklist'];
+const VALID_SECTIONS = ['brief', 'prompts', 'guide', 'checklist', 'rules'];
+
+const HASH_MAP = {
+  tracks: 'prompts',
+  template: 'guide',
+  cad: 'guide',
+  rubrics: 'rules',
+  format: 'brief',
+  calc: 'brief'
+};
+
+const resolveSection = (raw) => {
+  const h = (raw || '').replace('#', '').toLowerCase();
+  const mapped = HASH_MAP[h] || h;
+  return VALID_SECTIONS.includes(mapped) ? mapped : 'brief';
+};
 
 const JUNIOR_RFPS = [
   {
@@ -173,35 +188,36 @@ const SENIOR_RFPS = [
 
 const CHECKLIST_ITEMS = [
   { id: 'c1', label: 'Proposal PDF formatted with selectable text (no scanned images), cover, contents, and SI units.' },
-  { id: 'c2', label: 'Page limits respected: Junior max 25 pages · Senior max 35 pages (main body).' },
-  { id: 'c3', label: 'Executive pitch deck PDF prepared (Junior max 12 slides · Senior max 15 slides, 16:9).' },
+  { id: 'c2', label: 'Page limit respected, counting every page including cover, contents and references: Junior max 25 · Senior max 35.' },
   { id: 'c4', label: 'Artificial gravity rotational maths verified: Radius, RPM, and tangential velocity within comfort band (≤2 RPM).' },
   { id: 'c5', label: 'Closed-loop ECLSS mass balance table included: Oxygen, water, food, and metabolic waste closure.' },
   { id: 'c6', label: 'Radiation shielding thickness specified with material density and cosmic ray/SPE attenuation rationale.' },
   { id: 'c7', label: 'Mass budget table provided with clear origin split (Earth launch vs In-Situ Resource Utilization).' },
   { id: 'c8', label: 'Thermal management & power generation budget: Wattage balance, radiator area, and night/eclipse reserves.' },
   { id: 'c9', label: '2D/3D schematics, isometric cuts, and annotated diagrams included with figure numbers and captions.' },
-  { id: 'c10', label: 'Optional Extension Challenge clearly marked in Section B of the proposal (if attempted).' },
   { id: 'c11', label: 'Academic integrity & AI disclosure declaration signed: all citations and generative tools credited.' },
-  { id: 'c12', label: 'PDF files tested and uploaded to the official CelesteCon Submission Vault before 18 Oct 23:59:59 IST.' }
+  { id: 'c12', label: 'PDF file uploaded to the official CelesteCon Submission Portal before 18 Oct, 11:59 PM IST.' }
 ];
 
 export default function SettlementPrompt() {
-  const [activeSection, setActiveSection] = useState(() => {
-    const hash = window.location.hash.replace('#', '');
-    return VALID_SECTIONS.includes(hash) ? hash : 'brief';
-  });
-
+  const [activeSection, setActiveSection] = useState(() => resolveSection(window.location.hash));
   const [division, setDivision] = useState('junior');
   const [selectedTrackId, setSelectedTrackId] = useState('j-fringe');
+
+  // Interactive preflight checklist state with localStorage (default empty)
+  const [checkedItems, setCheckedItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('c26-smt-checklist');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
 
   // Sync section hash
   useEffect(() => {
     const onHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (VALID_SECTIONS.includes(hash)) {
-        setActiveSection(hash);
-      }
+      setActiveSection(resolveSection(window.location.hash));
     };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
@@ -210,6 +226,16 @@ export default function SettlementPrompt() {
   const handleSectionChange = (secId) => {
     setActiveSection(secId);
     window.history.replaceState(null, '', `#${secId}`);
+  };
+
+  const toggleCheck = (id) => {
+    setCheckedItems((prev) => {
+      const updated = { ...prev, [id]: !prev[id] };
+      try {
+        localStorage.setItem('c26-smt-checklist', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   const activeRfps = division === 'junior' ? JUNIOR_RFPS : SENIOR_RFPS;
@@ -230,13 +256,9 @@ export default function SettlementPrompt() {
         </div>
         <div className="flex items-center gap-4">
           <Link to="/submissions" className="text-crimson font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
-            <span>Submission Vault</span>
+            <span>Submission Portal</span>
             <span>→</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">PROMPT RELEASED</span>
-          </div>
         </div>
       </div>
 
@@ -254,9 +276,6 @@ export default function SettlementPrompt() {
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
                 Junior (Grades 6–8) · Senior (Grades 9–12)
               </span>
-              <span className="font-mono text-xs uppercase px-2.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/40 font-bold">
-                ● 6 RFPs ACTIVE
-              </span>
             </div>
 
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl text-bone uppercase tracking-wide leading-none">
@@ -264,32 +283,32 @@ export default function SettlementPrompt() {
             </h1>
 
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              Design a permanent, habitable free-space settlement where thousands of people live, work, and thrive for decades far from Earth. Close every environmental loop, count every tonne of launched vs. mined mass, balance thermal radiation, and engineer centrifugal artificial gravity. Six RFPs across two divisions; Round 1 proposals due 18 October, followed by live on-campus jury defense at DPS R.K. Puram on 24 October 2026.
+              Design a permanent, habitable settlement in free space where thousands of people live and work. Submit a written proposal online in Round 1. The top 5 teams in each category present at DPS R.K. Puram on 24 Oct. The settlement must not be on a planet or moon; support activities may be. The site named in your prompt applies.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
               <button
-                onClick={() => handleSectionChange('tracks')}
+                onClick={() => handleSectionChange('prompts')}
                 className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson cursor-pointer"
               >
-                Explore 6 Mission RFPs →
+                Explore Prompts →
               </button>
               <button
-                onClick={() => handleSectionChange('template')}
+                onClick={() => handleSectionChange('guide')}
                 className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Proposal Template
+                Proposal Guide
               </button>
               <button
                 onClick={() => handleSectionChange('checklist')}
                 className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Preflight Checklist
+                Checklist
               </button>
             </div>
           </div>
 
-          {/* Telemetry Aside Box */}
+          {/* Aside Telemetry Box */}
           <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
               <span className="text-bone-dim uppercase">Proposal Window</span>
@@ -300,7 +319,7 @@ export default function SettlementPrompt() {
 
             <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
               <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
-              <strong className="text-bone text-sm block">18 October 2026 · 23:59 IST</strong>
+              <strong className="text-bone text-sm block">18 Oct, 11:59 PM IST</strong>
               <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
@@ -315,7 +334,7 @@ export default function SettlementPrompt() {
               </div>
               <div className="flex justify-between">
                 <span>Deliverable:</span>
-                <strong className="text-bone">PDF Proposal + Deck</strong>
+                <strong className="text-bone">PDF Proposal</strong>
               </div>
               <div className="flex justify-between">
                 <span>Round 2 Finale:</span>
@@ -327,7 +346,7 @@ export default function SettlementPrompt() {
               to="/submissions"
               className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson block"
             >
-              Deposit Proposal PDF →
+              Go to Submission Portal →
             </Link>
           </div>
         </div>
@@ -336,10 +355,11 @@ export default function SettlementPrompt() {
       {/* Navigation Tabs Bar */}
       <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
         {[
-          { id: 'brief', label: '01 · The Brief' },
-          { id: 'tracks', label: '02 · Mission RFPs' },
-          { id: 'template', label: '03 · Proposal Guide' },
-          { id: 'checklist', label: '04 · Checklist' }
+          { id: 'brief', label: '1 Event Brief' },
+          { id: 'prompts', label: '2 Prompts' },
+          { id: 'guide', label: '3 Proposal Guide' },
+          { id: 'checklist', label: '4 Checklist' },
+          { id: 'rules', label: '5 Rules' }
         ].map((tab) => (
           <button
             key={tab.id}
@@ -356,50 +376,62 @@ export default function SettlementPrompt() {
       </div>
 
       {/* ======================================================== */}
-      {/* SECTION 01: THE BRIEF */}
+      {/* SECTION 1: EVENT BRIEF */}
       {/* ======================================================== */}
       {activeSection === 'brief' && (
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
-            {/* Header & Philosophy */}
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 01 · Strategic Mission Directive</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 1 · Event Brief</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                More Than Steel &amp; Regolith: Building a Living Civilization
+                Space Settlement Architecture &amp; Mission Directive
               </h2>
             </div>
 
-            {/* Humanified Narrative */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-bone-dim leading-relaxed">
-              <div className="space-y-4">
-                <p className="text-bone font-medium text-base leading-relaxed">
-                  A space settlement is not merely an orbital machine or a spinning titanium cylinder in the quiet cold of deep space—it is the cradle of humanity&apos;s next chapter. Long after Earth becomes a distant blue marble in the observation cupola, thousands of people will wake up here to raise families, share meals, heal the sick, celebrate cultural festivals, and conduct breakthrough science under artificial sunlight.
-                </p>
-                <p>
-                  Every bolt tightened and every pressure seal welded carries a human life. Designing such a habitat demands far more than basic geometry: it requires balancing raw structural physics against human vulnerability, creating living architectures that shield residents from cosmic radiation while nurturing mental clarity and civic belonging over decades of isolation.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <p>
-                  In Settle-Me-This, your team acts as the master engineering consortium. You must confront the harsh realities of off-world existence—closing oxygen, water, and nutrient cycles with unforgiving efficiency, generating comfortable centrifugal gravity without vestibular sickness, and establishing civic systems resilient enough to withstand sudden asteroid debris strikes or communications blackouts.
-                </p>
-                <p>
-                  Your proposal will be scrutinized by aerospace researchers and systems architects. Ground your ambition in credible calculations, cite real material constants, and show us how humanity will not merely survive in the void, but truly thrive.
-                </p>
+            {/* Core Narrative */}
+            <div className="text-sm text-bone-dim leading-relaxed space-y-4">
+              <p className="text-bone font-medium text-base">
+                Design a permanent, habitable settlement in free space where thousands of people live and work. Submit a written proposal online in Round 1. The top 5 teams in each category present at DPS R.K. Puram on 24 Oct. The settlement must not be on a planet or moon; support activities may be. The site named in your prompt applies.
+              </p>
+              <p>
+                Junior (Grades 6–8) and Senior (Grades 9–12) divisions are judged separately. Teams must consist of 3 to 5 students from the same school, with a maximum of one team per school per category. In Round 1, teams submit a written Proposal PDF only (max 25 pages for Juniors, max 35 pages for Seniors). A presentation deck is optional and is used in Round 2.
+              </p>
+            </div>
+
+            {/* Key Dates Block */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-amber-400 font-bold uppercase block">// Key Dates</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">13 Oct</span>
+                  <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
+                </div>
+                <div className="p-3 bg-crimson/10 border border-crimson">
+                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
+                  <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
+                </div>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">20 Oct</span>
+                  <strong className="text-bone block mt-0.5">Shortlist Announced</strong>
+                </div>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">24 Oct</span>
+                  <strong className="text-bone block mt-0.5">Finale at DPS R.K. Puram (Report 07:45–08:45 AM)</strong>
+                </div>
               </div>
             </div>
 
-            {/* Division Page Limits Callout */}
+            {/* Division Page Limits Cards */}
             <div className="border-2 border-crimson/80 bg-crimson/10 p-5 sm:p-6 space-y-4">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-crimson/30 pb-3">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-widest">
                     OFFICIAL SUBMISSION LIMITS
                   </span>
-                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Written Dossier</span>
+                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Written Proposal PDF</span>
                 </div>
                 <span className="font-mono text-xs text-amber-400 font-bold uppercase">
-                  Due: 18 October 2026 · 23:59 IST
+                  Deadline: 18 Oct, 11:59 PM IST
                 </span>
               </div>
 
@@ -414,7 +446,7 @@ export default function SettlementPrompt() {
                     Juniors: <span className="text-crimson">25 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Strict maximum page limit of <strong>25 pages</strong> (15–20 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). Complete cover-to-cover submission covering all technical disciplines.
+                    Strict maximum limit of <strong>25 pages</strong>, counting every page including cover, contents, references, AI disclosure and declaration.
                   </p>
                 </div>
 
@@ -428,174 +460,25 @@ export default function SettlementPrompt() {
                     Seniors: <span className="text-crimson">35 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Strict maximum page limit of <strong>35 pages</strong> (25–30 recommended) + <strong>15-slide Pitch Deck</strong> (16:9 PDF). Rigorous engineering derivations, mass budgets, and closed-loop schematics required.
+                    Strict maximum limit of <strong>35 pages</strong>, counting every page including cover, contents, references, AI disclosure and declaration.
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-wrap justify-between items-center gap-2 pt-1 font-mono text-xs text-bone-dim">
-                <span>Deliverable format: Single PDF document with selectable text + Pitch Deck PDF (English only).</span>
-                <span className="text-amber-400">Section B Extension Challenge (optional): ≤3 additional pages within dossier.</span>
-              </div>
-            </div>
-
-            {/* The Six Core Engineering Disciplines */}
-            <div className="space-y-4 pt-2">
-              <div className="border-b border-bone/20 pb-2">
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
-                  Foundational Architecture
-                </span>
-                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
-                  The Six Core Pillars of Settlement Design
-                </h3>
-                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
-                  Every competitive proposal must address these 6 core engineering systems with scientific rigor:
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* 1. Structure */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <div className="flex items-center justify-between border-b border-bone/10 pb-1.5">
-                    <span className="font-mono text-xs font-bold text-crimson uppercase">01 · Structure</span>
-                    <span className="font-mono text-[10px] text-bone-dim">Hull &amp; Integrity</span>
-                  </div>
-                  <h4 className="font-display text-lg text-bone uppercase">Hull, Materials &amp; Shielding</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Define the overarching geometry (torus, cylinder, sphere, or excavated asteroid cavity) and compute tensile hull thicknesses under internal atmospheric pressure. Detail passive radiation shielding (lunar regolith, water jackets, or polyethylene matrices) and micrometeoroid Whipple bumper arrays to protect the population.
-                  </p>
-                </div>
-
-                {/* 2. Design */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <div className="flex items-center justify-between border-b border-bone/10 pb-1.5">
-                    <span className="font-mono text-xs font-bold text-amber-400 uppercase">02 · Design</span>
-                    <span className="font-mono text-[10px] text-bone-dim">Kinematics &amp; Motion</span>
-                  </div>
-                  <h4 className="font-display text-lg text-bone uppercase">Artificial Gravity &amp; Rotation</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Engineer rotational kinematics to produce comfortable centrifugal gravity (0.3g to 1.0g) without inducing vestibular Coriolis sickness (strictly ≤2 RPM). Solve angular momentum conservation with counter-rotating modules and model zero-g industrial docking hubs.
-                  </p>
-                </div>
-
-                {/* 3. Operations */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <div className="flex items-center justify-between border-b border-bone/10 pb-1.5">
-                    <span className="font-mono text-xs font-bold text-green-400 uppercase">03 · Operations</span>
-                    <span className="font-mono text-[10px] text-bone-dim">Logistics &amp; Growth</span>
-                  </div>
-                  <h4 className="font-display text-lg text-bone uppercase">Construction, Mass &amp; Logistics</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Chart the step-by-step assembly timeline from initial robotic scaffolding to full pressurization. Itemize the complete mass budget, distinguishing Earth-launched precision avionics from in-situ resource utilization (ISRU) metals and volatiles harvested from asteroids or lunar crusts.
-                  </p>
-                </div>
-
-                {/* 4. Infrastructure */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <div className="flex items-center justify-between border-b border-bone/10 pb-1.5">
-                    <span className="font-mono text-xs font-bold text-cyan-400 uppercase">04 · Infrastructure</span>
-                    <span className="font-mono text-[10px] text-bone-dim">Power &amp; Thermal</span>
-                  </div>
-                  <h4 className="font-display text-lg text-bone uppercase">Power Grids &amp; Heat Dissipation</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Quantify total electrical power demands across residential biospheres and heavy industrial docks, sizing nuclear fission/fusion reactors or solar arrays. Balance thermodynamics by sizing giant radiative heat rejection panels to shed thousands of megawatts of trapped industrial heat into the vacuum of space.
-                  </p>
-                </div>
-
-                {/* 5. Human Factors */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <div className="flex items-center justify-between border-b border-bone/10 pb-1.5">
-                    <span className="font-mono text-xs font-bold text-purple-400 uppercase">05 · Human Factors</span>
-                    <span className="font-mono text-[10px] text-bone-dim">Civic &amp; Ergonomics</span>
-                  </div>
-                  <h4 className="font-display text-lg text-bone uppercase">Civic Life, Ergonomics &amp; Health</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Allocate internal living volume per citizen, design multi-generational housing, and provide hospitals, schools, and cultural commons. Incorporate psychological ergonomics—circadian lighting, open green parks, acoustic isolation, and emergency governance frameworks—to prevent deep-space confinement distress.
-                  </p>
-                </div>
-
-                {/* 6. Closed Loop System */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <div className="flex items-center justify-between border-b border-bone/10 pb-1.5">
-                    <span className="font-mono text-xs font-bold text-rose-400 uppercase">06 · Closed Loop</span>
-                    <span className="font-mono text-[10px] text-bone-dim">Biosphere &amp; ECLSS</span>
-                  </div>
-                  <h4 className="font-display text-lg text-bone uppercase">ECLSS &amp; Regenerative Biosphere</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Design a 98%+ closed ecological life support system (ECLSS) balancing oxygen replenishment, Sabatier carbon capture, and greywater distillation. Calculate agricultural surface area for vertical aeroponic farms producing 2,500+ daily calories per resident, backed by 180 days of emergency reserves.
-                  </p>
-                </div>
+              <div className="pt-1 font-mono text-xs text-bone-dim">
+                <span>Deliverable: Single PDF proposal document uploaded to the CelesteCon Submission Portal. A presentation deck is optional and is used in Round 2.</span>
               </div>
             </div>
 
-            {/* Qualitative Evaluation Criteria */}
-            <div className="space-y-4 pt-2">
-              <div className="border-b border-bone/20 pb-2">
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
-                  Evaluation Standards
-                </span>
-                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
-                  Qualitative Assessment Criteria
-                </h3>
-                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
-                  Submissions are evaluated holistically by systems engineers and space architecture jurors across five core areas:
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Research &amp; Rigor</span>
-                  <div className="font-display text-base text-bone uppercase">Physics &amp; Mechanics</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Orbital mechanics accuracy, atmospheric pressure calculations, radiation attenuation physics, and authoritative scientific source citations.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Systems Feasibility</span>
-                  <div className="font-display text-base text-bone uppercase">Engineering Integrity</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Closed ECLSS loops, thermal balance calculations, credible power budgets, and realistic construction logistics from start to finish.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Innovation &amp; Habitat</span>
-                  <div className="font-display text-base text-bone uppercase">Architecture &amp; Society</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Novel structural geometries, human-factors thinking, psychological ergonomics, and resilient multi-generational civic institutions.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Clarity &amp; Schematics</span>
-                  <div className="font-display text-base text-bone uppercase">Technical Drafting</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Standard technical drafting, annotated 2D/3D cutaways, clean typography, legible graphs, and professional presentation.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1 sm:col-span-2 lg:col-span-2">
-                  <span className="text-crimson font-bold uppercase block">// Jury Defense</span>
-                  <div className="font-display text-base text-bone uppercase">Live Cross-Examination</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Command of architectural trade-offs, handling jury cross-examination, and team cohesion during the live defense round on campus.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Academic Integrity & Regulations */}
-            <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
-              <strong className="text-crimson block uppercase tracking-wider text-sm">
-                Academic Integrity &amp; Generative AI Regulations
-              </strong>
+            {/* Round 2 Finale Details */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-crimson font-bold uppercase block">// Round 2 Finale Protocol</span>
               <p className="text-bone-dim font-sans text-xs leading-relaxed">
-                Generative AI tools may be utilized strictly as research, brainstorming, and editing assistants. All core architectural layouts, mass budgets, calculations, and systems engineering must be original student work. Every prompt and external software used must be transparently disclosed in the bibliography. Submitting unedited AI hallucinations or fabricated physics will result in immediate disqualification.
+                The top 5 teams in each category qualify for the Round 2 finale (announced on 20 Oct) and may improve their submission beforehand. Finalists deliver a 7-minute presentation before an evaluation panel, followed by up to 5 minutes of questions. A digital presentation or other supporting material is optional.
               </p>
             </div>
 
-            {/* Contact POC */}
+            {/* Bottom Actions */}
             <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
               <div className="text-bone-dim">
                 Point of Contact: <strong className="text-bone">Arshia Barsain</strong> (<a href="mailto:r24333arshia@dpsrkp.net" className="text-crimson hover:underline">r24333arshia@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
@@ -605,7 +488,7 @@ export default function SettlementPrompt() {
                   ← Back to Comps
                 </Link>
                 <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
-                  Deposit Proposal →
+                  Go to Submission Portal →
                 </Link>
               </div>
             </div>
@@ -614,15 +497,15 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 02: MISSION RFPS */}
+      {/* SECTION 2: PROMPTS */}
       {/* ======================================================== */}
-      {activeSection === 'tracks' && (
+      {activeSection === 'prompts' && (
         <div className="space-y-6">
           {/* Division Selector */}
           <div className="border-2 border-bone/40 bg-ink p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-wider block">Division Selection</span>
-              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 3 corresponding settlement mission RFPs.</span>
+              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 3 corresponding settlement prompts.</span>
             </div>
             <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
               <button
@@ -654,7 +537,7 @@ export default function SettlementPrompt() {
             </div>
           </div>
 
-          {/* Track Tabs */}
+          {/* Prompt Selector Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
             {activeRfps.map((rfp) => (
               <button
@@ -676,7 +559,7 @@ export default function SettlementPrompt() {
             ))}
           </div>
 
-          {/* Detailed RFP Brief */}
+          {/* Detailed Prompt Brief */}
           <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
               <div>
@@ -738,13 +621,13 @@ export default function SettlementPrompt() {
               </ul>
             </div>
 
-            {/* Optional Extension Challenge */}
+            {/* Optional Brownie Challenge */}
             <div className="border border-amber-500/40 bg-ink-2 p-5 space-y-2">
               <div className="flex justify-between items-center">
                 <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-widest">
-                  ★ Optional Extension Challenge
+                  ★ Optional Brownie Challenge
                 </span>
-                <span className="font-mono text-[10px] text-bone-dim">Section B of Proposal</span>
+                <span className="font-mono text-[10px] text-bone-dim">Section B of Proposal (Max 3 pages)</span>
               </div>
               <h4 className="font-display text-xl text-bone uppercase">{currentRfp.brownie.title}</h4>
               <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
@@ -756,27 +639,27 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 03: PROPOSAL GUIDE */}
+      {/* SECTION 3: PROPOSAL GUIDE */}
       {/* ======================================================== */}
-      {activeSection === 'template' && (
+      {activeSection === 'guide' && (
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 03</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 3 · Proposal Guide</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Proposal Architecture &amp; Section Checklist
+                Proposal Architecture &amp; Section Guide
               </h2>
             </div>
 
             <p className="font-label text-sm text-bone-dim leading-relaxed max-w-3xl">
-              Judges evaluate proposals against core engineering principles. Submissions that structure their proposals around these 7 core sections achieve higher clarity, systems integration, and document readability.
+              Structure your proposal around these sections. Page limits count every page, including cover, contents, references, AI disclosure and declaration: Junior max 25 pages, Senior max 35 pages.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
               <div className="border border-bone/20 bg-ink-2 p-4 space-y-1.5">
                 <div className="text-crimson font-bold">SECTION 1.0 · EXECUTIVE SUMMARY &amp; MISSION SCOPE</div>
                 <p className="text-[11px] text-bone-dim font-sans">
-                  Statement of purpose, client alignment, selected RFP rationale, population demographics, settlement lifetime, and high-level architectural rendering.
+                  Statement of purpose, client alignment, selected prompt rationale, population demographics, settlement lifetime, and high-level architectural rendering.
                 </p>
               </div>
 
@@ -816,9 +699,9 @@ export default function SettlementPrompt() {
               </div>
 
               <div className="border border-bone/20 bg-ink-2 p-4 space-y-1.5 md:col-span-2">
-                <div className="text-amber-400 font-bold">SECTION B · OPTIONAL EXTENSION CHALLENGE</div>
+                <div className="text-amber-400 font-bold">SECTION B · OPTIONAL BROWNIE CHALLENGE</div>
                 <p className="text-[11px] text-bone-dim font-sans">
-                  Dedicated response answering your selected RFP&apos;s Extension Challenge. Maximum 3 pages, including schematics and operational logic.
+                  Optional. Dedicated response answering your prompt&apos;s Brownie Challenge at the end of the proposal PDF. Max 3 pages. Not counted in the page limit.
                 </p>
               </div>
             </div>
@@ -827,13 +710,13 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 04: CHECKLIST */}
+      {/* SECTION 4: CHECKLIST */}
       {/* ======================================================== */}
       {activeSection === 'checklist' && (
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 04</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 4 · Checklist</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Preflight Submission Checklist
               </h2>
@@ -843,13 +726,19 @@ export default function SettlementPrompt() {
               {CHECKLIST_ITEMS.map((item) => (
                 <label
                   key={item.id}
-                  className="p-3.5 border border-bone bg-ink-2 text-bone flex items-start gap-3 select-none cursor-pointer"
+                  className={`p-3.5 border cursor-pointer flex items-start gap-3 select-none ${
+                    checkedItems[item.id]
+                      ? 'border-bone/20 bg-ink-2/40 text-bone-dim'
+                      : 'border-bone bg-ink-2 text-bone'
+                  }`}
                 >
                   <input
                     type="checkbox"
+                    checked={!!checkedItems[item.id]}
+                    onChange={() => toggleCheck(item.id)}
                     className="mt-0.5 accent-crimson cursor-pointer"
                   />
-                  <span className="font-mono text-xs leading-relaxed">
+                  <span className={`font-mono text-xs leading-relaxed ${checkedItems[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
                     {item.label}
                   </span>
                 </label>
@@ -864,8 +753,103 @@ export default function SettlementPrompt() {
                 to="/submissions"
                 className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-crimson"
               >
-                Go to Submission Vault →
+                Go to Submission Portal →
               </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* SECTION 5: RULES */}
+      {/* ======================================================== */}
+      {activeSection === 'rules' && (
+        <div className="space-y-8">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 5 · Rules</span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Competition Rules &amp; Evaluation Criteria
+              </h2>
+            </div>
+
+            {/* General Rules */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                General Competition Rules
+              </h3>
+              <ul className="space-y-2 text-bone-dim text-xs leading-relaxed list-disc pl-4 font-sans">
+                <li>Teams register through their school's delegation. Registration closed on 12 Oct; no additions after that.</li>
+                <li>Late submissions are not accepted.</li>
+                <li>Shortlisted teams report to the Welcome Foyer at DPS R.K. Puram between 07:45 and 08:45 AM on 24 Oct. Late arrivals may lose their slot.</li>
+                <li>Bring your own laptop, charger and adapters, fully charged. Power outlets are provided. The host school is not liable for personal hardware. Bring your own internet connection.</li>
+                <li>Judges' decisions are final. Disrespect towards judges or marshals leads to disqualification.</li>
+                <li>DPS R.K. Puram teams take part for benchmarking only and are not eligible for rankings or trophies.</li>
+              </ul>
+            </div>
+
+            {/* AI Policy */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
+              <strong className="text-crimson block uppercase tracking-wider text-sm">
+                Academic Integrity &amp; Generative AI Regulations
+              </strong>
+              <p className="text-bone-dim font-sans text-xs leading-relaxed">
+                Generative AI tools (ChatGPT, Claude, Gemini, Midjourney) may be utilized strictly as research, brainstorming, and editing assistants. All core architectural layouts, mass budgets, calculations, and systems engineering must be original student work. Every prompt and external software used must be transparently disclosed in the bibliography. Submitting unedited AI hallucinations or fabricated physics will result in immediate disqualification.
+              </p>
+            </div>
+
+            {/* Judging Criteria */}
+            <div className="space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                How you're judged
+              </h3>
+              <div className="space-y-3">
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Research &amp; Rigor</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Orbital mechanics accuracy, atmospheric pressure physics, radiation shielding math, and authoritative citation sources.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Systems Feasibility</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Closed ECLSS loops, thermal balance calculations, credible power budgets, and realistic construction logistics.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Innovation &amp; Habitat</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Novel structural layouts, human-factors thinking, psychological ergonomics, and multi-generational civic institutions.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Clarity &amp; Schematics</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Standard technical drafting, annotated 2D/3D models, clean layout, legible charts, and visual appeal.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Jury Defense</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Command of trade-offs, handling cross-examination, and team cohesion during the Round 2 presentation and questions.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact POC */}
+            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
+              <div className="text-bone-dim">
+                Point of Contact: <strong className="text-bone">Arshia Barsain</strong> (<a href="mailto:r24333arshia@dpsrkp.net" className="text-crimson hover:underline">r24333arshia@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
+              </div>
+              <div className="flex gap-3">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
+                  ← Back to Comps
+                </Link>
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
+                  Go to Submission Portal →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
