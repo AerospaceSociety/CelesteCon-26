@@ -64,7 +64,7 @@ export const events = [
     regDeadline: '13 Oct 2026',
     poc: { name: 'Arshia Barsain', email: 'r24333arshia@dpsrkp.net' },
     portalUrl: '/prompts/settlement',
-    portalLabel: 'SMT Prompt Dossier',
+    portalLabel: 'Settle-Me-This Dossier',
     isDraft: false
   },
   {
@@ -107,7 +107,7 @@ export const events = [
     regDeadline: '13 Oct 2026',
     poc: { name: 'Tarushi Tomar', email: 'r24564tarushi@dpsrkp.net' },
     portalUrl: '/prompts/volatus',
-    portalLabel: 'Volatus Prompt Dossier',
+    portalLabel: 'Volatus Dossier',
     isDraft: false
   },
     {
@@ -124,25 +124,25 @@ export const events = [
     hook: 'Online Quizzitch screening into a high-energy live parliamentary debate on campus.',
     rounds: [
       {
-        title: 'Round 1 (Online Quiz – Quizzitch)',
-        desc: 'A 45-minute quiz on our custom Quizzitch platform covering orbital mechanics, mission history, space law, astrophysics and more, testing aerospace and STEM knowledge and logical reasoning. Single correct (+3 / -1) (bonus questions if the rest of the quiz is finished before time). The top 10 qualifiers advance to onsite debate rounds. Note: Exactly 2 students from the school participate in the competition.'
+        title: 'Round 1 (Online Quiz – Quizzitch · 16 Oct)',
+        desc: 'Round 1 Quiz on 16th October on the custom Quizzitch platform. Details will be shared on registered email and updated on the website. A 45-minute timed screening quiz covering orbital mechanics, mission history, space law, astrophysics and aerospace STEM reasoning (+3 / -1). Exactly 2 students from the school participate. The top 10 qualifiers advance to onsite debate rounds.'
       },
       {
-        title: 'Round 2 (Onsite Parliamentary Debate)',
-        desc: 'Motions are assigned 3 days before the event (21 Oct). Each participant gets one stance, and paired students debate the same motion from opposite sides. Total speaking time is 5 minutes per speaker, with warning bells at 4 and 5 minutes. Each debate is followed by 5 minutes of cross-questioning: POIs from the opposing participant and other school delegates, plus judges’ questions. Notes are allowed for reference.'
+        title: 'Round 2 (Onsite Parliamentary Debate · Motions Released 21 Oct)',
+        desc: 'Motion would be released on 21st October (3 days prior). Paired students debate the assigned motion from opposite stances on event day (24 Oct) at DPS R.K. Puram. Total speaking time is 5 minutes per speaker, with warning bells at 4 and 5 minutes, followed by 5 minutes of cross-questioning: POIs from the opposing participant, school delegates, and judges’ questions. Notes are allowed for reference.'
       }
     ],
     criteria: [
       'Research & technical understanding',
       'Argumentation, evidence & examples',
       'Structure & organisation',
-      'Delivery',
+      'Delivery & rhetoric',
       'Response to cross-questioning & rebuttals'
     ],
     timeline: [
       { label: 'Online Quiz (Quizzitch)', date: '16 Oct' },
       { label: 'Qualifier Results (Top 10 Teams)', date: '20 Oct' },
-      { label: 'Motions Assigned (3 Days Prior)', date: '21 Oct' },
+      { label: 'Motions Released', date: '21 Oct' },
       { label: 'Live Debate Chambers', date: '24 Oct (CelesteCon 2026)' }
     ],
     regDeadline: '13 Oct 2026',
@@ -200,7 +200,7 @@ export const events = [
     regDeadline: '13 Oct 2026',
     poc: { name: 'Ryaan Namit Jain', email: 'r23542ryaan@dpsrkp.net' },
     portalUrl: '/prompts/bpp',
-    portalLabel: 'BPP Prompt Dossier',
+    portalLabel: 'Business Power Pitch Dossier',
     isDraft: false
   },
   {
@@ -217,12 +217,12 @@ export const events = [
     hook: 'Total creative performance freedom — stand-up, skits, music, singing, dance, poetry, magic, or monologues.',
     rounds: [
       {
-        title: 'Round 1 (Video Audition Performance)',
-        desc: 'Submit a 3–5 minute video performance showcasing a talent of your choice, in any genre. Make sure the audio and visual quality are clear and the video stays strictly within the time limit.'
+        title: 'Round 1 (Video Audition Performance – Open Stage)',
+        desc: 'Theme: No theme, Open Stage. Submit a 3–5 minute video performance showcasing a talent of your choice, in any genre (stand-up, skits, instruments, singing, dance, poetry, mimicry, magic or monologues). Video and audio must be clear, staying strictly within the time limit.'
       },
       {
-        title: 'Round 2 (Live Showcase at the AVH)',
-        desc: 'Shortlisted participants perform live on event day in a talent show where creativity has no bounds. The round also includes improv performances on a topic given on the spot, testing presence of mind, quick thinking and creativity under pressure. Stage lighting, vocal mics and audio playback are provided by the host school.'
+        title: 'Round 2 (Live Showcase at the AVH – Past, Present and the Future)',
+        desc: 'Theme: "Past, Present and the Future". Shortlisted participants perform live on event day (24 Oct) at the Audio-Visual Hall (AVH) in an open talent showcase. The round also includes improv performances on a topic given on the spot, testing presence of mind, quick thinking and creativity under pressure. Stage lighting, vocal mics and audio playback provided.'
       }
     ],
     criteria: [

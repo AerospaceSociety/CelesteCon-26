@@ -416,12 +416,15 @@ function App() {
             <Route path="/prompts/02" element={<VolatusPrompt />} />
             <Route path="/prompts/dispute" element={<DisputePrompt />} />
             <Route path="/prompts/ipod" element={<DisputePrompt />} />
+            <Route path="/prompts/in-pursuit-of-dispute" element={<DisputePrompt />} />
             <Route path="/prompts/03" element={<DisputePrompt />} />
             <Route path="/prompts/bpp" element={<BppPrompt />} />
             <Route path="/prompts/pitch" element={<BppPrompt />} />
             <Route path="/prompts/04" element={<BppPrompt />} />
             <Route path="/prompts/theatre" element={<TheatrePrompt />} />
             <Route path="/prompts/ath" element={<TheatrePrompt />} />
+            <Route path="/prompts/aeross-theatre" element={<TheatrePrompt />} />
+            <Route path="/prompts/aero-theatre" element={<TheatrePrompt />} />
             <Route path="/prompts/05" element={<TheatrePrompt />} />
             <Route path="/prompts/gamejam" element={<GameJamPrompt />} />
             <Route path="/prompts/cjam" element={<GameJamPrompt />} />
@@ -436,6 +439,10 @@ function App() {
             <Route path="/prompts/aprix" element={<AerossPrixPrompt />} />
             <Route path="/prompts/08" element={<AerossPrixPrompt />} />
             <Route path="/prompts/:eventId" element={<GenericPromptPortal />} />
+            <Route path="/settle-me-this.html" element={<Navigate to="/prompts/settlement" replace />} />
+            <Route path="/Volatus.html" element={<Navigate to="/prompts/volatus" replace />} />
+            <Route path="/volatus.html" element={<Navigate to="/prompts/volatus" replace />} />
+            <Route path="/business-power-pitch.html" element={<Navigate to="/prompts/bpp" replace />} />
             <Route path="/Rocketry_CelesteCon2026.html" element={<Navigate to="/prompts/rocketry" replace />} />
             <Route path="/AEROSS_Prix_CelesteCon2026.html" element={<Navigate to="/prompts/prix" replace />} />
             <Route path="/brochure" element={<RedirectTo to="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" />} />

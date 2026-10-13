@@ -217,13 +217,23 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
             </span>
             <div className="flex items-center gap-2 flex-wrap">
               {event.portalUrl && (
-                <Link
-                  to={event.portalUrl}
-                  className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors flex items-center gap-1"
-                >
-                  <span>Prompt</span>
-                  <span>&rarr;</span>
-                </Link>
+                event.portalUrl.endsWith('.html') ? (
+                  <a
+                    href={event.portalUrl}
+                    className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors flex items-center gap-1"
+                  >
+                    <span>Prompt</span>
+                    <span>&rarr;</span>
+                  </a>
+                ) : (
+                  <Link
+                    to={event.portalUrl}
+                    className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors flex items-center gap-1"
+                  >
+                    <span>Prompt</span>
+                    <span>&rarr;</span>
+                  </Link>
+                )
               )}
               <Link
                 to="/submissions"

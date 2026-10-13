@@ -1,6 +1,2 @@
-import React from 'react';
-import GenericPromptPortal from './GenericPromptPortal';
+export { default } from '../VolatusPrompt';
 
-export default function VolatusPrompt() {
-  return <GenericPromptPortal eventId="02" />;
-}
