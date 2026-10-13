@@ -48,16 +48,6 @@ export default function GenericPromptPortal({ eventId: propEventId }) {
     return events.find(e => e.id === targetId) || events[0];
   }, [slugOrId]);
 
-  if (event.id === '06') {
-    return <Navigate to="/prompts/gamejam" replace />;
-  }
-  if (event.id === '07') {
-    return <Navigate to="/prompts/rocketry" replace />;
-  }
-  if (event.id === '08') {
-    return <Navigate to="/prompts/prix" replace />;
-  }
-
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -86,6 +76,31 @@ export default function GenericPromptPortal({ eventId: propEventId }) {
     const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  if (event.id === '01') {
+    return <Navigate to="/prompts/settlement" replace />;
+  }
+  if (event.id === '02') {
+    return <Navigate to="/prompts/volatus" replace />;
+  }
+  if (event.id === '03') {
+    return <Navigate to="/prompts/ipod" replace />;
+  }
+  if (event.id === '04') {
+    return <Navigate to="/prompts/bpp" replace />;
+  }
+  if (event.id === '05') {
+    return <Navigate to="/prompts/theatre" replace />;
+  }
+  if (event.id === '06') {
+    return <Navigate to="/prompts/gamejam" replace />;
+  }
+  if (event.id === '07') {
+    return <Navigate to="/prompts/rocketry" replace />;
+  }
+  if (event.id === '08') {
+    return <Navigate to="/prompts/prix" replace />;
+  }
 
   return (
     <div className="space-y-8 animate-fadeIn pb-12">
