@@ -202,7 +202,7 @@ const CHECKLIST_ITEMS = [
 export default function SettlementPrompt() {
   const [activeSection, setActiveSection] = useState(() => resolveSection(window.location.hash));
   const [division, setDivision] = useState('junior');
-  const [selectedTrackId, setSelectedTrackId] = useState('j-fringe');
+  const [selectedTrackId, setSelectedTrackId] = useState(null);
 
   // Interactive preflight checklist state with localStorage (default empty)
   const [checkedItems, setCheckedItems] = useState(() => {
@@ -239,7 +239,7 @@ export default function SettlementPrompt() {
   };
 
   const activeRfps = division === 'junior' ? JUNIOR_RFPS : SENIOR_RFPS;
-  const currentRfp = activeRfps.find((r) => r.id === selectedTrackId) || activeRfps[0];
+  const currentRfp = selectedTrackId ? activeRfps.find((r) => r.id === selectedTrackId) : null;
 
   return (
     <div className="space-y-8 pb-16">
@@ -511,9 +511,9 @@ export default function SettlementPrompt() {
               <button
                 onClick={() => {
                   setDivision('junior');
-                  setSelectedTrackId('j-fringe');
+                  setSelectedTrackId(null);
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer transition-colors ${
                   division === 'junior'
                     ? 'bg-bone text-ink border-bone'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -524,9 +524,9 @@ export default function SettlementPrompt() {
               <button
                 onClick={() => {
                   setDivision('senior');
-                  setSelectedTrackId('s-cradle');
+                  setSelectedTrackId(null);
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer transition-colors ${
                   division === 'senior'
                     ? 'bg-crimson text-bone-hi border-crimson'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -537,104 +537,154 @@ export default function SettlementPrompt() {
             </div>
           </div>
 
-          {/* Prompt Selector Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-            {activeRfps.map((rfp) => (
-              <button
-                key={rfp.id}
-                onClick={() => setSelectedTrackId(rfp.id)}
-                className={`p-4 border text-left cursor-pointer ${
-                  selectedTrackId === rfp.id
-                    ? 'bg-ink border-crimson'
-                    : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                }`}
-              >
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-crimson">{rfp.code}</span>
-                  <span className="text-[10px] text-bone-dim uppercase">{rfp.trackName}</span>
-                </div>
-                <div className="font-display text-lg text-bone uppercase leading-tight">{rfp.title}</div>
-                <div className="text-[11px] text-bone-dim mt-1">{rfp.meta}</div>
-              </button>
-            ))}
+          {/* Section Subhead & Prompt Selector Cards */}
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-mono text-xs border-b border-bone/20 pb-2">
+              <span className="text-crimson font-bold uppercase tracking-wider">
+                // {division === 'junior' ? 'Junior' : 'Senior'} Settlement Prompts (Choose One)
+              </span>
+              <span className="text-bone-dim text-[11px]">
+                {selectedTrackId ? 'Click another card to switch prompt' : 'Choose a prompt below to see details'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+              {activeRfps.map((rfp) => {
+                const isSelected = selectedTrackId === rfp.id;
+                return (
+                  <button
+                    key={rfp.id}
+                    onClick={() => setSelectedTrackId(rfp.id)}
+                    className={`p-4 border text-left cursor-pointer transition-all relative ${
+                      isSelected
+                        ? 'bg-crimson/10 border-2 border-crimson shadow-lg ring-1 ring-crimson/40'
+                        : 'bg-ink-2/80 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/70 hover:bg-ink-2'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className={`font-bold ${isSelected ? 'text-crimson text-sm' : 'text-crimson'}`}>
+                        {rfp.code}
+                      </span>
+                      {isSelected ? (
+                        <span className="px-1.5 py-0.5 bg-crimson text-bone-hi text-[9px] font-bold uppercase tracking-wider">
+                          Viewing
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-bone-dim uppercase">{rfp.trackName}</span>
+                      )}
+                    </div>
+                    <div className="font-display text-lg text-bone uppercase leading-tight mb-1">
+                      {rfp.title}
+                    </div>
+                    <div className="text-[11px] text-bone-dim leading-relaxed">
+                      {rfp.meta}
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-bone/10 flex items-center justify-between text-[10px]">
+                      <span className={isSelected ? 'text-crimson font-bold' : 'text-bone-dim'}>
+                        {isSelected ? '● Active Selection' : 'Click to inspect prompt →'}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Detailed Prompt Brief */}
-          <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{currentRfp.code}</span>
-                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                    {currentRfp.trackName}
-                  </span>
-                </div>
-                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
-                  {currentRfp.title}
-                </h2>
+          {/* Detailed Prompt Brief or Placeholder */}
+          {!currentRfp ? (
+            <div className="border-2 border-dashed border-bone/30 bg-ink-2/40 p-8 sm:p-14 text-center space-y-4 font-mono">
+              <div className="w-12 h-12 mx-auto border-2 border-crimson rounded-full flex items-center justify-center text-crimson text-xl font-bold bg-crimson/10 animate-pulse">
+                ↑
               </div>
-              <div className="text-right font-mono text-xs text-bone-dim">
-                <div>Target Site: <strong className="text-bone">{currentRfp.site}</strong></div>
-                <div>Population: <strong className="text-crimson">{currentRfp.population}</strong></div>
-              </div>
-            </div>
-
-            {/* Spec Matrix */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Location / Orbit</span>
-                <strong className="text-bone">{currentRfp.site}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Population Capacity</span>
-                <strong className="text-bone">{currentRfp.population}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Earth Comms Latency</span>
-                <strong className="text-crimson">{currentRfp.delay}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Solar Flux Density</span>
-                <strong className="text-bone">{currentRfp.solarFlux}</strong>
-              </div>
-            </div>
-
-            <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// Mission Background</h3>
-              <p>{currentRfp.background}</p>
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// Engineering Mandate</h3>
-              <p>{currentRfp.rfpSummary}</p>
-            </div>
-
-            {/* Constraints */}
-            <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
-                Binding Mission Constraints
-              </h3>
-              <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                {currentRfp.constraints.map((c, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-crimson font-bold">▶</span>
-                    <span>{c}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Optional Brownie Challenge */}
-            <div className="border border-amber-500/40 bg-ink-2 p-5 space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-widest">
-                  ★ Optional Brownie Challenge
+              <div className="space-y-1">
+                <span className="text-crimson uppercase text-xs font-bold tracking-widest block">
+                  Prompt Selection Required
                 </span>
-                <span className="font-mono text-[10px] text-bone-dim">Section B of Proposal (Max 3 pages)</span>
+                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase tracking-wider">
+                  Choose a prompt to see details
+                </h3>
               </div>
-              <h4 className="font-display text-xl text-bone uppercase">{currentRfp.brownie.title}</h4>
-              <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
-                {currentRfp.brownie.prompt}
+              <p className="font-sans text-xs sm:text-sm text-bone-dim max-w-lg mx-auto leading-relaxed">
+                Click any of the 3 {division === 'junior' ? 'Junior' : 'Senior'} settlement prompts above to view the full architectural directive, target celestial site, population scope, design constraints, and optional Brownie challenge.
               </p>
             </div>
-          </div>
+          ) : (
+            <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{currentRfp.code}</span>
+                    <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                      {currentRfp.trackName}
+                    </span>
+                  </div>
+                  <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
+                    {currentRfp.title}
+                  </h2>
+                </div>
+                <div className="text-right font-mono text-xs text-bone-dim">
+                  <div>Target Site: <strong className="text-bone">{currentRfp.site}</strong></div>
+                  <div>Population: <strong className="text-crimson">{currentRfp.population}</strong></div>
+                </div>
+              </div>
+
+              {/* Spec Matrix */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Location / Orbit</span>
+                  <strong className="text-bone">{currentRfp.site}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Population Capacity</span>
+                  <strong className="text-bone">{currentRfp.population}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Earth Comms Latency</span>
+                  <strong className="text-crimson">{currentRfp.delay}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Solar Flux Density</span>
+                  <strong className="text-bone">{currentRfp.solarFlux}</strong>
+                </div>
+              </div>
+
+              <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// Mission Background</h3>
+                <p>{currentRfp.background}</p>
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// Engineering Mandate</h3>
+                <p>{currentRfp.rfpSummary}</p>
+              </div>
+
+              {/* Constraints */}
+              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+                  Binding Mission Constraints
+                </h3>
+                <ul className="space-y-2 font-mono text-xs text-bone-dim">
+                  {currentRfp.constraints.map((c, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-crimson font-bold">▶</span>
+                      <span>{c}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Optional Brownie Challenge */}
+              <div className="border border-amber-500/40 bg-ink-2 p-5 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-widest">
+                    ★ Optional Brownie Challenge
+                  </span>
+                  <span className="font-mono text-[10px] text-bone-dim">Section B of Proposal (Max 3 pages)</span>
+                </div>
+                <h4 className="font-display text-xl text-bone uppercase">{currentRfp.brownie.title}</h4>
+                <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
+                  {currentRfp.brownie.prompt}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

@@ -337,8 +337,8 @@ const CHECKLIST_ITEMS = [
 export default function BppPrompt() {
   const [activeSection, setActiveSection] = useState(() => resolveSection(window.location.hash));
   const [division, setDivision] = useState('senior');
-  const [activeJuniorPrompt, setActiveJuniorPrompt] = useState('j-thermo');
-  const [activeSeniorPrompt, setActiveSeniorPrompt] = useState('s-thermo');
+  const [activeJuniorPrompt, setActiveJuniorPrompt] = useState(null);
+  const [activeSeniorPrompt, setActiveSeniorPrompt] = useState(null);
 
   // Checklist state in localStorage (default empty)
   const [checklist, setChecklist] = useState(() => {
@@ -378,7 +378,7 @@ export default function BppPrompt() {
 
   const currentPrompts = division === 'junior' ? JUNIOR_PROMPTS : SENIOR_PROMPTS;
   const currentPromptId = division === 'junior' ? activeJuniorPrompt : activeSeniorPrompt;
-  const selectedPrompt = currentPrompts.find((p) => p.id === currentPromptId) || currentPrompts[0];
+  const selectedPrompt = currentPromptId ? currentPrompts.find((p) => p.id === currentPromptId) : null;
 
   return (
     <div className="space-y-8 pb-16">
@@ -698,8 +698,11 @@ export default function BppPrompt() {
             </div>
             <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
               <button
-                onClick={() => setDivision('junior')}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer ${
+                onClick={() => {
+                  setDivision('junior');
+                  setActiveJuniorPrompt(null);
+                }}
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer transition-colors ${
                   division === 'junior'
                     ? 'bg-bone text-ink border-bone'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -708,8 +711,11 @@ export default function BppPrompt() {
                 Junior (Grades 6–8)
               </button>
               <button
-                onClick={() => setDivision('senior')}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer ${
+                onClick={() => {
+                  setDivision('senior');
+                  setActiveSeniorPrompt(null);
+                }}
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer transition-colors ${
                   division === 'senior'
                     ? 'bg-crimson text-bone-hi border-crimson'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -720,115 +726,160 @@ export default function BppPrompt() {
             </div>
           </div>
 
-          {/* Prompt Selector Tabs */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 font-mono text-xs">
-            {currentPrompts.map((p) => {
-              const isSelected = p.id === currentPromptId;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => {
-                    if (division === 'junior') setActiveJuniorPrompt(p.id);
-                    else setActiveSeniorPrompt(p.id);
-                  }}
-                  className={`p-3.5 border text-left cursor-pointer ${
-                    isSelected
-                      ? 'bg-ink border-crimson'
-                      : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                  }`}
-                >
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-bold text-crimson">{p.code}</span>
-                    <span className="text-[10px] text-bone-dim truncate max-w-[100px]">{p.layer}</span>
-                  </div>
-                  <div className="font-display text-sm text-bone uppercase leading-tight">{p.title}</div>
-                </button>
-              );
-            })}
+          {/* Section Subhead & Prompt Selector Tabs */}
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-mono text-xs border-b border-bone/20 pb-2">
+              <span className="text-crimson font-bold uppercase tracking-wider">
+                // {division === 'junior' ? 'Junior' : 'Senior'} Venture Prompts ({currentPrompts.length} Available · Choose One)
+              </span>
+              <span className="text-bone-dim text-[11px]">
+                {currentPromptId ? 'Click another prompt to switch view' : 'Choose a prompt below to see details'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 font-mono text-xs">
+              {currentPrompts.map((p) => {
+                const isSelected = p.id === currentPromptId;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => {
+                      if (division === 'junior') setActiveJuniorPrompt(p.id);
+                      else setActiveSeniorPrompt(p.id);
+                    }}
+                    className={`p-3.5 border text-left cursor-pointer transition-all relative ${
+                      isSelected
+                        ? 'bg-crimson/10 border-2 border-crimson shadow-lg ring-1 ring-crimson/40'
+                        : 'bg-ink-2/80 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/70 hover:bg-ink-2'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className={`font-bold ${isSelected ? 'text-crimson text-sm' : 'text-crimson'}`}>
+                        {p.code}
+                      </span>
+                      {isSelected ? (
+                        <span className="px-1.5 py-0.5 bg-crimson text-bone-hi text-[9px] font-bold uppercase tracking-wider">
+                          Viewing
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-bone-dim truncate max-w-[80px]">{p.layer}</span>
+                      )}
+                    </div>
+                    <div className="font-display text-sm text-bone uppercase leading-tight mb-1">
+                      {p.title}
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-bone/10 text-[10px]">
+                      <span className={isSelected ? 'text-crimson font-bold' : 'text-bone-dim'}>
+                        {isSelected ? '● Active Selection' : 'Click to inspect →'}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Detailed Prompt Dossier */}
-          <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{selectedPrompt.code}</span>
-                <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                  {selectedPrompt.layer}
-                </span>
+          {/* Detailed Prompt Dossier or Placeholder */}
+          {!selectedPrompt ? (
+            <div className="border-2 border-dashed border-bone/30 bg-ink-2/40 p-8 sm:p-14 text-center space-y-4 font-mono">
+              <div className="w-12 h-12 mx-auto border-2 border-crimson rounded-full flex items-center justify-center text-crimson text-xl font-bold bg-crimson/10 animate-pulse">
+                ↑
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
-                {selectedPrompt.title}
-              </h2>
-              <p className="font-serif italic text-base sm:text-lg text-amber-300/90 mt-2">
-                &ldquo;{selectedPrompt.log}&rdquo;
+              <div className="space-y-1">
+                <span className="text-crimson uppercase text-xs font-bold tracking-widest block">
+                  Prompt Selection Required
+                </span>
+                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase tracking-wider">
+                  Choose a prompt to see details
+                </h3>
+              </div>
+              <p className="font-sans text-xs sm:text-sm text-bone-dim max-w-lg mx-auto leading-relaxed">
+                Click any of the {currentPrompts.length} {division === 'junior' ? 'Junior' : 'Senior'} atmospheric venture prompts above to inspect the market thesis, physics boundaries, mandatory deliverables, and question to prepare for.
               </p>
             </div>
-
-            {/* Story Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-              <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
-                <span className="text-crimson font-bold uppercase block">// The Physical Context</span>
-                <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.bg}</p>
-              </div>
-
-              <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
-                <span className="text-amber-400 font-bold uppercase block">// The Venture Mandate</span>
-                <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.challenge}</p>
-              </div>
-
-              <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
-                <span className="text-green-400 font-bold uppercase block">// The Hard Truth</span>
-                <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.hard}</p>
-              </div>
-            </div>
-
-            {/* Numbers that Matter */}
-            <div className="space-y-3 pt-2">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">
-                // Critical Physics &amp; Industry Benchmarks
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 font-mono text-xs">
-                {selectedPrompt.numbers.map((n, i) => (
-                  <div key={i} className="bg-ink-2 p-3 border border-bone/20">
-                    <span className="text-base sm:text-lg font-bold text-bone block leading-tight">{n.val}</span>
-                    <span className="text-[10px] text-bone-dim block mt-1 leading-tight">{n.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* A Question to Prepare For */}
-            {selectedPrompt.curveball && (
-              <div className="border border-amber-500/40 bg-amber-500/5 p-4 space-y-1 font-mono text-xs">
-                <span className="text-amber-400 font-bold uppercase tracking-wider block">
-                  A question to prepare for
-                </span>
-                <p className="text-bone font-sans text-xs sm:text-sm leading-relaxed italic">
-                  &ldquo;{selectedPrompt.curveball}&rdquo;
+          ) : (
+            <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
+              <div className="border-b border-bone/20 pb-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{selectedPrompt.code}</span>
+                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                    {selectedPrompt.layer}
+                  </span>
+                </div>
+                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
+                  {selectedPrompt.title}
+                </h2>
+                <p className="font-serif italic text-base sm:text-lg text-amber-300/90 mt-2">
+                  &ldquo;{selectedPrompt.log}&rdquo;
                 </p>
               </div>
-            )}
 
-            {/* Required Proposal Coverage */}
-            <div className="space-y-3 pt-2">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
-                // Mandatory Technical &amp; Financial Coverage
-              </h3>
-              <div className="space-y-2 font-mono text-xs">
-                {selectedPrompt.mustCover.map((req, i) => (
-                  <div key={i} className="p-3 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-crimson font-bold">{req.code}</span>
-                        <strong className="text-bone uppercase">{req.title}</strong>
-                      </div>
-                      <p className="text-[11px] text-bone-dim font-sans">{req.desc}</p>
+              {/* Story Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+                <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
+                  <span className="text-crimson font-bold uppercase block">// The Physical Context</span>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.bg}</p>
+                </div>
+
+                <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
+                  <span className="text-amber-400 font-bold uppercase block">// The Venture Mandate</span>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.challenge}</p>
+                </div>
+
+                <div className="p-4 bg-ink-2 border border-bone/20 space-y-2">
+                  <span className="text-green-400 font-bold uppercase block">// The Hard Truth</span>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">{selectedPrompt.story.hard}</p>
+                </div>
+              </div>
+
+              {/* Numbers that Matter */}
+              <div className="space-y-3 pt-2">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">
+                  // Critical Physics &amp; Industry Benchmarks
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 font-mono text-xs">
+                  {selectedPrompt.numbers.map((n, i) => (
+                    <div key={i} className="bg-ink-2 p-3 border border-bone/20">
+                      <span className="text-base sm:text-lg font-bold text-bone block leading-tight">{n.val}</span>
+                      <span className="text-[10px] text-bone-dim block mt-1 leading-tight">{n.label}</span>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* A Question to Prepare For */}
+              {selectedPrompt.curveball && (
+                <div className="border border-amber-500/40 bg-amber-500/5 p-4 space-y-1 font-mono text-xs">
+                  <span className="text-amber-400 font-bold uppercase tracking-wider block">
+                    A question to prepare for
+                  </span>
+                  <p className="text-bone font-sans text-xs sm:text-sm leading-relaxed italic">
+                    &ldquo;{selectedPrompt.curveball}&rdquo;
+                  </p>
+                </div>
+              )}
+
+              {/* Required Proposal Coverage */}
+              <div className="space-y-3 pt-2">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+                  // Mandatory Technical &amp; Financial Coverage
+                </h3>
+                <div className="space-y-2 font-mono text-xs">
+                  {selectedPrompt.mustCover.map((req, i) => (
+                    <div key={i} className="p-3 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-crimson font-bold">{req.code}</span>
+                          <strong className="text-bone uppercase">{req.title}</strong>
+                        </div>
+                        <p className="text-[11px] text-bone-dim font-sans">{req.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 

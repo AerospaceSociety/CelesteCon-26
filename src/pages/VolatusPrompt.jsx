@@ -85,7 +85,7 @@ const CHECKLIST_ITEMS = [
 
 export default function VolatusPrompt() {
   const [activeSection, setActiveSection] = useState(() => resolveSection(window.location.hash));
-  const [selectedTrackId, setSelectedTrackId] = useState('s-ta');
+  const [selectedTrackId, setSelectedTrackId] = useState(null);
 
   // Interactive preflight checklist state with localStorage (default empty)
   const [checkedItems, setCheckedItems] = useState(() => {
@@ -120,7 +120,7 @@ export default function VolatusPrompt() {
     });
   };
 
-  const currentRfp = RFPS.find((r) => r.id === selectedTrackId) || RFPS[0];
+  const currentRfp = selectedTrackId ? RFPS.find((r) => r.id === selectedTrackId) : null;
 
   return (
     <div className="space-y-8 pb-16">
@@ -148,7 +148,7 @@ export default function VolatusPrompt() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 relative z-10">
           <div className="space-y-4 max-w-3xl">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-xs font-bold px-2 py-0.5 bg-cyan-600 text-bone-hi">
+              <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">
                 EVENT 02 · VOLATUS
               </span>
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
@@ -160,7 +160,7 @@ export default function VolatusPrompt() {
             </div>
 
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl text-bone uppercase tracking-wide leading-none">
-              Volatus <span className="text-cyan-400">2026</span>
+              Volatus <span className="text-crimson">2026</span>
             </h1>
 
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
@@ -170,7 +170,7 @@ export default function VolatusPrompt() {
             <div className="flex flex-wrap gap-3 pt-2">
               <button
                 onClick={() => handleSectionChange('prompts')}
-                className="px-5 py-2.5 bg-cyan-600 text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-cyan-600 cursor-pointer"
+                className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson cursor-pointer"
               >
                 Inspect Prompts →
               </button>
@@ -193,7 +193,7 @@ export default function VolatusPrompt() {
           <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
               <span className="text-bone-dim uppercase">Dossier Window</span>
-              <span className="font-bold text-cyan-400 uppercase">
+              <span className="font-bold text-crimson uppercase">
                 Round 1 Online
               </span>
             </div>
@@ -219,13 +219,13 @@ export default function VolatusPrompt() {
               </div>
               <div className="flex justify-between">
                 <span>Round 2 Finale:</span>
-                <strong className="text-cyan-400 font-bold">24 Oct · On Campus</strong>
+                <strong className="text-crimson font-bold">24 Oct · On Campus</strong>
               </div>
             </div>
 
             <Link
               to="/submissions"
-              className="w-full py-2.5 bg-cyan-600 text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-cyan-600 block"
+              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson block"
             >
               Go to Submission Portal →
             </Link>
@@ -247,7 +247,7 @@ export default function VolatusPrompt() {
             onClick={() => handleSectionChange(tab.id)}
             className={`flex-1 sm:flex-initial px-4 py-2 font-bold cursor-pointer text-center ${
               activeSection === tab.id
-                ? 'bg-cyan-600 text-bone-hi'
+                ? 'bg-crimson text-bone-hi'
                 : 'text-bone-dim hover:text-bone hover:bg-ink'
             }`}
           >
@@ -263,7 +263,7 @@ export default function VolatusPrompt() {
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 1 · Event Brief</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 1 · Event Brief</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Aeronautical Engineering &amp; Prototyping
               </h2>
@@ -280,13 +280,13 @@ export default function VolatusPrompt() {
               </div>
 
               <div className="space-y-4">
-                <div className="border border-cyan-500/30 bg-cyan-500/5 p-4 space-y-2 font-mono text-xs">
+                <div className="border border-crimson/80 bg-crimson/10 p-4 space-y-2 font-mono text-xs">
                   <div className="flex justify-between items-center">
                     <span className="uppercase text-bone-dim font-bold">Eligibility &amp; Limits</span>
-                    <span className="px-2 py-0.5 bg-cyan-600 text-bone-hi font-bold">GRADES 9–12</span>
+                    <span className="px-2 py-0.5 bg-crimson text-bone-hi font-bold">GRADES 9–12</span>
                   </div>
                   <div className="font-display text-2xl text-bone uppercase">
-                    Maximum <span className="text-cyan-400">25 Pages</span> Limit
+                    Maximum <span className="text-crimson">25 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
                     Counting every page, including cover, contents, references, AI disclosure and declaration. In Round 1, submit your Technical Dossier PDF together with native 3D CAD files (.step, .stl, .f3d, .blend, or native archive).
@@ -303,8 +303,8 @@ export default function VolatusPrompt() {
                   <span className="text-bone-dim block text-[10px]">13 Oct</span>
                   <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
                 </div>
-                <div className="p-3 bg-cyan-600/10 border border-cyan-600">
-                  <span className="text-cyan-400 block text-[10px]">18 Oct, 11:59 PM IST</span>
+                <div className="p-3 bg-crimson/10 border border-crimson">
+                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
                   <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
                 </div>
                 <div className="p-3 bg-ink border border-bone/20">
@@ -323,13 +323,13 @@ export default function VolatusPrompt() {
               {/* Round 1 Card */}
               <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
                 <div className="flex justify-between items-center border-b border-bone/20 pb-2 font-mono text-xs">
-                  <span className="font-bold px-2 py-0.5 bg-cyan-600 text-bone-hi">ROUND 1 · ONLINE</span>
+                  <span className="font-bold px-2 py-0.5 bg-crimson text-bone-hi">ROUND 1 · ONLINE</span>
                   <span className="text-amber-400 font-bold">18 OCT, 11:59 PM IST</span>
                 </div>
                 <h3 className="font-display text-xl text-bone uppercase">Technical Proposal &amp; 3D CAD Package</h3>
                 <ul className="space-y-2 font-mono text-xs text-bone-dim">
                   <li><strong className="text-bone">Dossier PDF:</strong> Max 25 pages, counting every page including cover and end-matter.</li>
-                  <li><strong className="text-bone">CAD Files:</strong> Standard export (<span className="text-cyan-400">.step, .stl, .f3d, .blend</span>) or native CAD archive.</li>
+                  <li><strong className="text-bone">CAD Files:</strong> Standard export (<span className="text-crimson">.step, .stl, .f3d, .blend</span>) or native CAD archive.</li>
                   <li><strong className="text-bone">Calculations Ledger:</strong> Mass budget, aerodynamic drag polar, motor &amp; battery runtimes.</li>
                 </ul>
               </div>
@@ -353,13 +353,13 @@ export default function VolatusPrompt() {
             {/* POC and Links */}
             <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
               <div className="text-bone-dim">
-                Event Lead: <strong className="text-bone">Tarushi Tomar</strong> (<a href="mailto:r24564tarushi@dpsrkp.net" className="text-cyan-400 hover:underline">r24564tarushi@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
+                Event Lead: <strong className="text-bone">Tarushi Tomar</strong> (<a href="mailto:r24564tarushi@dpsrkp.net" className="text-crimson hover:underline">r24564tarushi@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
               </div>
               <div className="flex gap-3">
                 <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
                   ← Back to Comps
                 </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-cyan-600 text-bone-hi font-bold border border-cyan-600 uppercase">
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
                   Go to Submission Portal →
                 </Link>
               </div>
@@ -373,90 +373,140 @@ export default function VolatusPrompt() {
       {/* ======================================================== */}
       {activeSection === 'prompts' && (
         <div className="space-y-6">
-          {/* Prompt Selector Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
-            {RFPS.map((rfp) => (
-              <button
-                key={rfp.id}
-                onClick={() => setSelectedTrackId(rfp.id)}
-                className={`p-4 border text-left cursor-pointer ${
-                  selectedTrackId === rfp.id
-                    ? 'bg-ink border-cyan-400'
-                    : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                }`}
-              >
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-cyan-400">{rfp.code}</span>
-                  <span className="text-[10px] text-bone-dim uppercase">{rfp.trackName}</span>
-                </div>
-                <div className="font-display text-lg text-bone uppercase leading-tight">{rfp.title}</div>
-                <div className="text-[11px] text-bone-dim mt-1">{rfp.meta}</div>
-              </button>
-            ))}
-          </div>
-
-          {/* Detailed Prompt Brief */}
-          <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-cyan-600 text-bone-hi">{currentRfp.code}</span>
-                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                    {currentRfp.aircraftType}
-                  </span>
-                </div>
-                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
-                  {currentRfp.title}
-                </h2>
-              </div>
-              <div className="text-right font-mono text-xs text-bone-dim">
-                <div>MTOW: <strong className="text-cyan-400">{currentRfp.mtow}</strong></div>
-                <div>Wingspan: <strong className="text-bone">{currentRfp.wingspan}</strong></div>
-              </div>
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-mono text-xs border-b border-bone/20 pb-2">
+              <span className="text-crimson font-bold uppercase tracking-wider">
+                // Senior Flight Cases (Grades 9–12 · Choose One)
+              </span>
+              <span className="text-bone-dim text-[11px]">
+                {selectedTrackId ? 'Click another case to switch view' : 'Choose a prompt below to see details'}
+              </span>
             </div>
 
-            {/* Spec Matrix */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Wingspan / Geometry</span>
-                <strong className="text-bone">{currentRfp.wingspan}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Take-Off Mass (MTOW)</span>
-                <strong className="text-bone">{currentRfp.mtow}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Payload Capacity</span>
-                <strong className="text-cyan-400">{currentRfp.payload}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Flight Endurance</span>
-                <strong className="text-bone">{currentRfp.endurance}</strong>
-              </div>
-            </div>
-
-            <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// Mission Background</h3>
-              <p>{currentRfp.background}</p>
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// Engineering Mandate</h3>
-              <p>{currentRfp.rfpSummary}</p>
-            </div>
-
-            {/* Constraints */}
-            <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-cyan-400 font-bold">
-                Binding Mission Constraints
-              </h3>
-              <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                {currentRfp.constraints.map((c, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-cyan-400 font-bold">▶</span>
-                    <span>{c}</span>
-                  </li>
-                ))}
-              </ul>
+            {/* Prompt Selector Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+              {RFPS.map((rfp) => {
+                const isSelected = selectedTrackId === rfp.id;
+                return (
+                  <button
+                    key={rfp.id}
+                    onClick={() => setSelectedTrackId(rfp.id)}
+                    className={`p-4 border text-left cursor-pointer transition-all relative ${
+                      isSelected
+                        ? 'bg-crimson/10 border-2 border-crimson shadow-lg ring-1 ring-crimson/40'
+                        : 'bg-ink-2/80 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/70 hover:bg-ink-2'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className={`font-bold ${isSelected ? 'text-crimson text-sm' : 'text-crimson'}`}>
+                        {rfp.code}
+                      </span>
+                      {isSelected ? (
+                        <span className="px-1.5 py-0.5 bg-crimson text-bone-hi text-[9px] font-bold uppercase tracking-wider">
+                          Viewing
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-bone-dim uppercase">{rfp.trackName}</span>
+                      )}
+                    </div>
+                    <div className="font-display text-lg text-bone uppercase leading-tight mb-1">
+                      {rfp.title}
+                    </div>
+                    <div className="text-[11px] text-bone-dim leading-relaxed">
+                      {rfp.meta}
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-bone/10 flex items-center justify-between text-[10px]">
+                      <span className={isSelected ? 'text-crimson font-bold' : 'text-bone-dim'}>
+                        {isSelected ? '● Active Selection' : 'Click to inspect prompt →'}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
+
+          {/* Detailed Prompt Brief or Placeholder */}
+          {!currentRfp ? (
+            <div className="border-2 border-dashed border-bone/30 bg-ink-2/40 p-8 sm:p-14 text-center space-y-4 font-mono">
+              <div className="w-12 h-12 mx-auto border-2 border-crimson rounded-full flex items-center justify-center text-crimson text-xl font-bold bg-crimson/10 animate-pulse">
+                ↑
+              </div>
+              <div className="space-y-1">
+                <span className="text-crimson uppercase text-xs font-bold tracking-widest block">
+                  Prompt Selection Required
+                </span>
+                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase tracking-wider">
+                  Choose a prompt to see details
+                </h3>
+              </div>
+              <p className="font-sans text-xs sm:text-sm text-bone-dim max-w-lg mx-auto leading-relaxed">
+                Click either of the two Senior flight cases above (Thin Air or Cloud Hauler) to view its aircraft architecture, MTOW targets, operational mission profile, and binding aeronautical constraints.
+              </p>
+            </div>
+          ) : (
+            <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{currentRfp.code}</span>
+                    <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                      {currentRfp.aircraftType}
+                    </span>
+                  </div>
+                  <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
+                    {currentRfp.title}
+                  </h2>
+                </div>
+                <div className="text-right font-mono text-xs text-bone-dim">
+                  <div>MTOW: <strong className="text-crimson">{currentRfp.mtow}</strong></div>
+                  <div>Wingspan: <strong className="text-bone">{currentRfp.wingspan}</strong></div>
+                </div>
+              </div>
+
+              {/* Spec Matrix */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Wingspan / Geometry</span>
+                  <strong className="text-bone">{currentRfp.wingspan}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Take-Off Mass (MTOW)</span>
+                  <strong className="text-bone">{currentRfp.mtow}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Payload Capacity</span>
+                  <strong className="text-crimson">{currentRfp.payload}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Flight Endurance</span>
+                  <strong className="text-bone">{currentRfp.endurance}</strong>
+                </div>
+              </div>
+
+              <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// Mission Background</h3>
+                <p>{currentRfp.background}</p>
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// Engineering Mandate</h3>
+                <p>{currentRfp.rfpSummary}</p>
+              </div>
+
+              {/* Constraints */}
+              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+                  Binding Mission Constraints
+                </h3>
+                <ul className="space-y-2 font-mono text-xs text-bone-dim">
+                  {currentRfp.constraints.map((c, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-crimson font-bold">▶</span>
+                      <span>{c}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -467,7 +517,7 @@ export default function VolatusPrompt() {
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 3 · Proposal Guide</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 3 · Proposal Guide</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Dossier Structure &amp; 3D CAD Requirements
               </h2>
@@ -478,9 +528,9 @@ export default function VolatusPrompt() {
             </p>
 
             {/* 3D CAD model (Dimension III) Block */}
-            <div className="border-2 border-cyan-500/40 bg-ink-2 p-6 space-y-4 font-mono text-xs">
+            <div className="border-2 border-crimson/40 bg-ink-2 p-6 space-y-4 font-mono text-xs">
               <div className="border-b border-bone/20 pb-3">
-                <span className="text-cyan-400 uppercase font-bold tracking-widest text-xs block">Technical Specification</span>
+                <span className="text-crimson uppercase font-bold tracking-widest text-xs block">Technical Specification</span>
                 <h3 className="text-xl font-bold uppercase text-bone mt-0.5">3D CAD Model (Dimension III)</h3>
                 <p className="text-bone-dim font-sans text-xs mt-1">
                   Dimension III digital prototyping is fully integrated into Volatus. Jurors evaluate the 3D model on parametric hygiene, realistic mechanical fasteners, material density assignment, and assembly hierarchy.
@@ -505,14 +555,14 @@ export default function VolatusPrompt() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <div className="border border-bone/20 bg-ink p-4 space-y-2">
-                  <span className="text-cyan-400 font-bold text-sm block">1. Clean Assembly Tree</span>
+                  <span className="text-crimson font-bold text-sm block">1. Clean Assembly Tree</span>
                   <p className="text-[11px] text-bone-dim font-sans leading-relaxed">
                     Proper sub-assembly hierarchy: Fuselage, Wing Structure (spars, ribs, skin), Propulsion &amp; Nacelles, Avionics Bay, and Landing Gear. Zero unconstrained floating parts.
                   </p>
                 </div>
 
                 <div className="border border-bone/20 bg-ink p-4 space-y-2">
-                  <span className="text-cyan-400 font-bold text-sm block">2. Fasteners &amp; Hardware</span>
+                  <span className="text-crimson font-bold text-sm block">2. Fasteners &amp; Hardware</span>
                   <p className="text-[11px] text-bone-dim font-sans leading-relaxed">
                     Model real mechanical fasteners (M2/M3 bolts, threaded inserts, hinges, control horns, pushrods). No impossible glued joints or magical solid bodies.
                   </p>
@@ -530,7 +580,7 @@ export default function VolatusPrompt() {
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 4 · Checklist</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 4 · Checklist</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Preflight Submission Checklist
               </h2>
@@ -550,7 +600,7 @@ export default function VolatusPrompt() {
                     type="checkbox"
                     checked={!!checkedItems[item.id]}
                     onChange={() => toggleCheck(item.id)}
-                    className="mt-0.5 accent-cyan-500 cursor-pointer"
+                    className="mt-0.5 accent-crimson cursor-pointer"
                   />
                   <span className={`font-mono text-xs leading-relaxed ${checkedItems[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
                     {item.label}
@@ -565,7 +615,7 @@ export default function VolatusPrompt() {
               </span>
               <Link
                 to="/submissions"
-                className="px-6 py-2.5 bg-cyan-600 text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-cyan-600"
+                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-crimson"
               >
                 Go to Submission Portal →
               </Link>
@@ -581,7 +631,7 @@ export default function VolatusPrompt() {
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-widest">Section 5 · Rules</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 5 · Rules</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Competition Rules &amp; Evaluation Criteria
               </h2>
@@ -604,7 +654,7 @@ export default function VolatusPrompt() {
 
             {/* AI Disclosure */}
             <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
-              <strong className="text-cyan-400 block uppercase tracking-wider text-sm">
+              <strong className="text-crimson block uppercase tracking-wider text-sm">
                 Academic Integrity &amp; Generative AI Policy
               </strong>
               <p className="text-bone-dim font-sans text-xs leading-relaxed">
@@ -660,13 +710,13 @@ export default function VolatusPrompt() {
             {/* POC and Links */}
             <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
               <div className="text-bone-dim">
-                Event Lead: <strong className="text-bone">Tarushi Tomar</strong> (<a href="mailto:r24564tarushi@dpsrkp.net" className="text-cyan-400 hover:underline">r24564tarushi@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
+                Event Lead: <strong className="text-bone">Tarushi Tomar</strong> (<a href="mailto:r24564tarushi@dpsrkp.net" className="text-crimson hover:underline">r24564tarushi@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
               </div>
               <div className="flex gap-3">
                 <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
                   ← Back to Comps
                 </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-cyan-600 text-bone-hi font-bold border border-cyan-600 uppercase">
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
                   Go to Submission Portal →
                 </Link>
               </div>
