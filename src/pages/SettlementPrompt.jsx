@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 const R1_DEADLINE = new Date('2026-10-18T23:59:00+05:30').getTime();
-const VALID_SECTIONS = ['brief', 'format', 'tracks', 'template', 'rules', 'rubrics'];
+const VALID_SECTIONS = ['brief', 'tracks', 'template', 'checklist', 'rules'];
 
 const JUNIOR_RFPS = [
   {
@@ -245,7 +245,7 @@ export default function SettlementPrompt() {
       const updated = { ...prev, [id]: !prev[id] };
       try {
         localStorage.setItem('c26-smt-checklist', JSON.stringify(updated));
-      } catch {}
+      } catch { }
       return updated;
     });
   };
@@ -254,7 +254,7 @@ export default function SettlementPrompt() {
     setCheckedItems({});
     try {
       localStorage.setItem('c26-smt-checklist', JSON.stringify({}));
-    } catch {}
+    } catch { }
   };
 
   const checkedCount = useMemo(() => {
@@ -411,20 +411,18 @@ export default function SettlementPrompt() {
       <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
         {[
           { id: 'brief', label: '01 · The Brief' },
-          { id: 'format', label: '02 · Format & Scoring' },
-          { id: 'tracks', label: '03 · Mission RFPs' },
-          { id: 'template', label: '04 · Proposal Guide' },
-          { id: 'checklist', label: '05 · Checklist' },
-          { id: 'rules', label: '06 · Rules & Rubric' }
+          { id: 'tracks', label: '02 · Mission RFPs' },
+          { id: 'template', label: '03 · Proposal Guide' },
+          { id: 'checklist', label: '04 · Checklist' },
+          { id: 'rules', label: '05 · Rules & Rubric' }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleSectionChange(tab.id)}
-            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${
-              activeSection === tab.id
-                ? 'bg-crimson text-bone-hi shadow-md'
-                : 'text-bone-dim hover:text-bone hover:bg-ink'
-            }`}
+            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${activeSection === tab.id
+              ? 'bg-crimson text-bone-hi shadow-md'
+              : 'text-bone-dim hover:text-bone hover:bg-ink'
+              }`}
           >
             {tab.label}
           </button>
@@ -436,165 +434,192 @@ export default function SettlementPrompt() {
       {/* ======================================================== */}
       {activeSection === 'brief' && (
         <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
+            {/* Header & Philosophy */}
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 01</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 01 · Strategic Mission Directive</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Close Every Loop. Count Every Tonne. Keep People Sane.
+                More Than Steel &amp; Regolith: Building a Living Civilization
               </h2>
             </div>
 
+            {/* Humanified Narrative */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-bone-dim leading-relaxed">
               <div className="space-y-4">
-                <p className="text-bone font-medium text-base">
-                  Anyone can sketch a spinning cylinder in CAD. The teams that win Settle-Me-This prove <em>where every kilogram of oxygen comes from</em>, what happens the night the main reactor trips, and how 15,000 human beings stay healthy and governed in year ten.
+                <p className="text-bone font-medium text-base leading-relaxed">
+                  A space settlement is not merely an orbital machine or a spinning titanium cylinder in the quiet cold of deep space—it is the cradle of humanity&apos;s next chapter. Long after Earth becomes a distant blue marble in the observation cupola, thousands of people will wake up here to raise families, share meals, heal the sick, celebrate cultural festivals, and conduct breakthrough science under artificial sunlight.
                 </p>
                 <p>
-                  A space settlement is a city, a farm, a nuclear powerplant, an intensive care hospital, and a pressurized spaceship at the same time. Every system interconnects: more radiation shielding increases structural mass; more mass requires larger attitude thrusters or lunar mining logistics; mining demands energy; energy rejects heat; heat demands massive radiator arrays. Systems engineering is managing this web of mutual dependencies.
+                  Every engineering decision you make—every bolt torqued, every valve calibrated, every cubic meter of living quarters allocated—is an ethical promise that these people will not simply survive in vacuum, but genuinely flourish with dignity, comfort, and psychological peace of mind.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <p>
+                  The teams that win <strong className="text-bone">Settle-Me-This</strong> understand that true engineering requires deep human empathy alongside relentless scientific rigor. Anyone can sketch a futuristic habitat in CAD; the real triumph is proving <em>where every kilogram of oxygen originates</em>, how rotational physics preserves human bone density without causing vestibular sickness, and what safeguards keep 15,000 citizens safe when the primary reactor trips.
+                </p>
+                <p>
+                  A space settlement is simultaneously a city, an agricultural biome, a power plant, an intensive-care hospital, and an autonomous ship. Every system is tightly coupled: mass affects rotational stability; shielding demands energy; energy demands thermal radiators. Your task is to master this web of mutual dependencies into one cohesive, living habitat.
+                </p>
+              </div>
+            </div>
+
+            {/* Division Page Limits Banner */}
+            <div className="border-2 border-crimson/80 bg-crimson/10 p-5 sm:p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-crimson/30 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-widest">
+                    OFFICIAL PROPOSAL LIMITS
+                  </span>
+                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Submission Standard</span>
+                </div>
+                <span className="font-mono text-xs text-amber-400 font-bold uppercase">
+                  Due: 18 October 2026 · 23:59 IST
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono">
+                {/* Junior Card */}
+                <div className="border border-bone/30 bg-ink p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs uppercase text-bone-dim font-bold">Junior Division (Grades 6–8)</span>
+                    <span className="px-2 py-0.5 bg-bone text-ink text-xs font-bold">JR CATEGORY</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Juniors: <span className="text-crimson">25 Pages</span> Page Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Strict maximum page limit of <strong>25 pages</strong> (15–20 recommended). Complete technical proposal covering all core sections, calculation tables, SI units, and schematics.
+                  </p>
+                </div>
+
+                {/* Senior Card */}
+                <div className="border border-bone/30 bg-ink p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs uppercase text-bone-dim font-bold">Senior Division (Grades 9–12)</span>
+                    <span className="px-2 py-0.5 bg-crimson text-bone-hi text-xs font-bold">SR CATEGORY</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Seniors: <span className="text-crimson">35 Pages</span> Page Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Strict maximum page limit of <strong>35 pages</strong> (20–25 recommended). Comprehensive engineering report including full mass budgets, orbital mechanics, thermal modeling, and governance.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-between items-center gap-2 pt-1 font-mono text-xs text-bone-dim">
+                <span>Deliverable: Single PDF proposal (English only, SI Metric units: kg, m, kPa, kW).</span>
+                <span className="text-amber-400">Optional Brownie Challenge: Up to 3 additional pages (+10 bonus pts).</span>
+              </div>
+            </div>
+
+            {/* Six Main Sections Architecture */}
+            <div className="space-y-4 pt-2">
+              <div className="border-b border-bone/20 pb-2">
+                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
+                  Core Engineering Pillars
+                </span>
+                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
+                  The Six Foundational Sections of Your Settlement
+                </h3>
+                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
+                  Your proposal must thoroughly address each of these six interconnected domains to deliver a viable, thriving habitat:
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 01</span>
-                  <strong className="text-bone block uppercase">The Air Test</strong>
-                  <p className="text-[11px] text-bone-dim">Hold 101.3 kPa pressure, seal bulkheads against micro-fractures, and isolate compartmental breaches.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* 1. Structure */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs font-bold text-crimson uppercase">01 · Structure</span>
+                    <span className="font-mono text-[10px] text-bone-dim uppercase">Hull &amp; Physics</span>
+                  </div>
+                  <h4 className="font-display text-lg text-bone uppercase">Structural Integrity &amp; Artificial Gravity</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Engineers the primary pressure hull, materials tensile strength, and rotating geometry required to maintain 1-atm pressure in hard vacuum. Calculates centrifugal artificial gravity (0.3g–1.0g) while strictly capping rotation at under 2 RPM to prevent debilitating vestibular sickness, balanced by radiation bulkheads and micrometeoroid shields.
+                  </p>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 02</span>
-                  <strong className="text-bone block uppercase">The Night Test</strong>
-                  <p className="text-[11px] text-bone-dim">Survive eclipses, reactor maintenance, and solar flares with redundant backup storage.</p>
+
+                {/* 2. Design */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs font-bold text-crimson uppercase">02 · Design</span>
+                    <span className="font-mono text-[10px] text-bone-dim uppercase">Architecture &amp; Volume</span>
+                  </div>
+                  <h4 className="font-display text-lg text-bone uppercase">Spatial Layout &amp; Civic Architecture</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Governs the three-dimensional urban layout, zoning separation between tranquil residential neighborhoods and industrial docking bays, and spatial volume allocation per resident. Integrates biophilic sightlines, generous vertical clearance, and intuitive modular flow so inhabitants never feel trapped in a claustrophobic machine.
+                  </p>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 03</span>
-                  <strong className="text-bone block uppercase">The Tonne Test</strong>
-                  <p className="text-[11px] text-bone-dim">Split every kilogram: Earth-launched high-value tech vs. in-situ mined asteroidal/lunar bulk mass.</p>
+
+                {/* 3. Operations */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs font-bold text-crimson uppercase">03 · Operations</span>
+                    <span className="font-mono text-[10px] text-bone-dim uppercase">Mission &amp; Governance</span>
+                  </div>
+                  <h4 className="font-display text-lg text-bone uppercase">Station Management &amp; Contingencies</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Directs day-to-day station life, orbital station-keeping maneuvers, automated airlock traffic control, and interplanetary communications latency management with Earth. Formulates comprehensive emergency protocols for rapid hull decompression, solar proton events, and scheduled robotic maintenance cycles.
+                  </p>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 04</span>
-                  <strong className="text-bone block uppercase">The Year-Ten Test</strong>
-                  <p className="text-[11px] text-bone-dim">Psychological comfort, private space, greenery, civic rights, acoustics, and societal cohesion.</p>
+
+                {/* 4. Infrastructure */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs font-bold text-crimson uppercase">04 · Infrastructure</span>
+                    <span className="font-mono text-[10px] text-bone-dim uppercase">Power, Heat &amp; Transit</span>
+                  </div>
+                  <h4 className="font-display text-lg text-bone uppercase">Power Grids &amp; Thermal Balance</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Provides reliable baseload power through modular fission reactors or high-efficiency solar concentrators, coupled with vast radiator arrays to reject waste heat into space. Establishes internal magnetic transit corridors, pressurized cargo handling dry-docks, and redundant utility distribution trunks for energy, fluid, and data.
+                  </p>
+                </div>
+
+                {/* 5. Human Factors */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs font-bold text-crimson uppercase">05 · Human Factors</span>
+                    <span className="font-mono text-[10px] text-bone-dim uppercase">Wellness &amp; Society</span>
+                  </div>
+                  <h4 className="font-display text-lg text-bone uppercase">Psychological Ergonomics &amp; Community</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Protects mental and physical wellness through circadian lighting cycles, acoustic insulation, low-gravity physical therapy gyms, and advanced healthcare facilities. Fosters social cohesion with community parks, educational academies, private family dwellings, and inclusive governance frameworks that sustain a thriving multi-generational society.
+                  </p>
+                </div>
+
+                {/* 6. Closed Loop System */}
+                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2 hover:border-crimson/60 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-xs font-bold text-crimson uppercase">06 · Closed Loop System</span>
+                    <span className="font-mono text-[10px] text-bone-dim uppercase">ECLSS &amp; Biosphere</span>
+                  </div>
+                  <h4 className="font-display text-lg text-bone uppercase">Regenerative Life Support &amp; Agriculture</h4>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Achieves greater than 95% environmental recycling closure across oxygen generation, water recovery, and metabolic waste reprocessing through Sabatier and electrolysis systems. Combines chemical loops with high-yield aeroponic vertical farming to produce balanced daily caloric intake while guaranteeing emergency buffer reserves.
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* The Four Pillars */}
-            <div className="pt-4 border-t border-bone/20">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold mb-4">
-                The Four Pillars of Space Settlement Engineering
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">01</span>
-                  <div className="font-display text-base text-bone uppercase">Physics Holds</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Zero warp drives, artificial gravity only through centrifugal rotation (<span className="font-mono">a = ω²r</span>), real structural tensile limits.
-                  </p>
-                </div>
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">02</span>
-                  <div className="font-display text-base text-bone uppercase">Every Tonne Accounted</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Every kilogram is either launched from Earth or mined on site. A detailed mass budget separates the two.
-                  </p>
-                </div>
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">03</span>
-                  <div className="font-display text-base text-bone uppercase">The Loops Close</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Complete closed-cycle mass balance per person: 0.84 kg O₂, 2.5 L water, 0.62 kg dry nutrition daily. Waste must be 100% recycled.
-                  </p>
-                </div>
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">04</span>
-                  <div className="font-display text-base text-bone uppercase">Human Centric</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Minimum 45 m² habitable volume per person, radiation below 20 mSv/year, parks, medical facilities, and civic governance.
-                  </p>
-                </div>
+            {/* Jump to RFPs CTA */}
+            <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
+              <div className="font-mono text-xs text-bone-dim">
+                Ready to review requirements? Explore all 6 mission scenarios across Ceres, Pluto, and deep-space asteroid orbits.
               </div>
+              <button
+                onClick={() => handleSectionChange('tracks')}
+                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink hover:text-crimson border border-crimson transition-colors cursor-pointer"
+              >
+                Explore 6 Mission RFPs →
+              </button>
             </div>
           </div>
         </div>
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 02: FORMAT & SCORING */}
-      {/* ======================================================== */}
-      {activeSection === 'format' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 02</span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Format, Scoring &amp; Milestones
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Round 1 Card */}
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">ROUND 1 · ONLINE</span>
-                  <span className="font-mono text-[11px] text-amber-400 font-bold">DUE 18 OCT 23:59 IST</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Engineering Proposal &amp; Executive Deck</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Junior Length:</strong> 15–20 pages recommended (strict max 25 pages).</li>
-                  <li><strong className="text-bone">Senior Length:</strong> 20–25 pages recommended (strict max 35 pages).</li>
-                  <li><strong className="text-bone">Executive Pitch Deck:</strong> Max 12 slides (Jr) or 15 slides (Sr) in 16:9 PDF.</li>
-                  <li><strong className="text-bone">Optional Brownie Challenge:</strong> Max 3 additional pages for up to 10 bonus points.</li>
-                  <li><strong className="text-bone">Language &amp; Units:</strong> English only; strict SI metric units (<span className="text-crimson">kg, m, kPa, kW</span>).</li>
-                </ul>
-              </div>
-
-              {/* Round 2 Card */}
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 border border-bone text-bone">ROUND 2 · ONSITE</span>
-                  <span className="font-mono text-[11px] text-green-400 font-bold">24 OCT · DPS R.K. PURAM</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Live Defense &amp; Curveball Interrogation</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Qualifiers:</strong> Top 5 teams from Junior and Top 5 teams from Senior division.</li>
-                  <li><strong className="text-bone">Oral Defense:</strong> 7 minutes (Junior) or 10 minutes (Senior) formal presentation.</li>
-                  <li><strong className="text-bone">Jury Cross-Examination:</strong> 5–8 minutes rigorous interrogation by aerospace scientists.</li>
-                  <li><strong className="text-bone">The Curveball:</strong> Sudden scenario injected live (e.g. solar flare, crop failure) with 2 mins to respond.</li>
-                  <li><strong className="text-bone">Scoring Carry-Forward:</strong> R1 score (100 pts) + R2 score (100 pts) = 200 pts total + bonus.</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Signature Awards */}
-            <div className="pt-4 border-t border-bone/20">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone-dim font-bold mb-3">
-                CelesteCon SMT Signature Awards
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 font-mono text-xs">
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-amber-400 block mb-1">The O&apos;Neill Cup</strong>
-                  <p className="text-[11px] text-bone-dim">Best overall systems integration &amp; architectural elegance.</p>
-                </div>
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-emerald-400 block mb-1">The Closed-Loop Prize</strong>
-                  <p className="text-[11px] text-bone-dim">Highest fidelity ECLSS life support and chemical mass balance.</p>
-                </div>
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-cyan-400 block mb-1">The Habitat Award</strong>
-                  <p className="text-[11px] text-bone-dim">Most livable community design, ergonomic layout, and psychological wellness.</p>
-                </div>
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-crimson block mb-1">The Iron Defense Award</strong>
-                  <p className="text-[11px] text-bone-dim">Sharpest poise and technical command during jury cross-examination.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 03: MISSION RFPS */}
+      {/* SECTION 02: MISSION RFPS */}
       {/* ======================================================== */}
       {activeSection === 'tracks' && (
         <div className="space-y-6 animate-fadeIn">
@@ -610,11 +635,10 @@ export default function SettlementPrompt() {
                   setDivision('junior');
                   setSelectedTrackId('j-fringe');
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
-                  division === 'junior'
-                    ? 'bg-bone text-ink border-bone'
-                    : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
-                }`}
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${division === 'junior'
+                  ? 'bg-bone text-ink border-bone'
+                  : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
+                  }`}
               >
                 Junior (Grades 6–8)
               </button>
@@ -623,11 +647,10 @@ export default function SettlementPrompt() {
                   setDivision('senior');
                   setSelectedTrackId('s-cradle');
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
-                  division === 'senior'
-                    ? 'bg-crimson text-bone-hi border-crimson'
-                    : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
-                }`}
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${division === 'senior'
+                  ? 'bg-crimson text-bone-hi border-crimson'
+                  : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
+                  }`}
               >
                 Senior (Grades 9–12)
               </button>
@@ -640,11 +663,10 @@ export default function SettlementPrompt() {
               <button
                 key={rfp.id}
                 onClick={() => setSelectedTrackId(rfp.id)}
-                className={`p-3.5 border text-left transition-all cursor-pointer ${
-                  selectedTrackId === rfp.id
-                    ? 'bg-ink border-crimson shadow-lg'
-                    : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                }`}
+                className={`p-3.5 border text-left transition-all cursor-pointer ${selectedTrackId === rfp.id
+                  ? 'bg-ink border-crimson shadow-lg'
+                  : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
+                  }`}
               >
                 <div className="flex justify-between items-center mb-1">
                   <span className="font-bold text-crimson">{rfp.code}</span>
@@ -737,13 +759,13 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 04: PROPOSAL TEMPLATE */}
+      {/* SECTION 03: PROPOSAL GUIDE */}
       {/* ======================================================== */}
       {activeSection === 'template' && (
         <div className="space-y-8 animate-fadeIn">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 04</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 03</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Proposal Architecture &amp; Section Checklist
               </h2>
@@ -808,14 +830,14 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 05: CHECKLIST */}
+      {/* SECTION 04: CHECKLIST */}
       {/* ======================================================== */}
       {activeSection === 'checklist' && (
         <div className="space-y-8 animate-fadeIn">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
               <div>
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 05</span>
+                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 04</span>
                 <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                   Preflight Submission Checklist
                 </h2>
@@ -838,16 +860,15 @@ export default function SettlementPrompt() {
                 <div
                   key={item.id}
                   onClick={() => toggleCheck(item.id)}
-                  className={`p-3.5 border cursor-pointer transition-all flex items-start gap-3 select-none ${
-                    checkedItems[item.id]
-                      ? 'border-bone/20 bg-ink-2/40 text-bone-dim'
-                      : 'border-bone bg-ink-2 text-bone hover:border-crimson'
-                  }`}
+                  className={`p-3.5 border cursor-pointer transition-all flex items-start gap-3 select-none ${checkedItems[item.id]
+                    ? 'border-bone/20 bg-ink-2/40 text-bone-dim'
+                    : 'border-bone bg-ink-2 text-bone hover:border-crimson'
+                    }`}
                 >
                   <input
                     type="checkbox"
                     checked={!!checkedItems[item.id]}
-                    onChange={() => {}}
+                    onChange={() => { }}
                     className="mt-0.5 accent-crimson cursor-pointer"
                   />
                   <span className={`font-mono text-xs leading-relaxed ${checkedItems[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
@@ -873,13 +894,13 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 06: RULES & RUBRIC */}
+      {/* SECTION 05: RULES & RUBRIC */}
       {/* ======================================================== */}
       {activeSection === 'rules' && (
         <div className="space-y-8 animate-fadeIn">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 06</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 05</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Evaluation Rubric &amp; Academic Integrity
               </h2>

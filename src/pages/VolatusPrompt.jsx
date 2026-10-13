@@ -187,7 +187,7 @@ export default function VolatusPrompt() {
       const updated = { ...prev, [id]: !prev[id] };
       try {
         localStorage.setItem('c26-volatus-checklist', JSON.stringify(updated));
-      } catch {}
+      } catch { }
       return updated;
     });
   };
@@ -196,7 +196,7 @@ export default function VolatusPrompt() {
     setCheckedItems({});
     try {
       localStorage.setItem('c26-volatus-checklist', JSON.stringify({}));
-    } catch {}
+    } catch { }
   };
 
   // Aerodynamic sizing math
@@ -397,11 +397,10 @@ export default function VolatusPrompt() {
           <button
             key={tab.id}
             onClick={() => handleSectionChange(tab.id)}
-            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${
-              activeSection === tab.id
+            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${activeSection === tab.id
                 ? 'bg-cyan-600 text-bone-hi shadow-md'
                 : 'text-bone-dim hover:text-bone hover:bg-ink'
-            }`}
+              }`}
           >
             {tab.label}
           </button>
@@ -427,7 +426,7 @@ export default function VolatusPrompt() {
                   A wing that flies on paper is useless if the battery bay doesn&apos;t clear the main spar. A stunning 3D render is useless if the airfoil stalls at launch. <em>Volatus rewards the team that proves both.</em>
                 </p>
                 <p>
-                  AEROSS teams have won the Real World Design Challenge internationally six times. Volatus is built on the same engineering principles: an operator provides a mission profile with binding constraints, and your design bureau engineers an airframe from first principles.
+                  Volatus is built on the same engineering principles of Real World Design Challenge: an operator provides a mission profile with binding constraints, and your design bureau engineers an airframe from first principles.
                 </p>
                 <p>
                   Aircraft design is an iterative loop: you estimate mass, size a wing, compute lift and drag, choose motors, select batteries, lay it out in CAD, discover the CG sits behind the neutral point, shift components, and run the math again until your numbers and CAD assembly converge.
@@ -526,11 +525,10 @@ export default function VolatusPrompt() {
                   setDivision('junior');
                   setSelectedTrackId('j-fm');
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
-                  division === 'junior'
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${division === 'junior'
                     ? 'bg-bone text-ink border-bone'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
-                }`}
+                  }`}
               >
                 Junior (Grades 6–8)
               </button>
@@ -539,11 +537,10 @@ export default function VolatusPrompt() {
                   setDivision('senior');
                   setSelectedTrackId('s-ta');
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
-                  division === 'senior'
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${division === 'senior'
                     ? 'bg-cyan-600 text-bone-hi border-cyan-600'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
-                }`}
+                  }`}
               >
                 Senior (Grades 9–12)
               </button>
@@ -556,11 +553,10 @@ export default function VolatusPrompt() {
               <button
                 key={rfp.id}
                 onClick={() => setSelectedTrackId(rfp.id)}
-                className={`p-4 border text-left transition-all cursor-pointer ${
-                  selectedTrackId === rfp.id
+                className={`p-4 border text-left transition-all cursor-pointer ${selectedTrackId === rfp.id
                     ? 'bg-ink border-cyan-400 shadow-lg'
                     : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                }`}
+                  }`}
               >
                 <div className="flex justify-between items-center mb-1">
                   <span className="font-bold text-cyan-400">{rfp.code}</span>
@@ -851,16 +847,15 @@ export default function VolatusPrompt() {
                 <div
                   key={item.id}
                   onClick={() => toggleCheck(item.id)}
-                  className={`p-3.5 border cursor-pointer transition-all flex items-start gap-3 select-none ${
-                    checkedItems[item.id]
+                  className={`p-3.5 border cursor-pointer transition-all flex items-start gap-3 select-none ${checkedItems[item.id]
                       ? 'border-bone/20 bg-ink-2/40 text-bone-dim'
                       : 'border-bone bg-ink-2 text-bone hover:border-cyan-400'
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
                     checked={!!checkedItems[item.id]}
-                    onChange={() => {}}
+                    onChange={() => { }}
                     className="mt-0.5 accent-cyan-500 cursor-pointer"
                   />
                   <span className={`font-mono text-xs leading-relaxed ${checkedItems[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
