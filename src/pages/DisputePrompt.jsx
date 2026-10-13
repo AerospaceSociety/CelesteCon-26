@@ -67,7 +67,7 @@ export default function DisputePrompt() {
                 EVENT 03
               </span>
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                Quiz (Quizzitch) &amp; Parliamentary Debate
+                Quiz (Quizzitch) &amp; Debate
               </span>
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
                 Grades 9–12 · 2 Students / Team
@@ -97,7 +97,7 @@ export default function DisputePrompt() {
 
               <div className="p-3.5 bg-bone/5 border-l-4 border-bone/70 font-mono text-xs text-bone space-y-1">
                 <span className="text-bone-dim font-bold uppercase tracking-widest block text-[11px]">
-                  // ROUND 2 · PARLIAMENTARY DEBATE
+                  // ROUND 2 · DEBATE
                 </span>
                 <span className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wider block">
                   MOTIONS RELEASED 21ST OCT
@@ -113,7 +113,7 @@ export default function DisputePrompt() {
             </p>
 
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              In Pursuit of Dispute (IPoD) is CelesteCon’s premier intellectual clash combining lightning-speed aerospace knowledge with rigorous parliamentary cross-examination. Exactly 2 students represent each school. Battle through the digital Quizzitch crucible on 16th October, then ascend to the onsite chambers on 24 October to defend complex motions released on 21st October.
+              In Pursuit of Dispute (IPoD) is CelesteCon’s premier intellectual clash combining lightning-speed aerospace knowledge with rigorous cross-examination. Exactly 2 students represent each school. Battle through the digital Quizzitch crucible on 16th October, then ascend to the onsite chambers on 24 October to defend complex motions released on 21st October.
             </p>
           </div>
 

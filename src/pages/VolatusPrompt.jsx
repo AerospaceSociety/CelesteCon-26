@@ -44,35 +44,139 @@ const RFPS = [
     ]
   },
   {
-    id: 's-ch',
-    code: 'S-CH',
-    trackName: 'Hybrid Aerostat Logistics',
-    title: 'Cloud Hauler · Heavy-Lift Mountain Cargo',
-    meta: '6,000 kg MTOW · 22 m/s cruise · High Himalayas / Ladakh',
-    aircraftType: 'Hybrid Aerostatic/Aerodynamic Cargo Lifter',
-    wingspan: '~38.0 m overall length (Lifting Body + Helium Gasbags)',
-    mtow: '≈ 6,000 kg (6.0 tonnes)',
-    payload: '2,500 kg construction machinery or disaster relief goods',
-    endurance: '≥ 8 hours continuous cruise',
-    flightRegime: 'High-altitude mountain valleys (3,500 – 5,500 m MSL)',
-    background:
-      'High-altitude Himalayan mountain passes in Ladakh and Uttarakhand are blocked by snow six months a year. Conventional heavy helicopters suffer catastrophic payload penalties above 4,000 metres. Cloud Hauler is a hybrid lifting-body airship that derives 60% of its lift from buoyant helium aerostats and 40% from aerodynamic body lift generated during cruise flight.',
-    rfpSummary:
-      'Architect a heavy-lift hybrid freight transport. Compute aerostatic vs aerodynamic lift ratio, size four vectored-thrust turboprop or hybrid-electric nacelles for vertical landing (VTOL), design a lightweight truss airframe, and produce a complete 3D CAD model with cargo bay ramp and mooring masts.',
+    id: 's-fm',
+    code: 'S-FM',
+    trackName: 'Biomimetic Flapping-Wing Micro-UAV',
+    title: 'Flockmate · Biomimetic Flapping-Wing UAV',
+    tagline: 'Build a pigeon that real pigeons will fly with. Then use it to measure the air nobody else can reach.',
+    meta: '≤ 400 g MTOW · 12–18 m/s cruise · Delhi Rooftops (10–60 m)',
+    aircraftType: 'Biomimetic Rock Pigeon Ornithopter',
+    wingspan: '500–700 mm (Body length 280–380 mm)',
+    mtow: '≤ 400 g (incl. battery, sensors & 5% growth allowance)',
+    payload: 'Air-quality sensor (22 g) + Flock camera (6 g) + Avionics (18 g)',
+    endurance: '≥ 15 min flight · ≥ 2 hr total mission (perched sampling)',
+    flightRegime: 'Delhi urban boundary layer (10–60 m AGL), Re ≈ 10⁵, air density ρ = 1.16 kg/m³',
+    background: [
+      'Delhi has two things in huge numbers at rooftop height: pigeons and polluted air. Air-quality stations tell you what the air is like at one fixed spot. They can’t tell you how smoke and dust layer up between the street and the twentieth floor, or how that changes over an afternoon.',
+      'Bird scientists have their own problem. Flocks of homing pigeons have been studied with tiny GPS loggers (Nagy and colleagues showed in 2010 that flocks have a clear order of who follows whom), but you can’t ask a real pigeon to fly where you want. A normal drone scatters a flock the moment it arrives.',
+      'The Urban Flock Lab, a fictional research group in Delhi, wants one machine that solves both problems: a robot pigeon convincing enough that a real flock lets it join in. It would sample the air along the flock’s route, perch on ledges like a real bird to rest and keep measuring, and send home data on how the flock moves.'
+    ],
+    rfpSummary: [
+      'Design Flockmate, a flapping-wing micro-UAV that looks, flies and perches like a rock pigeon. A group of three Flockmates flies a rooftop survey route together, logs air quality between 10 and 60 m above the street, perches to rest, and returns to a rooftop roost to recharge.',
+      'Earlier drafts of this idea were about spying. Volatus is a civil competition (Rule R-05.4), so Flockmate’s sensors point at the air and the flock, never at people. Its camera may not record identifiable people or look into homes, and your dossier must show how you make sure of that.'
+    ],
+    limitsLabel: 'The Limits (Binding Mission Constraints)',
     constraints: [
-      'Hybrid lift balance: 55–65% static buoyant lift via helium cells; remaining 35–45% aerodynamic lift.',
-      'Vectored thrust: 4 x rotatable propulsion nacelles (±90° tilt) for hover and precision mountain station-keeping.',
-      'Cargo bay dimensions: minimum 8.0 m length x 2.2 m width x 2.0 m height with rear ramp access.',
-      'Ballast management: compressed air or water ballast system to offset payload drop without gas venting.',
-      'Gust alleviation: active control surfaces capable of handling 40 knot mountain shear winds.'
-    ]
+      'No propellers, rotors, ducted fans or jets, visible or hidden. Lift and thrust come strictly from flapping wings. The tail may steer and may be moved by small servos.',
+      'All-up mass 400 g or less, including battery, sensors and a 5% growth allowance.',
+      'Wingspan 500–700 mm and body length 280–380 mm, with a pigeon’s outline and colouring.',
+      'Wingbeat 4–9 beats per second in level flight. Anything faster looks and sounds wrong to birds and people.',
+      'Fly with the flock at 12–18 m/s, and glide some of the time, the way real pigeons do.',
+      'On one charge: at least 15 minutes of flight in total, and at least 2 hours from leaving the roost to returning, with the rest spent perched and sampling.',
+      'Land at the roost with at least 20% of the battery’s usable energy left.',
+      'Never fly over crowds. Stay inside a geofenced (fictional) research zone and between 10 and 60 m above the ground.'
+    ],
+    whatMakesThisHard: [
+      'Small and flapping is the hardest corner of flight. Festo’s SmartBird flapped its way around in 2011 with a wingspan of about 2 m and a mass of about 450 g. You get roughly a third of that span for almost the same mass. Your wing works at a Reynolds number near 10⁵, where airfoil data is patchy and drag climbs. Every wingbeat reverses the load on the wing root and the gearbox, several times a second, for thousands of cycles.',
+      'Then there is the energy. Flapping costs several times more power than gliding, and 400 g leaves very little room for battery. The limits above are meant to be tight. Teams that make it work will glide whenever they can, perch often, and fight for every gram.'
+    ],
+    factSheet: {
+      citation: 'VLT-26 FACT SHEET J-FM',
+      sections: [
+        {
+          category: 'SITE & AIR',
+          rows: [
+            {
+              parameter: 'Air density',
+              value: 'ρ = 1.16 kg/m³',
+              howToUse: 'Delhi, about 216 m above sea level, around 28 °C. Use for every calculation.'
+            },
+            {
+              parameter: 'Air viscosity',
+              value: 'μ = 1.85 × 10⁻⁵ Pa·s',
+              howToUse: 'For your Reynolds number.'
+            },
+            {
+              parameter: 'Wind',
+              value: '3 m/s · gusts 7 m/s',
+              howToUse: 'Calculate in still air, then explain what a 3 m/s headwind does to your flight time.'
+            },
+            {
+              parameter: 'Survey route',
+              value: '4.5 km loop',
+              howToUse: 'Roost → 3 perch points about 1.5 km apart → roost. Flight heights 10–60 m.'
+            }
+          ]
+        },
+        {
+          category: 'POWER (COMPETITION VALUES)',
+          rows: [
+            {
+              parameter: 'Flapping flight',
+              value: '55 W per kg',
+              howToUse: 'Electrical power for level flapping flight, motor and gearbox losses included. Multiply by your mass in kg.'
+            },
+            {
+              parameter: 'Gliding',
+              value: '12 W per kg',
+              howToUse: 'Electrical power while gliding (steering, small trim flaps).'
+            },
+            {
+              parameter: 'Avionics & sensors in flight',
+              value: '2.0 W',
+              howToUse: 'Flight controller, GNSS, radio, camera and air-quality sensor together.'
+            },
+            {
+              parameter: 'Perched',
+              value: '0.8 W',
+              howToUse: 'Sensors logging, radio listening, motor off.'
+            },
+            {
+              parameter: 'Battery options',
+              value: 'see list →',
+              howToUse: '2S LiPo 650 mAh: 7.4 V, 4.8 Wh, 38 g · 2S LiPo 1,000 mAh: 7.4 Wh, 58 g · 2S LiPo 1,300 mAh: 9.6 Wh, 75 g. Usable energy is 80% of nominal. You may use a real, cited battery instead.'
+            }
+          ]
+        },
+        {
+          category: 'PAYLOAD & AVIONICS MASSES (COMPETITION VALUES)',
+          rows: [
+            {
+              parameter: 'Air-quality sensor',
+              value: '22 g',
+              howToUse: 'Small laser particle sensor (PM2.5 and PM10) with a 4 mm air inlet that must face the airflow.'
+            },
+            {
+              parameter: 'Flock camera',
+              value: '6 g',
+              howToUse: 'Wide-angle, forward or upward facing, used to track nearby birds.'
+            },
+            {
+              parameter: 'Flight controller, GNSS, IMU, radio',
+              value: '18 g',
+              howToUse: 'One board plus antenna. Antenna must not sit inside carbon.'
+            },
+            {
+              parameter: 'Tail servos',
+              value: '2 × 4 g',
+              howToUse: 'For tail spread and twist, or for elevator and rudder if you design it that way.'
+            },
+            {
+              parameter: 'Material densities',
+              value: 'kg/m³',
+              howToUse: 'EPP foam 30 · balsa 160 · PETG 1,270 · nylon 1,140 · carbon rod and tube 1,550 · ripstop nylon skin about 40 g/m². Assign materials in CAD so the model reports real mass.'
+            }
+          ]
+        }
+      ]
+    }
   }
 ];
 
 const CHECKLIST_ITEMS = [
   { id: 'v1', label: 'Technical Dossier PDF submitted with selectable text, numbered figures, and SI units.' },
   { id: 'v2', label: 'Page limit respected, counting every page including cover, contents, references, AI disclosure and declaration: max 25 pages.' },
-  { id: 'v3', label: 'Selected case (Thin Air or Cloud Hauler) clearly declared in the executive summary.' },
+  { id: 'v3', label: 'Selected case (Thin Air or Flockmate) clearly declared in the executive summary.' },
   { id: 'v4', label: 'Airfoil section specified with NACA / Selig profile coordinates and Reynolds number rationale.' },
   { id: 'v5', label: 'Calculations ledger included: Lift, Drag, CL, CD, and Wing Loading (W/S).' },
   { id: 'v6', label: 'Weight & Balance spreadsheet: CG vs Neutral Point calculation with static longitudinal margin.' },
@@ -275,7 +379,7 @@ export default function VolatusPrompt() {
                   A wing that flies on paper is useless if the battery bay doesn&apos;t clear the main spar. A stunning 3D render is useless if the airfoil stalls at launch. <em>Volatus rewards the team that proves both.</em>
                 </p>
                 <p>
-                  Volatus is open exclusively to Senior students (Grades 9–12). Teams consist of exactly 3 members from the same school, with one team allowed per school. Choose one of two challenging cases (Thin Air or Cloud Hauler) and engineer an airframe from first principles.
+                  Volatus is open exclusively to Senior students (Grades 9–12). Teams consist of exactly 3 members from the same school, with one team allowed per school. Choose one of two challenging cases (Thin Air or Flockmate) and engineer an airframe from first principles.
                 </p>
               </div>
 
@@ -441,13 +545,13 @@ export default function VolatusPrompt() {
                 </h3>
               </div>
               <p className="font-sans text-xs sm:text-sm text-bone-dim max-w-lg mx-auto leading-relaxed">
-                Click either of the two Senior flight cases above (Thin Air or Cloud Hauler) to view its aircraft architecture, MTOW targets, operational mission profile, and binding aeronautical constraints.
+                Click either of the two Senior flight cases above (Thin Air or Flockmate) to view its aircraft architecture, MTOW targets, operational mission profile, and binding aeronautical constraints.
               </p>
             </div>
           ) : (
             <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-                <div>
+                <div className="space-y-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{currentRfp.code}</span>
                     <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
@@ -457,8 +561,13 @@ export default function VolatusPrompt() {
                   <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
                     {currentRfp.title}
                   </h2>
+                  {currentRfp.tagline && (
+                    <p className="font-label italic text-bone-dim text-sm sm:text-base border-l-2 border-crimson pl-3 text-bone-hi mt-1">
+                      &ldquo;{currentRfp.tagline}&rdquo;
+                    </p>
+                  )}
                 </div>
-                <div className="text-right font-mono text-xs text-bone-dim">
+                <div className="text-right font-mono text-xs text-bone-dim shrink-0">
                   <div>MTOW: <strong className="text-crimson">{currentRfp.mtow}</strong></div>
                   <div>Wingspan: <strong className="text-bone">{currentRfp.wingspan}</strong></div>
                 </div>
@@ -484,17 +593,53 @@ export default function VolatusPrompt() {
                 </div>
               </div>
 
-              <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// Mission Background</h3>
-                <p>{currentRfp.background}</p>
-                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// Engineering Mandate</h3>
-                <p>{currentRfp.rfpSummary}</p>
+              {/* Mission Background & Mandate / Challenge */}
+              <div className="space-y-4 font-label text-sm text-bone-dim leading-relaxed">
+                <div>
+                  <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold mb-2">// Background</h3>
+                  {Array.isArray(currentRfp.background) ? (
+                    currentRfp.background.map((para, idx) => (
+                      <p key={idx} className={idx > 0 ? "mt-3" : ""}>{para}</p>
+                    ))
+                  ) : (
+                    <p>{currentRfp.background}</p>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold mb-2">// The Challenge</h3>
+                  {Array.isArray(currentRfp.rfpSummary) ? (
+                    currentRfp.rfpSummary.map((para, idx) => (
+                      <p key={idx} className={idx > 0 ? "mt-3" : ""}>{para}</p>
+                    ))
+                  ) : (
+                    <p>{currentRfp.rfpSummary}</p>
+                  )}
+                </div>
+
+                {/* What Makes This Hard (if applicable) */}
+                {currentRfp.whatMakesThisHard && (
+                  <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 mt-4">
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
+                      // What Makes This Hard
+                    </h3>
+                    <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
+                      {Array.isArray(currentRfp.whatMakesThisHard) ? (
+                        currentRfp.whatMakesThisHard.map((para, idx) => (
+                          <p key={idx}>{para}</p>
+                        ))
+                      ) : (
+                        <p>{currentRfp.whatMakesThisHard}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Constraints */}
+              {/* Constraints / Limits */}
               <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
                 <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
-                  Binding Mission Constraints
+                  {currentRfp.limitsLabel || 'Binding Mission Constraints'}
                 </h3>
                 <ul className="space-y-2 font-mono text-xs text-bone-dim">
                   {currentRfp.constraints.map((c, i) => (
@@ -505,6 +650,64 @@ export default function VolatusPrompt() {
                   ))}
                 </ul>
               </div>
+
+              {/* Fact Sheet Table (rendered cleanly as responsive table) */}
+              {currentRfp.factSheet && (
+                <div className="border-2 border-bone/40 bg-ink-2 p-5 sm:p-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-bone/20 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">
+                        FACT SHEET
+                      </span>
+                      <h3 className="font-display text-xl text-bone uppercase tracking-wider">
+                        Official Competition Fact Sheet
+                      </h3>
+                    </div>
+                    <span className="font-mono text-xs text-bone-dim">
+                      CITE AS <strong className="text-bone">&ldquo;{currentRfp.factSheet.citation}&rdquo;</strong>
+                    </span>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left font-mono text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b-2 border-bone/30 text-bone-dim text-[11px] uppercase tracking-wider">
+                          <th className="py-2.5 px-3 w-[26%]">Parameter</th>
+                          <th className="py-2.5 px-3 w-[26%] text-amber-400">Value</th>
+                          <th className="py-2.5 px-3 w-[48%]">How To Use It</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentRfp.factSheet.sections.map((section, sIdx) => (
+                          <React.Fragment key={sIdx}>
+                            <tr className="bg-bone/5 border-t border-b border-bone/20">
+                              <td colSpan={3} className="py-2 px-3 text-crimson font-bold uppercase tracking-widest text-[11px]">
+                                // {section.category}
+                              </td>
+                            </tr>
+                            {section.rows.map((row, rIdx) => (
+                              <tr
+                                key={rIdx}
+                                className="border-b border-bone/10 hover:bg-bone/5 transition-colors"
+                              >
+                                <td className="py-2.5 px-3 text-bone font-medium align-top">
+                                  {row.parameter}
+                                </td>
+                                <td className="py-2.5 px-3 text-amber-400 font-bold whitespace-nowrap align-top">
+                                  {row.value}
+                                </td>
+                                <td className="py-2.5 px-3 text-bone-dim font-sans text-xs leading-relaxed align-top">
+                                  {row.howToUse}
+                                </td>
+                              </tr>
+                            ))}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

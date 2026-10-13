@@ -442,7 +442,7 @@ export default function SubmissionPortal() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(record)
         });
-      } catch (_) {}
+      } catch (_) { }
 
       // 3. Persist locally in c26_submissions for client receipt history
       try {
@@ -713,10 +713,10 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
             <span>PORTAL LOCKED</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl uppercase text-bone tracking-wide">
-            Submission Portal Opens 13 October (18:00 IST)
+            Submission Portal Opens 14 October (00:00 IST)
           </h2>
           <p className="font-label text-sm sm:text-base text-bone-dim max-w-2xl mx-auto leading-relaxed">
-            The submission gateway is currently closed. Please prepare your deliverables and return on 13 October 2026 at 18:00 IST to authenticate with your School UID.
+            The submission gateway is currently closed. Please prepare your deliverables and return on 14 October 2026 at 00:00 IST to authenticate with your School UID.
           </p>
         </div>
       ) : !verifiedSchool ? (
