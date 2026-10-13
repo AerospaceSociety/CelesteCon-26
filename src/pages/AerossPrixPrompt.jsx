@@ -652,7 +652,7 @@ export default function AerossPrixPrompt() {
               </div>
 
               {/* 80 / 20 split */}
-              <div className="border border-bone/40 flex flex-col sm:flex-row font-display text-lg tracking-wider">
+              <div className="border border-bone/40 flex flex-col sm:flex-row font-label text-base sm:text-lg tracking-wider">
                 <div className="bg-bone text-ink p-3 sm:w-1/4 text-center font-bold">
                   20 PTS · TRACK SPRINT
                 </div>
@@ -849,7 +849,7 @@ export default function AerossPrixPrompt() {
                     <span className={`w-3.5 h-3.5 rounded-full ${evaluation.isLegal ? 'bg-emerald-400' : evaluation.fails > 0 ? 'bg-crimson animate-pulse' : 'bg-bone/40'
                       }`}></span>
                     <div>
-                      <h4 className="font-display text-xl uppercase tracking-wider leading-none">
+                      <h4 className="font-label text-xl font-bold uppercase tracking-wider leading-none">
                         {evaluation.isLegal ? 'CLEARED TO RACE' : evaluation.fails > 0 ? `${evaluation.fails} INFRINGEMENT(S) TO RECTIFY` : 'INCOMPLETE MEASUREMENTS'}
                       </h4>
                       <p className="font-label text-xs mt-1 opacity-80">
@@ -969,14 +969,14 @@ export default function AerossPrixPrompt() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
                   <div className="bg-ink p-4 border border-crimson">
                     <div className="text-crimson font-bold uppercase mb-1">AEROSS Prix Lead Arbiter</div>
-                    <div className="text-base font-bold text-bone font-display tracking-wider">ANANT JHA</div>
+                    <div className="text-xl font-bold text-bone font-label tracking-wide uppercase">ANANT JHA</div>
                     <a href="mailto:v09759anant@dpsrkp.net" className="text-bone-dim hover:text-crimson transition-colors block mt-1">
                       v09759anant@dpsrkp.net
                     </a>
                   </div>
                   <div className="bg-ink p-4 border border-bone/40">
-                    <div className="text-bone-dim uppercase mb-1">Secretariat · Lead POC</div>
-                    <div className="text-base font-bold text-bone font-display tracking-wider">SIDDHARTH SRIVASTAVA</div>
+                    <div className="text-bone-dim uppercase mb-1 font-bold">Secretariat · Lead POC</div>
+                    <div className="text-xl font-bold text-bone font-label tracking-wide uppercase">SIDDHARTH SRIVASTAVA</div>
                     <a href="mailto:r24998siddharth@dpsrkp.net" className="text-bone-dim hover:text-crimson transition-colors block mt-1">
                       r24998siddharth@dpsrkp.net
                     </a>

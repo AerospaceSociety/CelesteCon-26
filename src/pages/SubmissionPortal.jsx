@@ -84,7 +84,7 @@ const EVENT_FORMAT_SPECS = {
   '04': {
     code: 'BPP',
     name: 'Business Power Pitch',
-    format: 'Pitch Deck (PDF) + 5-Min Pitch Video URL',
+    format: 'Proposal (PDF) + 5-min Video Link + Pitch Deck (Optional)',
     ext: '.pdf, video link (in Drive/Cloud)',
     instructions: 'Commercial space startup pitch addressing release theme. Include deck and unlisted video link.',
     portalUrl: '/prompts/bpp'
@@ -381,6 +381,11 @@ export default function SubmissionPortal() {
       }
     }
 
+    if (Date.now() < TARGET_SUBMISSION_START) {
+      setSubmitError('The submission gateway is currently locked. Submissions open on 14 October 2026 at 00:00 IST.');
+      return;
+    }
+
     if (!formData.agreedToRules) {
       setSubmitError('You must acknowledge that this submission complies with CelesteCon 2026 regulations.');
       return;
@@ -553,7 +558,7 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
             OFFICIAL DEPOSIT TERMINAL
           </span>
           <span className="font-mono text-xs text-bone-dim uppercase">
-            WINDOW: 13 OCT 18:00 &mdash; 20 OCT 23:59 IST · (LIVE PROMPTS OPEN FOR EARLY DEPOSIT)
+            WINDOW: 14 OCT 00:00 &mdash; 20 OCT 23:59 IST · (OPENS 14 OCT 00:00 IST)
           </span>
         </div>
 
@@ -570,20 +575,28 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
       <div className="border-2 border-bone bg-ink-2/80 p-5 sm:p-6 backdrop-blur-sm shadow-xl">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-3 mb-4">
           <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+            <span className={`w-2.5 h-2.5 rounded-full ${windowState.status === 'PENDING' ? 'bg-amber-400' : 'bg-green-500'} animate-pulse`}></span>
             <span className="font-mono text-xs uppercase font-bold text-bone tracking-wider">
-              PORTAL GATEWAY STATUS: ACCREDITATION CHECK ACTIVE
+              {windowState.status === 'PENDING'
+                ? 'PORTAL STATUS: LOCKED UNTIL 14 OCT 00:00 IST'
+                : 'PORTAL GATEWAY STATUS: ACCREDITATION CHECK ACTIVE'}
             </span>
           </div>
           <div className="font-mono text-xs text-bone-dim">
-            PRIMARY DEADLINE: <strong className="text-crimson">20 OCT 2026 23:59:59 IST</strong>
+            {windowState.status === 'PENDING' ? (
+              <>PORTAL UNLOCKS: <strong className="text-amber-400 font-bold">14 OCT 2026 00:00:00 IST</strong></>
+            ) : (
+              <>PRIMARY DEADLINE: <strong className="text-crimson font-bold">20 OCT 2026 23:59:59 IST</strong></>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center font-mono">
           <div className="bg-ink p-3 border border-bone/20">
             <div className="text-2xl sm:text-3xl font-bold text-bone">{windowState.days}</div>
-            <div className="text-[10px] text-bone-dim uppercase tracking-wider">Days to Launch</div>
+            <div className="text-[10px] text-bone-dim uppercase tracking-wider">
+              {windowState.status === 'PENDING' ? 'Days to Unlock' : 'Days Remaining'}
+            </div>
           </div>
           <div className="bg-ink p-3 border border-bone/20">
             <div className="text-2xl sm:text-3xl font-bold text-bone">{String(windowState.hours).padStart(2, '0')}</div>
