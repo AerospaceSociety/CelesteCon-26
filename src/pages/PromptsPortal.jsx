@@ -20,7 +20,6 @@ const COMP_CODES = {
   rocketry: 'Roc',
   f1: 'APrix'
 };
-
 const DELIVERABLE_INFO = {
   '01': {
     format: 'PDF Proposal (Max 25 pages Jr / 35 pages Sr)',
