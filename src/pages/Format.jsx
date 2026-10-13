@@ -86,7 +86,7 @@ const Format = () => {
             <div className="font-mono text-xs text-crimson tracking-[0.15em] font-bold uppercase mb-1">Phase 02 // New Delhi Campus</div>
             <h4 className="font-display text-2xl text-bone uppercase tracking-wide mb-2">On-Campus Finale</h4>
             <p className="font-label text-sm text-bone-dim max-w-xl leading-relaxed mb-4">
-              Top qualifying teams from Round 1 report to DPS R.K. Puram for live defense presentations, parliamentary debate chambers, science-fair exhibits, peer-reviewed minigame playtesting, bench simulation tests, and high-speed CO₂ track sprints.
+              Top qualifying teams from Round 1 report to DPS R.K. Puram for live defense presentations, debate chambers, science-fair exhibits, peer-reviewed minigame playtesting, bench simulation tests, and high-speed CO₂ track sprints.
             </p>
             <div className="border border-bone/40 bg-bone/5 p-3.5 inline-block">
               <span className="font-mono text-[9.5px] tracking-widest text-crimson font-bold uppercase block">Official Venue</span>
