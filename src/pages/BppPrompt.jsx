@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const VALID_SECTIONS = ['brief', 'tracks', 'template', 'checklist'];
+const VALID_SECTIONS = ['brief', 'prompts', 'guide', 'checklist', 'rules'];
+
+const HASH_MAP = {
+  tracks: 'prompts',
+  template: 'guide',
+  cad: 'guide',
+  rubrics: 'rules',
+  format: 'brief',
+  calc: 'brief'
+};
+
+const resolveSection = (raw) => {
+  const h = (raw || '').replace('#', '').toLowerCase();
+  const mapped = HASH_MAP[h] || h;
+  return VALID_SECTIONS.includes(mapped) ? mapped : 'brief';
+};
 
 const JUNIOR_PROMPTS = [
   {
@@ -22,6 +37,7 @@ const JUNIOR_PROMPTS = [
       { val: '~38 of 49', label: 'Starlink satellites lost to storm drag, Feb 2022' },
       { val: '~11 years', label: 'Solar cycle duration (peak drag during solar maximum)' }
     ],
+    curveball: 'NOAA\'s space-weather forecasts are free and SpaceX has its own engineers. Name one customer who would pay you this month, and how much.',
     mustCover: [
       { code: 'J-TH.1', title: 'The Service', desc: 'Exact deliverable, frequency, and delivery format (alerts, thruster schedules, monthly API feed). Walk through one customer\'s week.' },
       { code: 'J-TH.2', title: 'Thermosphere Science', desc: 'How solar irradiance expands the thermosphere, aerodynamic drag equations, and input data streams used.' },
@@ -49,6 +65,7 @@ const JUNIOR_PROMPTS = [
       { val: '1987', label: 'Montreal Protocol international signing date' },
       { val: '~2066', label: 'Expected Antarctic ozone recovery to 1980 levels (WMO/UNEP)' }
     ],
+    curveball: 'NASA and Copernicus publish ozone column data for free. What does your paying client get that cannot be downloaded from NASA Worldview?',
     mustCover: [
       { code: 'J-ST.1', title: 'The Service', desc: 'Exact commercial offering and how it protects/monitors the stratosphere. Client monthly workflow.' },
       { code: 'J-ST.2', title: 'Atmospheric Chemistry', desc: 'Chapman mechanism, catalytic destruction cycles, sensor technology (ozonesondes, UV spectroscopy, Lidar).' },
@@ -76,6 +93,7 @@ const JUNIOR_PROMPTS = [
       { val: '~20 m', label: 'Diameter of the 2013 Chelyabinsk superbolide' },
       { val: 'Raspberry Pi', label: 'Core processing hardware used in the Global Meteor Network' }
     ],
+    curveball: 'Most meteors burn up harmlessly. Name one specific customer this year who would have paid at least ₹5,00,000 for your detection data, and why.',
     mustCover: [
       { code: 'J-ME.1', title: 'The Solution', desc: 'Sensor modalities (all-sky optical cameras, radio forward scatter, infrasound) and data deliverable.' },
       { code: 'J-ME.2', title: 'Mesospheric Physics', desc: 'Ablation thermodynamics, ionization streaks, and trajectory/velocity triangulation.' },
@@ -107,6 +125,7 @@ const JUNIOR_PROMPTS = [
       { val: '1994', label: 'MOZAIC / IAGOS civil airliner atmospheric research inception' },
       { val: 'Hundreds', label: 'Fleet sizes of major Indian air carriers (IndiGo, Air India)' }
     ],
+    curveball: 'An airline can buy pre-flight ozone weather maps for free. What specific line item on your monthly report saves them more money than your subscription costs?',
     mustCover: [
       { code: 'J-OZ.1', title: 'The Service', desc: 'Onboard pod sensing, data telemetry, and airline operational dispatcher dashboard.' },
       { code: 'J-OZ.2', title: 'Sensor & Airframe Integration', desc: 'Pitot static port or fuselage skin probe, UV photometer sensor, avionics power draw, and DGCA STC path.' },
@@ -117,6 +136,32 @@ const JUNIOR_PROMPTS = [
       { code: 'J-OZ.7', title: '5-Year Plan', desc: 'Tail fleet adoption curve, revenue, operating expenditure, and net profitability timeline.' },
       { code: 'J-OZ.8', title: 'Success Metrics', desc: '3–5 key performance indicators (sensor uptime, airline fuel savings, catalytic converter MTBF extension).' },
       { code: 'J-OZ.9', title: 'Fleet Scalability', desc: 'Economics of outfitting 20 aircraft vs scaling to 500 aircraft across global airline alliances.' }
+    ]
+  },
+  {
+    id: 'j-bonus',
+    code: 'J-BX',
+    layer: 'Open Track (optional)',
+    title: 'From Imagination to Impact',
+    log: 'Find a problem everyone around you has learned to live with. Build the business that fixes it.',
+    story: {
+      bg: 'Society accepts countless chronic inefficiencies: school gate traffic gridlocks, unpredictable water tankers, broken cold-chain vaccine logistics, agricultural waste burning, or unmonitored solar roof degradation. Every chronic inconvenience represents a commercial venture.',
+      challenge: 'Create a business solving an overlooked real-world problem that customers didn\'t realize had an elegant commercial solution. Submitted as an optional separate addendum (max 4 pages).',
+      hard: 'A cute idea is not a business. You must prove real willingness to pay, survey prospective buyers, calculate unit cost to make vs price, and defend break-even numbers.'
+    },
+    numbers: [
+      { val: '20+ people', label: 'Target customer interviews recommended' },
+      { val: '1 unit', label: 'Must compute rigorous cost of 1 physical or digital unit' },
+      { val: '4 pages', label: 'Maximum page limit for Junior open track addendum PDF' }
+    ],
+    curveball: 'What do people do about this problem today, and why would they stop doing that and pay you instead of continuing to do nothing?',
+    mustCover: [
+      { code: 'J-BX.1', title: 'The Problem', desc: 'Pain point, frequency, and verified customer interview evidence.' },
+      { code: 'J-BX.2', title: 'The Solution', desc: 'Product/service architecture, bill of materials, and labelled schematics.' },
+      { code: 'J-BX.3', title: 'Customer Profile', desc: 'Economic buyer vs daily user, beachhead customer acquisition plan.' },
+      { code: 'J-BX.4', title: 'Unit Economics', desc: 'Cost of goods sold (COGS), selling price, unit contribution, monthly fixed overhead, break-even.' },
+      { code: 'J-BX.5', title: 'Defensibility', desc: 'Why competitors or incumbents cannot replicate your offering within 6 months.' },
+      { code: 'J-BX.6', title: 'Growth Engine', desc: 'Pathway from 50 pilot customers to municipal or regional scale.' }
     ]
   }
 ];
@@ -140,6 +185,7 @@ const SENIOR_PROMPTS = [
       { val: '$ thousands/kg', label: 'Commercial rideshare launch costs to Low Earth Orbit' },
       { val: 'SAA', label: 'South Atlantic Anomaly: trapped Van Allen radiation dip' }
     ],
+    curveball: 'How many usable watts does your system recover per kilogram added, and how does that compare with simply launching an extra square metre of solar panel?',
     mustCover: [
       { code: 'S-TH.1', title: 'Physical Mechanism', desc: 'Deflection (magnetic/electrostatic Lorentz force) vs absorption (borated hydrides, liquid hydrogen, graphene) + energy harvesting mechanism.' },
       { code: 'S-TH.2', title: 'Energy & Mass Budget', desc: 'Watts harvested vs parasitic mass added. Radiation dosage reduction (Sieverts / rads) compared with equivalent aluminum shielding.' },
@@ -171,6 +217,7 @@ const SENIOR_PROMPTS = [
       { val: '~0.001 kg/m³', label: 'Air density at 50 km (stratopause / lower mesosphere)' },
       { val: '~10 m', label: 'Wingspan of Quetzalcoatlus northropi' }
     ],
+    curveball: 'Double your dinosaur\'s wingspan. What happens to its structural mass, its stall speed in thin air, and its daily metabolic food caloric requirement?',
     mustCover: [
       { code: 'S-ME.1', title: 'Biomimetic Airframe', desc: 'Skeletal anatomy, pneumatic hollow bones, skin membrane elastodynamics, wingspan, chord, aspect ratio, mass budget.' },
       { code: 'S-ME.2', title: 'Flight Mechanics', desc: 'Wing loading (W/S), lift coefficient (CL_max), flapping kinematic cycles vs dynamic thermal soaring regimes.' },
@@ -202,6 +249,7 @@ const SENIOR_PROMPTS = [
       { val: '1,361 ÷ r² W/m²', label: 'Solar irradiance at r Astronomical Units (AU) from the Sun' },
       { val: '~120 g · ~5 g', label: 'OSIRIS-REx (Bennu) and Hayabusa2 (Ryugu) sample masses' }
     ],
+    curveball: 'Your mass budget closes with 20% margin. Then your asteroid extraction yield comes in at 50% of nominal. What breaks first: the mission timeline or the venture balance sheet?',
     mustCover: [
       { code: 'S-EX.1', title: 'Asteroid Target', desc: 'Specific target chosen from JPL Small-Body Database: designation, spectral type, semi-major axis, eccentricity, rotation period.' },
       { code: 'S-EX.2', title: 'Resource & Customer', desc: 'Single target resource (e.g. water ice for LOX/LH2 propellant or nickel-iron), delivery form, and first in-orbit client.' },
@@ -233,6 +281,7 @@ const SENIOR_PROMPTS = [
       { val: '1976', label: 'UN ENMOD convention banning hostile environmental modification' },
       { val: '2017', label: 'SNOWIE field campaign proving radar-verified seeded snowfall' }
     ],
+    curveball: 'It rained 15 millimetres after your seeding plane flew over. How do you prove in court or to your client that it wouldn\'t have rained anyway?',
     mustCover: [
       { code: 'S-TR.1', title: 'The Technology', desc: 'Nucleation agent (hygroscopic flares, liquid propane, ionized particles, acoustic cannons), delivery drone/aircraft, targeted area.' },
       { code: 'S-TR.2', title: 'Atmospheric Physics', desc: 'Cloud thermodynamics: convective available potential energy (CAPE), dewpoint depression, supercooled liquid water.' },
@@ -242,42 +291,69 @@ const SENIOR_PROMPTS = [
       { code: 'S-TR.6', title: 'Statistical Attribution', desc: 'Dual-polarization Doppler radar differential reflectivity (ZDR), randomized target/control crossover experimental design.' },
       { code: 'S-TR.7', title: 'Financial Modeling', desc: 'Aircraft/drone fleet CapEx, flare consumables OpEx, insurance premiums, per-operation cost, and 5-year EBITDA.' }
     ]
+  },
+  {
+    id: 's-bonus',
+    code: 'S-BX',
+    layer: 'Open Track (optional)',
+    title: 'The Big Idea',
+    log: 'Every company starts with a question that begins "What if". Find one nobody is asking and make it pay.',
+    story: {
+      bg: 'Aerospace, quantum communications, advanced materials, and climate tech are riddled with hidden bottlenecks: single-source supply chain vulnerabilities, testing facilities that charge exorbitant fees, or raw telemetry data that sits unmined. Any domain is eligible—from orbital robotics to industrial biology.',
+      challenge: 'Identify an overlooked high-impact technological or industrial bottleneck, engineer a commercial solution, and prove its financial viability. Submitted as an optional separate addendum (max 6 pages).',
+      hard: '"Nobody has done this before" is often a red flag, not a badge of honor. You must demonstrate why incumbents failed, why the technological or market timing is right now, and prove defensibility against copycats.'
+    },
+    numbers: [
+      { val: '6 pages', label: 'Maximum page limit for Senior open track addendum PDF' },
+      { val: '1 client', label: 'Must name specific real-world corporate or institutional buyer' },
+      { val: '3 years', label: 'Minimum duration of financial cash flow projection' }
+    ],
+    curveball: 'Why hasn\'t Boeing, ISRO, or a venture-backed startup in Silicon Valley already built this, and what stops them copying you the month you launch?',
+    mustCover: [
+      { code: 'S-BX.1', title: 'Market Opportunity', desc: 'The industrial or technological bottleneck, quantified commercial cost of status quo, evidence.' },
+      { code: 'S-BX.2', title: 'The Innovation', desc: 'System architecture, proprietary intellectual property, TRL level, development pathway.' },
+      { code: 'S-BX.3', title: 'Market Sizing', desc: 'TAM / SAM / SOM derived bottom-up with verified industry price points and sales cycle duration.' },
+      { code: 'S-BX.4', title: 'Unit Economics & Cash', desc: 'Gross margin per unit, customer acquisition cost (CAC), lifetime value (LTV), 3-year cash flow forecast.' },
+      { code: 'S-BX.5', title: 'Defensible Moat', desc: 'Patents, network effects, high switching costs, or proprietary datasets preventing fast-follower replication.' }
+    ]
   }
 ];
 
 const CHECKLIST_ITEMS = [
   { id: 'bpp1', label: 'Proposal PDF submitted with selectable text, numbered figures, and SI units.' },
-  { id: 'bpp2', label: 'Page limits strictly respected: Junior max 25 pages · Senior max 30 pages.' },
+  { id: 'bpp2', label: 'Page limits strictly respected, counting every page including cover, contents and references: Junior max 25 · Senior max 30.' },
+  { id: 'bpp_vid', label: '5-minute pitch video uploaded.' },
   { id: 'bpp3', label: 'Cover page (0.1) complete with team details, division, prompt code, and advisor contact.' },
   { id: 'bpp4', label: 'Executive Summary (1.1) contains one-liner, customer persona, and break-even units.' },
   { id: 'bpp5', label: 'Physics & Environment Log (3.3) cites real atmospheric data with source citations.' },
   { id: 'bpp6', label: 'CapEx (4.1) and monthly OpEx (4.2) itemized with manufacturer price lists or salary references.' },
-  { id: 'bpp7', label: 'Complete Key Figures Table (4.7) matching all Junior (J-K1..J-K8) or Senior (S-K1..S-K10) metrics.' },
   { id: 'bpp8', label: 'Bottom-up market sizing (5.2) without generic top-down "1% of a huge market" assumptions.' },
   { id: 'bpp9', label: 'Risk Register (5.6) includes technical, regulatory, and financial risks with clear triggers.' },
   { id: 'bpp10', label: 'Assumption Ledger (6.1) lists every numerical assumption with confidence rating (L/M/H).' },
   { id: 'bpp11', label: 'All references formatted in APA 7th edition (6.2) and Tier 2 AI use disclosed (6.3).' },
-  { id: 'bpp12', label: 'Originality & AI Declaration signed by all team members and countersigned by faculty advisor.' },
-  { id: 'bpp13', label: 'Round 1 Pitch Deck submitted as separate 16:9 PDF with ≤12 content slides matching proposal numbers.' }
+  { id: 'bpp12', label: 'Originality & AI Declaration signed by all team members and countersigned by faculty advisor.' }
 ];
 
 export default function BppPrompt() {
-  const [activeSection, setActiveSection] = useState(() => {
-    const hash = window.location.hash.replace('#', '').toLowerCase();
-    return VALID_SECTIONS.includes(hash) ? hash : 'brief';
-  });
-
+  const [activeSection, setActiveSection] = useState(() => resolveSection(window.location.hash));
   const [division, setDivision] = useState('senior');
   const [activeJuniorPrompt, setActiveJuniorPrompt] = useState('j-thermo');
   const [activeSeniorPrompt, setActiveSeniorPrompt] = useState('s-thermo');
 
+  // Checklist state in localStorage (default empty)
+  const [checklist, setChecklist] = useState(() => {
+    try {
+      const saved = localStorage.getItem('c26-bpp-checklist');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
   // Sync hash routing
   useEffect(() => {
     const handleHash = () => {
-      const h = (window.location.hash || '').replace('#', '').toLowerCase();
-      if (VALID_SECTIONS.includes(h)) {
-        setActiveSection(h);
-      }
+      setActiveSection(resolveSection(window.location.hash));
     };
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
@@ -286,6 +362,18 @@ export default function BppPrompt() {
   const handleSectionChange = (secId) => {
     setActiveSection(secId);
     window.history.replaceState(null, '', `#${secId}`);
+  };
+
+  const toggleCheck = (id) => {
+    setChecklist((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      try {
+        localStorage.setItem('c26-bpp-checklist', JSON.stringify(next));
+      } catch (err) {
+        console.warn('Storage failed', err);
+      }
+      return next;
+    });
   };
 
   const currentPrompts = division === 'junior' ? JUNIOR_PROMPTS : SENIOR_PROMPTS;
@@ -307,13 +395,9 @@ export default function BppPrompt() {
         </div>
         <div className="flex items-center gap-4">
           <Link to="/submissions" className="text-crimson font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
-            <span>Submission Vault</span>
+            <span>Submission Portal</span>
             <span>→</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">PROMPTS RELEASED</span>
-          </div>
         </div>
       </div>
 
@@ -331,9 +415,6 @@ export default function BppPrompt() {
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
                 Junior (Grades 6–8) · Senior (Grades 9–12)
               </span>
-              <span className="font-mono text-xs uppercase px-2.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/40 font-bold">
-                ● 8 PROMPTS ACTIVE
-              </span>
             </div>
 
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl text-bone uppercase tracking-wide leading-none">
@@ -341,32 +422,32 @@ export default function BppPrompt() {
             </h1>
 
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              An inter-school competition that brings together aspiring innovators and entrepreneurs to develop solutions with real-world impact. Design a commercially viable aerospace product or service across atmospheric layers, supported by technical feasibility, financial planning, and a go-to-market strategy.
+              An inter-school competition that brings together aspiring innovators and entrepreneurs from across the country to develop solutions with real-world impact. Design a commercially viable aerospace product or service across atmospheric layers, supported by technical feasibility, financial planning, and a go-to-market strategy.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
               <button
-                onClick={() => handleSectionChange('tracks')}
+                onClick={() => handleSectionChange('prompts')}
                 className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson cursor-pointer"
               >
-                Explore Prompt Tracks →
+                Explore Prompts →
               </button>
               <button
-                onClick={() => handleSectionChange('template')}
+                onClick={() => handleSectionChange('guide')}
                 className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Proposal Template
+                Proposal Guide
               </button>
               <button
                 onClick={() => handleSectionChange('checklist')}
                 className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Preflight Checklist
+                Checklist
               </button>
             </div>
           </div>
 
-          {/* Telemetry Aside Box */}
+          {/* Aside Telemetry Box */}
           <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
               <span className="text-bone-dim uppercase">Proposal Window</span>
@@ -377,7 +458,7 @@ export default function BppPrompt() {
 
             <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
               <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
-              <strong className="text-bone text-sm block">18 October 2026 · 23:59 IST</strong>
+              <strong className="text-bone text-sm block">18 Oct, 11:59 PM IST</strong>
               <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
@@ -388,11 +469,11 @@ export default function BppPrompt() {
               </div>
               <div className="flex justify-between">
                 <span>Team Size:</span>
-                <strong className="text-bone">2–5 Members</strong>
+                <strong className="text-bone">3 Members</strong>
               </div>
               <div className="flex justify-between">
                 <span>Deliverable:</span>
-                <strong className="text-bone">Proposal PDF + Pitch Deck</strong>
+                <strong className="text-bone">Proposal PDF + 5-min video (pitch deck optional)</strong>
               </div>
               <div className="flex justify-between">
                 <span>Round 2 Finale:</span>
@@ -404,7 +485,7 @@ export default function BppPrompt() {
               to="/submissions"
               className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson block"
             >
-              Deposit Proposal PDF →
+              Go to Submission Portal →
             </Link>
           </div>
         </div>
@@ -413,10 +494,11 @@ export default function BppPrompt() {
       {/* Navigation Tabs Bar */}
       <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
         {[
-          { id: 'brief', label: '01 · The Brief' },
-          { id: 'tracks', label: '02 · Prompt Tracks' },
-          { id: 'template', label: '03 · Proposal Guide' },
-          { id: 'checklist', label: '04 · Checklist' }
+          { id: 'brief', label: '1 Event Brief' },
+          { id: 'prompts', label: '2 Prompts' },
+          { id: 'guide', label: '3 Proposal Guide' },
+          { id: 'checklist', label: '4 Checklist' },
+          { id: 'rules', label: '5 Rules' }
         ].map((tab) => (
           <button
             key={tab.id}
@@ -433,7 +515,7 @@ export default function BppPrompt() {
       </div>
 
       {/* ======================================================== */}
-      {/* SECTION 01: THE BRIEF */}
+      {/* SECTION 1: EVENT BRIEF */}
       {/* ======================================================== */}
       {activeSection === 'brief' && (
         <div className="space-y-8">
@@ -441,7 +523,7 @@ export default function BppPrompt() {
             {/* Header */}
             <div className="border-b border-bone/20 pb-4">
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 01 · Strategic Venture Directive
+                Section 1 · Event Brief
               </span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Where Innovation Meets Market Viability &amp; Real-World Impact
@@ -455,7 +537,7 @@ export default function BppPrompt() {
                   Business Power Pitch, a flagship sub-event of CelesteCon’26, is an inter-school competition that brings together aspiring innovators and entrepreneurs from across the country. The event provides a dynamic platform for students to combine creativity, technical knowledge, and entrepreneurial thinking to develop solutions with real-world impact.
                 </p>
                 <p>
-                  Participants will be given thought-provoking prompts that require them to design a product or service and support it with a detailed pitch deck covering technical feasibility, financial planning, and a go-to-market strategy. Over the course of three days, teams will brainstorm, ideate, and develop their proposals for submission in Round 1.
+                  Participants will be given thought-provoking prompts that require them to design a product or service and support it with a detailed proposal covering technical feasibility, financial planning, and a go-to-market strategy. Teams will brainstorm, ideate, and develop their proposals for submission in Round 1.
                 </p>
               </div>
               <div className="space-y-4">
@@ -468,6 +550,29 @@ export default function BppPrompt() {
               </div>
             </div>
 
+            {/* Key Dates Block */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-amber-400 font-bold uppercase block">// Key Dates</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">13 Oct</span>
+                  <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
+                </div>
+                <div className="p-3 bg-crimson/10 border border-crimson">
+                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
+                  <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
+                </div>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">20 Oct</span>
+                  <strong className="text-bone block mt-0.5">Shortlist Announced</strong>
+                </div>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">24 Oct</span>
+                  <strong className="text-bone block mt-0.5">Finale at DPS R.K. Puram (Report 07:45–08:45 AM)</strong>
+                </div>
+              </div>
+            </div>
+
             {/* Division Submission Standards Banner */}
             <div className="border-2 border-crimson/80 bg-crimson/10 p-5 sm:p-6 space-y-4">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-crimson/30 pb-3">
@@ -475,10 +580,10 @@ export default function BppPrompt() {
                   <span className="px-2 py-0.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-widest">
                     OFFICIAL SUBMISSION LIMITS
                   </span>
-                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Dossier &amp; Pitch Deck</span>
+                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Written Proposal PDF</span>
                 </div>
                 <span className="font-mono text-xs text-amber-400 font-bold uppercase">
-                  Due: 18 October 2026 · 23:59 IST
+                  Deadline: 18 Oct, 11:59 PM IST
                 </span>
               </div>
 
@@ -493,7 +598,7 @@ export default function BppPrompt() {
                     Juniors: <span className="text-crimson">25 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Strict maximum page limit of <strong>25 pages</strong> (15–20 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 atmospheric layer challenges.
+                    Strict maximum limit of <strong>25 pages</strong>, counting every page including cover, contents, references, AI disclosure and declaration.
                   </p>
                 </div>
 
@@ -507,214 +612,36 @@ export default function BppPrompt() {
                     Seniors: <span className="text-crimson">30 Pages</span> Limit
                   </div>
                   <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Strict maximum page limit of <strong>30 pages</strong> (20–25 recommended) + <strong>12-slide Pitch Deck</strong> (16:9 PDF). 4 deep-tech atmospheric challenges.
+                    Strict maximum limit of <strong>30 pages</strong>, counting every page including cover, contents, references, AI disclosure and declaration.
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-wrap justify-between items-center gap-2 pt-1 font-mono text-xs text-bone-dim">
-                <span>Deliverable: Proposal Dossier PDF + 12-Slide Deck PDF (English only, INR or USD with declared exchange rate).</span>
-                <span className="text-bone-dim">Submission via official CelesteCon portal before 18 Oct 23:59 IST.</span>
-              </div>
-            </div>
-
-            {/* The Four Investment Tests */}
-            <div className="space-y-4 pt-2">
-              <div className="border-b border-bone/20 pb-2">
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
-                  Venture Evaluation Criteria
-                </span>
-                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
-                  The Four Commercial Investment Tests
-                </h3>
-                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
-                  The evaluation panel includes aerospace engineers, industrial executives, and venture investors. Your venture must pass each test:
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* 01 Customer */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <span className="font-mono text-xs font-bold text-crimson uppercase block">01 · Customer Test</span>
-                  <h4 className="font-display text-lg text-bone uppercase">Name Who Pays</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    "Governments" and "everyone" do not count. Name a specific organization, procurement officer, or fleet manager with a real operational budget.
-                  </p>
-                </div>
-
-                {/* 02 Unit Cost */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <span className="font-mono text-xs font-bold text-amber-400 uppercase block">02 · Unit Cost Test</span>
-                  <h4 className="font-display text-lg text-bone uppercase">Price One Unit</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Price one alert feed, one monthly ozonesonde launch, or one kg delivered to orbit. If you cannot cost a single unit, you cannot model a thousand.
-                  </p>
-                </div>
-
-                {/* 03 Physics */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <span className="font-mono text-xs font-bold text-green-400 uppercase block">03 · Physics Test</span>
-                  <h4 className="font-display text-lg text-bone uppercase">Layer Boundaries</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Air density, drag, Mach number, and orbital decay set your technological feasibility. If your venture violates atmospheric physics, it fails.
-                  </p>
-                </div>
-
-                {/* 04 Cross-Exam */}
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-2">
-                  <span className="font-mono text-xs font-bold text-cyan-400 uppercase block">04 · Defense Test</span>
-                  <h4 className="font-display text-lg text-bone uppercase">Defend Every Number</h4>
-                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
-                    Round 2 judges will probe your math. If your CAC exceeds LTV, or your payload mass violates your launch budget, your venture unravels.
-                  </p>
-                </div>
+              <div className="pt-1 font-mono text-xs text-bone-dim space-y-1">
+                <div><strong className="text-bone">Deliverables:</strong> Proposal PDF (required) and a 5-minute pitch video (required). Pitch deck is optional: a separate 16:9 PDF, recommended 12 slides, max 15.</div>
+                <div><strong className="text-bone">Team Size:</strong> Exactly 3 members. One team per school per category.</div>
               </div>
             </div>
 
-            {/* Atmospheric Layers Map */}
-            <div className="space-y-4 pt-2">
-              <div className="border-b border-bone/20 pb-2">
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
-                  Commercial Territory
-                </span>
-                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
-                  Atmospheric Market Layers
-                </h3>
-              </div>
-
-              <div className="space-y-2 font-mono text-xs">
-                {[
-                  { name: 'Exosphere & Deep Space', alt: '600+ km', tech: 'Asteroid prospecting, propellant depots, interplanetary logistics', jr: '—', sr: 'S-EX' },
-                  { name: 'Thermosphere', alt: '85–600 km', tech: 'LEO constellations, solar storm drag mitigation, active radiation shielding', jr: 'J-TH', sr: 'S-TH' },
-                  { name: 'Mesosphere', alt: '50–85 km', tech: 'Meteor intelligence, infrasound sensing, thin-air biomimetic aerodynamics', jr: 'J-ME', sr: 'S-ME' },
-                  { name: 'Stratosphere', alt: '12–50 km', tech: 'Ozone monitoring, HAPS gliders, stratospheric aerosol tracking', jr: 'J-ST', sr: '—' },
-                  { name: 'Troposphere & Tropopause', alt: '0–12 km', tech: 'Airliner sensor networks, local weather modification, cloud nucleation', jr: 'J-OZ', sr: 'S-TR' }
-                ].map((l, i) => (
-                  <div key={i} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                    <div className="flex items-center gap-3">
-                      <span className="text-crimson font-bold w-6">{5 - i}</span>
-                      <strong className="text-bone uppercase text-sm">{l.name}</strong>
-                      <span className="text-bone-dim text-[11px]">({l.alt})</span>
-                    </div>
-                    <div className="text-bone-dim text-[11px] font-sans flex-1 md:px-4">{l.tech}</div>
-                    <div className="flex gap-2">
-                      {l.jr !== '—' && <span className="px-2 py-0.5 bg-ink border border-bone/40 text-bone text-[10px] font-bold">JR: {l.jr}</span>}
-                      {l.sr !== '—' && <span className="px-2 py-0.5 bg-crimson/20 border border-crimson text-crimson text-[10px] font-bold">SR: {l.sr}</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Qualitative Evaluation Criteria */}
-            <div className="space-y-4 pt-2">
-              <div className="border-b border-bone/20 pb-2">
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
-                  Evaluation Standards
-                </span>
-                <h3 className="font-display text-2xl text-bone uppercase tracking-wider mt-0.5">
-                  Qualitative Assessment Criteria
-                </h3>
-                <p className="font-label text-xs sm:text-sm text-bone-dim mt-1">
-                  Proposals and presentations are judged across six core dimensions:
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Problem &amp; Premise</span>
-                  <div className="font-display text-base text-bone uppercase">Customer Pain Point</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Evidence-backed pain point intrinsically rooted in atmospheric layer dynamics; clearly identified paying economic buyer.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Technical Feasibility</span>
-                  <div className="font-display text-base text-bone uppercase">Atmospheric Science</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Verified physics formulas, atmospheric boundary equations, realistic bill of materials, and operational cycle feasibility.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Unit Economics</span>
-                  <div className="font-display text-base text-bone uppercase">Financial Rigor</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Itemized CapEx and monthly OpEx, price per unit, contribution margin, break-even sales volume, and capital payback.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Market &amp; Moat</span>
-                  <div className="font-display text-base text-bone uppercase">Commercial Defensibility</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Bottom-up addressable market calculation, customer acquisition path, and defensibility against incumbents or free data.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Risk &amp; Resilience</span>
-                  <div className="font-display text-base text-bone uppercase">Contingency Planning</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Itemized technical, regulatory, and market risks with monitored operational triggers and proactive fallback measures.
-                  </p>
-                </div>
-
-                <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                  <span className="text-crimson font-bold uppercase block">// Jury Presentation</span>
-                  <div className="font-display text-base text-bone uppercase">Pitch &amp; Q&amp;A Defense</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Pitch deck clarity, persuasive delivery, arithmetic defense, and composure during panel cross-examination.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* AI Policy */}
-            <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
-              <strong className="text-crimson block uppercase tracking-wider text-sm">
-                Academic Integrity &amp; Generative AI Directive
-              </strong>
+            {/* Round 2 Presentation Details */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-crimson font-bold uppercase block">// Round 2 Finale Protocol</span>
               <p className="text-bone-dim font-sans text-xs leading-relaxed">
-                Generative AI tools may be used strictly as conceptual research and editing aids (Tier 2 permitted with full disclosure). AI writing or rewriting of proposal text, automated pitch deck generation, and fabricated financial spreadsheets are strictly prohibited (Tier 3). All external software and prompts must be disclosed in Section 6.3.
+                Shortlisted teams present on 24 Oct at DPS R.K. Puram. Each team receives 7 minutes to present (both Junior and Senior), followed by cross-questioning by the panel. Competing teams in the audience may ask challenger questions for bonus points. Props, a small prototype or creative presentation methods are welcome.
               </p>
-            </div>
-
-            {/* Rulebook Summary */}
-            <div className="space-y-3 font-mono text-xs">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
-                Rulebook Summary
-              </h3>
-              {[
-                { code: 'R-01', title: 'Eligibility', desc: 'Grades 6–12 across India. 2–5 students per team from one school with one faculty advisor.' },
-                { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email.' },
-                { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Future-dated scenarios require real cited facts.' },
-                { code: 'R-04', title: 'Submission Protocol', desc: 'PDF uploads only via CelesteCon portal before 18 Oct 2026, 23:59 IST. Selectable text required.' },
-                { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement.' },
-                { code: 'R-06', title: 'Round 2 Conduct', desc: 'Min 2 students in person. Presentation followed by Q&A panel cross-examination.' },
-                { code: 'R-07', title: 'Intellectual Property', desc: 'Teams retain 100% IP ownership of their ventures.' },
-                { code: 'R-08', title: 'Disqualification', desc: 'Plagiarism, undisclosed Tier 3 AI use, or code-of-conduct violations lead to forfeiture.' }
-              ].map((r) => (
-                <div key={r.code} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                  <span className="text-crimson font-bold w-16 shrink-0">{r.code}</span>
-                  <strong className="text-bone text-sm w-48 shrink-0 font-sans">{r.title}</strong>
-                  <p className="text-bone-dim leading-relaxed">{r.desc}</p>
-                </div>
-              ))}
             </div>
 
             {/* Bottom Actions */}
             <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
               <div className="text-bone-dim">
-                Point of Contact: <strong className="text-bone">Ryaan Namit Jain</strong> · <a href="mailto:aeross@dpsrkp.net" className="text-crimson hover:underline">aeross@dpsrkp.net</a>
+                Point of Contact: <strong className="text-bone">Ryaan Namit Jain</strong> (<a href="mailto:r23542ryaan@dpsrkp.net" className="text-crimson hover:underline">r23542ryaan@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
               </div>
               <div className="flex gap-3">
                 <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
                   ← Back to Comps
                 </Link>
                 <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
-                  Deposit Proposal →
+                  Go to Submission Portal →
                 </Link>
               </div>
             </div>
@@ -723,15 +650,51 @@ export default function BppPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 02: PROMPT TRACKS */}
+      {/* SECTION 2: PROMPTS */}
       {/* ======================================================== */}
-      {activeSection === 'tracks' && (
+      {activeSection === 'prompts' && (
         <div className="space-y-6">
+          {/* Atmospheric Layers Figure */}
+          <div className="border-2 border-bone/40 bg-ink p-5 space-y-3">
+            <div className="border-b border-bone/20 pb-2">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest block">
+                Atmospheric Territory Overview
+              </span>
+              <h3 className="font-display text-xl text-bone uppercase tracking-wider mt-0.5">
+                The Atmospheric Market Layers
+              </h3>
+            </div>
+
+            <div className="space-y-2 font-mono text-xs">
+              {[
+                { name: 'Exosphere & Deep Space', alt: '600+ km', tech: 'Asteroid prospecting, propellant depots, interplanetary logistics', jr: '—', sr: 'S-EX' },
+                { name: 'Thermosphere', alt: '85–600 km', tech: 'LEO constellations, solar storm drag mitigation, active radiation shielding', jr: 'J-TH', sr: 'S-TH' },
+                { name: 'Mesosphere', alt: '50–85 km', tech: 'Meteor intelligence, infrasound sensing, thin-air biomimetic aerodynamics', jr: 'J-ME', sr: 'S-ME' },
+                { name: 'Stratosphere', alt: '12–50 km', tech: 'Ozone monitoring, HAPS gliders, stratospheric aerosol tracking', jr: 'J-ST', sr: '—' },
+                { name: 'Troposphere & Tropopause', alt: '0–12 km', tech: 'Airliner sensor networks, local weather modification, cloud nucleation', jr: 'J-OZ', sr: 'S-TR' },
+                { name: 'Open Track (Optional Addendum)', alt: 'Any Altitude', tech: 'Unconstrained real-world industrial or commercial innovation', jr: 'J-BX', sr: 'S-BX' }
+              ].map((l, i) => (
+                <div key={i} className="p-3 bg-ink-2 border border-bone/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-crimson font-bold w-6">{i === 5 ? '★' : 5 - i}</span>
+                    <strong className="text-bone uppercase text-sm">{l.name}</strong>
+                    <span className="text-bone-dim text-[11px]">({l.alt})</span>
+                  </div>
+                  <div className="text-bone-dim text-[11px] font-sans flex-1 md:px-4">{l.tech}</div>
+                  <div className="flex gap-2">
+                    {l.jr !== '—' && <span className="px-2 py-0.5 bg-ink border border-bone/40 text-bone text-[10px] font-bold">JR: {l.jr}</span>}
+                    {l.sr !== '—' && <span className="px-2 py-0.5 bg-crimson/20 border border-crimson text-crimson text-[10px] font-bold">SR: {l.sr}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Division Selector */}
           <div className="border-2 border-bone/40 bg-ink p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-wider block">Division Selection</span>
-              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 4 atmospheric layer prompts.</span>
+              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the prompts.</span>
             </div>
             <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
               <button
@@ -758,7 +721,7 @@ export default function BppPrompt() {
           </div>
 
           {/* Prompt Selector Tabs */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 font-mono text-xs">
             {currentPrompts.map((p) => {
               const isSelected = p.id === currentPromptId;
               return (
@@ -768,7 +731,7 @@ export default function BppPrompt() {
                     if (division === 'junior') setActiveJuniorPrompt(p.id);
                     else setActiveSeniorPrompt(p.id);
                   }}
-                  className={`p-4 border text-left cursor-pointer ${
+                  className={`p-3.5 border text-left cursor-pointer ${
                     isSelected
                       ? 'bg-ink border-crimson'
                       : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
@@ -776,9 +739,9 @@ export default function BppPrompt() {
                 >
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-bold text-crimson">{p.code}</span>
-                    <span className="text-[10px] text-bone-dim truncate max-w-[120px]">{p.layer}</span>
+                    <span className="text-[10px] text-bone-dim truncate max-w-[100px]">{p.layer}</span>
                   </div>
-                  <div className="font-display text-base text-bone uppercase leading-tight">{p.title}</div>
+                  <div className="font-display text-sm text-bone uppercase leading-tight">{p.title}</div>
                 </button>
               );
             })}
@@ -834,6 +797,18 @@ export default function BppPrompt() {
               </div>
             </div>
 
+            {/* A Question to Prepare For */}
+            {selectedPrompt.curveball && (
+              <div className="border border-amber-500/40 bg-amber-500/5 p-4 space-y-1 font-mono text-xs">
+                <span className="text-amber-400 font-bold uppercase tracking-wider block">
+                  A question to prepare for
+                </span>
+                <p className="text-bone font-sans text-xs sm:text-sm leading-relaxed italic">
+                  &ldquo;{selectedPrompt.curveball}&rdquo;
+                </p>
+              </div>
+            )}
+
             {/* Required Proposal Coverage */}
             <div className="space-y-3 pt-2">
               <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
@@ -858,57 +833,60 @@ export default function BppPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 03: PROPOSAL GUIDE */}
+      {/* SECTION 3: PROPOSAL GUIDE */}
       {/* ======================================================== */}
-      {activeSection === 'template' && (
+      {activeSection === 'guide' && (
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 03 · Proposal Guide
+                Section 3 · Proposal Guide
               </span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Required Proposal Architecture
               </h2>
             </div>
 
-            {/* Document Order Table */}
+            {/* Four Commercial Investment Tests */}
+            <div className="border border-bone/30 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-amber-400 uppercase font-bold tracking-widest block">
+                Foundational Commercial Principles
+              </span>
+              <ul className="space-y-2 text-bone-dim text-xs leading-relaxed list-disc pl-4 font-sans">
+                <li><strong className="text-bone font-mono">Name who pays:</strong> "Governments" or "everyone" is not a customer. Name specific enterprises, procurement officers, or fleet managers with real operational budgets.</li>
+                <li><strong className="text-bone font-mono">Price one unit:</strong> Cost and price one alert feed, one monthly ozonesonde launch, or one kg delivered to orbit. If you cannot cost a single unit, you cannot model a thousand.</li>
+                <li><strong className="text-bone font-mono">Physics must hold:</strong> Air density, aerodynamic drag, power density, and orbital decay set your technological boundaries. Commercial ventures that violate physics fail.</li>
+                <li><strong className="text-bone font-mono">Defend every number:</strong> Ground every metric in verified citations. Defend unit margins, customer acquisition costs, and break-even sales volume during jury defense.</li>
+              </ul>
+            </div>
+
+            {/* Document Sequence & Currency Rule */}
             <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
               <h3 className="text-xs font-mono uppercase tracking-widest text-amber-400 border-b border-bone/20 pb-2">
                 Document Sequence &amp; Page Limits
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-mono">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
                 <div className="p-3 bg-ink border border-bone/20">
                   <span className="text-bone-dim block text-[10px]">Page 1</span>
-                  <strong className="text-bone block mt-1">0.1 Cover</strong>
-                  <span className="text-bone-dim text-[10px]">Not counted</span>
+                  <strong className="text-bone block mt-1">0.1 Cover Page</strong>
                 </div>
                 <div className="p-3 bg-ink border border-bone/20">
                   <span className="text-bone-dim block text-[10px]">Page 2</span>
                   <strong className="text-bone block mt-1">0.2 Contents</strong>
-                  <span className="text-bone-dim text-[10px]">Numbered</span>
                 </div>
                 <div className="p-3 bg-crimson/10 border border-crimson">
-                  <span className="text-crimson block text-[10px]">Main Body</span>
+                  <span className="text-crimson block text-[10px]">Main Sections</span>
                   <strong className="text-bone block mt-1">1.0 &rarr; 6.1</strong>
                   <span className="text-crimson text-[10px]">Jr ≤25pp · Sr ≤30pp</span>
                 </div>
                 <div className="p-3 bg-ink border border-bone/20">
                   <span className="text-bone-dim block text-[10px]">End Matter</span>
-                  <strong className="text-bone block mt-1">6.2 &amp; 6.3</strong>
-                  <span className="text-bone-dim text-[10px]">References &amp; AI</span>
-                </div>
-                <div className="p-3 bg-amber-500/10 border border-amber-500">
-                  <span className="text-amber-400 block text-[10px]">Required</span>
-                  <strong className="text-bone block mt-1">Declaration</strong>
-                  <span className="text-amber-400 text-[10px]">Signed page</span>
-                </div>
-                <div className="p-3 bg-ink border border-bone/20">
-                  <span className="text-bone-dim block text-[10px]">Separate PDF</span>
-                  <strong className="text-bone block mt-1">Pitch Deck</strong>
-                  <span className="text-bone-dim text-[10px]">12 content slides</span>
+                  <strong className="text-bone block mt-1">6.2, 6.3 &amp; Declaration</strong>
                 </div>
               </div>
+              <p className="font-mono text-xs text-bone-dim pt-2">
+                * Page limits count every page, including cover, contents, references, AI disclosure and declaration: Junior max 25 pages, Senior max 30 pages. Currency: Indian Rupees (INR) or US Dollars (USD) with declared exchange rate and date in Section 6.1.
+              </p>
             </div>
 
             {/* Template Sections */}
@@ -918,10 +896,10 @@ export default function BppPrompt() {
                   no: '1.0',
                   title: 'Introduction & Problem Statement',
                   fields: [
-                    { id: '1.1', name: 'Executive Summary', note: 'Half to one page: problem, solution, target customer, price, and break-even units.' },
+                    { id: '1.1', name: 'Executive Summary', note: 'Problem, solution, target customer, price, and break-even units.' },
                     { id: '1.2', name: 'Company One-Liner', note: 'Single sentence under 30 words summarizing what you sell and to whom.' },
                     { id: '1.3', name: 'Problem Statement', note: 'Concrete problem with cited data proving financial or operational damage.' },
-                    { id: '1.4', name: 'Problem-Solution Matrix', note: 'Table mapping pain points to technical solutions and success metrics (Jr ≥3 rows, Sr ≥5 rows).' }
+                    { id: '1.4', name: 'Problem-Solution Matrix', note: 'Table mapping pain points to technical solutions and success metrics.' }
                   ]
                 },
                 {
@@ -940,7 +918,7 @@ export default function BppPrompt() {
                   fields: [
                     { id: '3.1', name: 'System Architecture & BOM', note: 'Complete component table with supplier sources, current TRL levels, and costs.' },
                     { id: '3.2', name: 'Features & Customer Journey', note: 'Customer onboarding from initial trial through renewal and support.' },
-                    { id: '3.3', name: 'Atmospheric Physics Log', note: 'Table of physical layer conditions with cited numbers and design responses (Jr ≥2 conditions, Sr ≥5).' },
+                    { id: '3.3', name: 'Atmospheric Physics Log', note: 'Table of physical layer conditions with cited numbers and design responses.' },
                     { id: '3.4', name: 'Operations Workflow', note: 'Full operational cycle: launch, flight, telemetry data capture, and post-flight processing.' },
                     { id: '3.5', name: 'Product Roadmap', note: 'Planned evolution over 3 years (Junior) or 5 years (Senior).' }
                   ]
@@ -952,10 +930,9 @@ export default function BppPrompt() {
                     { id: '4.1', name: 'Start-Up CapEx', note: 'One-off capital expenditures (R&D, tooling, certification, testing rigs) with source quotes.' },
                     { id: '4.2', name: 'Monthly OpEx', note: 'Monthly operating expenses (salaries, cloud computing, hangar fees, insurance) with estimation bases.' },
                     { id: '4.3', name: 'Unit Economics & Margins', note: 'Price per unit, variable cost, contribution margin %, and break-even unit calculation.' },
-                    { id: '4.4', name: 'Pricing & Competitive Justification', note: 'Pricing model rationale compared against free public data and "do nothing" alternatives.' },
+                    { id: '4.4', name: 'Pricing & Competitive Justification', note: 'Pricing model rationale compared against free public data and alternative options.' },
                     { id: '4.5', name: 'Revenue Forecast', note: 'Jr 3-year forecast · Sr 5-year forecast with quarterly granularity and sensitivity testing.' },
-                    { id: '4.6', name: 'Capitalization & Tranches', note: 'Seed funding requirements and milestone triggers unlocking subsequent capital rounds.' },
-                    { id: '4.7', name: 'Key Figures Table', note: 'Mandatory reconciliation table listing J-K1..J-K8 (Junior) or S-K1..S-K10 (Senior).' }
+                    { id: '4.6', name: 'Capitalization & Tranches', note: 'Seed funding requirements and milestone triggers unlocking subsequent capital rounds.' }
                   ]
                 },
                 {
@@ -1013,7 +990,7 @@ export default function BppPrompt() {
                 <p className="font-bold uppercase text-amber-400">Business Power Pitch 2026 · Originality &amp; AI Declaration</p>
                 <p>We, the undersigned members of team [team name] from [school name], declare that:</p>
                 <ol className="list-decimal pl-4 space-y-1 text-bone-dim">
-                  <li>This proposal and pitch deck are our team&apos;s original work. The analysis, writing, and calculations were produced by our team members.</li>
+                  <li>This proposal and pitch materials are our team&apos;s original work. The analysis, writing, and calculations were produced by our team members.</li>
                   <li>Every source of data, image, or fact is cited in text and listed in references.</li>
                   <li>We have read the AI Use Policy in full. No prohibited AI tools were utilized, and all permitted Tier 2 queries are logged in Section 6.3.</li>
                   <li>No external person wrote, edited, calculated, or designed any part of our submission.</li>
@@ -1026,14 +1003,14 @@ export default function BppPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 04: CHECKLIST */}
+      {/* SECTION 4: CHECKLIST */}
       {/* ======================================================== */}
       {activeSection === 'checklist' && (
         <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
-                Section 04
+                Section 4 · Checklist
               </span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
                 Preflight Deliverables Checklist
@@ -1044,13 +1021,19 @@ export default function BppPrompt() {
               {CHECKLIST_ITEMS.map((item) => (
                 <label
                   key={item.id}
-                  className="p-3 border border-bone bg-ink text-bone flex items-start gap-3 select-none text-xs font-mono cursor-pointer"
+                  className={`p-3 border cursor-pointer flex items-start gap-3 select-none text-xs font-mono ${
+                    checklist[item.id]
+                      ? 'border-bone/20 bg-ink/40 text-bone-dim'
+                      : 'border-bone bg-ink text-bone'
+                  }`}
                 >
                   <input
                     type="checkbox"
+                    checked={!!checklist[item.id]}
+                    onChange={() => toggleCheck(item.id)}
                     className="mt-0.5 accent-crimson cursor-pointer"
                   />
-                  <span className="leading-relaxed">
+                  <span className={`leading-relaxed ${checklist[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
                     {item.label}
                   </span>
                 </label>
@@ -1065,8 +1048,158 @@ export default function BppPrompt() {
                 to="/submissions"
                 className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-crimson"
               >
-                Go to Submission Vault →
+                Go to Submission Portal →
               </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* SECTION 5: RULES */}
+      {/* ======================================================== */}
+      {activeSection === 'rules' && (
+        <div className="space-y-8">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">
+                Section 5 · Rules
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Competition Rules &amp; Evaluation Criteria
+              </h2>
+            </div>
+
+            {/* General Competition Rules */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                General Competition Rules
+              </h3>
+              <ul className="space-y-2 text-bone-dim text-xs leading-relaxed list-disc pl-4 font-sans">
+                <li>Teams register through their school's delegation. Registration closed on 12 Oct; no additions after that.</li>
+                <li>Late submissions are not accepted.</li>
+                <li>Shortlisted teams report to the Welcome Foyer at DPS R.K. Puram between 07:45 and 08:45 AM on 24 Oct. Late arrivals may lose their slot.</li>
+                <li>Bring your own laptop, charger and adapters, fully charged. Power outlets are provided. The host school is not liable for personal hardware. Bring your own internet connection.</li>
+                <li>Judges' decisions are final. Disrespect towards judges or marshals leads to disqualification.</li>
+                <li>DPS R.K. Puram teams take part for benchmarking only and are not eligible for rankings or trophies.</li>
+              </ul>
+            </div>
+
+            {/* R-06 AI Tier Directive */}
+            <div className="border-2 border-crimson bg-ink-2 p-6 space-y-4">
+              <div className="flex flex-wrap justify-between items-center border-b border-crimson/40 pb-3 gap-2">
+                <div>
+                  <span className="text-xs font-mono text-crimson uppercase tracking-widest font-bold">Rule R-06 Directive</span>
+                  <h3 className="text-xl font-bold uppercase text-bone">Artificial Intelligence Policy</h3>
+                </div>
+                <span className="px-3 py-1 bg-crimson text-bone-hi font-mono text-xs uppercase tracking-wider font-bold">
+                  Mandatory For All Rounds
+                </span>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4 text-xs font-mono">
+                <div className="p-4 bg-ink border border-green-500/40 space-y-2">
+                  <span className="text-green-400 font-bold block uppercase">Tier 1 · Permitted Free Use</span>
+                  <strong className="text-bone text-sm block">Standard Software</strong>
+                  <p className="text-bone-dim text-[11px] leading-relaxed">
+                    Word processors with AI features disabled, spreadsheets using formulas written by the team, basic spell-check, web search engines, and manual CAD modeling.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-ink border border-amber-500/40 space-y-2">
+                  <span className="text-amber-400 font-bold block uppercase">Tier 2 · Permitted If Disclosed</span>
+                  <strong className="text-bone text-sm block">Conceptual Research</strong>
+                  <p className="text-bone-dim text-[11px] leading-relaxed">
+                    Querying chatbots for conceptual explanations, provided the primary scientific source is verified and cited in Section 6.3.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-ink border border-crimson space-y-2">
+                  <span className="text-crimson font-bold block uppercase">Tier 3 · Strictly Prohibited</span>
+                  <strong className="text-bone text-sm block">Auto-Generation</strong>
+                  <p className="text-bone-dim text-[11px] leading-relaxed">
+                    AI writing or rewriting proposal text, auto-generating slide decks, fabricating financial spreadsheets, or AI use during Round 2.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Judging Criteria */}
+            <div className="space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                How you're judged
+              </h3>
+              <div className="space-y-3">
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Originality and creativity of the idea</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Novel venture thesis rooted in atmospheric dynamics, offering a creative and non-obvious solution to a real operational pain point.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Technical soundness and feasibility</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Compliance with physical atmospheric constraints, correct formulas, realistic hardware bill of materials, and operational cycle clarity.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Presentation style</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Professional document design, clear graphs, engaging visual aids, prototypes, and team coordination.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Clarity and persuasiveness of the pitch</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Compelling value proposition, defensible unit economics, clear target buyer identification, and logical narrative structure.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Response to cross-questioning</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Confidence, mathematical fluency, handling critical scrutiny from jurors and challenger questions from competing teams.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Rule Index */}
+            <div className="space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                Rulebook Summary
+              </h3>
+              {[
+                { code: 'R-01', title: 'Eligibility', desc: 'Junior Grades 6–8, Senior Grades 9–12. 3 students per team, with one faculty advisor. One team per school per category.' },
+                { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email. All deadlines in Indian Standard Time (IST).' },
+                { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Open track prompt is submitted as an optional separate addendum.' },
+                { code: 'R-04', title: 'Submission Protocol', desc: 'Uploads via CelesteCon portal before 18 Oct 2026, 11:59 PM IST. Selectable text required; zero late allowances.' },
+                { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement.' },
+                { code: 'R-07', title: 'Round 2 Conduct', desc: 'Timing is strictly 7 minutes followed by jury cross-examination and audience challenger questions.' },
+                { code: 'R-08', title: 'Judging & Ranking', desc: 'Round 1 scores carry into the final ranking together with Round 2. Judges’ decisions are final.' },
+                { code: 'R-09', title: 'Intellectual Property', desc: 'Teams retain 100% IP ownership of their ventures.' },
+                { code: 'R-10', title: 'Disqualification', desc: 'Plagiarism, undisclosed Tier 3 AI use, or code-of-conduct violations lead to immediate forfeiture.' }
+              ].map((r) => (
+                <div key={r.code} className="p-3.5 bg-ink-2 border border-bone/20 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                  <span className="text-crimson font-bold w-16 shrink-0">{r.code}</span>
+                  <strong className="text-bone text-sm w-48 shrink-0 font-sans">{r.title}</strong>
+                  <p className="text-bone-dim leading-relaxed">{r.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
+              <div className="text-bone-dim">
+                Point of Contact: <strong className="text-bone">Ryaan Namit Jain</strong> (<a href="mailto:r23542ryaan@dpsrkp.net" className="text-crimson hover:underline">r23542ryaan@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
+              </div>
+              <div className="flex gap-3">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
+                  ← Back to Comps
+                </Link>
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
+                  Go to Submission Portal →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
