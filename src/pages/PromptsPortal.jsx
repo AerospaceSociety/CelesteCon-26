@@ -38,7 +38,7 @@ const DELIVERABLE_INFO = {
     portalLabel: 'Volatus'
   },
   '03': {
-    format: 'Round 1 Quiz (16 Oct) · Round 2 Parliamentary Debate',
+    format: 'Round 1 Quiz (16 Oct) · Round 2 Debate',
     submissionMode: 'Online Screening + Onsite Chambers',
     details: 'Round 1 Quiz on 16th October on Quizzitch platform (details shared on registered email and updated on website). Round 2 debate motions released 21st October. Top 10 advance to debate chambers on campus.',
     portalUrl: '/prompts/ipod',
