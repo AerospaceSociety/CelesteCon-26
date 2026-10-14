@@ -1,6 +1,6 @@
 /**
  * Cloudflare Pages Function: /api/deposit
- * Receives project deliverable submissions, validates Drive & supplementary links,
+ * Receives project deliverable submissions, validates event-specific mandatory & optional links,
  * sanitizes user input, applies edge rate limits, and persists to JotForm and Firebase.
  */
 
@@ -10,6 +10,100 @@ import {
   sanitizeText,
   sanitizeUrl
 } from './_security.js';
+
+// Event-specific required deliverable rules
+const EVENT_REQUIREMENTS = {
+  '01': {
+    code: 'SMT',
+    name: 'Settle-Me-This',
+    requiredKeys: ['proposalUrl'],
+    keyLabels: {
+      proposalUrl: 'Written Engineering Proposal (PDF Link)',
+      slideDeckUrl: 'Presentation Slide Deck (Optional)',
+      cadModelsUrl: '3D CAD Models & Architectural Renders (Optional)',
+      supplementaryUrl: 'Supplementary Calculations & Appendices (Optional)'
+    }
+  },
+  '02': {
+    code: 'VOL',
+    name: 'Volatus',
+    requiredKeys: ['proposalUrl', 'cadPackageUrl'],
+    keyLabels: {
+      proposalUrl: 'Technical Proposal & Sizing Dossier (PDF Link)',
+      cadPackageUrl: '3D CAD Package / Model Link (STEP/STL/F3D/Blend/Cloud CAD)',
+      blueprintUrl: '3-View Orthographic Blueprint (Optional)',
+      calculationsUrl: 'Aerodynamic Calculations Ledger (Optional)',
+      supplementaryUrl: 'Prototype Photos / Media (Optional)'
+    }
+  },
+  // Note: Event 03 (In Pursuit of Dispute) does not accept preliminary file submissions (conducted via Quizzitch quiz platform).
+  '03': {
+    code: 'IPOD',
+    name: 'In Pursuit of Dispute',
+    noSubmissionRequired: true,
+    requiredKeys: [],
+    keyLabels: {}
+  },
+  '04': {
+    code: 'BPP',
+    name: 'Business Power Pitch',
+    requiredKeys: ['proposalUrl', 'videoUrl'],
+    keyLabels: {
+      proposalUrl: 'Business Proposal / Executive Dossier (PDF Link)',
+      videoUrl: '5-Minute Elevator Pitch Video Link',
+      slideDeckUrl: 'Investor Pitch Deck (Optional)',
+      financialModelUrl: 'Financial Model / Spreadsheets (Optional)',
+      supplementaryUrl: 'Supplementary Appendix / Prototype Link (Optional)'
+    }
+  },
+  '05': {
+    code: 'ATH',
+    name: 'AEROSS Theatre',
+    requiredKeys: ['videoUrl'],
+    keyLabels: {
+      videoUrl: 'Audition Video Performance Link (3–5 Mins)',
+      scriptUrl: 'Performance Script / Dramatic Treatment (Optional)',
+      audioTrackUrl: 'Soundtrack / Backing Audio Track Link (Optional)',
+      supplementaryUrl: 'Stagecraft & Props Portfolio (Optional)'
+    }
+  },
+  '06': {
+    code: 'CJAM',
+    name: 'CelesteJam',
+    requiredKeys: ['buildUrl', 'videoUrl'],
+    keyLabels: {
+      buildUrl: 'Playable Game Build Link (.ZIP or WebGL Link)',
+      videoUrl: 'Gameplay Traversal Video Link (60–90 Secs)',
+      sourceCodeUrl: 'Source Code Repository Link (Optional)',
+      gddUrl: 'Game Design Document (GDD) / Readme (Optional)',
+      supplementaryUrl: 'Asset Credits & OST Audio Link (Optional)'
+    }
+  },
+  '07': {
+    code: 'ROC',
+    name: 'Rocketry',
+    requiredKeys: ['orkUrl', 'reportUrl'],
+    keyLabels: {
+      orkUrl: 'OpenRocket Simulation File (.ork Link)',
+      reportUrl: 'Rocketry Technical Dossier / Design Report (PDF Link)',
+      simulationPlotsUrl: 'Simulation Flight Plots & Barrowman Data (Optional)',
+      cadPhotosUrl: 'CAD Models / Workshop Build Photos (Optional)',
+      supplementaryUrl: 'Supplementary Materials (Optional)'
+    }
+  },
+  '08': {
+    code: 'APRIX',
+    name: 'AEROSS Prix',
+    requiredKeys: ['dossierUrl', 'cadPackageUrl'],
+    keyLabels: {
+      dossierUrl: 'DOC 01: Technical Dossier & Engineering Report (PDF Link)',
+      cadPackageUrl: 'DOC 02: 3D CAD Package & Model Link (STEP/STL/F3D/Cloud CAD)',
+      identityDeckUrl: 'DOC 03: Team Identity, Livery & Sponsor Return Deck (Optional)',
+      blueprintUrl: '3-View General Arrangement Blueprint (F1-CD-1) (Optional)',
+      supplementaryUrl: 'CFD Telemetry & Aerodynamic Simulation Folder (Optional)'
+    }
+  }
+};
 
 export async function onRequestPost(context) {
   const { request, env = {} } = context;
@@ -41,7 +135,7 @@ export async function onRequestPost(context) {
     }
 
     const cleanUID = sanitizeText(body.schoolUID, 30).toUpperCase();
-    if (!/^C26-[A-Z]{2}-\d{4}$/.test(cleanUID)) {
+    if (!/^C26-[A-Z]{2,4}-\d{4}$/.test(cleanUID)) {
       return jsonResponse(
         { error: `Invalid UID syntax: "${cleanUID}". Must match C26-XX-0000 format.` },
         400,
@@ -50,23 +144,65 @@ export async function onRequestPost(context) {
       );
     }
 
-    // 2. Validate and sanitize primary Cloud Deliverable URL (SSRF & XSS defense)
-    const rawDrive = body.driveUrl || '';
-    const cleanDrive = sanitizeUrl(rawDrive, 1500);
+    const eventId = sanitizeText(body.eventId || '04', 10).padStart(2, '0');
 
-    if (!cleanDrive) {
+    if (eventId === '03') {
       return jsonResponse(
-        { error: 'A valid HTTPS cloud storage link (Google Drive, OneDrive, etc.) is required.' },
+        {
+          error: 'No preliminary portal submission is required for In Pursuit of Dispute (IPOD). Round 1 qualification is conducted via the online Quizzitch quiz platform. Teams qualify directly to live debate rounds on Conclave Day.'
+        },
         400,
         request,
         env
       );
     }
 
+    const spec = EVENT_REQUIREMENTS[eventId] || EVENT_REQUIREMENTS['04'];
+
+    // 2. Extract and sanitize structured deliverables
+    const rawDeliverables = body.deliverables || {};
+    const sanitizedDeliverables = {};
+
+    // Also support fallback `driveUrl` if sent directly
+    if (body.driveUrl && !rawDeliverables.proposalUrl && !rawDeliverables.dossierUrl && !rawDeliverables.reportUrl && !rawDeliverables.buildUrl && !rawDeliverables.videoUrl) {
+      const primaryKey = spec.requiredKeys[0] || 'proposalUrl';
+      rawDeliverables[primaryKey] = body.driveUrl;
+    }
+
+    // Sanitize each deliverable link
+    for (const [key, val] of Object.entries(rawDeliverables)) {
+      if (typeof val === 'string' && val.trim().length > 0) {
+        const cleaned = sanitizeUrl(val.trim(), 1500);
+        if (!cleaned) {
+          const label = spec.keyLabels[key] || key;
+          return jsonResponse(
+            { error: `The link provided for "${label}" must be a secure HTTPS link.` },
+            400,
+            request,
+            env
+          );
+        }
+        sanitizedDeliverables[key] = cleaned;
+      }
+    }
+
+    // Verify all mandatory keys for this event are supplied
+    for (const reqKey of spec.requiredKeys) {
+      if (!sanitizedDeliverables[reqKey]) {
+        const label = spec.keyLabels[reqKey] || reqKey;
+        return jsonResponse(
+          { error: `Mandatory deliverable missing: "${label}" is required for ${spec.name}.` },
+          400,
+          request,
+          env
+        );
+      }
+    }
+
     // 3. Sanitize supplementary links
     const rawSupplementary = Array.isArray(body.supplementaryLinks) ? body.supplementaryLinks : [];
     const sanitizedSupplementary = rawSupplementary
-      .slice(0, 10) // Cap to maximum 10 links
+      .slice(0, 10)
       .map(item => {
         const url = sanitizeUrl(item?.url || '', 1500);
         const label = sanitizeText(item?.label || 'Resource Link', 100);
@@ -74,10 +210,12 @@ export async function onRequestPost(context) {
       })
       .filter(Boolean);
 
-    const eventId = sanitizeText(body.eventId || '07', 10).padStart(2, '0');
     const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
-    const receiptToken = `C26-DEP-${eventId}-${cleanUID.replace(/[^A-Z0-9]/g, '')}-${randomSuffix}`;
+    const receiptToken = `C26-DEP-${spec.code}-${cleanUID.replace(/[^A-Z0-9]/g, '')}-${randomSuffix}`;
     const timestamp = new Date().toISOString();
+
+    // Primary representative URL (for backward compatibility)
+    const primaryUrl = sanitizedDeliverables[spec.requiredKeys[0]] || Object.values(sanitizedDeliverables)[0] || '';
 
     const depositRecord = {
       receiptToken,
@@ -85,14 +223,14 @@ export async function onRequestPost(context) {
       schoolUID: cleanUID,
       schoolName: sanitizeText(body.schoolName || 'Accredited Delegation', 120),
       eventId,
-      eventName: sanitizeText(body.eventName || `Event ${eventId}`, 100),
-      division: sanitizeText(body.division || 'Senior (Grades 9–12)', 50),
+      eventName: spec.name,
+      division: sanitizeText(body.division || 'Senior Track (Grades 9–12)', 50),
       teamName: sanitizeText(body.teamName || 'Delegation Team', 100),
       leadName: sanitizeText(body.leadName || '', 100),
       leadEmail: sanitizeText(body.leadEmail || '', 100),
       leadPhone: sanitizeText(body.leadPhone || '', 30),
-      submissionMethod: 'cloud_folder_and_supplementary_links',
-      driveUrl: cleanDrive,
+      deliverables: sanitizedDeliverables,
+      driveUrl: primaryUrl,
       supplementaryLinks: sanitizedSupplementary,
       projectAbstract: sanitizeText(body.projectAbstract || '', 2000),
       targetDestination: 'dual_sync'
@@ -109,22 +247,51 @@ export async function onRequestPost(context) {
     if (apiKey) {
       try {
         const params = new URLSearchParams();
-        params.append('submission[1]', `SUBMISSION: ${depositRecord.eventName} - ${depositRecord.schoolName}`);
+        params.append('submission[1]', `SUBMISSION: ${spec.code} ${depositRecord.eventName} - ${depositRecord.schoolName} (${cleanUID})`);
         params.append('submission[2]', depositRecord.schoolName);
         params.append('submission[3]', depositRecord.leadName);
         params.append('submission[4]', depositRecord.leadEmail);
         params.append('submission[5]', depositRecord.leadPhone);
         params.append('submission[6]', depositRecord.eventName);
-        params.append('submission[7]', [
+
+        // Detailed human-readable breakdown for Jotform Inbox and Tables
+        const summaryLines = [
+          `CELESTECON 2026 DIGITAL DELIVERABLE DEPOSIT`,
+          `=========================================`,
           `RECEIPT TOKEN: ${receiptToken}`,
-          `SCHOOL UID: ${cleanUID}`,
-          `EVENT: ${depositRecord.eventName} (${depositRecord.division})`,
-          `TEAM: ${depositRecord.teamName}`,
-          `PRIMARY DRIVE LINK: ${depositRecord.driveUrl}`,
-          `SUPPLEMENTARY LINKS:`,
-          ...(depositRecord.supplementaryLinks.map((l, i) => `  ${i + 1}. [${l.label}] ${l.url}`)),
-          `ABSTRACT: ${depositRecord.projectAbstract}`
-        ].join('\n'));
+          `TIMESTAMP:     ${new Date(timestamp).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })} IST`,
+          `SCHOOL UID:    ${cleanUID}`,
+          `INSTITUTION:   ${depositRecord.schoolName}`,
+          `EVENT:         ${spec.code} · ${depositRecord.eventName} (${depositRecord.division})`,
+          `TEAM:          ${depositRecord.teamName}`,
+          `LEAD:          ${depositRecord.leadName} (${depositRecord.leadEmail} · ${depositRecord.leadPhone})`,
+          ``,
+          `--- DELIVERABLES SUBMITTED ---`
+        ];
+
+        for (const [key, val] of Object.entries(sanitizedDeliverables)) {
+          const isReq = spec.requiredKeys.includes(key);
+          const label = spec.keyLabels[key] || key;
+          summaryLines.push(`• [${isReq ? 'MANDATORY' : 'OPTIONAL'}] ${label}:`);
+          summaryLines.push(`  ${val}`);
+        }
+
+        if (depositRecord.supplementaryLinks.length > 0) {
+          summaryLines.push(``);
+          summaryLines.push(`--- SUPPLEMENTARY LINKS (${depositRecord.supplementaryLinks.length}) ---`);
+          depositRecord.supplementaryLinks.forEach((l, i) => {
+            summaryLines.push(`  ${i + 1}. [${l.label}] ${l.url}`);
+          });
+        }
+
+        if (depositRecord.projectAbstract) {
+          summaryLines.push(``);
+          summaryLines.push(`--- PROJECT ABSTRACT / NOTES ---`);
+          summaryLines.push(depositRecord.projectAbstract);
+        }
+        summaryLines.push(`=========================================`);
+
+        params.append('submission[7]', summaryLines.join('\n'));
         params.append('submission[8]', JSON.stringify(depositRecord));
 
         const jotResp = await fetch(
@@ -167,7 +334,7 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 6. Return sanitized client receipt (never leak server API keys or internal responses)
+    // 6. Return sanitized client receipt
     return jsonResponse(
       {
         success: true,
@@ -175,6 +342,8 @@ export async function onRequestPost(context) {
         timestamp,
         schoolUID: cleanUID,
         eventName: depositRecord.eventName,
+        deliverables: depositRecord.deliverables,
+        record: depositRecord,
         syncedTo: {
           jotform: syncedJotform,
           firebase: syncedFirebase,
@@ -188,7 +357,7 @@ export async function onRequestPost(context) {
   } catch (err) {
     console.error('Deposit recording failure:', err);
     return jsonResponse(
-      { error: 'An unexpected error occurred while recording deliverable deposit.' },
+      { error: 'An unexpected error occurred while recording deliverable deposit: ' + err.message },
       500,
       request,
       env
