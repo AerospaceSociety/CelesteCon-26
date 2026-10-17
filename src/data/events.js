@@ -120,15 +120,15 @@ export const events = [
     schoolCap: '1 team (2 students) per school',
     quote: "“It’s better to debate a question without settling it than to settle a question without debating it.”",
     overview:
-      'Qualify through an online aerospace quiz (Quizzitch), then prove your knowledge in a high-energy onsite parliamentary debate.',
-    hook: 'Online Quizzitch screening into a high-energy live parliamentary debate on campus.',
+      'Qualify through an online aerospace quiz (Quizzitch), then prove your knowledge in a high-energy onsite debate.',
+    hook: 'Online Quizzitch screening into a high-energy live debate on campus.',
     rounds: [
       {
         title: 'Round 1 (Online Quiz – Quizzitch · 16 Oct)',
         desc: 'Round 1 Quiz on 16th October on the custom Quizzitch platform. Details will be shared on registered email and updated on the website. A 45-minute timed screening quiz covering orbital mechanics, mission history, space law, astrophysics and aerospace STEM reasoning (+3 / -1). Exactly 2 students from the school participate. The top 10 qualifiers advance to onsite debate rounds.'
       },
       {
-        title: 'Round 2 (Onsite Parliamentary Debate · Motions Released 21 Oct)',
+        title: 'Round 2 (Onsite Debate · Motions Released 21 Oct)',
         desc: 'Motion would be released on 21st October (3 days prior). Paired students debate the assigned motion from opposite stances on event day (24 Oct) at DPS R.K. Puram. Total speaking time is 5 minutes per speaker, with warning bells at 4 and 5 minutes, followed by 5 minutes of cross-questioning: POIs from the opposing participant, school delegates, and judges’ questions. Notes are allowed for reference.'
       }
     ],

@@ -1,15 +1,15 @@
 # Event 03: In Pursuit of Dispute (IPOD)
-**Discipline:** Aerospace Quiz (Quizzitch) & Parliamentary Debate  
+**Discipline:** Aerospace Quiz (Quizzitch) & Debate  
 **Eligibility:** Senior Track (Grades 9–12)  
 **Team Composition:** 2 students (Team representative per school delegation)  
 **School Limit:** Exactly 1 team (2 students) per school  
-**Competition Mode:** Hybrid (Online Quizzitch Qualifier → Onsite Parliamentary Debate Chambers)  
+**Competition Mode:** Hybrid (Online Quizzitch Qualifier → Onsite Debate Chambers)  
 **Official Motto:** *"It’s better to debate a question without settling it than to settle a question without debating it."*
 
 ---
 
 ## 1. Executive Summary
-In Pursuit of Dispute tests both rapid aerospace domain recall and classical parliamentary rhetoric. A team of two represents the school delegation in the online Quizzitch screening examination. The top 10 qualifying teams statewide advance to head-to-head Oxford-style parliamentary debates inside the debate chambers of CelesteCon 2026.
+In Pursuit of Dispute tests both rapid aerospace domain recall and classical debate rhetoric. A team of two represents the school delegation in the online Quizzitch screening examination. The top 10 qualifying teams statewide advance to head-to-head Oxford-style debates inside the debate chambers of CelesteCon 2026.
 
 ---
 
@@ -22,7 +22,7 @@ In Pursuit of Dispute tests both rapid aerospace domain recall and classical par
 - **Marking Scheme:** Single correct (+3 marks for correct answer, -1 mark negative marking for incorrect response, 0 for unattempted). Speed bonus points for early error-free submissions.
 - **Cutoff:** Top 10 qualifying teams advance to Round 2.
 
-### Round 2: Onsite Parliamentary Debate Chambers
+### Round 2: Onsite Debate Chambers
 - **Date & Reporting:** 24 October 2026, 07:45 AM at DPS R.K. Puram
 - **Motions Release:** Formal motions assigned 3 days prior (21 October 2026). Stances (Government vs Opposition) allotted randomly by the speaker's chair.
 - **Speaking Time:** 5 minutes per speaker with warning bells at 4 minutes and 5 minutes.
@@ -35,7 +35,7 @@ In Pursuit of Dispute tests both rapid aerospace domain recall and classical par
 - **Argumentation & Logical Consistency (25 pts):** Constructive syllogisms, evidence validation, and avoidance of fallacies.
 - **Response to POIs & Cross-Examination (20 pts):** Sharpness of rebuttals under intense judicial and floor cross-questioning.
 - **Rhetorical Poise & Structure (15 pts):** Eloquence, cadence, speech framework, and time management.
-- **Etiquette & Parliamentary Demeanour (15 pts):** Decorum, respect for the chair, and adherence to debate chamber protocol.
+- **Etiquette & Debate Demeanour (15 pts):** Decorum, respect for the chair, and adherence to debate chamber protocol.
 
 ---
 

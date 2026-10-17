@@ -20,7 +20,6 @@ const COMP_CODES = {
   rocketry: 'Roc',
   f1: 'APrix'
 };
-
 const DELIVERABLE_INFO = {
   '01': {
     format: 'PDF Proposal (Max 25 pages Jr / 35 pages Sr)',
@@ -31,15 +30,15 @@ const DELIVERABLE_INFO = {
     portalLabel: 'Settle-Me-This'
   },
   '02': {
-    format: 'Online Proposal + 3D CAD (.step / .stl / .f3d)',
+    format: 'Technical Dossier PDF (Max 25 pages) + 3D CAD (.step / .stl / .f3d / .blend)',
     submissionMode: 'Online Upload',
-    details: 'Aeronautical design & 3D digital prototyping (incorporating Dimension III). Four mission RFPs across Junior & Senior divisions: Flockmate, Floodline, Thin Air & Cloud Hauler. Top teams exhibit on campus.',
+    details: 'Aeronautical design & 3D digital prototyping. Two mission RFPs in the Senior division: Thin Air & Flockmate. Top teams exhibit on campus.',
     portalUrl: '/prompts/volatus',
     isLive: true,
     portalLabel: 'Volatus'
   },
   '03': {
-    format: 'Round 1 Quiz (16 Oct) · Round 2 Parliamentary Debate',
+    format: 'Round 1 Quiz (16 Oct) · Round 2 Debate',
     submissionMode: 'Online Screening + Onsite Chambers',
     details: 'Round 1 Quiz on 16th October on Quizzitch platform (details shared on registered email and updated on website). Round 2 debate motions released 21st October. Top 10 advance to debate chambers on campus.',
     portalUrl: '/prompts/ipod',
@@ -47,9 +46,9 @@ const DELIVERABLE_INFO = {
     portalLabel: 'In Pursuit of Dispute (IPoD)'
   },
   '04': {
-    format: 'Pitch Deck (PDF) + 5-Min Video Pitch (MP4 / Drive)',
+    format: 'Proposal PDF (Max 25 pp Jr / 30 pp Sr) + 12-Slide Pitch Deck',
     submissionMode: 'Online Upload',
-    details: 'Commercial space venture pitch across atmospheric layers (troposphere through exosphere). Ten prompts across Junior & Senior divisions. Top 6 teams per division advance to live investor pitch at CelesteCon.',
+    details: 'Commercial aerospace venture pitch across atmospheric layers (troposphere through exosphere). Eight prompts across Junior & Senior divisions. Top teams advance to live investor pitch at CelesteCon.',
     portalUrl: '/prompts/bpp',
     isLive: true,
     portalLabel: 'Business Power Pitch'

@@ -34,7 +34,7 @@ const INTERNAL_EVENTS = [
     minMembers: 2,
     maxMembers: 2,
     gradesAllowed: 'senior',
-    overview: 'Online Quizzitch screening round leading into live parliamentary debate chambers on campus.',
+    overview: 'Online Quizzitch screening round leading into live debate chambers on campus.',
     portalUrl: '/prompts/dispute'
   },
   {

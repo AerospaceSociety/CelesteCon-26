@@ -1,8 +1,22 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const R1_DEADLINE = new Date('2026-10-18T23:59:00+05:30').getTime();
-const VALID_SECTIONS = ['brief', 'format', 'tracks', 'template', 'rules', 'rubrics'];
+const VALID_SECTIONS = ['brief', 'prompts', 'guide', 'checklist', 'rules'];
+
+const HASH_MAP = {
+  tracks: 'prompts',
+  template: 'guide',
+  cad: 'guide',
+  rubrics: 'rules',
+  format: 'brief',
+  calc: 'brief'
+};
+
+const resolveSection = (raw) => {
+  const h = (raw || '').replace('#', '').toLowerCase();
+  const mapped = HASH_MAP[h] || h;
+  return VALID_SECTIONS.includes(mapped) ? mapped : 'brief';
+};
 
 const JUNIOR_RFPS = [
   {
@@ -125,7 +139,7 @@ const SENIOR_RFPS = [
     site: 'Captured Interstellar Object (ISO) in an eccentric heliocentric trajectory',
     population: '30,000 scientists, deep-space miners, and astrobiologists',
     delay: '5–45 minutes to Earth',
-    solarFlux: 'Variable along hyperbolic hyperbolic trajectory',
+    solarFlux: 'Variable along hyperbolic trajectory',
     background:
       'An interstellar object from another star system has entered the solar system on a hyperbolic trajectory. Through an unprecedented international effort, ion-drive tugs intercept and anchor a massive orbital research facility to the object to extract exotic extrasolar minerals and study pre-solar organic compounds before it slingshots away.',
     rfpSummary:
@@ -174,62 +188,36 @@ const SENIOR_RFPS = [
 
 const CHECKLIST_ITEMS = [
   { id: 'c1', label: 'Proposal PDF formatted with selectable text (no scanned images), cover, contents, and SI units.' },
-  { id: 'c2', label: 'Page limits respected: Junior max 25 pages · Senior max 35 pages (main body).' },
-  { id: 'c3', label: 'Executive pitch deck PDF prepared (Junior max 12 slides · Senior max 15 slides, 16:9).' },
+  { id: 'c2', label: 'Page limit respected, counting every page including cover, contents and references: Junior max 25 · Senior max 35.' },
   { id: 'c4', label: 'Artificial gravity rotational maths verified: Radius, RPM, and tangential velocity within comfort band (≤2 RPM).' },
   { id: 'c5', label: 'Closed-loop ECLSS mass balance table included: Oxygen, water, food, and metabolic waste closure.' },
   { id: 'c6', label: 'Radiation shielding thickness specified with material density and cosmic ray/SPE attenuation rationale.' },
   { id: 'c7', label: 'Mass budget table provided with clear origin split (Earth launch vs In-Situ Resource Utilization).' },
   { id: 'c8', label: 'Thermal management & power generation budget: Wattage balance, radiator area, and night/eclipse reserves.' },
   { id: 'c9', label: '2D/3D schematics, isometric cuts, and annotated diagrams included with figure numbers and captions.' },
-  { id: 'c10', label: 'Optional Brownie Challenge clearly marked in Section B of the proposal (if attempted for bonus pts).' },
   { id: 'c11', label: 'Academic integrity & AI disclosure declaration signed: all citations and generative tools credited.' },
-  { id: 'c12', label: 'PDF files tested and uploaded to the official CelesteCon Submission Vault before 18 Oct 23:59:59 IST.' }
+  { id: 'c12', label: 'PDF file uploaded to the official CelesteCon Submission Portal before 18 Oct, 11:59 PM IST.' }
 ];
 
 export default function SettlementPrompt() {
-  const [activeSection, setActiveSection] = useState(() => {
-    const hash = window.location.hash.replace('#', '');
-    return VALID_SECTIONS.includes(hash) ? hash : 'brief';
-  });
-
+  const [activeSection, setActiveSection] = useState(() => resolveSection(window.location.hash));
   const [division, setDivision] = useState('junior');
-  const [selectedTrackId, setSelectedTrackId] = useState('j-fringe');
+  const [selectedTrackId, setSelectedTrackId] = useState(null);
 
-  // Interactive preflight checklist state with localStorage
+  // Interactive preflight checklist state with localStorage (default empty)
   const [checkedItems, setCheckedItems] = useState(() => {
     try {
       const saved = localStorage.getItem('c26-smt-checklist');
-      return saved ? JSON.parse(saved) : { c1: true, c2: true };
+      return saved ? JSON.parse(saved) : {};
     } catch {
-      return { c1: true, c2: true };
+      return {};
     }
   });
-
-  // Countdown timer
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, isLive: true });
-
-  useEffect(() => {
-    const update = () => {
-      const now = Date.now();
-      const diff = Math.max(0, R1_DEADLINE - now);
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / (1000 * 60)) % 60);
-      setTimeLeft({ days: d, hours: h, minutes: m, isLive: diff > 0 });
-    };
-    update();
-    const timer = setInterval(update, 60000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Sync section hash
   useEffect(() => {
     const onHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (VALID_SECTIONS.includes(hash)) {
-        setActiveSection(hash);
-      }
+      setActiveSection(resolveSection(window.location.hash));
     };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
@@ -250,49 +238,32 @@ export default function SettlementPrompt() {
     });
   };
 
-  const resetChecklist = () => {
-    setCheckedItems({});
-    try {
-      localStorage.setItem('c26-smt-checklist', JSON.stringify({}));
-    } catch {}
-  };
-
-  const checkedCount = useMemo(() => {
-    return Object.values(checkedItems).filter(Boolean).length;
-  }, [checkedItems]);
-
   const activeRfps = division === 'junior' ? JUNIOR_RFPS : SENIOR_RFPS;
-  const currentRfp = activeRfps.find((r) => r.id === selectedTrackId) || activeRfps[0];
+  const currentRfp = selectedTrackId ? activeRfps.find((r) => r.id === selectedTrackId) : null;
 
   return (
-    <div className="space-y-8 animate-fadeIn pb-16">
+    <div className="space-y-8 pb-16">
       {/* Top Breadcrumb & Status */}
       <div className="border-b-2 border-bone/30 pb-3 flex flex-wrap justify-between items-center gap-3 font-mono text-xs text-bone-dim">
         <div className="flex items-center gap-2 flex-wrap">
-          <Link to="/" className="hover:text-crimson transition-colors">CELESTECON 2026</Link>
+          <Link to="/" className="text-bone-dim hover:text-crimson">CELESTECON 2026</Link>
           <span>/</span>
-          <Link to="/comps" className="hover:text-crimson transition-colors">COMPETITIONS</Link>
+          <Link to="/comps" className="text-bone-dim hover:text-crimson">COMPETITIONS</Link>
           <span>/</span>
-          <Link to="/prompts" className="hover:text-crimson transition-colors">PROMPTS</Link>
+          <Link to="/prompts" className="text-bone-dim hover:text-crimson">PROMPTS</Link>
           <span>/</span>
           <span className="text-crimson font-bold uppercase">EVENT 01 · SETTLE-ME-THIS</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
-            <span>Submission Vault</span>
+          <Link to="/submissions" className="text-crimson font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
+            <span>Submission Portal</span>
             <span>→</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">DOSSIER UNLOCKED</span>
-          </div>
         </div>
       </div>
 
       {/* Main Hero Header */}
-      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-28 -mt-28"></div>
-
+      <div className="border-2 border-bone bg-ink p-6 sm:p-8 relative">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 relative z-10">
           <div className="space-y-4 max-w-3xl">
             <div className="flex items-center gap-2 flex-wrap">
@@ -305,77 +276,51 @@ export default function SettlementPrompt() {
               <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
                 Junior (Grades 6–8) · Senior (Grades 9–12)
               </span>
-              <span className="font-mono text-xs uppercase px-2.5 py-0.5 bg-green-500/10 text-green-400 border border-green-500/40 font-bold">
-                ● 6 RFPs ACTIVE
-              </span>
             </div>
 
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl text-bone uppercase tracking-wide leading-none">
               Settle-Me-This <span className="text-crimson">2026</span>
             </h1>
 
-            <div className="p-3 bg-amber-500/10 border-l-4 border-amber-500 font-mono text-xs sm:text-sm text-bone">
-              <span className="text-amber-400 font-bold uppercase tracking-widest block mb-0.5">
-                // OFFICIAL MISSION MOTTO
-              </span>
-              <span className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wider">
-                &ldquo;Mankind was born on Earth. It was never meant to die here.&rdquo;
-              </span>
-            </div>
-
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              Design a permanent, habitable free-space settlement where thousands of people live, work, and thrive for decades far from Earth. Close every environmental loop, count every tonne of launched vs. mined mass, balance thermal radiation, and engineer centrifugal artificial gravity. Six RFPs across two divisions; Round 1 proposals due 18 October, followed by live on-campus jury defense at DPS R.K. Puram on 24 October 2026.
+              Design a permanent, habitable settlement in free space where thousands of people live and work. Submit a written proposal online in Round 1. The top 5 teams in each category present at DPS R.K. Puram on 24 Oct. The settlement must not be on a planet or moon; support activities may be. The site named in your prompt applies.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
               <button
-                onClick={() => handleSectionChange('tracks')}
-                className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-all cursor-pointer shadow-md"
+                onClick={() => handleSectionChange('prompts')}
+                className="px-5 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson cursor-pointer"
               >
-                Explore 6 Mission RFPs →
+                Explore Prompts →
               </button>
               <button
-                onClick={() => handleSectionChange('template')}
-                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-all cursor-pointer"
+                onClick={() => handleSectionChange('guide')}
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Proposal Template
+                Proposal Guide
               </button>
               <button
                 onClick={() => handleSectionChange('checklist')}
-                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-bone transition-all cursor-pointer"
+                className="px-5 py-2.5 bg-ink-2 text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 cursor-pointer"
               >
-                Preflight Checklist
+                Checklist
               </button>
             </div>
           </div>
 
-          {/* Telemetry Aside Box */}
-          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0 shadow-xl">
+          {/* Aside Telemetry Box */}
+          <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
-              <span className="text-bone-dim uppercase">Round 1 Proposal Window</span>
+              <span className="text-bone-dim uppercase">Proposal Window</span>
               <span className="font-bold text-green-400 uppercase">
-                {timeLeft.isLive ? '● SUBMISSIONS OPEN' : 'WINDOW CLOSED'}
+                Round 1 Online
               </span>
             </div>
 
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-bone-dim uppercase block">
-                Deadline: 18 Oct 23:59:59 IST
-              </span>
-              <div className="grid grid-cols-3 gap-1.5 text-center font-mono">
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.days}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Days Left</span>
-                </div>
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-bone block leading-tight">{timeLeft.hours}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Hours</span>
-                </div>
-                <div className="bg-ink p-2 border border-bone/20">
-                  <span className="text-xl font-bold text-crimson block leading-tight">{timeLeft.minutes}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Mins</span>
-                </div>
-              </div>
+            <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
+              <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
+              <strong className="text-bone text-sm block">18 Oct, 11:59 PM IST</strong>
+              <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
             <div className="space-y-1.5 font-mono text-[11px] text-bone-dim pt-2 border-t border-bone/20">
@@ -389,7 +334,7 @@ export default function SettlementPrompt() {
               </div>
               <div className="flex justify-between">
                 <span>Deliverable:</span>
-                <strong className="text-bone">PDF Proposal + Deck</strong>
+                <strong className="text-bone">PDF Proposal</strong>
               </div>
               <div className="flex justify-between">
                 <span>Round 2 Finale:</span>
@@ -399,9 +344,9 @@ export default function SettlementPrompt() {
 
             <Link
               to="/submissions"
-              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block shadow-md"
+              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson block"
             >
-              Deposit Proposal PDF →
+              Go to Submission Portal →
             </Link>
           </div>
         </div>
@@ -410,19 +355,18 @@ export default function SettlementPrompt() {
       {/* Navigation Tabs Bar */}
       <div className="border-2 border-bone/60 bg-ink-2 p-1.5 flex flex-wrap gap-1.5 font-mono text-xs uppercase tracking-wider">
         {[
-          { id: 'brief', label: '01 · The Brief' },
-          { id: 'format', label: '02 · Format & Scoring' },
-          { id: 'tracks', label: '03 · Mission RFPs' },
-          { id: 'template', label: '04 · Proposal Guide' },
-          { id: 'checklist', label: '05 · Checklist' },
-          { id: 'rules', label: '06 · Rules & Rubric' }
+          { id: 'brief', label: '1 Event Brief' },
+          { id: 'prompts', label: '2 Prompts' },
+          { id: 'guide', label: '3 Proposal Guide' },
+          { id: 'checklist', label: '4 Checklist' },
+          { id: 'rules', label: '5 Rules' }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleSectionChange(tab.id)}
-            className={`flex-1 sm:flex-initial px-4 py-2 font-bold transition-all cursor-pointer text-center ${
+            className={`flex-1 sm:flex-initial px-4 py-2 font-bold cursor-pointer text-center ${
               activeSection === tab.id
-                ? 'bg-crimson text-bone-hi shadow-md'
+                ? 'bg-crimson text-bone-hi'
                 : 'text-bone-dim hover:text-bone hover:bg-ink'
             }`}
           >
@@ -432,86 +376,120 @@ export default function SettlementPrompt() {
       </div>
 
       {/* ======================================================== */}
-      {/* SECTION 01: THE BRIEF */}
+      {/* SECTION 1: EVENT BRIEF */}
       {/* ======================================================== */}
       {activeSection === 'brief' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
+        <div className="space-y-8">
+          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-8">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 01</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 1 · Event Brief</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Close Every Loop. Count Every Tonne. Keep People Sane.
+                Space Settlement Architecture &amp; Mission Directive
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-bone-dim leading-relaxed">
-              <div className="space-y-4">
-                <p className="text-bone font-medium text-base">
-                  Anyone can sketch a spinning cylinder in CAD. The teams that win Settle-Me-This prove <em>where every kilogram of oxygen comes from</em>, what happens the night the main reactor trips, and how 15,000 human beings stay healthy and governed in year ten.
-                </p>
-                <p>
-                  A space settlement is a city, a farm, a nuclear powerplant, an intensive care hospital, and a pressurized spaceship at the same time. Every system interconnects: more radiation shielding increases structural mass; more mass requires larger attitude thrusters or lunar mining logistics; mining demands energy; energy rejects heat; heat demands massive radiator arrays. Systems engineering is managing this web of mutual dependencies.
-                </p>
-              </div>
+            {/* Core Narrative */}
+            <div className="text-sm text-bone-dim leading-relaxed space-y-4">
+              <p className="text-bone font-medium text-base">
+                Design a permanent, habitable settlement in free space where thousands of people live and work. Submit a written proposal online in Round 1. The top 5 teams in each category present at DPS R.K. Puram on 24 Oct. The settlement must not be on a planet or moon; support activities may be. The site named in your prompt applies.
+              </p>
+              <p>
+                Junior (Grades 6–8) and Senior (Grades 9–12) divisions are judged separately. Teams must consist of 3 to 5 students from the same school, with a maximum of one team per school per category. In Round 1, teams submit a written Proposal PDF only (max 25 pages for Juniors, max 35 pages for Seniors). A presentation deck is optional and is used in Round 2.
+              </p>
+            </div>
 
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 01</span>
-                  <strong className="text-bone block uppercase">The Air Test</strong>
-                  <p className="text-[11px] text-bone-dim">Hold 101.3 kPa pressure, seal bulkheads against micro-fractures, and isolate compartmental breaches.</p>
+            {/* Key Dates Block */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-amber-400 font-bold uppercase block">// Key Dates</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">13 Oct</span>
+                  <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 02</span>
-                  <strong className="text-bone block uppercase">The Night Test</strong>
-                  <p className="text-[11px] text-bone-dim">Survive eclipses, reactor maintenance, and solar flares with redundant backup storage.</p>
+                <div className="p-3 bg-crimson/10 border border-crimson">
+                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
+                  <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 03</span>
-                  <strong className="text-bone block uppercase">The Tonne Test</strong>
-                  <p className="text-[11px] text-bone-dim">Split every kilogram: Earth-launched high-value tech vs. in-situ mined asteroidal/lunar bulk mass.</p>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">20 Oct</span>
+                  <strong className="text-bone block mt-0.5">Shortlist Announced</strong>
                 </div>
-                <div className="bg-ink-2 p-3.5 border border-bone/20 space-y-1">
-                  <span className="text-crimson font-bold block">// TEST 04</span>
-                  <strong className="text-bone block uppercase">The Year-Ten Test</strong>
-                  <p className="text-[11px] text-bone-dim">Psychological comfort, private space, greenery, civic rights, acoustics, and societal cohesion.</p>
+                <div className="p-3 bg-ink border border-bone/20">
+                  <span className="text-bone-dim block text-[10px]">24 Oct</span>
+                  <strong className="text-bone block mt-0.5">Finale at DPS R.K. Puram (Report 07:45–08:45 AM)</strong>
                 </div>
               </div>
             </div>
 
-            {/* The Four Pillars */}
-            <div className="pt-4 border-t border-bone/20">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold mb-4">
-                The Four Pillars of Space Settlement Engineering
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">01</span>
-                  <div className="font-display text-base text-bone uppercase">Physics Holds</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Zero warp drives, artificial gravity only through centrifugal rotation (<span className="font-mono">a = ω²r</span>), real structural tensile limits.
+            {/* Division Page Limits Cards */}
+            <div className="border-2 border-crimson/80 bg-crimson/10 p-5 sm:p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-crimson/30 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-widest">
+                    OFFICIAL SUBMISSION LIMITS
+                  </span>
+                  <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Written Proposal PDF</span>
+                </div>
+                <span className="font-mono text-xs text-amber-400 font-bold uppercase">
+                  Deadline: 18 Oct, 11:59 PM IST
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono">
+                {/* Junior Card */}
+                <div className="border border-bone/30 bg-ink p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs uppercase text-bone-dim font-bold">Junior Division (Grades 6–8)</span>
+                    <span className="px-2 py-0.5 bg-bone text-ink text-xs font-bold">JR CATEGORY</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Juniors: <span className="text-crimson">25 Pages</span> Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Strict maximum limit of <strong>25 pages</strong>, counting every page including cover, contents, references, AI disclosure and declaration.
                   </p>
                 </div>
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">02</span>
-                  <div className="font-display text-base text-bone uppercase">Every Tonne Accounted</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Every kilogram is either launched from Earth or mined on site. A detailed mass budget separates the two.
+
+                {/* Senior Card */}
+                <div className="border border-bone/30 bg-ink p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs uppercase text-bone-dim font-bold">Senior Division (Grades 9–12)</span>
+                    <span className="px-2 py-0.5 bg-crimson text-bone-hi text-xs font-bold">SR CATEGORY</span>
+                  </div>
+                  <div className="font-display text-2xl text-bone uppercase">
+                    Seniors: <span className="text-crimson">35 Pages</span> Limit
+                  </div>
+                  <p className="font-sans text-xs text-bone-dim leading-relaxed">
+                    Strict maximum limit of <strong>35 pages</strong>, counting every page including cover, contents, references, AI disclosure and declaration.
                   </p>
                 </div>
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">03</span>
-                  <div className="font-display text-base text-bone uppercase">The Loops Close</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Complete closed-cycle mass balance per person: 0.84 kg O₂, 2.5 L water, 0.62 kg dry nutrition daily. Waste must be 100% recycled.
-                  </p>
-                </div>
-                <div className="border border-bone/30 bg-ink-2 p-4 space-y-2">
-                  <span className="text-2xl font-bold font-display text-crimson">04</span>
-                  <div className="font-display text-base text-bone uppercase">Human Centric</div>
-                  <p className="text-[11px] text-bone-dim font-sans">
-                    Minimum 45 m² habitable volume per person, radiation below 20 mSv/year, parks, medical facilities, and civic governance.
-                  </p>
-                </div>
+              </div>
+
+              <div className="pt-1 font-mono text-xs text-bone-dim">
+                <span>Deliverable: Single PDF proposal document uploaded to the CelesteCon Submission Portal. A presentation deck is optional and is used in Round 2.</span>
+              </div>
+            </div>
+
+            {/* Round 2 Finale Details */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <span className="text-crimson font-bold uppercase block">// Round 2 Finale Protocol</span>
+              <p className="text-bone-dim font-sans text-xs leading-relaxed">
+                The top 5 teams in each category qualify for the Round 2 finale (announced on 20 Oct) and may improve their submission beforehand. Finalists deliver a 7-minute presentation before an evaluation panel, followed by up to 5 minutes of questions. A digital presentation or other supporting material is optional.
+              </p>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-2 flex flex-wrap justify-between items-center gap-4 font-mono text-xs">
+              <div className="text-bone-dim">
+                Point of Contact: <strong className="text-bone">Arshia Barsain</strong> (<a href="mailto:r24333arshia@dpsrkp.net" className="text-crimson hover:underline">r24333arshia@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
+              </div>
+              <div className="flex gap-3">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
+                  ← Back to Comps
+                </Link>
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
+                  Go to Submission Portal →
+                </Link>
               </div>
             </div>
           </div>
@@ -519,98 +497,23 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 02: FORMAT & SCORING */}
+      {/* SECTION 2: PROMPTS */}
       {/* ======================================================== */}
-      {activeSection === 'format' && (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 02</span>
-              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Format, Scoring &amp; Milestones
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Round 1 Card */}
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">ROUND 1 · ONLINE</span>
-                  <span className="font-mono text-[11px] text-amber-400 font-bold">DUE 18 OCT 23:59 IST</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Engineering Proposal &amp; Executive Deck</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Junior Length:</strong> 15–20 pages recommended (strict max 25 pages).</li>
-                  <li><strong className="text-bone">Senior Length:</strong> 20–25 pages recommended (strict max 35 pages).</li>
-                  <li><strong className="text-bone">Executive Pitch Deck:</strong> Max 12 slides (Jr) or 15 slides (Sr) in 16:9 PDF.</li>
-                  <li><strong className="text-bone">Optional Brownie Challenge:</strong> Max 3 additional pages for up to 10 bonus points.</li>
-                  <li><strong className="text-bone">Language &amp; Units:</strong> English only; strict SI metric units (<span className="text-crimson">kg, m, kPa, kW</span>).</li>
-                </ul>
-              </div>
-
-              {/* Round 2 Card */}
-              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-                <div className="flex justify-between items-center border-b border-bone/20 pb-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 border border-bone text-bone">ROUND 2 · ONSITE</span>
-                  <span className="font-mono text-[11px] text-green-400 font-bold">24 OCT · DPS R.K. PURAM</span>
-                </div>
-                <h3 className="font-display text-xl text-bone uppercase">Live Defense &amp; Curveball Interrogation</h3>
-                <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                  <li><strong className="text-bone">Qualifiers:</strong> Top 5 teams from Junior and Top 5 teams from Senior division.</li>
-                  <li><strong className="text-bone">Oral Defense:</strong> 7 minutes (Junior) or 10 minutes (Senior) formal presentation.</li>
-                  <li><strong className="text-bone">Jury Cross-Examination:</strong> 5–8 minutes rigorous interrogation by aerospace scientists.</li>
-                  <li><strong className="text-bone">The Curveball:</strong> Sudden scenario injected live (e.g. solar flare, crop failure) with 2 mins to respond.</li>
-                  <li><strong className="text-bone">Scoring Carry-Forward:</strong> R1 score (100 pts) + R2 score (100 pts) = 200 pts total + bonus.</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Signature Awards */}
-            <div className="pt-4 border-t border-bone/20">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone-dim font-bold mb-3">
-                CelesteCon SMT Signature Awards
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 font-mono text-xs">
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-amber-400 block mb-1">The O&apos;Neill Cup</strong>
-                  <p className="text-[11px] text-bone-dim">Best overall systems integration &amp; architectural elegance.</p>
-                </div>
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-emerald-400 block mb-1">The Closed-Loop Prize</strong>
-                  <p className="text-[11px] text-bone-dim">Highest fidelity ECLSS life support and chemical mass balance.</p>
-                </div>
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-cyan-400 block mb-1">The Habitat Award</strong>
-                  <p className="text-[11px] text-bone-dim">Most livable community design, ergonomic layout, and psychological wellness.</p>
-                </div>
-                <div className="bg-ink p-3 border border-bone/20">
-                  <strong className="text-crimson block mb-1">The Iron Defense Award</strong>
-                  <p className="text-[11px] text-bone-dim">Sharpest poise and technical command during jury cross-examination.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* SECTION 03: MISSION RFPS */}
-      {/* ======================================================== */}
-      {activeSection === 'tracks' && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Division Switcher */}
+      {activeSection === 'prompts' && (
+        <div className="space-y-6">
+          {/* Division Selector */}
           <div className="border-2 border-bone/40 bg-ink p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <span className="font-mono text-xs text-crimson font-bold uppercase tracking-wider block">Division Selection</span>
-              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 3 corresponding Requests for Proposals.</span>
+              <span className="font-label text-sm text-bone-dim">Choose your category to inspect the 3 corresponding settlement prompts.</span>
             </div>
             <div className="flex gap-2 w-full sm:w-auto font-mono text-xs font-bold uppercase">
               <button
                 onClick={() => {
                   setDivision('junior');
-                  setSelectedTrackId('j-fringe');
+                  setSelectedTrackId(null);
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer transition-colors ${
                   division === 'junior'
                     ? 'bg-bone text-ink border-bone'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -621,9 +524,9 @@ export default function SettlementPrompt() {
               <button
                 onClick={() => {
                   setDivision('senior');
-                  setSelectedTrackId('s-cradle');
+                  setSelectedTrackId(null);
                 }}
-                className={`flex-1 sm:flex-initial px-5 py-2.5 border transition-all cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-5 py-2.5 border cursor-pointer transition-colors ${
                   division === 'senior'
                     ? 'bg-crimson text-bone-hi border-crimson'
                     : 'bg-ink-2 text-bone-dim border-bone/40 hover:text-bone'
@@ -634,130 +537,179 @@ export default function SettlementPrompt() {
             </div>
           </div>
 
-          {/* Track Tabs for Selected Division */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-xs">
-            {activeRfps.map((rfp) => (
-              <button
-                key={rfp.id}
-                onClick={() => setSelectedTrackId(rfp.id)}
-                className={`p-3.5 border text-left transition-all cursor-pointer ${
-                  selectedTrackId === rfp.id
-                    ? 'bg-ink border-crimson shadow-lg'
-                    : 'bg-ink-2 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/60'
-                }`}
-              >
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-crimson">{rfp.code}</span>
-                  <span className="text-[10px] text-bone-dim uppercase">{rfp.trackName}</span>
-                </div>
-                <div className="font-display text-base text-bone uppercase leading-tight">{rfp.title}</div>
-                <div className="text-[10px] text-bone-dim mt-1 truncate">{rfp.meta}</div>
-              </button>
-            ))}
+          {/* Section Subhead & Prompt Selector Cards */}
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-mono text-xs border-b border-bone/20 pb-2">
+              <span className="text-crimson font-bold uppercase tracking-wider">
+                // {division === 'junior' ? 'Junior' : 'Senior'} Settlement Prompts (Choose One)
+              </span>
+              <span className="text-bone-dim text-[11px]">
+                {selectedTrackId ? 'Click another card to switch prompt' : 'Choose a prompt below to see details'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+              {activeRfps.map((rfp) => {
+                const isSelected = selectedTrackId === rfp.id;
+                return (
+                  <button
+                    key={rfp.id}
+                    onClick={() => setSelectedTrackId(rfp.id)}
+                    className={`p-4 border text-left cursor-pointer transition-all relative ${
+                      isSelected
+                        ? 'bg-crimson/10 border-2 border-crimson shadow-lg ring-1 ring-crimson/40'
+                        : 'bg-ink-2/80 border-bone/30 text-bone-dim hover:text-bone hover:border-bone/70 hover:bg-ink-2'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className={`font-bold ${isSelected ? 'text-crimson text-sm' : 'text-crimson'}`}>
+                        {rfp.code}
+                      </span>
+                      {isSelected ? (
+                        <span className="px-1.5 py-0.5 bg-crimson text-bone-hi text-[9px] font-bold uppercase tracking-wider">
+                          Viewing
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-bone-dim uppercase">{rfp.trackName}</span>
+                      )}
+                    </div>
+                    <div className="font-display text-lg text-bone uppercase leading-tight mb-1">
+                      {rfp.title}
+                    </div>
+                    <div className="text-[11px] text-bone-dim leading-relaxed">
+                      {rfp.meta}
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-bone/10 flex items-center justify-between text-[10px]">
+                      <span className={isSelected ? 'text-crimson font-bold' : 'text-bone-dim'}>
+                        {isSelected ? '● Active Selection' : 'Click to inspect prompt →'}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Active RFP Full Brief Dossier */}
-          <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{currentRfp.code}</span>
-                  <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
-                    {division === 'junior' ? 'Junior Track' : 'Senior Track'}
-                  </span>
-                </div>
-                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
-                  {currentRfp.title}
-                </h2>
+          {/* Detailed Prompt Brief or Placeholder */}
+          {!currentRfp ? (
+            <div className="border-2 border-dashed border-bone/30 bg-ink-2/40 p-8 sm:p-14 text-center space-y-4 font-mono">
+              <div className="w-12 h-12 mx-auto border-2 border-crimson rounded-full flex items-center justify-center text-crimson text-xl font-bold bg-crimson/10 animate-pulse">
+                ↑
               </div>
-              <div className="text-right font-mono text-xs text-bone-dim">
-                <div>Site: <strong className="text-bone">{currentRfp.site}</strong></div>
-                <div>Population: <strong className="text-amber-400">{currentRfp.population}</strong></div>
-              </div>
-            </div>
-
-            {/* Parameters Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Location / Orbit</span>
-                <strong className="text-bone">{currentRfp.site}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Population Capacity</span>
-                <strong className="text-bone">{currentRfp.population}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Communications Latency</span>
-                <strong className="text-bone">{currentRfp.delay}</strong>
-              </div>
-              <div className="bg-ink-2 p-3 border border-bone/20">
-                <span className="text-bone-dim text-[10px] uppercase block">Solar Flux Density</span>
-                <strong className="text-amber-400">{currentRfp.solarFlux}</strong>
-              </div>
-            </div>
-
-            {/* Background Story & Mission Mandate */}
-            <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// 1.0 Client Background</h3>
-              <p>{currentRfp.background}</p>
-              <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// 2.0 Engineering Mandate</h3>
-              <p>{currentRfp.rfpSummary}</p>
-            </div>
-
-            {/* Technical Constraints */}
-            <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
-                <span>⚠ Mandatory Engineering Constraints</span>
-              </h3>
-              <ul className="space-y-2 font-mono text-xs text-bone-dim">
-                {currentRfp.constraints.map((c, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-crimson font-bold">▶</span>
-                    <span>{c}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Optional Brownie Challenge */}
-            <div className="border-2 border-dashed border-amber-500/80 bg-amber-500/5 p-5 space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="font-mono text-xs text-amber-400 font-bold uppercase tracking-widest">
-                  ★ Optional Brownie Challenge (+10 Bonus Points)
+              <div className="space-y-1">
+                <span className="text-crimson uppercase text-xs font-bold tracking-widest block">
+                  Prompt Selection Required
                 </span>
-                <span className="font-mono text-[10px] text-bone-dim">Section B of Proposal</span>
+                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase tracking-wider">
+                  Choose a prompt to see details
+                </h3>
               </div>
-              <h4 className="font-display text-xl text-bone uppercase">{currentRfp.brownie.title}</h4>
-              <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
-                {currentRfp.brownie.prompt}
+              <p className="font-sans text-xs sm:text-sm text-bone-dim max-w-lg mx-auto leading-relaxed">
+                Click any of the 3 {division === 'junior' ? 'Junior' : 'Senior'} settlement prompts above to view the full architectural directive, target celestial site, population scope, design constraints, and optional Brownie challenge.
               </p>
             </div>
-          </div>
+          ) : (
+            <div className="border-2 border-bone bg-ink p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi">{currentRfp.code}</span>
+                    <span className="font-mono text-xs uppercase px-2 py-0.5 border border-bone/40 text-bone-dim">
+                      {currentRfp.trackName}
+                    </span>
+                  </div>
+                  <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider">
+                    {currentRfp.title}
+                  </h2>
+                </div>
+                <div className="text-right font-mono text-xs text-bone-dim">
+                  <div>Target Site: <strong className="text-bone">{currentRfp.site}</strong></div>
+                  <div>Population: <strong className="text-crimson">{currentRfp.population}</strong></div>
+                </div>
+              </div>
+
+              {/* Spec Matrix */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Location / Orbit</span>
+                  <strong className="text-bone">{currentRfp.site}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Population Capacity</span>
+                  <strong className="text-bone">{currentRfp.population}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Earth Comms Latency</span>
+                  <strong className="text-crimson">{currentRfp.delay}</strong>
+                </div>
+                <div className="bg-ink-2 p-3 border border-bone/20">
+                  <span className="text-bone-dim text-[10px] uppercase block">Solar Flux Density</span>
+                  <strong className="text-bone">{currentRfp.solarFlux}</strong>
+                </div>
+              </div>
+
+              <div className="space-y-3 font-label text-sm text-bone-dim leading-relaxed">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold">// Mission Background</h3>
+                <p>{currentRfp.background}</p>
+                <h3 className="font-mono text-xs uppercase tracking-widest text-bone font-bold pt-2">// Engineering Mandate</h3>
+                <p>{currentRfp.rfpSummary}</p>
+              </div>
+
+              {/* Constraints */}
+              <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+                  Binding Mission Constraints
+                </h3>
+                <ul className="space-y-2 font-mono text-xs text-bone-dim">
+                  {currentRfp.constraints.map((c, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-crimson font-bold">▶</span>
+                      <span>{c}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Optional Brownie Challenge */}
+              <div className="border border-amber-500/40 bg-ink-2 p-5 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-widest">
+                    ★ Optional Brownie Challenge
+                  </span>
+                  <span className="font-mono text-[10px] text-bone-dim">Section B of Proposal (Max 3 pages)</span>
+                </div>
+                <h4 className="font-display text-xl text-bone uppercase">{currentRfp.brownie.title}</h4>
+                <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed">
+                  {currentRfp.brownie.prompt}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 04: PROPOSAL TEMPLATE */}
+      {/* SECTION 3: PROPOSAL GUIDE */}
       {/* ======================================================== */}
-      {activeSection === 'template' && (
-        <div className="space-y-8 animate-fadeIn">
+      {activeSection === 'guide' && (
+        <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 04</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 3 · Proposal Guide</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Proposal Architecture &amp; Section Checklist
+                Proposal Architecture &amp; Section Guide
               </h2>
             </div>
 
             <p className="font-label text-sm text-bone-dim leading-relaxed max-w-3xl">
-              Judges follow a standardized technical evaluation rubric. Submissions that structure their proposals around these 7 core sections score significantly higher on clarity, systems integration, and document design.
+              Structure your proposal around these sections. Page limits count every page, including cover, contents, references, AI disclosure and declaration: Junior max 25 pages, Senior max 35 pages.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
               <div className="border border-bone/20 bg-ink-2 p-4 space-y-1.5">
                 <div className="text-crimson font-bold">SECTION 1.0 · EXECUTIVE SUMMARY &amp; MISSION SCOPE</div>
                 <p className="text-[11px] text-bone-dim font-sans">
-                  Statement of purpose, client alignment, selected RFP rationale, population demographics, settlement lifetime, and high-level architectural rendering.
+                  Statement of purpose, client alignment, selected prompt rationale, population demographics, settlement lifetime, and high-level architectural rendering.
                 </p>
               </div>
 
@@ -797,9 +749,9 @@ export default function SettlementPrompt() {
               </div>
 
               <div className="border border-bone/20 bg-ink-2 p-4 space-y-1.5 md:col-span-2">
-                <div className="text-amber-400 font-bold">SECTION B · OPTIONAL BROWNIE CHALLENGE (BONUS +10 PTS)</div>
+                <div className="text-amber-400 font-bold">SECTION B · OPTIONAL BROWNIE CHALLENGE</div>
                 <p className="text-[11px] text-bone-dim font-sans">
-                  Dedicated response answering your selected RFP&apos;s Brownie Challenge. Maximum 3 pages, including schematics and operational logic.
+                  Optional. Dedicated response answering your prompt&apos;s Brownie Challenge at the end of the proposal PDF. Max 3 pages. Not counted in the page limit.
                 </p>
               </div>
             </div>
@@ -808,64 +760,50 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 05: CHECKLIST */}
+      {/* SECTION 4: CHECKLIST */}
       {/* ======================================================== */}
       {activeSection === 'checklist' && (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-4">
-              <div>
-                <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 05</span>
-                <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                  Preflight Submission Checklist
-                </h2>
-              </div>
-              <div className="flex items-center gap-3 font-mono text-xs">
-                <span className="text-green-400 font-bold">
-                  {checkedCount} of {CHECKLIST_ITEMS.length} verified
-                </span>
-                <button
-                  onClick={resetChecklist}
-                  className="px-2 py-1 border border-bone/40 text-bone-dim hover:text-bone text-[11px] uppercase cursor-pointer"
-                >
-                  Reset
-                </button>
-              </div>
+            <div className="border-b border-bone/20 pb-4">
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 4 · Checklist</span>
+              <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
+                Preflight Submission Checklist
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {CHECKLIST_ITEMS.map((item) => (
-                <div
+                <label
                   key={item.id}
-                  onClick={() => toggleCheck(item.id)}
-                  className={`p-3.5 border cursor-pointer transition-all flex items-start gap-3 select-none ${
+                  className={`p-3.5 border cursor-pointer flex items-start gap-3 select-none ${
                     checkedItems[item.id]
                       ? 'border-bone/20 bg-ink-2/40 text-bone-dim'
-                      : 'border-bone bg-ink-2 text-bone hover:border-crimson'
+                      : 'border-bone bg-ink-2 text-bone'
                   }`}
                 >
                   <input
                     type="checkbox"
                     checked={!!checkedItems[item.id]}
-                    onChange={() => {}}
+                    onChange={() => toggleCheck(item.id)}
                     className="mt-0.5 accent-crimson cursor-pointer"
                   />
                   <span className={`font-mono text-xs leading-relaxed ${checkedItems[item.id] ? 'line-through text-bone-dim/60' : ''}`}>
                     {item.label}
                   </span>
-                </div>
+                </label>
               ))}
             </div>
 
             <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
               <span className="font-mono text-xs text-bone-dim">
-                Status automatically persisted in local browser storage.
+                Verify all technical deliverables before final deposit.
               </span>
               <Link
                 to="/submissions"
-                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink hover:text-crimson border border-crimson transition-colors"
+                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-crimson"
               >
-                Go to Submission Vault →
+                Go to Submission Portal →
               </Link>
             </div>
           </div>
@@ -873,69 +811,80 @@ export default function SettlementPrompt() {
       )}
 
       {/* ======================================================== */}
-      {/* SECTION 06: RULES & RUBRIC */}
+      {/* SECTION 5: RULES */}
       {/* ======================================================== */}
       {activeSection === 'rules' && (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-8">
           <div className="border-2 border-bone/40 bg-ink p-6 sm:p-8 space-y-6">
             <div className="border-b border-bone/20 pb-4">
-              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 06</span>
+              <span className="font-mono text-xs text-crimson font-bold uppercase tracking-widest">Section 5 · Rules</span>
               <h2 className="font-display text-3xl sm:text-4xl text-bone uppercase tracking-wider mt-1">
-                Evaluation Rubric &amp; Academic Integrity
+                Competition Rules &amp; Evaluation Criteria
               </h2>
             </div>
 
-            {/* Rubric Points */}
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 font-mono text-xs">
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-crimson font-bold text-xs uppercase block">// 25 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Research &amp; Rigor</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Orbital mechanics accuracy, atmospheric pressure physics, radiation shielding math, and authoritative citation sources.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-crimson font-bold text-xs uppercase block">// 25 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Systems Feasibility</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Closed ECLSS loops, thermal balance calculations, credible power budgets, and realistic construction logistics.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-crimson font-bold text-xs uppercase block">// 20 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Innovation &amp; Habitat</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Novel structural layouts, human-factors thinking, psychological ergonomics, and multi-generational civic institutions.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-crimson font-bold text-xs uppercase block">// 15 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Clarity &amp; Schematics</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Standard technical drafting, annotated 2D/3D models, clean layout, legible charts, and visual appeal.
-                </p>
-              </div>
-
-              <div className="border border-bone/20 bg-ink-2 p-4 space-y-1">
-                <span className="text-crimson font-bold text-xs uppercase block">// 15 PTS</span>
-                <div className="font-display text-lg text-bone uppercase">Jury Defense</div>
-                <p className="text-[11px] text-bone-dim font-sans">
-                  Command of trade-offs, handling cross-examination, and team cohesion during the live curveball round on campus.
-                </p>
-              </div>
+            {/* General Rules */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                General Competition Rules
+              </h3>
+              <ul className="space-y-2 text-bone-dim text-xs leading-relaxed list-disc pl-4 font-sans">
+                <li>Teams register through their school's delegation. Registration closed on 12 Oct; no additions after that.</li>
+                <li>Late submissions are not accepted.</li>
+                <li>Shortlisted teams report to the Welcome Foyer at DPS R.K. Puram between 07:45 and 08:45 AM on 24 Oct. Late arrivals may lose their slot.</li>
+                <li>Bring your own laptop, charger and adapters, fully charged. Power outlets are provided. The host school is not liable for personal hardware. Bring your own internet connection.</li>
+                <li>Judges' decisions are final. Disrespect towards judges or marshals leads to disqualification.</li>
+                <li>DPS R.K. Puram teams take part for benchmarking only and are not eligible for rankings or trophies.</li>
+              </ul>
             </div>
 
-            {/* AI Policy & Integrity */}
-            <div className="border border-amber-500/40 bg-amber-500/5 p-5 space-y-2 font-mono text-xs">
-              <strong className="text-amber-400 block uppercase tracking-wider text-sm">
+            {/* AI Policy */}
+            <div className="border border-bone/20 bg-ink-2 p-5 space-y-2 font-mono text-xs">
+              <strong className="text-crimson block uppercase tracking-wider text-sm">
                 Academic Integrity &amp; Generative AI Regulations
               </strong>
-              <p className="text-bone-dim font-sans text-xs sm:text-sm leading-relaxed">
+              <p className="text-bone-dim font-sans text-xs leading-relaxed">
                 Generative AI tools (ChatGPT, Claude, Gemini, Midjourney) may be utilized strictly as research, brainstorming, and editing assistants. All core architectural layouts, mass budgets, calculations, and systems engineering must be original student work. Every prompt and external software used must be transparently disclosed in the bibliography. Submitting unedited AI hallucinations or fabricated physics will result in immediate disqualification.
               </p>
+            </div>
+
+            {/* Judging Criteria */}
+            <div className="space-y-3 font-mono text-xs">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 border-b border-bone/20 pb-2">
+                How you're judged
+              </h3>
+              <div className="space-y-3">
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Research &amp; Rigor</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Orbital mechanics accuracy, atmospheric pressure physics, radiation shielding math, and authoritative citation sources.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Systems Feasibility</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Closed ECLSS loops, thermal balance calculations, credible power budgets, and realistic construction logistics.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Innovation &amp; Habitat</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Novel structural layouts, human-factors thinking, psychological ergonomics, and multi-generational civic institutions.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Clarity &amp; Schematics</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Standard technical drafting, annotated 2D/3D models, clean layout, legible charts, and visual appeal.
+                  </p>
+                </div>
+                <div className="p-3.5 bg-ink-2 border border-bone/20 space-y-1">
+                  <strong className="text-bone text-sm block">Jury Defense</strong>
+                  <p className="text-bone-dim font-sans leading-relaxed">
+                    Command of trade-offs, handling cross-examination, and team cohesion during the Round 2 presentation and questions.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Contact POC */}
@@ -944,11 +893,11 @@ export default function SettlementPrompt() {
                 Point of Contact: <strong className="text-bone">Arshia Barsain</strong> (<a href="mailto:r24333arshia@dpsrkp.net" className="text-crimson hover:underline">r24333arshia@dpsrkp.net</a>) · <a href="mailto:aeross@dpsrkp.net" className="text-bone hover:underline">aeross@dpsrkp.net</a>
               </div>
               <div className="flex gap-3">
-                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone hover:border-bone transition-colors uppercase">
+                <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
                   ← Back to Comps
                 </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold hover:bg-ink hover:text-crimson border border-crimson transition-colors uppercase">
-                  Deposit Proposal →
+                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
+                  Go to Submission Portal →
                 </Link>
               </div>
             </div>
