@@ -241,20 +241,16 @@ export async function onRequestPost(context) {
 
     // 4. Submit to JotForm with APIKEY header
     const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.apiKey;
-    const formId = env.JOTFORM_SUBMISSIONS_FORM_ID || env.JOTFORM_FORM_ID || "261896133006456";
+    const formId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262451061688056";
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
     if (apiKey) {
       try {
-        const params = new URLSearchParams();
-        params.append('submission[1]', `SUBMISSION: ${spec.code} ${depositRecord.eventName} - ${depositRecord.schoolName} (${cleanUID})`);
-        params.append('submission[2]', depositRecord.schoolName);
-        params.append('submission[3]', depositRecord.leadName);
-        params.append('submission[4]', depositRecord.leadEmail);
-        params.append('submission[5]', depositRecord.leadPhone);
-        params.append('submission[6]', depositRecord.eventName);
+        const formattedSupplementary = depositRecord.supplementaryLinks.length > 0
+          ? depositRecord.supplementaryLinks.map((l, i) => `${i + 1}. [${l.label}] ${l.url}`).join('\n')
+          : 'None declared';
 
-        // Detailed human-readable breakdown for Jotform Inbox and Tables
+        const params = new URLSearchParams();
         const summaryLines = [
           `CELESTECON 2026 DIGITAL DELIVERABLE DEPOSIT`,
           `=========================================`,
@@ -264,7 +260,8 @@ export async function onRequestPost(context) {
           `INSTITUTION:   ${depositRecord.schoolName}`,
           `EVENT:         ${spec.code} · ${depositRecord.eventName} (${depositRecord.division})`,
           `TEAM:          ${depositRecord.teamName}`,
-          `LEAD:          ${depositRecord.leadName} (${depositRecord.leadEmail} · ${depositRecord.leadPhone})`,
+          `LEAD:          ${depositRecord.leadName} (${depositRecord.leadEmail} · ${depositRecord.leadPhone || 'N/A'})`,
+          `PRIMARY LINK:  ${primaryUrl || depositRecord.driveUrl}`,
           ``,
           `--- DELIVERABLES SUBMITTED ---`
         ];
@@ -291,8 +288,41 @@ export async function onRequestPost(context) {
         }
         summaryLines.push(`=========================================`);
 
-        params.append('submission[7]', summaryLines.join('\n'));
-        params.append('submission[8]', JSON.stringify(depositRecord));
+        const summaryText = summaryLines.join('\n');
+
+        // Exact Question IDs matching live Form 262451061688056
+        params.append('submission[3]', receiptToken);
+        params.append('submission[4]', cleanUID);
+        params.append('submission[5]', depositRecord.schoolName);
+        params.append('submission[6]', depositRecord.eventId);
+        params.append('submission[7]', depositRecord.eventName);
+        params.append('submission[8]', depositRecord.division);
+        params.append('submission[9]', depositRecord.teamName);
+        params.append('submission[10]', depositRecord.leadName);
+        params.append('submission[11]', depositRecord.leadEmail);
+        params.append('submission[12]', depositRecord.leadPhone);
+        params.append('submission[13]', primaryUrl || depositRecord.driveUrl);
+        params.append('submission[14]', formattedSupplementary);
+        params.append('submission[15]', depositRecord.projectAbstract || '');
+        params.append('submission[16]', summaryText);
+        params.append('submission[17]', JSON.stringify(depositRecord));
+
+        // Also append by unique question name
+        params.append('receiptToken', receiptToken);
+        params.append('schoolUID', cleanUID);
+        params.append('schoolName', depositRecord.schoolName);
+        params.append('eventId', depositRecord.eventId);
+        params.append('eventName', depositRecord.eventName);
+        params.append('division', depositRecord.division);
+        params.append('teamName', depositRecord.teamName);
+        params.append('leadName', depositRecord.leadName);
+        params.append('leadEmail', depositRecord.leadEmail);
+        params.append('leadPhone', depositRecord.leadPhone);
+        params.append('driveUrl', primaryUrl || depositRecord.driveUrl);
+        params.append('supplementaryLinks', formattedSupplementary);
+        params.append('projectAbstract', depositRecord.projectAbstract || '');
+        params.append('submissionSummary', summaryText);
+        params.append('submissionJSON', JSON.stringify(depositRecord));
 
         const jotResp = await fetch(
           `${apiBase}/form/${encodeURIComponent(formId)}/submissions`,

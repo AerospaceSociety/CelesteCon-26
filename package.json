@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "provision:submissions": "node scripts/setup_submissions_jotform.js",
+    "provision:internal": "node scripts/setup_internal_jotform.js"
   },
   "dependencies": {
     "framer-motion": "^13.1.1",
