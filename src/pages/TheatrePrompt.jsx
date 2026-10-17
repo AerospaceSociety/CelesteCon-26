@@ -97,13 +97,13 @@ export default function TheatrePrompt() {
 
               <div className="p-3.5 bg-bone/5 border-l-4 border-bone/70 font-mono text-xs text-bone space-y-1">
                 <span className="text-bone-dim font-bold uppercase tracking-widest block text-[11px]">
-                  // ROUND 2 · ONSITE AVH FINALE THEME
+                  // ROUND 2 · ONSITE FINALE THEME
                 </span>
                 <span className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wider block">
                   &ldquo;PAST, PRESENT AND THE FUTURE&rdquo;
                 </span>
                 <p className="text-[11px] text-bone-dim leading-relaxed font-sans normal-case">
-                  Live on-stage showcase at the AVH on 24 October, paired with high-energy impromptu improv on the spot.
+                  Live on-stage showcase on 24 October, paired with high-energy impromptu improv on the spot.
                 </p>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function TheatrePrompt() {
             </p>
 
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-2xl">
-              AEROSS Theatre removes the conventional thematic boundaries of aerospace conferences and celebrates unconstrained performance art. Showcase your talent on video for Round 1 with completely open artistic freedom, then qualify for the grand stage at the Audio-Visual Hall (AVH) at DPS R.K. Puram to explore the generational arc of time in Round 2.
+              AEROSS Theatre removes the conventional thematic boundaries of aerospace conferences and celebrates unconstrained performance art. Showcase your talent on video for Round 1 with completely open artistic freedom, then qualify for the grand stage at DPS R.K. Puram to explore the generational arc of time in Round 2.
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function TheatrePrompt() {
               </div>
               <div className="flex justify-between">
                 <span>Format:</span>
-                <strong className="text-bone">Video Audition → AVH Stage</strong>
+                <strong className="text-bone">Video Audition → Stage</strong>
               </div>
               <div className="flex justify-between">
                 <span>Deliverable:</span>
@@ -227,16 +227,16 @@ export default function TheatrePrompt() {
               ROUND 2 · ONSITE FINALE
             </span>
             <span className="font-mono text-[11px] text-bone font-bold">
-              24 OCT 2026 · AVH DPS RKP
+              24 OCT 2026 · DPS RKP
             </span>
           </div>
 
           <h2 className="font-display text-2xl text-bone uppercase tracking-wide">
-            Live AVH Showcase &amp; Improv
+            Live Showcase &amp; Improv
           </h2>
 
           <p className="font-label text-sm text-bone-dim leading-relaxed">
-            Top qualifying teams perform live on event day in the Audio-Visual Hall (AVH) at DPS R.K. Puram under the official finale theme: <strong className="text-bone">&ldquo;Past, Present and the Future&rdquo;</strong>.
+            Top qualifying teams perform live on event day at DPS R.K. Puram under the official finale theme: <strong className="text-bone">&ldquo;Past, Present and the Future&rdquo;</strong>.
           </p>
 
           <div className="space-y-2 font-mono text-xs text-bone-dim">

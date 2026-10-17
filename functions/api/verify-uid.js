@@ -32,29 +32,6 @@ const SEED_DELEGATIONS = {
     totals: { totalTeams: 4, totalParticipants: 12 },
     isBenchmark: true
   },
-  'C26-INT-0101': {
-    schoolUID: 'C26-INT-0101',
-    school: {
-      name: 'Delhi Public School, R.K. Puram (Host Contingent)',
-      contact: 'Internal Student Contingent',
-      email: 'aeross@dpsrkp.net',
-      phone: '+91 89290 20721',
-      city: 'New Delhi'
-    },
-    events: [
-      { id: 'rocketry', name: 'Rocketry (Model & Flight)', category: 'Senior' },
-      { id: 'f1', name: 'AEROSS Prix (CO2 Constructor Challenge)', category: 'Senior' },
-      { id: 'settle', name: 'Settle-Me-This (Space Settlement)', category: 'Senior' },
-      { id: 'volatus', name: 'Volatus (Aviation & 3D CAD)', category: 'Senior' },
-      { id: 'dispute', name: 'In Pursuit of Dispute (IPOD)', category: 'Senior' },
-      { id: 'bpp', name: 'Business Power Pitch (BPP)', category: 'Senior' },
-      { id: 'theatre', name: 'AEROSS Theatre', category: 'Senior' },
-      { id: 'gamejam', name: 'CelesteJam', category: 'Senior' }
-    ],
-    totals: { totalTeams: 8, totalParticipants: 24 },
-    isBenchmark: true,
-    isInternal: true
-  },
   'C26-HR-0102': {
     schoolUID: 'C26-HR-0102',
     school: {
@@ -147,7 +124,7 @@ async function handleVerification(request, rawUID, env) {
     );
   }
 
-  // 3. Query JotForm server-side using secure APIKEY header (never expose key in query parameters)
+  // 3. Query JotForm server-side using secure APIKEY header (external registration form)
   const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.apiKey;
   const formId = env.JOTFORM_FORM_ID || "261896133006456";
   const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
@@ -155,7 +132,7 @@ async function handleVerification(request, rawUID, env) {
   if (apiKey) {
     try {
       const jotResp = await fetch(
-        `${apiBase}/form/${encodeURIComponent(formId)}/submissions?limit=100`,
+        `${apiBase}/form/${encodeURIComponent(formId)}/submissions?limit=1000&orderby=created_at`,
         {
           headers: {
             'APIKEY': apiKey,
@@ -171,22 +148,26 @@ async function handleVerification(request, rawUID, env) {
         for (const sub of submissions) {
           const answers = sub.answers || {};
           let regJson = null;
-          if (answers['8']?.answer) {
+
+          // External registration manifest is deposited in answers['8']
+          const rawJsonCandidate = answers['8']?.answer || null;
+          if (rawJsonCandidate) {
             try {
-              regJson = typeof answers['8'].answer === 'string'
-                ? JSON.parse(answers['8'].answer)
-                : answers['8'].answer;
+              regJson = typeof rawJsonCandidate === 'string'
+                ? JSON.parse(rawJsonCandidate)
+                : rawJsonCandidate;
             } catch {}
           }
 
           const subUID = sanitizeText(regJson?.schoolUID || '').toUpperCase();
           const summaryText = answers['7']?.answer || '';
+          const allAnswersStr = JSON.stringify(answers);
 
-          if (subUID === cleanUID || summaryText.includes(cleanUID)) {
-            const rawEmail = regJson?.school?.email || answers['4']?.answer || '';
-            const rawPhone = regJson?.school?.phone || answers['5']?.answer || '';
+          if (subUID === cleanUID || summaryText.toUpperCase().includes(cleanUID) || allAnswersStr.toUpperCase().includes(cleanUID)) {
+            const rawEmail = regJson?.school?.email || regJson?.delegation?.headDelegateEmail || answers['4']?.answer || '';
+            const rawPhone = regJson?.school?.phone || regJson?.delegation?.headDelegatePhone || answers['5']?.answer || '';
             const schoolName = sanitizeText(regJson?.school?.name || answers['2']?.answer || 'Accredited Delegation');
-            const contactName = sanitizeText(regJson?.school?.contact || answers['3']?.answer || 'Authorized Delegate');
+            const contactName = sanitizeText(regJson?.school?.contact || regJson?.delegation?.headDelegateName || answers['3']?.answer || 'Authorized Delegate');
 
             return jsonResponse(
               {
@@ -214,7 +195,7 @@ async function handleVerification(request, rawUID, env) {
         }
       }
     } catch (err) {
-      console.warn('JotForm lookup notice:', err.message);
+      console.warn(`JotForm lookup notice for form ${formId}:`, err.message);
     }
   }
 
