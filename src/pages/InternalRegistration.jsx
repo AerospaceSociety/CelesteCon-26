@@ -7,7 +7,7 @@ const INTERNAL_EVENTS = [
     name: 'Settle-Me-This',
     discipline: 'Space Settlement Design',
     mode: 'Hybrid',
-    minMembers: 3,
+    minMembers: 1,
     maxMembers: 5,
     gradesAllowed: 'both', // 'junior', 'senior', 'both'
     overview: 'Design a permanent, habitable orbital settlement in free space. 2D/3D models and hand-drawn sketches encouraged.',
@@ -19,7 +19,7 @@ const INTERNAL_EVENTS = [
     name: 'Volatus',
     discipline: 'Aviation, UAV & 3D CAD',
     mode: 'Hybrid',
-    minMembers: 3,
+    minMembers: 1,
     maxMembers: 3,
     gradesAllowed: 'senior',
     overview: 'Design a mission-profile UAV or eVTOL with aero calculations, 3D CAD modeling, and onsite science-fair defense.',
@@ -31,7 +31,7 @@ const INTERNAL_EVENTS = [
     name: 'In Pursuit of Dispute',
     discipline: 'Quiz (Quizzitch) & Debate',
     mode: 'Hybrid',
-    minMembers: 2,
+    minMembers: 1,
     maxMembers: 2,
     gradesAllowed: 'senior',
     overview: 'Online Quizzitch screening round leading into live debate chambers on campus.',
@@ -43,7 +43,7 @@ const INTERNAL_EVENTS = [
     name: 'Business Power Pitch',
     discipline: 'Aerospace Venture & Pitch',
     mode: 'Hybrid',
-    minMembers: 3,
+    minMembers: 1,
     maxMembers: 3,
     gradesAllowed: 'both',
     overview: 'Propose a commercial aerospace venture, submit pitch deck and 5-minute video, then pitch live to investor judges.',
@@ -55,7 +55,7 @@ const INTERNAL_EVENTS = [
     name: 'AEROSS Theatre',
     discipline: 'Open Stage & Talent Showcase',
     mode: 'Hybrid',
-    minMembers: 3,
+    minMembers: 1,
     maxMembers: 5,
     gradesAllowed: 'senior',
     overview: 'Total creative freedom: stand-up, skits, instruments, singing, dance, poetry, mimicry, magic or monologues.',
@@ -67,7 +67,7 @@ const INTERNAL_EVENTS = [
     name: 'CelesteJam',
     discipline: 'Game Development',
     mode: 'Onsite',
-    minMembers: 2,
+    minMembers: 1,
     maxMembers: 3,
     gradesAllowed: 'both',
     overview: 'Build a playable minigame from scratch around the theme, then defend code & host peer playtesting onsite.',
@@ -79,7 +79,7 @@ const INTERNAL_EVENTS = [
     name: 'Rocketry',
     discipline: 'Model Rocket Design & Simulation',
     mode: 'Onsite',
-    minMembers: 2,
+    minMembers: 1,
     maxMembers: 3,
     gradesAllowed: 'both',
     overview: 'Fabricate a real scale rocket around supplied motor specs, submit OpenRocket files, compete via onsite measurements.',
@@ -91,7 +91,7 @@ const INTERNAL_EVENTS = [
     name: 'AEROSS Prix',
     discipline: 'CO2 Dragster & F1 Motorsport',
     mode: 'Onsite',
-    minMembers: 3,
+    minMembers: 1,
     maxMembers: 5,
     gradesAllowed: 'senior',
     overview: 'Design, manufacture, brand, and sprint miniature CO2-powered F1 cars along a 20m high-speed track.',
@@ -281,9 +281,7 @@ export default function InternalRegistration() {
   const [projectNotes, setProjectNotes] = useState('');
 
   // Additional Team Members (excluding lead)
-  const [additionalMembers, setAdditionalMembers] = useState([
-    { name: '', classNum: '11', section: 'A', admissionNo: '', email: '', gender: 'Male' }
-  ]);
+  const [additionalMembers, setAdditionalMembers] = useState([]);
 
   // Code of conduct
   const [agreedToRules, setAgreedToRules] = useState(false);
