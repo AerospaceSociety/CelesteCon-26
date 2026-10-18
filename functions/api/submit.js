@@ -89,8 +89,188 @@ export async function onRequestPost(context) {
     const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.JOTFORM_SECRET_KEY || env.apiKey;
     const internalFormId = env.JOTFORM_INTERNAL_FORM_ID || "262820575510050";
     const externalFormId = env.JOTFORM_FORM_ID || "261896133006456";
-    const formId = (reg.isInternal || reg.formId === internalFormId) ? internalFormId : externalFormId;
+    const submissionsFormId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262451061688056";
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
+
+    // 1. Check if this is a Deliverable Submission rather than a School Registration
+    const isDeliverable = Boolean(reg.driveUrl || reg.receiptToken || reg.deliverables || (reg.eventId && !reg.school));
+
+    if (isDeliverable) {
+      const cleanUID = sanitizeText(reg.schoolUID || '', 30).toUpperCase();
+      const eventId = sanitizeText(reg.eventId || '04', 10).padStart(2, '0');
+      const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
+      const receiptToken = reg.receiptToken || `C26-DEP-${eventId}-${cleanUID.replace(/[^A-Z0-9]/g, '')}-${randomSuffix}`;
+      const primaryUrl = sanitizeUrl(reg.driveUrl || (reg.deliverables ? Object.values(reg.deliverables)[0] : '') || '', 1500);
+      const schoolName = sanitizeText(reg.schoolName || reg.school?.name || cleanUID || 'Accredited Delegation', 120);
+      const eventName = sanitizeText(reg.eventName || `Event ${eventId}`, 100);
+      const division = sanitizeText(reg.division || 'Senior', 50);
+      const teamName = sanitizeText(reg.teamName || 'Delegation Team', 100);
+      const leadName = sanitizeText(reg.leadName || '', 100);
+      const leadEmail = sanitizeText(reg.leadEmail || '', 100);
+      const leadPhone = sanitizeText(reg.leadPhone || '', 30);
+      const projectAbstract = sanitizeText(reg.projectAbstract || '', 2000);
+
+      const formattedSupplementary = Array.isArray(reg.supplementaryLinks) && reg.supplementaryLinks.length > 0
+        ? reg.supplementaryLinks.slice(0, 10).map((l, i) => `${i + 1}. [${sanitizeText(l.label || 'Resource', 60)}] ${sanitizeUrl(l.url || '', 1500)}`).join('\n')
+        : 'None declared';
+
+      const summaryLines = [
+        `CELESTECON 2026 // OFFICIAL DELIVERABLE DEPOSIT`,
+        `===============================================`,
+        `RECEIPT TOKEN:     ${receiptToken}`,
+        `SCHOOL UID:        ${cleanUID}`,
+        `INSTITUTION:       ${schoolName}`,
+        `EVENT:             [${eventId}] ${eventName}`,
+        `DIVISION:          ${division}`,
+        `TEAM NAME:         ${teamName}`,
+        `LEAD CONTACT:      ${leadName} (${leadEmail} · ${leadPhone || 'N/A'})`,
+        `PRIMARY DRIVE URL: ${primaryUrl}`,
+        `SUPPLEMENTARY:     ${formattedSupplementary}`,
+        `ABSTRACT:          ${projectAbstract || 'None provided.'}`,
+        `===============================================`
+      ];
+      const summaryText = summaryLines.join('\n');
+
+      let syncedJotform = false;
+      let syncedFirebase = false;
+
+      // Submit to Submissions JotForm (262451061688056)
+      if (apiKey) {
+        try {
+          const params = new URLSearchParams();
+          params.append('submission[3]', receiptToken);
+          params.append('submission[4]', cleanUID);
+          params.append('submission[5]', schoolName);
+          params.append('submission[6]', eventId);
+          params.append('submission[7]', eventName);
+          params.append('submission[8]', division);
+          params.append('submission[9]', teamName);
+          params.append('submission[10]', leadName);
+          params.append('submission[11]', leadEmail);
+          params.append('submission[12]', leadPhone);
+          params.append('submission[13]', primaryUrl);
+          params.append('submission[14]', formattedSupplementary);
+          params.append('submission[15]', projectAbstract);
+          params.append('submission[16]', summaryText);
+          params.append('submission[17]', JSON.stringify(reg));
+
+          params.append('receiptToken', receiptToken);
+          params.append('schoolUID', cleanUID);
+          params.append('schoolName', schoolName);
+          params.append('eventId', eventId);
+          params.append('eventName', eventName);
+          params.append('division', division);
+          params.append('teamName', teamName);
+          params.append('leadName', leadName);
+          params.append('leadEmail', leadEmail);
+          params.append('leadPhone', leadPhone);
+          params.append('driveUrl', primaryUrl);
+          params.append('supplementaryLinks', formattedSupplementary);
+          params.append('projectAbstract', projectAbstract);
+          params.append('submissionSummary', summaryText);
+          params.append('submissionJSON', JSON.stringify(reg));
+
+          const jotResp = await fetch(`${apiBase}/form/${encodeURIComponent(submissionsFormId)}/submissions`, {
+            method: 'POST',
+            headers: {
+              'APIKEY': apiKey,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+          });
+          if (jotResp.ok) syncedJotform = true;
+        } catch (err) {
+          console.warn('JotForm deliverable log notice:', err.message);
+        }
+      } else {
+        try {
+          const directParams = new URLSearchParams();
+          directParams.append('formID', submissionsFormId);
+          directParams.append('simple_spc', `${submissionsFormId}-${submissionsFormId}`);
+          directParams.append('q3', receiptToken);
+          directParams.append('q4', cleanUID);
+          directParams.append('q5', schoolName);
+          directParams.append('q6', eventId);
+          directParams.append('q7', eventName);
+          directParams.append('q8', division);
+          directParams.append('q9', teamName);
+          directParams.append('q10', leadName);
+          directParams.append('q11', leadEmail);
+          directParams.append('q12', leadPhone);
+          directParams.append('q13', primaryUrl);
+          directParams.append('q14', formattedSupplementary);
+          directParams.append('q15', projectAbstract);
+          directParams.append('q16', summaryText);
+          directParams.append('q17', JSON.stringify(reg));
+
+          directParams.append('submission[3]', receiptToken);
+          directParams.append('submission[4]', cleanUID);
+          directParams.append('submission[5]', schoolName);
+          directParams.append('submission[6]', eventId);
+          directParams.append('submission[7]', eventName);
+          directParams.append('submission[8]', division);
+          directParams.append('submission[9]', teamName);
+          directParams.append('submission[10]', leadName);
+          directParams.append('submission[11]', leadEmail);
+          directParams.append('submission[12]', leadPhone);
+          directParams.append('submission[13]', primaryUrl);
+          directParams.append('submission[14]', formattedSupplementary);
+          directParams.append('submission[15]', projectAbstract);
+          directParams.append('submission[16]', summaryText);
+          directParams.append('submission[17]', JSON.stringify(reg));
+
+          const directResp = await fetch(`https://submit.jotform.com/submit/${encodeURIComponent(submissionsFormId)}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Origin': 'https://form.jotform.com',
+              'Referer': `https://form.jotform.com/${encodeURIComponent(submissionsFormId)}`
+            },
+            body: directParams.toString()
+          });
+          if (directResp.ok) syncedJotform = true;
+        } catch (directErr) {
+          console.warn('JotForm direct deposit notice:', directErr.message);
+        }
+      }
+
+      // Submit to Firebase Realtime Database (if configured)
+      const firebaseUrl = env.FIREBASE_DATABASE_URL || env.VITE_FIREBASE_DATABASE_URL;
+      if (firebaseUrl) {
+        try {
+          const cleanBase = firebaseUrl.replace(/\/+$/, '');
+          const fbTarget = `${cleanBase}/submissions/${encodeURIComponent(receiptToken)}.json`;
+          const fbResp = await fetch(fbTarget, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reg)
+          });
+          if (fbResp.ok) syncedFirebase = true;
+        } catch (fbErr) {
+          console.warn('Firebase deposit notice:', fbErr.message);
+        }
+      }
+
+      return jsonResponse(
+        {
+          success: true,
+          receiptToken,
+          schoolUID: cleanUID,
+          message: 'Deliverable deposit logged successfully to submission vault.',
+          syncedTo: {
+            jotform: syncedJotform,
+            firebase: syncedFirebase,
+            localVault: true
+          }
+        },
+        200,
+        request,
+        env
+      );
+    }
+
+    // 2. School Registration Routing (External: 261896133006456, Internal: 262820575510050)
+    const formId = (reg.isInternal || reg.formId === internalFormId) ? internalFormId : externalFormId;
 
     if (!apiKey) {
       // If frontend already submitted directly to JotForm via browser iframe, avoid double entry
@@ -148,7 +328,7 @@ export async function onRequestPost(context) {
           directParams.append('submission[12]', sanitizeText(summary, 8000));
           directParams.append('submission[13]', JSON.stringify(reg));
         } else {
-          // Standard external form 261896133006456
+          // Standard external registration form 261896133006456
           if (reg.school?.name) directParams.append('submission[2]', sanitizeText(reg.school.name, 100));
           if (reg.school?.contact) directParams.append('submission[3]', sanitizeText(reg.school.contact, 100));
           if (reg.school?.email) directParams.append('submission[4]', sanitizeText(reg.school.email, 100));
@@ -190,62 +370,10 @@ export async function onRequestPost(context) {
 
       return jsonResponse(
         {
-          error: "Submission vault is currently completing maintenance. Please retry in a few moments or contact aeross@dpsrkp.net.",
+          error: "Registration vault is currently completing maintenance. Please retry in a few moments or contact aeross@dpsrkp.net.",
           configured: false
         },
         503,
-        request,
-        env
-      );
-    }
-
-    // 2. Deliverable submission forwarding
-    if (reg.driveUrl || reg.receiptToken || (reg.eventId && !reg.school)) {
-      const cleanUID = sanitizeText(reg.schoolUID || '', 30).toUpperCase();
-      const eventId = sanitizeText(reg.eventId || '07', 10).padStart(2, '0');
-      const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
-      const receiptToken = reg.receiptToken || `C26-DEP-${eventId}-${cleanUID.replace(/[^A-Z0-9]/g, '')}-${randomSuffix}`;
-      const cleanDrive = sanitizeUrl(reg.driveUrl || '', 1500);
-
-      try {
-        const params = new URLSearchParams();
-        params.append('submission[1]', `SUBMISSION: ${sanitizeText(reg.eventName || 'Event ' + eventId, 100)} - ${sanitizeText(reg.schoolName || cleanUID, 100)}`);
-        params.append('submission[2]', sanitizeText(reg.schoolName || cleanUID, 100));
-        params.append('submission[3]', sanitizeText(reg.leadName || '', 100));
-        params.append('submission[4]', sanitizeText(reg.leadEmail || '', 100));
-        params.append('submission[5]', sanitizeText(reg.leadPhone || '', 30));
-        params.append('submission[6]', sanitizeText(reg.eventName || ('Event ' + eventId), 100));
-        params.append('submission[7]', [
-          `TOKEN: ${receiptToken}`,
-          `UID: ${cleanUID}`,
-          `EVENT: ${sanitizeText(reg.eventName || eventId, 80)} (${sanitizeText(reg.division || 'Senior', 30)})`,
-          `TEAM: ${sanitizeText(reg.teamName || 'Team', 80)}`,
-          `PRIMARY DRIVE: ${cleanDrive}`,
-          `SUPPLEMENTARY LINKS: ${JSON.stringify(Array.isArray(reg.supplementaryLinks) ? reg.supplementaryLinks.slice(0, 10) : [])}`,
-          `ABSTRACT: ${sanitizeText(reg.projectAbstract || '', 2000)}`
-        ].join('\n'));
-        params.append('submission[8]', JSON.stringify(reg));
-
-        await fetch(`${apiBase}/form/${encodeURIComponent(formId)}/submissions`, {
-          method: 'POST',
-          headers: {
-            'APIKEY': apiKey,
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: params.toString()
-        });
-      } catch (err) {
-        console.warn('JotForm deliverable log notice:', err.message);
-      }
-
-      return jsonResponse(
-        {
-          success: true,
-          receiptToken,
-          schoolUID: cleanUID,
-          message: 'Deliverable deposit logged successfully.'
-        },
-        200,
         request,
         env
       );

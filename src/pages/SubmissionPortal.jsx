@@ -1001,16 +1001,7 @@ export default function SubmissionPortal() {
         console.warn('Cloud deposit API notice: local secure persistence active.', apiErr);
       }
 
-      // 3. Also forward to /api/submit for redundancy
-      try {
-        await fetch('/api/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(record)
-        });
-      } catch (_) {}
-
-      // 4. Persist in local storage submission history
+      // 3. Persist in local storage submission history
       try {
         const existing = JSON.parse(localStorage.getItem('c26_submissions') || '[]');
         existing.unshift({ ...record, syncStatus });

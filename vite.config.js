@@ -197,19 +197,65 @@ function apiDevPlugin() {
 
               let syncedJotform = false;
               const apiKey = process.env.JOTFORM_API_KEY;
-              const formId = process.env.JOTFORM_SUBMISSIONS_FORM_ID || process.env.JOTFORM_FORM_ID || '261896133006456';
+              const formId = process.env.JOTFORM_SUBMISSIONS_FORM_ID || '262451061688056';
+
+              const formattedSupplementary = (body.supplementaryLinks || [])
+                .map((l, i) => `${i + 1}. [${l.label}] ${l.url}`)
+                .join('\n');
+              const primaryUrl = body.driveUrl || (body.deliverables ? Object.values(body.deliverables)[0] : '');
+
+              const summaryText = [
+                `CELESTECON 2026 // OFFICIAL DELIVERABLE DEPOSIT`,
+                `===============================================`,
+                `RECEIPT TOKEN:     ${receiptToken}`,
+                `TIMESTAMP:         ${timestamp}`,
+                `SCHOOL UID:        ${cleanUID}`,
+                `INSTITUTION:       ${body.schoolName || 'Accredited Institution'}`,
+                `EVENT:             [${eventId}] ${body.eventName || 'Event ' + eventId}`,
+                `DIVISION:          ${body.division || 'Senior'}`,
+                `TEAM NAME:         ${body.teamName || 'Delegation Team'}`,
+                `LEAD CONTACT:      ${body.leadName || ''} (${body.leadEmail || ''})`,
+                `PHONE:             ${body.leadPhone || 'N/A'}`,
+                `PRIMARY DRIVE URL: ${primaryUrl}`,
+                `SUPPLEMENTARY:     ${formattedSupplementary || 'None declared'}`,
+                `ABSTRACT:          ${body.projectAbstract || 'None provided.'}`,
+                `===============================================`
+              ].join('\n');
 
               if (apiKey) {
                 try {
                   const params = new URLSearchParams();
-                  params.append('submission[1]', `SUBMISSION: Event ${eventId} - ${body.schoolName} (${cleanUID})`);
-                  params.append('submission[2]', body.schoolName || 'Accredited Institution');
-                  params.append('submission[3]', body.leadName || '');
-                  params.append('submission[4]', body.leadEmail || '');
-                  params.append('submission[5]', body.leadPhone || '');
-                  params.append('submission[6]', body.eventName || `Event ${eventId}`);
-                  params.append('submission[7]', JSON.stringify(body.deliverables, null, 2));
-                  params.append('submission[8]', JSON.stringify({ ...body, receiptToken, timestamp }));
+                  params.append('submission[3]', receiptToken);
+                  params.append('submission[4]', cleanUID);
+                  params.append('submission[5]', body.schoolName || 'Accredited Institution');
+                  params.append('submission[6]', eventId);
+                  params.append('submission[7]', body.eventName || `Event ${eventId}`);
+                  params.append('submission[8]', body.division || 'Senior');
+                  params.append('submission[9]', body.teamName || 'Delegation Team');
+                  params.append('submission[10]', body.leadName || '');
+                  params.append('submission[11]', body.leadEmail || '');
+                  params.append('submission[12]', body.leadPhone || '');
+                  params.append('submission[13]', primaryUrl);
+                  params.append('submission[14]', formattedSupplementary || 'None declared');
+                  params.append('submission[15]', body.projectAbstract || '');
+                  params.append('submission[16]', summaryText);
+                  params.append('submission[17]', JSON.stringify({ ...body, receiptToken, timestamp }));
+
+                  params.append('receiptToken', receiptToken);
+                  params.append('schoolUID', cleanUID);
+                  params.append('schoolName', body.schoolName || 'Accredited Institution');
+                  params.append('eventId', eventId);
+                  params.append('eventName', body.eventName || `Event ${eventId}`);
+                  params.append('division', body.division || 'Senior');
+                  params.append('teamName', body.teamName || 'Delegation Team');
+                  params.append('leadName', body.leadName || '');
+                  params.append('leadEmail', body.leadEmail || '');
+                  params.append('leadPhone', body.leadPhone || '');
+                  params.append('driveUrl', primaryUrl);
+                  params.append('supplementaryLinks', formattedSupplementary || 'None declared');
+                  params.append('projectAbstract', body.projectAbstract || '');
+                  params.append('submissionSummary', summaryText);
+                  params.append('submissionJSON', JSON.stringify({ ...body, receiptToken, timestamp }));
 
                   const jotResp = await fetch(`https://api.jotform.com/form/${formId}/submissions`, {
                     method: 'POST',
@@ -219,6 +265,56 @@ function apiDevPlugin() {
                   if (jotResp.ok) syncedJotform = true;
                 } catch (jErr) {
                   console.warn('[Vite Dev] Jotform deposit warning:', jErr.message);
+                }
+              } else {
+                try {
+                  const directParams = new URLSearchParams();
+                  directParams.append('formID', formId);
+                  directParams.append('simple_spc', `${formId}-${formId}`);
+                  directParams.append('q3', receiptToken);
+                  directParams.append('q4', cleanUID);
+                  directParams.append('q5', body.schoolName || 'Accredited Institution');
+                  directParams.append('q6', eventId);
+                  directParams.append('q7', body.eventName || `Event ${eventId}`);
+                  directParams.append('q8', body.division || 'Senior');
+                  directParams.append('q9', body.teamName || 'Delegation Team');
+                  directParams.append('q10', body.leadName || '');
+                  directParams.append('q11', body.leadEmail || '');
+                  directParams.append('q12', body.leadPhone || '');
+                  directParams.append('q13', primaryUrl);
+                  directParams.append('q14', formattedSupplementary || 'None declared');
+                  directParams.append('q15', body.projectAbstract || '');
+                  directParams.append('q16', summaryText);
+                  directParams.append('q17', JSON.stringify({ ...body, receiptToken, timestamp }));
+
+                  directParams.append('submission[3]', receiptToken);
+                  directParams.append('submission[4]', cleanUID);
+                  directParams.append('submission[5]', body.schoolName || 'Accredited Institution');
+                  directParams.append('submission[6]', eventId);
+                  directParams.append('submission[7]', body.eventName || `Event ${eventId}`);
+                  directParams.append('submission[8]', body.division || 'Senior');
+                  directParams.append('submission[9]', body.teamName || 'Delegation Team');
+                  directParams.append('submission[10]', body.leadName || '');
+                  directParams.append('submission[11]', body.leadEmail || '');
+                  directParams.append('submission[12]', body.leadPhone || '');
+                  directParams.append('submission[13]', primaryUrl);
+                  directParams.append('submission[14]', formattedSupplementary || 'None declared');
+                  directParams.append('submission[15]', body.projectAbstract || '');
+                  directParams.append('submission[16]', summaryText);
+                  directParams.append('submission[17]', JSON.stringify({ ...body, receiptToken, timestamp }));
+
+                  const jotResp = await fetch(`https://submit.jotform.com/submit/${encodeURIComponent(formId)}`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded',
+                      'Origin': 'https://form.jotform.com',
+                      'Referer': `https://form.jotform.com/${encodeURIComponent(formId)}`
+                    },
+                    body: directParams.toString()
+                  });
+                  if (jotResp.ok) syncedJotform = true;
+                } catch (jErr) {
+                  console.warn('[Vite Dev] Jotform direct deposit warning:', jErr.message);
                 }
               }
 

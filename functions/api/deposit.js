@@ -244,52 +244,52 @@ export async function onRequestPost(context) {
     const formId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262451061688056";
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
+    const formattedSupplementary = depositRecord.supplementaryLinks.length > 0
+      ? depositRecord.supplementaryLinks.map((l, i) => `${i + 1}. [${l.label}] ${l.url}`).join('\n')
+      : 'None declared';
+
+    const summaryLines = [
+      `CELESTECON 2026 DIGITAL DELIVERABLE DEPOSIT`,
+      `=========================================`,
+      `RECEIPT TOKEN: ${receiptToken}`,
+      `TIMESTAMP:     ${new Date(timestamp).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })} IST`,
+      `SCHOOL UID:    ${cleanUID}`,
+      `INSTITUTION:   ${depositRecord.schoolName}`,
+      `EVENT:         ${spec.code} · ${depositRecord.eventName} (${depositRecord.division})`,
+      `TEAM:          ${depositRecord.teamName}`,
+      `LEAD:          ${depositRecord.leadName} (${depositRecord.leadEmail} · ${depositRecord.leadPhone || 'N/A'})`,
+      `PRIMARY LINK:  ${primaryUrl || depositRecord.driveUrl}`,
+      ``,
+      `--- DELIVERABLES SUBMITTED ---`
+    ];
+
+    for (const [key, val] of Object.entries(sanitizedDeliverables)) {
+      const isReq = spec.requiredKeys.includes(key);
+      const label = spec.keyLabels[key] || key;
+      summaryLines.push(`• [${isReq ? 'MANDATORY' : 'OPTIONAL'}] ${label}:`);
+      summaryLines.push(`  ${val}`);
+    }
+
+    if (depositRecord.supplementaryLinks.length > 0) {
+      summaryLines.push(``);
+      summaryLines.push(`--- SUPPLEMENTARY LINKS (${depositRecord.supplementaryLinks.length}) ---`);
+      depositRecord.supplementaryLinks.forEach((l, i) => {
+        summaryLines.push(`  ${i + 1}. [${l.label}] ${l.url}`);
+      });
+    }
+
+    if (depositRecord.projectAbstract) {
+      summaryLines.push(``);
+      summaryLines.push(`--- PROJECT ABSTRACT / NOTES ---`);
+      summaryLines.push(depositRecord.projectAbstract);
+    }
+    summaryLines.push(`=========================================`);
+
+    const summaryText = summaryLines.join('\n');
+
     if (apiKey) {
       try {
-        const formattedSupplementary = depositRecord.supplementaryLinks.length > 0
-          ? depositRecord.supplementaryLinks.map((l, i) => `${i + 1}. [${l.label}] ${l.url}`).join('\n')
-          : 'None declared';
-
         const params = new URLSearchParams();
-        const summaryLines = [
-          `CELESTECON 2026 DIGITAL DELIVERABLE DEPOSIT`,
-          `=========================================`,
-          `RECEIPT TOKEN: ${receiptToken}`,
-          `TIMESTAMP:     ${new Date(timestamp).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })} IST`,
-          `SCHOOL UID:    ${cleanUID}`,
-          `INSTITUTION:   ${depositRecord.schoolName}`,
-          `EVENT:         ${spec.code} · ${depositRecord.eventName} (${depositRecord.division})`,
-          `TEAM:          ${depositRecord.teamName}`,
-          `LEAD:          ${depositRecord.leadName} (${depositRecord.leadEmail} · ${depositRecord.leadPhone || 'N/A'})`,
-          `PRIMARY LINK:  ${primaryUrl || depositRecord.driveUrl}`,
-          ``,
-          `--- DELIVERABLES SUBMITTED ---`
-        ];
-
-        for (const [key, val] of Object.entries(sanitizedDeliverables)) {
-          const isReq = spec.requiredKeys.includes(key);
-          const label = spec.keyLabels[key] || key;
-          summaryLines.push(`• [${isReq ? 'MANDATORY' : 'OPTIONAL'}] ${label}:`);
-          summaryLines.push(`  ${val}`);
-        }
-
-        if (depositRecord.supplementaryLinks.length > 0) {
-          summaryLines.push(``);
-          summaryLines.push(`--- SUPPLEMENTARY LINKS (${depositRecord.supplementaryLinks.length}) ---`);
-          depositRecord.supplementaryLinks.forEach((l, i) => {
-            summaryLines.push(`  ${i + 1}. [${l.label}] ${l.url}`);
-          });
-        }
-
-        if (depositRecord.projectAbstract) {
-          summaryLines.push(``);
-          summaryLines.push(`--- PROJECT ABSTRACT / NOTES ---`);
-          summaryLines.push(depositRecord.projectAbstract);
-        }
-        summaryLines.push(`=========================================`);
-
-        const summaryText = summaryLines.join('\n');
-
         // Exact Question IDs matching live Form 262451061688056
         params.append('submission[3]', receiptToken);
         params.append('submission[4]', cleanUID);
@@ -341,6 +341,60 @@ export async function onRequestPost(context) {
         }
       } catch (jErr) {
         console.warn('JotForm deposit submission notice:', jErr.message);
+      }
+    } else {
+      // Direct post fallback to JotForm if API key is not configured in worker environment
+      try {
+        const directParams = new URLSearchParams();
+        directParams.append('formID', formId);
+        directParams.append('simple_spc', `${formId}-${formId}`);
+        directParams.append('q3', receiptToken);
+        directParams.append('q4', cleanUID);
+        directParams.append('q5', depositRecord.schoolName);
+        directParams.append('q6', depositRecord.eventId);
+        directParams.append('q7', depositRecord.eventName);
+        directParams.append('q8', depositRecord.division);
+        directParams.append('q9', depositRecord.teamName);
+        directParams.append('q10', depositRecord.leadName);
+        directParams.append('q11', depositRecord.leadEmail);
+        directParams.append('q12', depositRecord.leadPhone);
+        directParams.append('q13', primaryUrl || depositRecord.driveUrl);
+        directParams.append('q14', formattedSupplementary);
+        directParams.append('q15', depositRecord.projectAbstract || '');
+        directParams.append('q16', summaryText);
+        directParams.append('q17', JSON.stringify(depositRecord));
+
+        directParams.append('submission[3]', receiptToken);
+        directParams.append('submission[4]', cleanUID);
+        directParams.append('submission[5]', depositRecord.schoolName);
+        directParams.append('submission[6]', depositRecord.eventId);
+        directParams.append('submission[7]', depositRecord.eventName);
+        directParams.append('submission[8]', depositRecord.division);
+        directParams.append('submission[9]', depositRecord.teamName);
+        directParams.append('submission[10]', depositRecord.leadName);
+        directParams.append('submission[11]', depositRecord.leadEmail);
+        directParams.append('submission[12]', depositRecord.leadPhone);
+        directParams.append('submission[13]', primaryUrl || depositRecord.driveUrl);
+        directParams.append('submission[14]', formattedSupplementary);
+        directParams.append('submission[15]', depositRecord.projectAbstract || '');
+        directParams.append('submission[16]', summaryText);
+        directParams.append('submission[17]', JSON.stringify(depositRecord));
+
+        const directResp = await fetch(`https://submit.jotform.com/submit/${encodeURIComponent(formId)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://form.jotform.com',
+            'Referer': `https://form.jotform.com/${encodeURIComponent(formId)}`
+          },
+          body: directParams.toString()
+        });
+
+        if (directResp.ok) {
+          syncedJotform = true;
+        }
+      } catch (dErr) {
+        console.warn('JotForm direct deposit notice:', dErr.message);
       }
     }
 
