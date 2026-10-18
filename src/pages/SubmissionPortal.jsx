@@ -423,7 +423,7 @@ const EVENT_DELIVERABLE_SPECS = {
   }
 };
 
-const JOTFORM_SUBMISSION_FORM_ID = '262451061688056';
+const JOTFORM_SUBMISSION_FORM_ID = '262904743897068';
 let lastSubmitKey = '';
 let lastSubmitTimestamp = 0;
 
@@ -464,12 +464,12 @@ const submitToJotFormDirect = (record) => {
       `===============================================`
     ].join('\n');
 
-    // EXACT question IDs matching live form 262451061688056
+    // EXACT question IDs matching live form 262904743897068
     const fields = {
       formID: JOTFORM_SUBMISSION_FORM_ID,
       simple_spc: `${JOTFORM_SUBMISSION_FORM_ID}-${JOTFORM_SUBMISSION_FORM_ID}`,
 
-      // EXACT Question IDs matching live form 262451061688056
+      // EXACT Question IDs matching live form 262904743897068
       q3: record.receiptToken,
       q4: record.schoolUID,
       q5: record.schoolName,
@@ -975,7 +975,7 @@ export default function SubmissionPortal() {
 
       let syncStatus = { jotform: false, firebase: false, localVault: true };
 
-      // 1. Direct submit to JotForm Form 262451061688056 (guaranteed client-side delivery to Jotform Tables)
+      // 1. Direct submit to JotForm Form 262904743897068 (guaranteed client-side delivery to Jotform Tables)
       const directSuccess = submitToJotFormDirect(record);
       if (directSuccess) {
         syncStatus.jotform = true;
@@ -1303,7 +1303,7 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
               <div><strong className="text-bone">Team Name:</strong> {submissionReceipt.teamName}</div>
               <div><strong className="text-bone">Lead Contact:</strong> {submissionReceipt.leadName} ({submissionReceipt.leadEmail})</div>
               <div><strong className="text-bone">Timestamp:</strong> {new Date(submissionReceipt.timestamp).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })} IST</div>
-              <div><strong className="text-bone">JotForm Cloud:</strong> <span className="text-green-400 font-bold">✓ Synced to Form #262451061688056</span></div>
+              <div><strong className="text-bone">JotForm Cloud:</strong> <span className="text-green-400 font-bold">✓ Synced to Form #262904743897068</span></div>
               <div><strong className="text-bone">Vault Status:</strong> <span className="text-cyan-400 font-bold">Encrypted &amp; Confirmed</span></div>
             </div>
 

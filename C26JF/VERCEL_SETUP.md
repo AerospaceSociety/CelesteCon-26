@@ -32,7 +32,7 @@ JOTFORM_API_KEY=your_jotform_api_key
 Optional variables:
 
 ```text
-JOTFORM_FORM_ID=261896133006456
+JOTFORM_FORM_ID=262905115844054
 JOTFORM_API_BASE=https://api.jotform.com
 ALLOWED_ORIGINS=*
 SMTP_HOST=
@@ -112,7 +112,7 @@ Submit a test registration from the web page and confirm it appears in the
 JotForm form:
 
 ```text
-https://form.jotform.com/261896133006456
+https://form.jotform.com/262905115844054
 ```
 
 ## Notes

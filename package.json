@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "provision:registration": "node scripts/setup_registration_jotform.js",
     "provision:submissions": "node scripts/setup_submissions_jotform.js",
+    "provision:all": "node scripts/setup_all_jotform.js",
     "provision:internal": "node scripts/setup_internal_jotform.js"
   },
   "dependencies": {

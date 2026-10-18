@@ -81,29 +81,42 @@ function apiDevPlugin() {
         // /api/verify-uid handler
         if (url.pathname === '/api/verify-uid') {
           const rawUID = (url.searchParams.get('uid') || '').trim().toUpperCase();
-          const apiKey = process.env.JOTFORM_API_KEY;
-          const formId = process.env.JOTFORM_FORM_ID || '261896133006456';
+          const primaryVerifyFormId = process.env.JOTFORM_VERIFY_FORM_ID || '261896133006456';
+          const newRegFormId = process.env.JOTFORM_FORM_ID || '262905115844054';
+          const formsToSearch = Array.from(new Set([primaryVerifyFormId, newRegFormId]));
 
           // Try live JotForm if key is available in environment
           if (apiKey && rawUID) {
-            try {
-              const jotResp = await fetch(
-                `https://api.jotform.com/form/${formId}/submissions?limit=1000&orderby=created_at`,
-                { headers: { 'APIKEY': apiKey, 'Accept': 'application/json' } }
-              );
+            for (const formId of formsToSearch) {
+              try {
+                const jotResp = await fetch(
+                  `https://api.jotform.com/form/${formId}/submissions?limit=1000&orderby=created_at`,
+                  { headers: { 'APIKEY': apiKey, 'Accept': 'application/json' } }
+                );
               if (jotResp.ok) {
                 const jotData = await jotResp.json();
                 const submissions = jotData?.content || [];
                 for (const sub of submissions) {
                   const answers = sub.answers || {};
                   let regJson = null;
-                  const rawJson = answers['8']?.answer;
-                  if (rawJson) {
-                    try { regJson = typeof rawJson === 'string' ? JSON.parse(rawJson) : rawJson; } catch {}
+
+                  for (const [qid, qAns] of Object.entries(answers)) {
+                    if (qAns.name === 'registration_json' || (qAns.text && qAns.text.includes('Registration Data')) || qid === '8') {
+                      const rawJson = qAns.answer;
+                      if (rawJson) {
+                        try { regJson = typeof rawJson === 'string' ? JSON.parse(rawJson) : rawJson; break; } catch {}
+                      }
+                    }
                   }
+
                   const subUID = (regJson?.schoolUID || '').toUpperCase();
-                  const summary = (answers['7']?.answer || '').toUpperCase();
+                  const summary = (Object.values(answers).find(a => a.name === 'registration_summary')?.answer || answers['7']?.answer || '').toUpperCase();
                   if (subUID === rawUID || summary.includes(rawUID) || JSON.stringify(answers).toUpperCase().includes(rawUID)) {
+                    const getAns = (name, fallbackQid) => {
+                      const byName = Object.values(answers).find(a => a.name === name)?.answer;
+                      return byName !== undefined ? byName : answers[fallbackQid]?.answer || '';
+                    };
+
                     res.statusCode = 200;
                     res.end(JSON.stringify({
                       verified: true,
@@ -111,10 +124,10 @@ function apiDevPlugin() {
                       registration: {
                         schoolUID: rawUID,
                         school: {
-                          name: regJson?.school?.name || answers['2']?.answer || 'Accredited Delegation',
-                          contact: regJson?.school?.contact || answers['3']?.answer || 'Authorized Delegate',
-                          email: regJson?.school?.email || answers['4']?.answer || '',
-                          phone: regJson?.school?.phone || answers['5']?.answer || ''
+                          name: regJson?.school?.name || getAns('school_name', '2') || 'Accredited Delegation',
+                          contact: regJson?.school?.contact || getAns('contact_name', '3') || 'Authorized Delegate',
+                          email: regJson?.school?.email || getAns('contact_email', '4') || '',
+                          phone: regJson?.school?.phone || getAns('contact_phone', '5') || ''
                         },
                         events: regJson?.events || [],
                         totals: regJson?.totals || {}
@@ -124,8 +137,9 @@ function apiDevPlugin() {
                   }
                 }
               }
-            } catch (e) {
-              console.warn('[Vite Dev] Jotform lookup error:', e.message);
+              } catch (e) {
+                console.warn('[Vite Dev] Jotform lookup error:', e.message);
+              }
             }
           }
 
@@ -197,7 +211,7 @@ function apiDevPlugin() {
 
               let syncedJotform = false;
               const apiKey = process.env.JOTFORM_API_KEY;
-              const formId = process.env.JOTFORM_SUBMISSIONS_FORM_ID || '262451061688056';
+              const formId = process.env.JOTFORM_SUBMISSIONS_FORM_ID || '262904743897068';
 
               const formattedSupplementary = (body.supplementaryLinks || [])
                 .map((l, i) => `${i + 1}. [${l.label}] ${l.url}`)

@@ -241,7 +241,7 @@ export async function onRequestPost(context) {
 
     // 4. Submit to JotForm with APIKEY header
     const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.apiKey;
-    const formId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262451061688056";
+    const formId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262904743897068";
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
     const formattedSupplementary = depositRecord.supplementaryLinks.length > 0

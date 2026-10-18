@@ -88,8 +88,8 @@ export async function onRequestPost(context) {
 
     const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.JOTFORM_SECRET_KEY || env.apiKey;
     const internalFormId = env.JOTFORM_INTERNAL_FORM_ID || "262820575510050";
-    const externalFormId = env.JOTFORM_FORM_ID || "261896133006456";
-    const submissionsFormId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262451061688056";
+    const externalFormId = env.JOTFORM_FORM_ID || "262905115844054";
+    const submissionsFormId = env.JOTFORM_SUBMISSIONS_FORM_ID || "262904743897068";
     const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
     // 1. Check if this is a Deliverable Submission rather than a School Registration
@@ -134,7 +134,7 @@ export async function onRequestPost(context) {
       let syncedJotform = false;
       let syncedFirebase = false;
 
-      // Submit to Submissions JotForm (262451061688056)
+      // Submit to Submissions JotForm (262904743897068)
       if (apiKey) {
         try {
           const params = new URLSearchParams();
@@ -269,7 +269,7 @@ export async function onRequestPost(context) {
       );
     }
 
-    // 2. School Registration Routing (External: 261896133006456, Internal: 262820575510050)
+    // 2. School Registration Routing (External: 262905115844054, Internal: 262820575510050)
     const formId = (reg.isInternal || reg.formId === internalFormId) ? internalFormId : externalFormId;
 
     if (!apiKey) {
@@ -328,7 +328,7 @@ export async function onRequestPost(context) {
           directParams.append('submission[12]', sanitizeText(summary, 8000));
           directParams.append('submission[13]', JSON.stringify(reg));
         } else {
-          // Standard external registration form 261896133006456
+          // Standard external registration form 262905115844054
           if (reg.school?.name) directParams.append('submission[2]', sanitizeText(reg.school.name, 100));
           if (reg.school?.contact) directParams.append('submission[3]', sanitizeText(reg.school.contact, 100));
           if (reg.school?.email) directParams.append('submission[4]', sanitizeText(reg.school.email, 100));

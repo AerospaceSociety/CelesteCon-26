@@ -124,22 +124,25 @@ async function handleVerification(request, rawUID, env) {
     );
   }
 
-  // 3. Query JotForm server-side using secure APIKEY header (external registration form)
+  // 3. Query JotForm server-side using secure APIKEY header (retains previous reading setup: 261896133006456)
   const apiKey = env.JOTFORM_API_KEY || env.SECRET_KEY || env.apiKey;
-  const formId = env.JOTFORM_FORM_ID || "261896133006456";
+  const primaryVerifyFormId = env.JOTFORM_VERIFY_FORM_ID || "261896133006456";
+  const newRegFormId = env.JOTFORM_FORM_ID || "262905115844054";
+  const formsToSearch = Array.from(new Set([primaryVerifyFormId, newRegFormId]));
   const apiBase = (env.JOTFORM_API_BASE || "https://api.jotform.com").replace(/\/+$/, "");
 
   if (apiKey) {
-    try {
-      const jotResp = await fetch(
-        `${apiBase}/form/${encodeURIComponent(formId)}/submissions?limit=1000&orderby=created_at`,
-        {
-          headers: {
-            'APIKEY': apiKey,
-            'Accept': 'application/json'
+    for (const formId of formsToSearch) {
+      try {
+        const jotResp = await fetch(
+          `${apiBase}/form/${encodeURIComponent(formId)}/submissions?limit=1000&orderby=created_at`,
+          {
+            headers: {
+              'APIKEY': apiKey,
+              'Accept': 'application/json'
+            }
           }
-        }
-      );
+        );
 
       if (jotResp.ok) {
         const jotData = await jotResp.json();
@@ -149,25 +152,35 @@ async function handleVerification(request, rawUID, env) {
           const answers = sub.answers || {};
           let regJson = null;
 
-          // External registration manifest is deposited in answers['8']
-          const rawJsonCandidate = answers['8']?.answer || null;
-          if (rawJsonCandidate) {
-            try {
-              regJson = typeof rawJsonCandidate === 'string'
-                ? JSON.parse(rawJsonCandidate)
-                : rawJsonCandidate;
-            } catch {}
+          // Look for registration_json by question name, text, or qid 8
+          for (const [qid, qAns] of Object.entries(answers)) {
+            if (qAns.name === 'registration_json' || (qAns.text && qAns.text.includes('Registration Data')) || qid === '8') {
+              const rawJsonCandidate = qAns.answer;
+              if (rawJsonCandidate) {
+                try {
+                  regJson = typeof rawJsonCandidate === 'string'
+                    ? JSON.parse(rawJsonCandidate)
+                    : rawJsonCandidate;
+                  break;
+                } catch {}
+              }
+            }
           }
 
           const subUID = sanitizeText(regJson?.schoolUID || '').toUpperCase();
-          const summaryText = answers['7']?.answer || '';
+          const summaryText = Object.values(answers).find(a => a.name === 'registration_summary')?.answer || answers['7']?.answer || '';
           const allAnswersStr = JSON.stringify(answers);
 
           if (subUID === cleanUID || summaryText.toUpperCase().includes(cleanUID) || allAnswersStr.toUpperCase().includes(cleanUID)) {
-            const rawEmail = regJson?.school?.email || regJson?.delegation?.headDelegateEmail || answers['4']?.answer || '';
-            const rawPhone = regJson?.school?.phone || regJson?.delegation?.headDelegatePhone || answers['5']?.answer || '';
-            const schoolName = sanitizeText(regJson?.school?.name || answers['2']?.answer || 'Accredited Delegation');
-            const contactName = sanitizeText(regJson?.school?.contact || regJson?.delegation?.headDelegateName || answers['3']?.answer || 'Authorized Delegate');
+            const getAns = (name, fallbackQid) => {
+              const byName = Object.values(answers).find(a => a.name === name)?.answer;
+              return byName !== undefined ? byName : answers[fallbackQid]?.answer || '';
+            };
+
+            const rawEmail = regJson?.school?.email || regJson?.delegation?.headDelegateEmail || getAns('contact_email', '4');
+            const rawPhone = regJson?.school?.phone || regJson?.delegation?.headDelegatePhone || getAns('contact_phone', '5');
+            const schoolName = sanitizeText(regJson?.school?.name || getAns('school_name', '2') || 'Accredited Delegation');
+            const contactName = sanitizeText(regJson?.school?.contact || regJson?.delegation?.headDelegateName || getAns('contact_name', '3') || 'Authorized Delegate');
 
             return jsonResponse(
               {
@@ -193,9 +206,9 @@ async function handleVerification(request, rawUID, env) {
             );
           }
         }
+      } catch (err) {
+        console.warn(`JotForm lookup notice for form ${formId}:`, err.message);
       }
-    } catch (err) {
-      console.warn(`JotForm lookup notice for form ${formId}:`, err.message);
     }
   }
 
