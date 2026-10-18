@@ -13,15 +13,15 @@ import {
 
 const DEFAULT_FIELD_MAP = {
   form_header: "1",
-  school_name: "2",
-  contact_name: "3",
-  contact_email: "4",
-  contact_phone: "5",
-  events_selected: "6",
-  registration_summary: "7",
-  registration_json: "8",
-  total_teams: "9",
-  total_participants: "10"
+  school_name: "3",
+  contact_name: "4",
+  contact_email: "5",
+  contact_phone: "6",
+  events_selected: "7",
+  registration_summary: "8",
+  registration_json: "9",
+  total_teams: "10",
+  total_participants: "11"
 };
 
 const EVENT_CODES = {
@@ -328,22 +328,55 @@ export async function onRequestPost(context) {
           directParams.append('submission[12]', sanitizeText(summary, 8000));
           directParams.append('submission[13]', JSON.stringify(reg));
         } else {
-          // Standard external registration form 262905115844054
-          if (reg.school?.name) directParams.append('submission[2]', sanitizeText(reg.school.name, 100));
-          if (reg.school?.contact) directParams.append('submission[3]', sanitizeText(reg.school.contact, 100));
-          if (reg.school?.email) directParams.append('submission[4]', sanitizeText(reg.school.email, 100));
-          if (reg.school?.phone) directParams.append('submission[5]', sanitizeText(reg.school.phone, 30));
-          if (reg.events?.[0]?.name) directParams.append('submission[6]', sanitizeText(reg.events[0].name, 80));
-          directParams.append('submission[7]', sanitizeText(reg.summary || JSON.stringify(reg), 5000));
-          directParams.append('submission[8]', JSON.stringify(reg));
+          // Standard external registration form 262905115844054 (Live QIDs: 3=school, 4=contact, 5=email, 6=phone, 7=events, 8=summary, 9=json)
+          if (reg.school?.name) {
+            directParams.append('submission[3]', sanitizeText(reg.school.name, 100));
+            directParams.append('submission[2]', sanitizeText(reg.school.name, 100));
+            directParams.append('q3', sanitizeText(reg.school.name, 100));
+            directParams.append('q2', sanitizeText(reg.school.name, 100));
+            directParams.append('school_name', sanitizeText(reg.school.name, 100));
+          }
+          if (reg.school?.contact) {
+            directParams.append('submission[4]', sanitizeText(reg.school.contact, 100));
+            directParams.append('submission[3]', sanitizeText(reg.school.contact, 100));
+            directParams.append('q4', sanitizeText(reg.school.contact, 100));
+            directParams.append('q3', sanitizeText(reg.school.contact, 100));
+            directParams.append('contact_name', sanitizeText(reg.school.contact, 100));
+          }
+          if (reg.school?.email) {
+            directParams.append('submission[5]', sanitizeText(reg.school.email, 100));
+            directParams.append('submission[4]', sanitizeText(reg.school.email, 100));
+            directParams.append('q5', sanitizeText(reg.school.email, 100));
+            directParams.append('q4', sanitizeText(reg.school.email, 100));
+            directParams.append('contact_email', sanitizeText(reg.school.email, 100));
+          }
+          if (reg.school?.phone) {
+            directParams.append('submission[6]', sanitizeText(reg.school.phone, 30));
+            directParams.append('submission[5]', sanitizeText(reg.school.phone, 30));
+            directParams.append('q6', sanitizeText(reg.school.phone, 30));
+            directParams.append('q5', sanitizeText(reg.school.phone, 30));
+            directParams.append('contact_phone', sanitizeText(reg.school.phone, 30));
+          }
+          if (reg.events?.[0]?.name) {
+            directParams.append('submission[7]', sanitizeText(reg.events[0].name, 80));
+            directParams.append('submission[6]', sanitizeText(reg.events[0].name, 80));
+            directParams.append('q7', sanitizeText(reg.events[0].name, 80));
+            directParams.append('q6', sanitizeText(reg.events[0].name, 80));
+            directParams.append('events_selected', sanitizeText(reg.events[0].name, 80));
+          }
+          const summaryStr = sanitizeText(reg.summary || JSON.stringify(reg), 5000);
+          directParams.append('submission[8]', summaryStr);
+          directParams.append('submission[7]', summaryStr);
+          directParams.append('q8', summaryStr);
+          directParams.append('q7', summaryStr);
+          directParams.append('registration_summary', summaryStr);
 
-          if (reg.school?.name) directParams.append('q2', sanitizeText(reg.school.name, 100));
-          if (reg.school?.contact) directParams.append('q3', sanitizeText(reg.school.contact, 100));
-          if (reg.school?.email) directParams.append('q4', sanitizeText(reg.school.email, 100));
-          if (reg.school?.phone) directParams.append('q5', sanitizeText(reg.school.phone, 30));
-          if (reg.events?.[0]?.name) directParams.append('q6', sanitizeText(reg.events[0].name, 80));
-          directParams.append('q7', sanitizeText(reg.summary || JSON.stringify(reg), 5000));
-          directParams.append('q8', JSON.stringify(reg));
+          const jsonStr = JSON.stringify(reg);
+          directParams.append('submission[9]', jsonStr);
+          directParams.append('submission[8]', jsonStr);
+          directParams.append('q9', jsonStr);
+          directParams.append('q8', jsonStr);
+          directParams.append('registration_json', jsonStr);
         }
 
         const directResp = await fetch(`https://submit.jotform.com/submit/${encodeURIComponent(formId)}`, {

@@ -206,11 +206,12 @@ async function handleVerification(request, rawUID, env) {
             );
           }
         }
-      } catch (err) {
-        console.warn(`JotForm lookup notice for form ${formId}:`, err.message);
       }
+    } catch (err) {
+      console.warn(`JotForm lookup notice for form ${formId}:`, err.message);
     }
   }
+}
 
   // 4. Query Firebase Cloud Database if configured
   const firebaseUrl = env.FIREBASE_DATABASE_URL || env.VITE_FIREBASE_DATABASE_URL;
