@@ -458,7 +458,7 @@ export default function BppPrompt() {
 
             <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
               <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
-              <strong className="text-bone text-sm block">18 Oct, 11:59 PM IST</strong>
+              <strong className="text-bone text-sm block">19 Oct, 01:00 PM IST</strong>
               <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
@@ -559,7 +559,7 @@ export default function BppPrompt() {
                   <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
                 </div>
                 <div className="p-3 bg-crimson/10 border border-crimson">
-                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
+                  <span className="text-crimson block text-[10px]">19 Oct, 01:00 PM IST</span>
                   <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
                 </div>
                 <div className="p-3 bg-ink border border-bone/20">
@@ -583,7 +583,7 @@ export default function BppPrompt() {
                   <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Written Proposal PDF</span>
                 </div>
                 <span className="font-mono text-xs text-amber-400 font-bold uppercase">
-                  Deadline: 18 Oct, 11:59 PM IST
+                  Deadline: 19 Oct, 01:00 PM IST
                 </span>
               </div>
 
@@ -1223,7 +1223,7 @@ export default function BppPrompt() {
                 { code: 'R-01', title: 'Eligibility', desc: 'Junior Grades 6–8, Senior Grades 9–12. 3 students per team, with one faculty advisor. One team per school per category.' },
                 { code: 'R-02', title: 'Registration', desc: 'All communications conducted through the faculty advisor’s official school email. All deadlines in Indian Standard Time (IST).' },
                 { code: 'R-03', title: 'Prompt Selection', desc: 'Exactly 1 layer prompt from the team’s own division. Open track prompt is submitted as an optional separate addendum.' },
-                { code: 'R-04', title: 'Submission Protocol', desc: 'Uploads via CelesteCon portal before 18 Oct 2026, 11:59 PM IST. Selectable text required; zero late allowances.' },
+                { code: 'R-04', title: 'Submission Protocol', desc: 'Uploads via CelesteCon portal before 19 Oct 2026, 01:00 PM IST. Selectable text required; zero late allowances.' },
                 { code: 'R-05', title: 'Content & Ethics', desc: 'No military weaponry, adult content, or trademark infringement.' },
                 { code: 'R-07', title: 'Round 2 Conduct', desc: 'Timing is strictly 7 minutes followed by jury cross-examination and audience challenger questions.' },
                 { code: 'R-08', title: 'Judging & Ranking', desc: 'Round 1 scores carry into the final ranking together with Round 2. Judges’ decisions are final.' },

@@ -184,7 +184,7 @@ const CHECKLIST_ITEMS = [
   { id: 'v8', label: 'Clean assembly tree: proper component hierarchy, fasteners modeled, zero unconstrained floating parts.' },
   { id: 'v10', label: 'Powerplant & battery matching calculations: Motor KV, propeller pitch/diameter, voltage & flight endurance.' },
   { id: 'v11', label: 'Generative AI and external tools disclosed in the bibliography.' },
-  { id: 'v12', label: 'PDF and CAD files uploaded to the official CelesteCon Submission Portal before 18 Oct, 11:59 PM IST.' }
+  { id: 'v12', label: 'PDF and CAD files uploaded to the official CelesteCon Submission Portal before 19 Oct, 01:00 PM IST.' }
 ];
 
 export default function VolatusPrompt() {
@@ -304,7 +304,7 @@ export default function VolatusPrompt() {
 
             <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
               <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
-              <strong className="text-bone text-sm block">18 Oct, 11:59 PM IST</strong>
+              <strong className="text-bone text-sm block">19 Oct, 01:00 PM IST</strong>
               <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
@@ -408,7 +408,7 @@ export default function VolatusPrompt() {
                   <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
                 </div>
                 <div className="p-3 bg-crimson/10 border border-crimson">
-                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
+                  <span className="text-crimson block text-[10px]">19 Oct, 01:00 PM IST</span>
                   <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
                 </div>
                 <div className="p-3 bg-ink border border-bone/20">
@@ -428,7 +428,7 @@ export default function VolatusPrompt() {
               <div className="border border-bone/30 bg-ink-2 p-5 space-y-3">
                 <div className="flex justify-between items-center border-b border-bone/20 pb-2 font-mono text-xs">
                   <span className="font-bold px-2 py-0.5 bg-crimson text-bone-hi">ROUND 1 · ONLINE</span>
-                  <span className="text-amber-400 font-bold">18 OCT, 11:59 PM IST</span>
+                  <span className="text-amber-400 font-bold">19 OCT, 01:00 PM IST</span>
                 </div>
                 <h3 className="font-display text-xl text-bone uppercase">Technical Proposal &amp; 3D CAD Package</h3>
                 <ul className="space-y-2 font-mono text-xs text-bone-dim">

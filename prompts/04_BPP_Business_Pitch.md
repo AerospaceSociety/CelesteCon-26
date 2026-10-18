@@ -17,7 +17,7 @@ Business Power Pitch challenges students to bridge cutting-edge deep-tech aerosp
 
 ### Round 1: Online Pitch Deck & Video Upload
 - **Prompt Release:** 13 October 2026, 18:00:00 IST (Sub-track prompts published)
-- **Submission Deadline:** 18 October 2026, 23:59:59 IST
+- **Submission Deadline:** 19 October 2026, 01:00 PM IST
 - **Deliverables:**
   1. **Investor Pitch Deck (PDF):** 10–15 slides covering Problem Statement, Unique Value Proposition, Addressable Market (TAM/SAM/SOM), Unit Economics & Revenue Model, Go-To-Market Strategy, Technical Architecture, Competitor Matrix, and 5-Year Capital Allocation.
   2. **Elevator Pitch Video (MP4 / Google Drive Link):** 5-minute video pitch showcasing the venture in a dynamic, convincing manner.

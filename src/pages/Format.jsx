@@ -119,7 +119,7 @@ const Format = () => {
               </div>
               <div>
                 <dt className="text-crimson font-bold uppercase mb-0.5">Round 1 Submission Deadline</dt>
-                <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold">18 Oct · 11:59 PM IST</dd>
+                <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold">19 Oct · 01:00 PM IST</dd>
                 <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Online proposals, decks, CAD & videos due.</span>
               </div>
               <div>

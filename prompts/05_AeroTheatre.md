@@ -16,7 +16,7 @@ AEROSS Theatre is the conclave's flagship creative and dramatic arena. Delegatio
 ## 2. Round Structure & Deliverables
 
 ### Round 1: Video Audition Tape
-- **Submission Deadline:** 18 October 2026, 23:59:59 IST
+- **Submission Deadline:** 19 October 2026, 01:00 PM IST
 - **Format:** 3–5 minute video recording uploaded to Google Drive or YouTube (Unlisted).
 - **Guidelines:** Clear audio capture, stable framing, and natural acoustics. Performances must not exceed 5 minutes under any circumstance.
 - **Shortlist:** Top delegations advance to perform live at the main Audio-Visual Hall (AVH).

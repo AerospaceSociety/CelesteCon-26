@@ -17,7 +17,7 @@ Settle-Me-This challenges student delegations to author an engineering proposal 
 
 ### Round 1: Online Engineering Proposal
 - **Release Date:** Prompts unlock 13 October 2026, 18:00:00 IST
-- **Submission Deadline:** 18 October 2026, 23:59:59 IST
+- **Submission Deadline:** 19 October 2026, 01:00 PM IST
 - **Format:** Digital PDF Document Upload
   - **Junior Category (Grades 6–8):** Max 25 pages
   - **Senior Category (Grades 9–12):** Max 35 pages

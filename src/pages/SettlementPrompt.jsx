@@ -196,7 +196,7 @@ const CHECKLIST_ITEMS = [
   { id: 'c8', label: 'Thermal management & power generation budget: Wattage balance, radiator area, and night/eclipse reserves.' },
   { id: 'c9', label: '2D/3D schematics, isometric cuts, and annotated diagrams included with figure numbers and captions.' },
   { id: 'c11', label: 'Academic integrity & AI disclosure declaration signed: all citations and generative tools credited.' },
-  { id: 'c12', label: 'PDF file uploaded to the official CelesteCon Submission Portal before 18 Oct, 11:59 PM IST.' }
+  { id: 'c12', label: 'PDF file uploaded to the official CelesteCon Submission Portal before 19 Oct, 01:00 PM IST.' }
 ];
 
 export default function SettlementPrompt() {
@@ -319,7 +319,7 @@ export default function SettlementPrompt() {
 
             <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
               <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
-              <strong className="text-bone text-sm block">18 Oct, 11:59 PM IST</strong>
+              <strong className="text-bone text-sm block">19 Oct, 01:00 PM IST</strong>
               <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
             </div>
 
@@ -407,7 +407,7 @@ export default function SettlementPrompt() {
                   <strong className="text-bone block mt-0.5">Round 1 Opens</strong>
                 </div>
                 <div className="p-3 bg-crimson/10 border border-crimson">
-                  <span className="text-crimson block text-[10px]">18 Oct, 11:59 PM IST</span>
+                  <span className="text-crimson block text-[10px]">19 Oct, 01:00 PM IST</span>
                   <strong className="text-bone block mt-0.5">Round 1 Submission Deadline</strong>
                 </div>
                 <div className="p-3 bg-ink border border-bone/20">
@@ -431,7 +431,7 @@ export default function SettlementPrompt() {
                   <span className="font-mono text-xs text-bone-dim uppercase">Round 1 Written Proposal PDF</span>
                 </div>
                 <span className="font-mono text-xs text-amber-400 font-bold uppercase">
-                  Deadline: 18 Oct, 11:59 PM IST
+                  Deadline: 19 Oct, 01:00 PM IST
                 </span>
               </div>
 

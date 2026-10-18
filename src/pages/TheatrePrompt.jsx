@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const AUDITION_DEADLINE = new Date('2026-10-18T23:59:59+05:30').getTime();
+const AUDITION_DEADLINE = new Date('2026-10-19T13:00:00+05:30').getTime();
 
 export default function TheatrePrompt() {
   const [timeLeft, setTimeLeft] = useState({
@@ -128,7 +128,7 @@ export default function TheatrePrompt() {
 
             <div className="space-y-1">
               <span className="font-mono text-[10px] text-bone-dim uppercase block">
-                Deadline: 18 Oct 23:59:59 IST
+                Deadline: 19 Oct, 01:00 PM IST
               </span>
               <div className="grid grid-cols-4 gap-1 text-center font-mono">
                 <div className="bg-ink p-1.5 border border-bone/20">
@@ -211,7 +211,7 @@ export default function TheatrePrompt() {
             </div>
             <div className="flex items-start gap-2">
               <span className="text-crimson font-bold">▶</span>
-              <span><strong className="text-bone">Format &amp; Submission:</strong> Submit via Google Drive link (access permissions set to &ldquo;Anyone with link can view&rdquo;) or unlisted YouTube link in the CelesteCon Submission Vault before 18 October 23:59:59 IST.</span>
+              <span><strong className="text-bone">Format &amp; Submission:</strong> Submit via Google Drive link (access permissions set to &ldquo;Anyone with link can view&rdquo;) or unlisted YouTube link in the CelesteCon Submission Vault before 19 October 01:00 PM IST.</span>
             </div>
             <div className="flex items-start gap-2">
               <span className="text-crimson font-bold">▶</span>

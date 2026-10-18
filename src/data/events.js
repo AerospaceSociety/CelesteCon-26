@@ -8,7 +8,7 @@ export const masterMilestones = {
   regOpens: '01 Oct',
   regDeadlineRegular: '13 Oct 11:59 PM IST',
   r1Commences: '13 Oct 18:00 IST',
-  r1SubmissionDeadline: '18 Oct 11:59 PM IST',
+  r1SubmissionDeadline: '19 Oct 01:00 PM IST',
   r1Results: '20 Oct',
   regDeadlineExtended: '20 Oct 11:59 PM IST (Rocketry, AEROSS Prix, CelesteJam)',
   onsiteFinale: '24 Oct 07:45 AM Reporting',
@@ -57,7 +57,7 @@ export const events = [
     ],
     timeline: [
       { label: 'Registration Opens', date: '01 Oct' },
-      { label: 'Proposal Submission Deadline', date: '18 Oct' },
+      { label: 'Proposal Submission Deadline', date: '19 Oct, 01:00 PM IST' },
       { label: 'Finalists Announcement (Top 5 / Category)', date: '20 Oct' },
       { label: 'Onsite Presentation & Defense', date: '24 Oct (CelesteCon 2026)' }
     ],
@@ -100,7 +100,7 @@ export const events = [
     ],
     timeline: [
       { label: 'Registration Opens', date: '01 Oct' },
-      { label: 'Proposal & 3D Model Due', date: '18 Oct' },
+      { label: 'Proposal & 3D Model Due', date: '19 Oct, 01:00 PM IST' },
       { label: 'Shortlist Notification', date: '20 Oct' },
       { label: 'Onsite Science-Fair Exhibition', date: '24 Oct (CelesteCon 2026)' }
     ],
@@ -193,7 +193,7 @@ export const events = [
       'Response to cross-questioning'
     ],
     timeline: [
-      { label: 'Round 1 Submission (Deck + Video)', date: '18 Oct' },
+      { label: 'Round 1 Submission (Deck + Video)', date: '19 Oct, 01:00 PM IST' },
       { label: 'Finalists Announcement', date: '20 Oct' },
       { label: 'Live Investor Pitches', date: '24 Oct (CelesteCon 2026)' }
     ],
@@ -231,7 +231,7 @@ export const events = [
       'Stage presence & delivery'
     ],
     timeline: [
-      { label: 'Video Audition Due', date: '18 Oct' },
+      { label: 'Video Audition Due', date: '19 Oct, 01:00 PM IST' },
       { label: 'Finalists Announcement', date: '20 Oct' },
       { label: 'Live Stage Showcase & Improv', date: '24 Oct (CelesteCon 2026)' }
     ],

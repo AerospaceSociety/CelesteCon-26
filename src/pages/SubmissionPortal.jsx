@@ -4,7 +4,7 @@ import { events } from '../data/events';
 
 // Submissions schedule milestones
 const TARGET_SUBMISSION_START = new Date('2026-10-13T18:00:00+05:30').getTime();
-const TARGET_SUBMISSION_DEADLINE = new Date('2026-10-20T23:59:59+05:30').getTime();
+const TARGET_SUBMISSION_DEADLINE = new Date('2026-10-19T13:00:00+05:30').getTime();
 const EXTENDED_SUBMISSION_DEADLINE = new Date('2026-10-22T23:59:59+05:30').getTime();
 
 // Verified seed delegations for host & conclave benchmark schools
@@ -80,7 +80,7 @@ const EVENT_DELIVERABLE_SPECS = {
     name: 'Settle-Me-This',
     discipline: 'Space Settlement Design',
     portalUrl: '/prompts/settlement',
-    deadline: '18 October 2026, 23:59:59 IST',
+    deadline: '19 October 2026, 01:00 PM IST',
     summary: 'Design a permanent, habitable free-space settlement. Submit written engineering proposal (PDF). Top 5 advance to Round 2 live defense.',
     mandatoryFields: [
       {
@@ -122,7 +122,7 @@ const EVENT_DELIVERABLE_SPECS = {
     name: 'Volatus',
     discipline: 'Aviation, UAV & 3D CAD Modeling',
     portalUrl: '/prompts/volatus',
-    deadline: '18 October 2026, 23:59:59 IST',
+    deadline: '19 October 2026, 01:00 PM IST',
     summary: 'Engineer an aircraft from first principles around an assigned mission profile. Submit technical proposal PDF and digital 3D CAD package.',
     mandatoryFields: [
       {
@@ -185,7 +185,7 @@ const EVENT_DELIVERABLE_SPECS = {
     name: 'Business Power Pitch',
     discipline: 'Aerospace Commercialization, VC & Pitch',
     portalUrl: '/prompts/bpp',
-    deadline: '18 October 2026, 23:59:59 IST',
+    deadline: '19 October 2026, 01:00 PM IST',
     summary: 'Commercial aerospace startup pitch. Written business proposal (PDF) and 5-minute video pitch are mandatory; pitch deck and financial spreadsheets are optional.',
     mandatoryFields: [
       {
@@ -235,7 +235,7 @@ const EVENT_DELIVERABLE_SPECS = {
     name: 'AEROSS Theatre',
     discipline: 'Open Stage & Theatrical Talent Showcase',
     portalUrl: '/prompts/theatre',
-    deadline: '18 October 2026, 23:59:59 IST',
+    deadline: '19 October 2026, 01:00 PM IST',
     summary: 'Flagship theatrical and dramatic showcase. Submit 3–5 minute video audition tape with open creative liberty (no theme for Round 1). Top teams advance to live stage.',
     mandatoryFields: [
       {
@@ -645,7 +645,7 @@ export default function SubmissionPortal() {
       let diff = 0;
       let status = 'OPEN';
 
-      // Deadlines differ: Event 06, 07, 08 are extended to 22 Oct; others to 20 Oct
+      // Deadlines differ: Event 06, 07, 08 are extended to 22 Oct; others to 19 Oct 01:00 PM
       const targetDeadline = ['06', '07', '08'].includes(formData.eventId)
         ? EXTENDED_SUBMISSION_DEADLINE
         : TARGET_SUBMISSION_DEADLINE;
