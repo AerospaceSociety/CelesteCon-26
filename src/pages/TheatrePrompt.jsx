@@ -45,10 +45,9 @@ export default function TheatrePrompt() {
           <span className="text-crimson font-bold uppercase">EVENT 05 · AEROSS THEATRE</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
-            <span>Submission Vault</span>
-            <span>→</span>
-          </Link>
+          <span className="text-amber-400 font-bold uppercase tracking-widest text-[11px] px-2 py-0.5 border border-amber-400/40 bg-amber-400/10">
+            Auditions Closed
+          </span>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             <span className="text-green-400 uppercase font-bold text-[10px] tracking-wider">THEMES UNLOCKED</span>
@@ -121,33 +120,15 @@ export default function TheatrePrompt() {
           <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0 shadow-xl">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
               <span className="text-bone-dim uppercase">Audition Window</span>
-              <span className="font-bold text-green-400 uppercase">
-                {timeLeft.isAuditionOpen ? '● SUBMISSIONS OPEN' : 'AUDITIONS CLOSED'}
+              <span className="font-bold text-amber-400 uppercase">
+                AUDITIONS CLOSED
               </span>
             </div>
 
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-bone-dim uppercase block">
-                Deadline: 19 Oct, 01:00 PM IST
-              </span>
-              <div className="grid grid-cols-4 gap-1 text-center font-mono">
-                <div className="bg-ink p-1.5 border border-bone/20">
-                  <span className="text-lg font-bold text-bone block leading-tight">{timeLeft.days}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Days</span>
-                </div>
-                <div className="bg-ink p-1.5 border border-bone/20">
-                  <span className="text-lg font-bold text-bone block leading-tight">{timeLeft.hours}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Hrs</span>
-                </div>
-                <div className="bg-ink p-1.5 border border-bone/20">
-                  <span className="text-lg font-bold text-bone block leading-tight">{timeLeft.minutes}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Min</span>
-                </div>
-                <div className="bg-ink p-1.5 border border-bone/20">
-                  <span className="text-lg font-bold text-crimson block leading-tight">{timeLeft.seconds}</span>
-                  <span className="text-[9px] text-bone-dim uppercase">Sec</span>
-                </div>
-              </div>
+            <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
+              <span className="text-bone-dim uppercase text-[10px] block">Round 1 Status</span>
+              <strong className="text-amber-400 text-sm block">Auditions Closed</strong>
+              <span className="text-bone-dim text-[11px] block">Round 1 audition submission window has concluded</span>
             </div>
 
             <div className="space-y-1.5 font-mono text-[11px] text-bone-dim pt-2 border-t border-bone/20">
@@ -169,12 +150,9 @@ export default function TheatrePrompt() {
               </div>
             </div>
 
-            <Link
-              to="/submissions"
-              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block shadow-md"
-            >
-              Deposit Audition Video →
-            </Link>
+            <div className="w-full py-2.5 bg-ink border border-bone/40 text-bone-dim font-mono text-xs uppercase tracking-widest text-center">
+              Auditions Closed
+            </div>
           </div>
         </div>
       </div>
@@ -307,12 +285,6 @@ export default function TheatrePrompt() {
               className="px-4 py-2 border border-bone/40 hover:border-bone text-bone font-mono text-xs uppercase transition-colors"
             >
               ← Back to Competitions
-            </Link>
-            <Link
-              to="/submissions"
-              className="px-5 py-2 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink hover:text-crimson border border-crimson transition-colors"
-            >
-              Deposit Audition →
             </Link>
           </div>
         </div>

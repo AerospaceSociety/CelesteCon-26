@@ -144,12 +144,20 @@ export async function onRequestPost(context) {
       );
     }
 
-    const eventId = sanitizeText(body.eventId || '04', 10).padStart(2, '0');
+    const eventId = sanitizeText(body.eventId || '06', 10).padStart(2, '0');
 
-    if (eventId === '03') {
+    const CLOSED_EVENT_NAMES = {
+      '01': 'Settle-Me-This (SMT)',
+      '02': 'Volatus (VOL)',
+      '03': 'In Pursuit of Dispute (IPOD)',
+      '04': 'Business Power Pitch (BPP)',
+      '05': 'AEROSS Theatre (ATH)'
+    };
+
+    if (CLOSED_EVENT_NAMES[eventId]) {
       return jsonResponse(
         {
-          error: 'No preliminary portal submission is required for In Pursuit of Dispute (IPOD). Round 1 qualification is conducted via the online Quizzitch quiz platform. Teams qualify directly to live debate rounds on Conclave Day.'
+          error: `Submissions for ${CLOSED_EVENT_NAMES[eventId]} are closed. Only active tracks (CelesteJam, Rocketry, and AEROSS Prix) accept Round 1 submissions.`
         },
         400,
         request,
@@ -157,7 +165,7 @@ export async function onRequestPost(context) {
       );
     }
 
-    const spec = EVENT_REQUIREMENTS[eventId] || EVENT_REQUIREMENTS['04'];
+    const spec = EVENT_REQUIREMENTS[eventId] || EVENT_REQUIREMENTS['06'];
 
     // 2. Extract and sanitize structured deliverables
     const rawDeliverables = body.deliverables || {};

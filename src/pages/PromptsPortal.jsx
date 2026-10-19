@@ -27,6 +27,7 @@ const DELIVERABLE_INFO = {
     details: 'Engineering proposal for a habitable free-space settlement. Six RFPs across Junior & Senior divisions (Earth orbit, asteroids, Ceres, Saturn, Pluto, Tara system). Top 5 teams per division advance to onsite oral defense.',
     portalUrl: '/prompts/settlement',
     isLive: true,
+    submissionClosed: true,
     portalLabel: 'Settle-Me-This'
   },
   '02': {
@@ -35,6 +36,7 @@ const DELIVERABLE_INFO = {
     details: 'Aeronautical design & 3D digital prototyping. Two mission RFPs in the Senior division: Thin Air & Flockmate. Top teams exhibit on campus.',
     portalUrl: '/prompts/volatus',
     isLive: true,
+    submissionClosed: true,
     portalLabel: 'Volatus'
   },
   '03': {
@@ -43,6 +45,7 @@ const DELIVERABLE_INFO = {
     details: 'Round 1 Quiz on 16th October on Quizzitch platform (details shared on registered email and updated on website). Round 2 debate motions released 21st October. Top 10 advance to debate chambers on campus.',
     portalUrl: '/prompts/ipod',
     isLive: true,
+    submissionClosed: true,
     portalLabel: 'In Pursuit of Dispute (IPoD)'
   },
   '04': {
@@ -51,6 +54,7 @@ const DELIVERABLE_INFO = {
     details: 'Commercial aerospace venture pitch across atmospheric layers (troposphere through exosphere). Eight prompts across Junior & Senior divisions. Top teams advance to live investor pitch at CelesteCon.',
     portalUrl: '/prompts/bpp',
     isLive: true,
+    submissionClosed: true,
     portalLabel: 'Business Power Pitch'
   },
   '05': {
@@ -59,6 +63,7 @@ const DELIVERABLE_INFO = {
     details: 'Round 1 Theme: "No theme, Open Stage" (Video audition). Round 2 Theme: "Past, Present and the Future" (Live showcase at AVH + on-the-spot improv). Open stage talent showcase.',
     portalUrl: '/prompts/theatre',
     isLive: true,
+    submissionClosed: true,
     portalLabel: 'AEROSS Theatre'
   },
   '06': {
@@ -67,6 +72,7 @@ const DELIVERABLE_INFO = {
     details: 'Theme: "Retrogression". Develop an aerospace minigame in any engine (Godot, Unity, Unreal, WebGL). Onsite peer review & jury evaluation.',
     portalUrl: '/prompts/gamejam',
     isLive: true,
+    submissionClosed: false,
     portalLabel: 'CelesteJam (Game Jam)'
   },
   '07': {
@@ -75,6 +81,7 @@ const DELIVERABLE_INFO = {
     details: 'Design proposal & OpenRocket simulation around supplied motor specifications (no motor installed). Bring physical model for digital measurement & simulation flight.',
     portalUrl: '/prompts/rocketry',
     isLive: true,
+    submissionClosed: false,
     portalLabel: 'Rocketry'
   },
   '08': {
@@ -83,6 +90,7 @@ const DELIVERABLE_INFO = {
     details: 'Scale CO2-powered F1 aerodynamic racecar constructor challenge. Submit 30-pg dossier, CAD, 3-view drawings & livery. Onsite technical scrutineering & 20m high-speed sprint races.',
     portalUrl: '/prompts/prix',
     isLive: true,
+    submissionClosed: false,
     portalLabel: 'AEROSS Prix'
   }
 };
@@ -153,7 +161,7 @@ const PromptsPortal = () => {
             </span>
           </div>
           <p className="font-label text-xs sm:text-sm text-bone-dim max-w-2xl leading-relaxed">
-            Ready to deposit your team&apos;s engineering proposals, OpenRocket files, CAD models, or pitch decks? Visit the dedicated Submission Portal to authenticate with your School UID and deposit deliverables.
+            Ready to deposit your team&apos;s active deliverables (CelesteJam game builds, OpenRocket simulations, and AEROSS Prix CAD packages)? Visit the dedicated Submission Portal to authenticate with your School UID and deposit entries. Submissions for SMT, Volatus, IPoD, BPP, and AEROSS Theatre are now closed.
           </p>
         </div>
         <Link
@@ -212,10 +220,12 @@ const PromptsPortal = () => {
 
                 <div className="mt-4 pt-3 border-t border-bone/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono">
                   <span className="text-bone-dim flex items-center gap-1.5">
-                    {deliv.isLive ? (
+                    {deliv.submissionClosed ? (
+                      <strong className="text-amber-400">Submissions Closed</strong>
+                    ) : deliv.isLive ? (
                       <>
                         <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-                        <strong className="text-green-400">Live</strong>
+                        <strong className="text-green-400">Active Track</strong>
                       </>
                     ) : (
                       <>

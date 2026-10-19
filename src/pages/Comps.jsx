@@ -235,12 +235,18 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
                   </Link>
                 )
               )}
-              <Link
-                to="/submissions"
-                className="px-3 py-1.5 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-colors"
-              >
-                Submit &rarr;
-              </Link>
+              {!['01', '02', '03', '04', '05'].includes(event.id) ? (
+                <Link
+                  to="/submissions"
+                  className="px-3 py-1.5 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-colors"
+                >
+                  Submit &rarr;
+                </Link>
+              ) : (
+                <span className="px-3 py-1.5 bg-ink text-bone-dim/50 font-label font-bold text-xs uppercase tracking-widest border border-bone/20">
+                  Closed
+                </span>
+              )}
               <a
                 href="/celestecon_registration.html"
                 className="px-3 py-1.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"

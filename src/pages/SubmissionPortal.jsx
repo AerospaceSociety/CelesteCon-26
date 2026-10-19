@@ -7,6 +7,10 @@ const TARGET_SUBMISSION_START = new Date('2026-10-13T18:00:00+05:30').getTime();
 const TARGET_SUBMISSION_DEADLINE = new Date('2026-10-19T13:00:00+05:30').getTime();
 const EXTENDED_SUBMISSION_DEADLINE = new Date('2026-10-22T23:59:59+05:30').getTime();
 
+// Competition active submission status definitions
+export const CLOSED_EVENT_IDS = ['01', '02', '03', '04', '05'];
+export const OPEN_EVENT_IDS = ['06', '07', '08'];
+
 // Verified seed delegations for host & conclave benchmark schools
 const SEED_DELEGATIONS = {
   'C26-DL-0101': {
@@ -581,17 +585,9 @@ export default function SubmissionPortal() {
   const initialUID = searchParams.get('uid') || '';
   const initialEventParam = searchParams.get('event') || searchParams.get('e') || '';
 
-  // Determine initial event selection from query param
-  const mappedInitialEvent = EVENT_ALIAS_MAP[initialEventParam.toLowerCase()] || '04';
-
-  // Chronometer & countdown state
-  const [windowState, setWindowState] = useState({
-    status: 'OPEN',
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  // Determine initial event selection from query param (default to open event 06 CelesteJam)
+  const rawInitialEvent = EVENT_ALIAS_MAP[initialEventParam.toLowerCase()] || '06';
+  const mappedInitialEvent = OPEN_EVENT_IDS.includes(rawInitialEvent) ? rawInitialEvent : '06';
 
   // School lookup & authentication state
   const [schoolUID, setSchoolUID] = useState(() => {
@@ -636,44 +632,7 @@ export default function SubmissionPortal() {
   });
 
   // Current active event specification
-  const currentEventSpec = EVENT_DELIVERABLE_SPECS[formData.eventId] || EVENT_DELIVERABLE_SPECS['04'];
-
-  // Chronometer calculation
-  useEffect(() => {
-    function calculate() {
-      const now = Date.now();
-      let diff = 0;
-      let status = 'OPEN';
-
-      // Deadlines differ: Event 06, 07, 08 are extended to 22 Oct; others to 19 Oct 01:00 PM
-      const targetDeadline = ['06', '07', '08'].includes(formData.eventId)
-        ? EXTENDED_SUBMISSION_DEADLINE
-        : TARGET_SUBMISSION_DEADLINE;
-
-      if (now < TARGET_SUBMISSION_START) {
-        status = 'EARLY_ACCESS';
-        diff = TARGET_SUBMISSION_START - now;
-      } else if (now <= targetDeadline) {
-        status = 'OPEN';
-        diff = targetDeadline - now;
-      } else {
-        status = 'CLOSED';
-        diff = 0;
-      }
-
-      const totalSecs = Math.floor(Math.max(0, diff) / 1000);
-      const days = Math.floor(totalSecs / 86400);
-      const hours = Math.floor((totalSecs % 86400) / 3600);
-      const minutes = Math.floor((totalSecs % 3600) / 60);
-      const seconds = totalSecs % 60;
-
-      setWindowState({ status, days, hours, minutes, seconds });
-    }
-
-    calculate();
-    const interval = setInterval(calculate, 1000);
-    return () => clearInterval(interval);
-  }, [formData.eventId]);
+  const currentEventSpec = EVENT_DELIVERABLE_SPECS[formData.eventId] || EVENT_DELIVERABLE_SPECS['06'];
 
   // UID Verification and Data Fetching
   const performLookup = React.useCallback(async (uidToTest) => {
@@ -870,8 +829,8 @@ export default function SubmissionPortal() {
     e.preventDefault();
     setSubmitError('');
 
-    if (formData.eventId === '03' || currentEventSpec.noSubmissionRequired) {
-      setSubmitError('In Pursuit of Dispute (IPOD) does not require a preliminary file submission. Round 1 qualification is conducted via the online Quizzitch quiz platform.');
+    if (CLOSED_EVENT_IDS.includes(formData.eventId) || currentEventSpec.noSubmissionRequired) {
+      setSubmitError(`Submissions for ${currentEventSpec.name || 'this event'} are closed. Only active tracks (CelesteJam, Rocketry, and AEROSS Prix) accept submissions.`);
       return;
     }
 
@@ -1220,41 +1179,21 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
         </h1>
 
         <p className="font-label text-base sm:text-lg text-bone-dim max-w-3xl leading-relaxed">
-          The unified digital deposit gateway for all 8 CelesteCon 2026 competitions. Authenticate with your assigned <strong className="text-bone">School UID</strong> to unlock your delegation roster, submit event-specific mandatory deliverables (proposals, videos, CAD, OpenRocket files), and receive cryptographic deposit receipts.
+          The unified digital deposit gateway for active CelesteCon 2026 competitions. Authenticate with your assigned <strong className="text-bone">School UID</strong> to unlock your delegation roster, submit event-specific mandatory deliverables (CelesteJam game builds, OpenRocket simulation files, AEROSS Prix CAD packages), and receive cryptographic deposit receipts.
         </p>
       </section>
 
-      {/* Telemetry Chronometer Box */}
-      <div className="border-2 border-bone bg-ink-2/80 p-5 sm:p-6 backdrop-blur-sm shadow-xl">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-bone/20 pb-3 mb-4">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="font-mono text-xs uppercase font-bold text-bone tracking-wider">
-              GATEWAY STATUS: ACCREDITATION CHECK ACTIVE &amp; OPEN
-            </span>
-          </div>
-          <div className="font-mono text-xs text-bone-dim">
-            SUBMISSION DEADLINE: <strong className="text-crimson font-bold">{currentEventSpec.deadline}</strong>
-          </div>
+      {/* Gateway Status Banner (Deadline Removed) */}
+      <div className="border-2 border-bone bg-ink-2/80 p-5 sm:p-6 backdrop-blur-sm shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+          <span className="font-mono text-xs uppercase font-bold text-bone tracking-wider">
+            GATEWAY STATUS: ACCREDITATION CHECK ACTIVE &amp; OPEN
+          </span>
         </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center font-mono">
-          <div className="bg-ink p-3 border border-bone/20">
-            <div className="text-2xl sm:text-3xl font-bold text-bone">{windowState.days}</div>
-            <div className="text-[10px] text-bone-dim uppercase tracking-wider">Days Remaining</div>
-          </div>
-          <div className="bg-ink p-3 border border-bone/20">
-            <div className="text-2xl sm:text-3xl font-bold text-bone">{String(windowState.hours).padStart(2, '0')}</div>
-            <div className="text-[10px] text-bone-dim uppercase tracking-wider">Hours</div>
-          </div>
-          <div className="bg-ink p-3 border border-bone/20">
-            <div className="text-2xl sm:text-3xl font-bold text-bone">{String(windowState.minutes).padStart(2, '0')}</div>
-            <div className="text-[10px] text-bone-dim uppercase tracking-wider">Minutes</div>
-          </div>
-          <div className="bg-ink p-3 border border-bone/20">
-            <div className="text-2xl sm:text-3xl font-bold text-crimson">{String(windowState.seconds).padStart(2, '0')}</div>
-            <div className="text-[10px] text-bone-dim uppercase tracking-wider">Seconds</div>
-          </div>
+        <div className="font-mono text-xs text-green-400 font-bold uppercase tracking-wider flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-green-500"></span>
+          <span>ROUND 1 DELIVERABLE DEPOSITS ACTIVE (CJAM · ROC · APRIX)</span>
         </div>
       </div>
 
@@ -1573,15 +1512,10 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
                   }}
                   className="w-full bg-ink border border-bone/40 p-2.5 font-mono text-sm text-bone focus:outline-none focus:border-crimson cursor-pointer"
                 >
-                  {formData.eventId === '03' && (
-                    <option value="03" disabled>
-                      03 · In Pursuit of Dispute (No preliminary portal submission)
-                    </option>
-                  )}
                   {events
-                    .filter((ev) => ev.id !== '03' && ev.code !== 'IPOD')
+                    .filter((ev) => OPEN_EVENT_IDS.includes(ev.id))
                     .map((ev) => {
-                      const isRegistered = verifiedSchool.events?.some(
+                      const isRegistered = verifiedSchool?.events?.some(
                         registeredEv => {
                           const rId = (registeredEv.id || '').toLowerCase();
                           const rName = (registeredEv.name || '').toLowerCase();
@@ -1702,8 +1636,44 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
               </div>
             </div>
 
-            {/* Dynamic Event Specification Banner or IPOD No Submission Notice */}
-            {currentEventSpec.noSubmissionRequired ? (
+            {/* Dynamic Event Specification Banner or Closed Event Notice */}
+            {CLOSED_EVENT_IDS.includes(formData.eventId) ? (
+              <div className="border-2 border-crimson bg-ink p-6 space-y-4">
+                <div className="flex items-center gap-2 text-crimson font-mono text-xs uppercase font-bold tracking-wider">
+                  <span className="w-2.5 h-2.5 rounded-full bg-crimson"></span>
+                  <span>SUBMISSIONS CLOSED // EVENT ROUND 1 WINDOW CONCLUDED</span>
+                </div>
+                <h3 className="font-display text-2xl sm:text-3xl text-bone uppercase">
+                  {currentEventSpec.name} ({currentEventSpec.code})
+                </h3>
+                <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-3xl">
+                  Submissions for <strong>{currentEventSpec.name}</strong> are closed and no longer accepted through the submission portal. Only active competitions (CelesteJam, Rocketry, and AEROSS Prix) accept submissions.
+                </p>
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, eventId: '06' }))}
+                    className="px-4 py-2.5 bg-crimson hover:bg-crimson/80 text-bone font-mono text-xs uppercase font-bold tracking-wider transition-colors cursor-pointer"
+                  >
+                    Switch to CelesteJam (06) →
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, eventId: '07' }))}
+                    className="px-4 py-2.5 bg-ink-2 border border-bone/40 hover:border-bone text-bone font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                  >
+                    Switch to Rocketry (07) →
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, eventId: '08' }))}
+                    className="px-4 py-2.5 bg-ink-2 border border-bone/40 hover:border-bone text-bone font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                  >
+                    Switch to AEROSS Prix (08) →
+                  </button>
+                </div>
+              </div>
+            ) : currentEventSpec.noSubmissionRequired ? (
               <div className="border-2 border-amber-400 bg-ink p-6 space-y-4">
                 <div className="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase font-bold tracking-wider">
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
@@ -1725,10 +1695,10 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
                   </Link>
                   <button
                     type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, eventId: '04' }))}
+                    onClick={() => setFormData(prev => ({ ...prev, eventId: '06' }))}
                     className="px-4 py-2.5 bg-ink-2 border border-bone/40 hover:border-bone text-bone font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer"
                   >
-                    Switch to Business Power Pitch (BPP) →
+                    Switch to CelesteJam (CJAM) →
                   </button>
                 </div>
               </div>
@@ -1962,14 +1932,14 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
         </div>
       )}
 
-      {/* Deliverable Specifications Reference Table across all 8 events */}
+      {/* Deliverable Specifications Reference Table */}
       <section className="border-2 border-bone bg-ink-2 p-6 space-y-4">
         <div>
           <h3 className="font-display text-xl sm:text-2xl uppercase text-bone">
-            Master Deliverables Reference Table (All 8 Tracks)
+            Active Deliverables Reference Table (Open Submission Tracks)
           </h3>
           <p className="font-label text-xs sm:text-sm text-bone-dim">
-            Summary of mandatory and optional files required for Round 1 across all CelesteCon 2026 competitions.
+            Summary of mandatory and optional files required for Round 1 across active CelesteCon 2026 competitions. Submissions for Settle-Me-This, In Pursuit of Dispute, Volatus, AEROSS Theatre, and Business Power Pitch are closed.
           </p>
         </div>
 
@@ -1985,37 +1955,39 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
               </tr>
             </thead>
             <tbody className="divide-y divide-bone/20 text-bone-dim">
-              {Object.entries(EVENT_DELIVERABLE_SPECS).map(([id, spec]) => (
-                <tr key={id} className="hover:bg-bone/5 transition-colors">
-                  <td className="py-2.5 pr-4 text-bone font-bold">{id} · {spec.name}</td>
-                  <td className="py-2.5 pr-4 text-crimson font-bold">{spec.code}</td>
-                  <td className="py-2.5 pr-4">
-                    {spec.mandatoryFields.length > 0 ? (
-                      spec.mandatoryFields.map((f, i) => (
-                        <div key={i} className="text-bone">
-                          • {f.label}
-                        </div>
-                      ))
-                    ) : (
-                      <span className="text-amber-400 font-bold">No Portal File Deposit (Online Screening Quiz via Quizzitch)</span>
-                    )}
-                  </td>
-                  <td className="py-2.5 pr-4 text-[11px]">
-                    {spec.optionalFields.length > 0 ? (
-                      spec.optionalFields.map((f, i) => (
-                        <div key={i}>• {f.label}</div>
-                      ))
-                    ) : (
-                      <span className="text-bone-dim italic">None (Synchronous online quiz)</span>
-                    )}
-                  </td>
-                  <td className="py-2.5 pr-4">
-                    <Link to={spec.portalUrl} className="text-bone hover:text-crimson underline font-bold">
-                      Prompt →
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+              {Object.entries(EVENT_DELIVERABLE_SPECS)
+                .filter(([id]) => OPEN_EVENT_IDS.includes(id))
+                .map(([id, spec]) => (
+                  <tr key={id} className="hover:bg-bone/5 transition-colors">
+                    <td className="py-2.5 pr-4 text-bone font-bold">{id} · {spec.name}</td>
+                    <td className="py-2.5 pr-4 text-crimson font-bold">{spec.code}</td>
+                    <td className="py-2.5 pr-4">
+                      {spec.mandatoryFields.length > 0 ? (
+                        spec.mandatoryFields.map((f, i) => (
+                          <div key={i} className="text-bone">
+                            • {f.label}
+                          </div>
+                        ))
+                      ) : (
+                        <span className="text-amber-400 font-bold">No Portal File Deposit</span>
+                      )}
+                    </td>
+                    <td className="py-2.5 pr-4 text-[11px]">
+                      {spec.optionalFields.length > 0 ? (
+                        spec.optionalFields.map((f, i) => (
+                          <div key={i}>• {f.label}</div>
+                        ))
+                      ) : (
+                        <span className="text-bone-dim italic">None</span>
+                      )}
+                    </td>
+                    <td className="py-2.5 pr-4">
+                      <Link to={spec.portalUrl} className="text-bone hover:text-crimson underline font-bold">
+                        Prompt →
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

@@ -171,12 +171,20 @@ function apiDevPlugin() {
             try {
               const body = JSON.parse(bodyData || '{}');
               const cleanUID = (body.schoolUID || 'C26-DL-0101').toUpperCase();
-              const eventId = String(body.eventId || '04').padStart(2, '0');
+              const eventId = String(body.eventId || '06').padStart(2, '0');
 
-              if (eventId === '03') {
+              const CLOSED_EVENT_NAMES = {
+                '01': 'Settle-Me-This (SMT)',
+                '02': 'Volatus (VOL)',
+                '03': 'In Pursuit of Dispute (IPOD)',
+                '04': 'Business Power Pitch (BPP)',
+                '05': 'AEROSS Theatre (ATH)'
+              };
+
+              if (CLOSED_EVENT_NAMES[eventId]) {
                 res.statusCode = 400;
                 res.end(JSON.stringify({
-                  error: 'No preliminary portal submission is required for In Pursuit of Dispute (IPOD). Round 1 qualification is conducted via the online Quizzitch quiz platform.'
+                  error: `Submissions for ${CLOSED_EVENT_NAMES[eventId]} are closed. Only active tracks (CelesteJam, Rocketry, and AEROSS Prix) accept submissions.`
                 }));
                 return;
               }

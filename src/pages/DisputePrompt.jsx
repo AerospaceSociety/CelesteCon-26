@@ -45,13 +45,9 @@ export default function DisputePrompt() {
           <span className="text-crimson font-bold uppercase">EVENT 03 · IN PURSUIT OF DISPUTE (IPOD)</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
-            <span>Submission Vault</span>
-            <span>→</span>
-          </Link>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            <span className="text-amber-400 uppercase font-bold text-[10px] tracking-wider">ROUND 1 SCHEDULED</span>
+            <span className="text-amber-400 uppercase font-bold text-[10px] tracking-wider">ROUND 1 CONCLUDED</span>
           </div>
         </div>
       </div>
@@ -173,12 +169,9 @@ export default function DisputePrompt() {
               </div>
             </div>
 
-            <Link
-              to="/submissions"
-              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block shadow-md"
-            >
-              Registered Teams Portal →
-            </Link>
+            <div className="w-full py-2.5 bg-ink border border-bone/40 text-bone-dim font-mono text-xs uppercase tracking-widest text-center">
+              Screening Quiz Concluded
+            </div>
           </div>
         </div>
       </div>

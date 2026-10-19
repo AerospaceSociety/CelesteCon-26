@@ -240,10 +240,9 @@ export default function VolatusPrompt() {
           <span className="text-crimson font-bold uppercase">EVENT 02 · VOLATUS</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson font-bold uppercase tracking-widest text-[11px] flex items-center gap-1">
-            <span>Submission Portal</span>
-            <span>→</span>
-          </Link>
+          <span className="text-amber-400 font-bold uppercase tracking-widest text-[11px] px-2 py-0.5 border border-amber-400/40 bg-amber-400/10">
+            Submissions Closed
+          </span>
         </div>
       </div>
 
@@ -297,15 +296,15 @@ export default function VolatusPrompt() {
           <div className="w-full lg:w-80 bg-ink-2 p-5 border-2 border-bone/60 space-y-4 shrink-0">
             <div className="flex justify-between items-center text-xs font-mono border-b border-bone/20 pb-2">
               <span className="text-bone-dim uppercase">Dossier Window</span>
-              <span className="font-bold text-crimson uppercase">
-                Round 1 Online
+              <span className="font-bold text-amber-400 uppercase">
+                Submissions Closed
               </span>
             </div>
 
             <div className="p-3 bg-ink border border-bone/20 space-y-1 font-mono text-xs">
-              <span className="text-bone-dim uppercase text-[10px] block">Round 1 Deadline</span>
-              <strong className="text-bone text-sm block">19 Oct, 01:00 PM IST</strong>
-              <span className="text-bone-dim text-[11px] block">Submit via Official Submission Portal</span>
+              <span className="text-bone-dim uppercase text-[10px] block">Round 1 Status</span>
+              <strong className="text-amber-400 text-sm block">Submissions Closed</strong>
+              <span className="text-bone-dim text-[11px] block">Round 1 technical dossier submission window has concluded</span>
             </div>
 
             <div className="space-y-1.5 font-mono text-[11px] text-bone-dim pt-2 border-t border-bone/20">
@@ -327,12 +326,9 @@ export default function VolatusPrompt() {
               </div>
             </div>
 
-            <Link
-              to="/submissions"
-              className="w-full py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson block"
-            >
-              Go to Submission Portal →
-            </Link>
+            <div className="w-full py-2.5 bg-ink border border-bone/40 text-bone-dim font-mono text-xs uppercase tracking-widest text-center">
+              Submissions Closed
+            </div>
           </div>
         </div>
       </div>
@@ -462,9 +458,6 @@ export default function VolatusPrompt() {
               <div className="flex gap-3">
                 <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
                   ← Back to Comps
-                </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
-                  Go to Submission Portal →
                 </Link>
               </div>
             </div>
@@ -813,15 +806,9 @@ export default function VolatusPrompt() {
             </div>
 
             <div className="pt-4 border-t border-bone/20 flex flex-wrap justify-between items-center gap-4">
-              <span className="font-mono text-xs text-bone-dim">
-                Verify all technical deliverables before final deposit.
+              <span className="font-mono text-xs text-amber-400">
+                Round 1 technical dossiers and CAD packages are now closed and currently under review for Round 2 exhibit qualification.
               </span>
-              <Link
-                to="/submissions"
-                className="px-6 py-2.5 bg-crimson text-bone-hi font-mono text-xs font-bold uppercase tracking-wider border border-crimson"
-              >
-                Go to Submission Portal →
-              </Link>
             </div>
           </div>
         </div>
@@ -917,10 +904,7 @@ export default function VolatusPrompt() {
               </div>
               <div className="flex gap-3">
                 <Link to="/comps" className="px-4 py-2 border border-bone/40 text-bone uppercase">
-                  ← Back to Comps
-                </Link>
-                <Link to="/submissions" className="px-5 py-2 bg-crimson text-bone-hi font-bold border border-crimson uppercase">
-                  Go to Submission Portal →
+                  ← Back to Competitions
                 </Link>
               </div>
             </div>

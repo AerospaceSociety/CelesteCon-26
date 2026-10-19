@@ -116,9 +116,15 @@ export default function GenericPromptPortal({ eventId: propEventId }) {
           <span className="text-crimson font-bold uppercase">EVENT {event.id} · {event.name}</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px]">
-            Submission Portal →
-          </Link>
+          {!['01', '02', '03', '04', '05'].includes(event.id) ? (
+            <Link to="/submissions" className="text-crimson hover:text-bone transition-colors font-bold uppercase tracking-widest text-[11px]">
+              Submission Portal →
+            </Link>
+          ) : (
+            <span className="text-amber-400 font-bold uppercase tracking-widest text-[11px] px-2 py-0.5 border border-amber-400/40 bg-amber-400/10">
+              Submissions Closed
+            </span>
+          )}
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
             <span className="text-bone uppercase font-bold text-[10px]">DOSSIER № CC26-E{event.id}</span>
@@ -207,12 +213,18 @@ export default function GenericPromptPortal({ eventId: propEventId }) {
               </div>
             </div>
 
-            <Link
-              to="/submissions"
-              className="w-full py-2 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block"
-            >
-              Go to Submission Vault →
-            </Link>
+            {!['01', '02', '03', '04', '05'].includes(event.id) ? (
+              <Link
+                to="/submissions"
+                className="w-full py-2 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest text-center border border-crimson hover:bg-ink hover:text-crimson transition-colors block"
+              >
+                Go to Submission Vault →
+              </Link>
+            ) : (
+              <div className="w-full py-2 bg-ink border border-bone/40 text-bone-dim font-mono text-xs uppercase tracking-widest text-center">
+                Submissions Closed
+              </div>
+            )}
           </div>
         </div>
       </div>
