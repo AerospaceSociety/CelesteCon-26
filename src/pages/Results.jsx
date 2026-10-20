@@ -71,7 +71,7 @@ const Results = () => {
             Important Notice // No Ranked Order
           </strong>
           <span>
-            All qualifying delegations below are listed in <strong>no ranked order</strong>. S.No. is solely for indexing. Preliminary scores carry zero rank bias into Round 2.
+            All qualifying delegations below are listed in <strong>no ranked order (arranged alphabetically by school name)</strong>. S.No. is solely for indexing. Preliminary scores carry zero rank bias into Round 2.
           </span>
         </div>
       </header>
@@ -310,16 +310,18 @@ const Results = () => {
             <span className="text-crimson font-bold shrink-0">06.</span>
             <div>
               <strong className="text-bone uppercase block mb-0.5">Valedictory Ceremony &amp; Dispersal</strong>
-              <span>The valedictory ceremony ends at <strong className="text-bone">01:00 PM</strong>, after which students are free to leave. Detailed timeline is available at{' '}
-                <a
-                  href="https://celestecon.aeross.org/format"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-crimson underline font-bold hover:text-bone"
-                >
-                  https://celestecon.aeross.org/format
-                </a>.
-              </span>
+              <div className="space-y-1">
+                <p>The valedictory ceremony ends at <strong className="text-bone">01:00 PM</strong>, after which students are free to leave.</p>
+                <div>
+                  <Link
+                    to="/format"
+                    className="text-crimson underline font-bold hover:text-bone inline-flex items-center gap-1.5"
+                  >
+                    <span>Access the Timeline from here</span>
+                    <span>&rarr;</span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </li>
         </ul>
@@ -335,7 +337,7 @@ const Results = () => {
             >
               Discord Server
             </a>{' '}
-            or email{' '}
+              or email{' '}
             <a
               href={`mailto:${resultsMetadata.supportEmail}`}
               className="text-crimson underline hover:text-bone font-bold"
@@ -354,6 +356,12 @@ const Results = () => {
 
 // Simple, Clean Result Table Component strictly with the 4 columns requested
 const ResultTable = ({ qualifiers }) => {
+  const sortedQualifiers = useMemo(() => {
+    return [...qualifiers].sort((a, b) =>
+      a.schoolName.localeCompare(b.schoolName, undefined, { sensitivity: 'base' })
+    );
+  }, [qualifiers]);
+
   return (
     <div className="overflow-x-auto border border-bone/60">
       <table className="w-full text-left font-mono text-xs">
@@ -366,7 +374,7 @@ const ResultTable = ({ qualifiers }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-bone/20 bg-ink">
-          {qualifiers.map((item, index) => (
+          {sortedQualifiers.map((item, index) => (
             <tr
               key={item.id || index}
               className="hover:bg-bone/10 transition-colors"
