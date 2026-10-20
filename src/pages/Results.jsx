@@ -71,7 +71,7 @@ const Results = () => {
             Important Notice // No Ranked Order
           </strong>
           <span>
-            All qualifying delegations below are listed in <strong>no ranked order (arranged alphabetically by school name)</strong>. S.No. is solely for indexing. Preliminary scores carry zero rank bias into Round 2.
+            All qualifying delegations below are listed in <strong>no ranked order (arranged alphabetically by school name)</strong>. S.No. is solely for indexing.
           </span>
         </div>
       </header>
@@ -318,7 +318,7 @@ const Results = () => {
             >
               Discord Server
             </a>{' '}
-              or email{' '}
+            or email{' '}
             <a
               href={`mailto:${resultsMetadata.supportEmail}`}
               className="text-crimson underline hover:text-bone font-bold"
