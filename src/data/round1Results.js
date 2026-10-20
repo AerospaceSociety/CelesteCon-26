@@ -23,8 +23,93 @@ export const resultsMetadata = {
 };
 
 export const hybridEventsResults = [
+  // 1. In Pursuit of Dispute (IPoD)
   {
     eventId: '01',
+    code: 'IPOD',
+    name: 'In Pursuit of Dispute (IPoD)',
+    discipline: 'Quiz (Quizzitch) & Debate',
+    venue: 'Debate Chambers',
+    hasCategories: false,
+    categories: ['Senior Track (Grades 9–12)'],
+    qualifiers: [
+      // IPoD (Alphabetical by School Name)
+      {
+        id: 'IPOD-01',
+        schoolUID: 'C26-WR-0116',
+        teamName: 'APS Hisar',
+        schoolName: 'Army Public School Hisar',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-02',
+        schoolUID: 'C26-MZ-0120',
+        teamName: 'BBPS Noida',
+        schoolName: 'Bal Bharati Public School Noida',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-03',
+        schoolUID: 'C26-UC-0114',
+        teamName: 'BBPS Pitampura',
+        schoolName: 'Bal Bharati Public School, Pitampura',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-04',
+        schoolUID: 'C26-WU-0133',
+        teamName: 'DPS Faridabad',
+        schoolName: 'Delhi Public School Faridabad',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-05',
+        schoolUID: 'C26-XW-0117',
+        teamName: 'DPS Rohini',
+        schoolName: 'Delhi Public School Rohini',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-06',
+        schoolUID: 'C26-QX-0138',
+        teamName: 'DPS Dwarka',
+        schoolName: 'Delhi Public School, Dwarka',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-07',
+        schoolUID: 'C26-HY-0137',
+        teamName: 'DPS Noida',
+        schoolName: 'Delhi Public School, Noida',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-08',
+        schoolUID: 'C26-EC-0110',
+        teamName: 'Hindu Vidyapeeth',
+        schoolName: 'Hindu Vidyapeeth Sonepat',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-09',
+        schoolUID: 'C26-WB-0108',
+        teamName: 'Mayoor School',
+        schoolName: 'Mayoor School, Noida, Sec 126',
+        category: 'Senior Track (Grades 9–12)'
+      },
+      {
+        id: 'IPOD-10',
+        schoolUID: 'C26-UW-0125',
+        teamName: 'SRM Public School',
+        schoolName: 'SRM PUBLIC SCHOOL NOIDA',
+        category: 'Senior Track (Grades 9–12)'
+      }
+    ]
+  },
+
+  // 2. Settle-Me-This (SMT)
+  {
+    eventId: '02',
     code: 'SMT',
     name: 'Settle-Me-This',
     discipline: 'Space Settlement Design',
@@ -107,8 +192,10 @@ export const hybridEventsResults = [
       }
     ]
   },
+
+  // 3. Volatus
   {
-    eventId: '02',
+    eventId: '03',
     code: 'Vol',
     name: 'Volatus',
     discipline: 'Aviation, UAV & 3D CAD Modeling',
@@ -154,88 +241,8 @@ export const hybridEventsResults = [
       }
     ]
   },
-  {
-    eventId: '03',
-    code: 'IPOD',
-    name: 'In Pursuit of Dispute (IPoD)',
-    discipline: 'Quiz (Quizzitch) & Debate',
-    venue: 'Debate Chambers',
-    hasCategories: false,
-    categories: ['Senior Track (Grades 9–12)'],
-    qualifiers: [
-      // IPoD (Alphabetical by School Name)
-      {
-        id: 'IPOD-01',
-        schoolUID: 'C26-WR-0116',
-        teamName: 'APS Hisar',
-        schoolName: 'Army Public School Hisar',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-02',
-        schoolUID: 'C26-MZ-0120',
-        teamName: 'BBPS Noida',
-        schoolName: 'Bal Bharati Public School Noida',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-03',
-        schoolUID: 'C26-UC-0114',
-        teamName: 'BBPS Pitampura',
-        schoolName: 'Bal Bharati Public School, Pitampura',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-04',
-        schoolUID: 'C26-WU-0133',
-        teamName: 'DPS Faridabad',
-        schoolName: 'Delhi Public School Faridabad',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-05',
-        schoolUID: 'C26-XW-0117',
-        teamName: 'DPS Rohini',
-        schoolName: 'Delhi Public School Rohini',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-06',
-        schoolUID: 'C26-QX-0138',
-        teamName: 'DPS Dwarka',
-        schoolName: 'Delhi Public School, Dwarka',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-07',
-        schoolUID: 'C26-HY-0137',
-        teamName: 'DPS Noida',
-        schoolName: 'Delhi Public School, Noida',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-08',
-        schoolUID: 'C26-EC-0110',
-        teamName: 'Hindu Vidyapeeth',
-        schoolName: 'Hindu Vidyapeeth Sonepat',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-09',
-        schoolUID: 'C26-WB-0108',
-        teamName: 'Mayoor School',
-        schoolName: 'Mayoor School, Noida, Sec 126',
-        category: 'Senior Track (Grades 9–12)'
-      },
-      {
-        id: 'IPOD-10',
-        schoolUID: 'C26-UW-0125',
-        teamName: 'SRM Public School',
-        schoolName: 'SRM PUBLIC SCHOOL NOIDA',
-        category: 'Senior Track (Grades 9–12)'
-      }
-    ]
-  },
+
+  // 4. Business Power Pitch (BPP)
   {
     eventId: '04',
     code: 'BPP',
@@ -313,6 +320,8 @@ export const hybridEventsResults = [
       }
     ]
   },
+
+  // 5. AEROSS Theatre
   {
     eventId: '05',
     code: 'ATh',

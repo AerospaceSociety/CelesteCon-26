@@ -305,25 +305,6 @@ const Results = () => {
               <span><strong className="text-bone">Refreshment would be provided by the school</strong> for delegates and accompanying faculty.</span>
             </div>
           </li>
-
-          <li className="border border-bone/20 p-3 bg-bone/5 flex items-start gap-2.5">
-            <span className="text-crimson font-bold shrink-0">06.</span>
-            <div>
-              <strong className="text-bone uppercase block mb-0.5">Valedictory Ceremony &amp; Dispersal</strong>
-              <div className="space-y-1">
-                <p>The valedictory ceremony ends at <strong className="text-bone">01:00 PM</strong>, after which students are free to leave.</p>
-                <div>
-                  <Link
-                    to="/format"
-                    className="text-crimson underline font-bold hover:text-bone inline-flex items-center gap-1.5"
-                  >
-                    <span>Access the Timeline from here</span>
-                    <span>&rarr;</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </li>
         </ul>
 
         <div className="pt-3 border-t border-bone/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px]">
