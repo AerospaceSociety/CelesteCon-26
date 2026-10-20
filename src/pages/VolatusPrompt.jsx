@@ -326,9 +326,12 @@ export default function VolatusPrompt() {
               </div>
             </div>
 
-            <div className="w-full py-2.5 bg-ink border border-bone/40 text-bone-dim font-mono text-xs uppercase tracking-widest text-center">
-              Submissions Closed
-            </div>
+            <Link
+              to="/results?event=02"
+              className="w-full py-2.5 bg-crimson text-bone-hi border border-crimson hover:bg-ink hover:text-crimson font-mono text-xs uppercase tracking-widest text-center font-bold block transition-colors shadow-md"
+            >
+              View Round 1 Results ★
+            </Link>
           </div>
         </div>
       </div>

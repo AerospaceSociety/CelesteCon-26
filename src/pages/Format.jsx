@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 
 const Format = () => {
@@ -123,9 +124,14 @@ const Format = () => {
                 <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Online proposals, decks, CAD & videos due.</span>
               </div>
               <div>
-                <dt className="text-crimson font-bold uppercase mb-0.5">Round 1 Results (Finalists)</dt>
-                <dd className="text-bone border-b border-dotted border-bone/40 pb-1">20 Oct 2026</dd>
-                <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Finalists announced for online preliminary rounds.</span>
+                <dt className="text-crimson font-bold uppercase mb-0.5 flex justify-between items-center">
+                  <span>Round 1 Results (Finalists)</span>
+                  <Link to="/results" className="text-[9px] bg-crimson text-bone-hi px-1.5 py-0.2 hover:bg-ink hover:text-crimson transition-colors font-bold">
+                    OUT NOW &rarr;
+                  </Link>
+                </dt>
+                <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold text-crimson">20 Oct 2026 · Declared</dd>
+                <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Finalists announced for 5 hybrid events in non-ranked order. <Link to="/results" className="text-crimson underline hover:text-bone">View R1 Results &rarr;</Link></span>
               </div>
               <div>
                 <dt className="text-crimson font-bold uppercase mb-0.5">Rocketry / Prix / Jam Deadline</dt>

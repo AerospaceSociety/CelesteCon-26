@@ -151,8 +151,33 @@ const PromptsPortal = () => {
         </p>
       </section>
 
+      {/* Round 1 Results Communiqué Banner */}
+      <div className="border-2 border-crimson p-4 sm:p-5 bg-crimson/15 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 shadow-lg">
+        <div className="flex items-start gap-3">
+          <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-crimson text-bone-hi font-bold shrink-0 mt-0.5">
+            RESULTS
+          </span>
+          <div>
+            <div className="font-label font-bold text-sm sm:text-base text-bone uppercase tracking-wider flex items-center gap-2 flex-wrap">
+              <span>Round 1 Qualifiers Declared for 5 Hybrid Events</span>
+              <span className="text-crimson font-mono text-xs">[Non-Ranked]</span>
+            </div>
+            <p className="font-label text-xs sm:text-sm text-bone-dim mt-0.5 leading-relaxed">
+              Preliminary screening evaluations have concluded for Settle-Me-This, Volatus, IPoD, Business Power Pitch, and AEROSS Theatre. All qualified schools &amp; teams advance to the 24 Oct Grand Finale.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/results"
+          className="px-5 py-2.5 bg-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label font-bold text-xs uppercase tracking-widest border border-crimson transition-all shrink-0 flex items-center gap-2 shadow-md hover:shadow-crimson/20"
+        >
+          <span>View Round 1 Results</span>
+          <span>&rarr;</span>
+        </Link>
+      </div>
+
       {/* Submission Portal Dedicated Link Banner */}
-      <div className="border-2 border-crimson p-5 sm:p-6 bg-crimson/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 shadow-lg">
+      <div className="border-2 border-bone/60 p-4 sm:p-5 bg-ink flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-crimson animate-pulse"></span>
@@ -166,7 +191,7 @@ const PromptsPortal = () => {
         </div>
         <Link
           to="/submissions"
-          className="px-6 py-3 bg-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label font-bold text-xs uppercase tracking-widest border border-crimson transition-all shrink-0 flex items-center gap-2 shadow-md hover:shadow-crimson/20"
+          className="px-5 py-2.5 border-2 border-bone text-bone hover:border-crimson hover:text-crimson font-label font-bold text-xs uppercase tracking-widest transition-all shrink-0 flex items-center gap-2"
         >
           <span>Go to Submission Portal</span>
           <span>&rarr;</span>
@@ -233,29 +258,39 @@ const PromptsPortal = () => {
                       </>
                     )}
                   </span>
-                  {deliv.portalUrl ? (
-                    deliv.portalUrl.endsWith('.html') ? (
-                      <a
-                        href={deliv.portalUrl}
-                        className="px-3 py-1 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-wider border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1"
-                      >
-                        <span>Open {deliv.portalLabel || ev.name}</span>
-                        <span>&rarr;</span>
-                      </a>
-                    ) : (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {deliv.submissionClosed && (
                       <Link
-                        to={deliv.portalUrl}
-                        className="px-3 py-1 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-wider border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1"
+                        to={`/results?event=${ev.id}`}
+                        className="px-2.5 py-1 bg-bone text-ink hover:bg-crimson hover:text-white font-label font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1 border border-bone"
                       >
-                        <span>Open {deliv.portalLabel || ev.name}</span>
-                        <span>&rarr;</span>
+                        <span>R1 Results ★</span>
                       </Link>
-                    )
-                  ) : (
-                    <span className="text-bone-dim/60 uppercase">
-                      Vault ID: {code}-R1
-                    </span>
-                  )}
+                    )}
+                    {deliv.portalUrl ? (
+                      deliv.portalUrl.endsWith('.html') ? (
+                        <a
+                          href={deliv.portalUrl}
+                          className="px-3 py-1 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-wider border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1"
+                        >
+                          <span>Open {deliv.portalLabel || ev.name}</span>
+                          <span>&rarr;</span>
+                        </a>
+                      ) : (
+                        <Link
+                          to={deliv.portalUrl}
+                          className="px-3 py-1 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-wider border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1"
+                        >
+                          <span>Open {deliv.portalLabel || ev.name}</span>
+                          <span>&rarr;</span>
+                        </Link>
+                      )
+                    ) : (
+                      <span className="text-bone-dim/60 uppercase">
+                        Vault ID: {code}-R1
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             );

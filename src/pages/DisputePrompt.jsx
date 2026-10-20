@@ -169,9 +169,12 @@ export default function DisputePrompt() {
               </div>
             </div>
 
-            <div className="w-full py-2.5 bg-ink border border-bone/40 text-bone-dim font-mono text-xs uppercase tracking-widest text-center">
-              Screening Quiz Concluded
-            </div>
+            <Link
+              to="/results?event=03"
+              className="w-full py-2.5 bg-crimson text-bone-hi border border-crimson hover:bg-ink hover:text-crimson font-mono text-xs uppercase tracking-widest text-center font-bold block transition-colors shadow-md"
+            >
+              View Top 10 Qualifiers ★
+            </Link>
           </div>
         </div>
       </div>

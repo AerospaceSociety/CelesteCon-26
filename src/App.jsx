@@ -12,6 +12,7 @@ import InternalRegistration from './pages/InternalRegistration';
 
 import RocketryPrompt from './pages/RocketryPrompt';
 import AerossPrixPrompt from './pages/AerossPrixPrompt';
+import Results from './pages/Results';
 import {
   GenericPromptPortal,
   SettlementPrompt,
@@ -62,6 +63,7 @@ const Navbar = () => {
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About AEROSS' },
     { path: '/comps', label: 'The Comps' },
+    { path: '/results', label: 'Results', badge: 'R1' },
     { path: '/format', label: 'Format & Dates' },
     { path: '/sponsors', label: 'Sponsors' },
     { path: '/contact', label: 'Contact' }
@@ -74,15 +76,21 @@ const Navbar = () => {
           <Link to="/" className="flex-shrink-0 flex items-center font-display font-bold text-xl sm:text-2xl text-bone tracking-widest uppercase hover:text-crimson transition-colors">
             CELESTECON
           </Link>
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-6 items-center">
             {navLinks.map(link => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-label uppercase tracking-widest transition-colors hover:text-crimson ${location.pathname === link.path ? 'text-crimson' : 'text-bone-dim'
-                  }`}
+                className={`text-sm font-label uppercase tracking-widest transition-colors hover:text-crimson flex items-center gap-1 ${
+                  location.pathname === link.path ? 'text-crimson font-bold' : 'text-bone-dim'
+                }`}
               >
-                {link.label}
+                <span>{link.label}</span>
+                {link.badge && (
+                  <span className="text-[9px] bg-crimson text-bone-hi px-1 py-0.2 font-mono font-bold leading-none rounded-none">
+                    {link.badge}
+                  </span>
+                )}
               </Link>
             ))}
           </div>
@@ -104,6 +112,17 @@ const Navbar = () => {
                   className="absolute right-0 mt-2 w-72 bg-ink border-2 border-bone shadow-2xl p-2 z-50"
                   onMouseLeave={() => setRegisterDropdownOpen(false)}
                 >
+                  <Link
+                    to="/results"
+                    onClick={() => setRegisterDropdownOpen(false)}
+                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left bg-crimson/10"
+                  >
+                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider flex items-center justify-between">
+                      <span>Round 1 Results</span>
+                      <span className="text-[9px] bg-crimson text-bone-hi px-1.5 py-0.5 font-mono font-bold">R1 QUALIFIERS</span>
+                    </div>
+                    <p className="font-label text-xs text-bone-dim mt-0.5">Qualified schools &amp; teams (non-ranked).</p>
+                  </Link>
                   <a
                     href="/celestecon_registration.html"
                     onClick={() => setRegisterDropdownOpen(false)}
@@ -214,10 +233,18 @@ const Navbar = () => {
               <div className="font-mono text-[10px] text-bone-dim uppercase tracking-[0.2em] px-1 font-bold">
                 Registration &amp; Documents // 登録
               </div>
+              <Link
+                to="/results"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm font-label uppercase tracking-widest py-3 px-4 bg-crimson text-bone-hi font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
+              >
+                <span>Round 1 Results (Qualifiers)</span>
+                <span className="font-mono text-xs">★</span>
+              </Link>
               <a
                 href="/celestecon_registration.html"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-label uppercase tracking-widest py-3 px-4 bg-crimson text-bone-hi font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
+                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5"
               >
                 <span>School Contingent Registration</span>
                 <span>↗</span>
@@ -308,6 +335,7 @@ const Footer = () => {
           <div>
             <h4 className="font-mono text-[10px] text-crimson-deep mb-2 tracking-[0.2em] font-bold uppercase">Quick Links</h4>
             <ul className="space-y-1.5 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
+              <li><Link to="/results" className="text-crimson font-bold hover:text-ink transition-colors border-b border-transparent hover:border-crimson">Round 1 Results (Finalists) ★</Link></li>
               <li><Link to="/about" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">About AEROSS</Link></li>
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
               <li><Link to="/prompts" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Prompts Portal</Link></li>
@@ -402,6 +430,10 @@ function App() {
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/gallery" element={<Navigate to="/" replace />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/round-1-results" element={<Results />} />
+            <Route path="/qualifiers" element={<Results />} />
+            <Route path="/round1" element={<Results />} />
             <Route path="/register" element={<RedirectTo to="/celestecon_registration.html" />} />
             <Route path="/register-school" element={<RedirectTo to="/celestecon_registration.html" />} />
             <Route path="/register-individual" element={<RedirectTo to="/celestecon_registration.html" />} />

@@ -75,13 +75,43 @@ const Home = () => {
               >
                 R2 Finale // 24 Oct
               </Link>
-              <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-crimson bg-crimson text-bone-hi px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap">
+              <Link
+                to="/results"
+                className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-crimson bg-crimson text-bone-hi px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-ink hover:text-crimson transition-colors cursor-pointer flex items-center justify-center gap-1"
+              >
+                <span>★ R1 Results Live</span>
+              </Link>
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap">
                 Est. 2009 // AEROSS
               </span>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Round 1 Results Communiqué Announcement Banner */}
+      <div className="mb-6 border-2 border-crimson bg-crimson/10 p-3.5 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-crimson text-bone-hi font-bold shrink-0">
+            COMMUNIQUÉ
+          </span>
+          <div>
+            <div className="font-label font-bold text-sm sm:text-base text-bone uppercase tracking-wider flex items-center gap-2 flex-wrap">
+              <span>Round 1 Results Declared</span>
+              <span className="text-crimson font-mono text-xs">[5 Hybrid Events]</span>
+            </div>
+            <p className="font-mono text-[11px] text-bone-dim mt-0.5">
+              Qualified schools & teams published in non-ranked order. Finalists advance to the 24 Oct Grand Finale.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/results"
+          className="px-4 py-1.5 bg-crimson text-bone-hi font-mono text-xs uppercase tracking-wider font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors whitespace-nowrap self-stretch sm:self-auto text-center"
+        >
+          View Results &rarr;
+        </Link>
+      </div>
 
       <HeroSignature />
 

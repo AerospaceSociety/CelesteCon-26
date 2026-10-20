@@ -1650,6 +1650,12 @@ onsite scrutineering, OpenRocket checks, and jury reviews.
                   Submissions for <strong>{currentEventSpec.name}</strong> are closed and no longer accepted through the submission portal. Only active competitions (CelesteJam, Rocketry, and AEROSS Prix) accept submissions.
                 </p>
                 <div className="flex flex-wrap gap-3 pt-2">
+                  <Link
+                    to={`/results?event=${formData.eventId}`}
+                    className="px-4 py-2.5 bg-bone text-ink hover:bg-crimson hover:text-white font-mono text-xs uppercase font-bold tracking-wider transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span>View Round 1 Results ★</span>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, eventId: '06' }))}
