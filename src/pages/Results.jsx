@@ -76,7 +76,7 @@ const Results = () => {
         </div>
       </header>
 
-      {/* Control Strip: Search Bar + Jump to Event/Venue Dropdown */}
+      {/* Control Strip: Search Bar + Jump to Event Dropdown */}
       <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         {/* Search Bar */}
         <div className="relative flex-1 max-w-md">
@@ -98,7 +98,7 @@ const Results = () => {
           )}
         </div>
 
-        {/* PROPER DROPDOWN BUTTON: Choose Event / Venue to Jump */}
+        {/* PROPER DROPDOWN BUTTON: Choose Event to Jump */}
         <div className="relative shrink-0" ref={dropdownRef}>
           <button
             type="button"
@@ -112,7 +112,7 @@ const Results = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span>Jump to Event / Venue</span>
+              <span>Jump to Event</span>
             </div>
             <svg
               className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
@@ -128,8 +128,8 @@ const Results = () => {
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-full sm:w-80 bg-ink border-2 border-bone shadow-2xl z-50 p-1.5 animate-in fade-in duration-150">
               <div className="px-3 py-1.5 font-mono text-[10px] text-bone-dim uppercase tracking-[0.16em] border-b border-bone/20 font-bold flex justify-between">
-                <span>Select Event Arena</span>
-                <span className="text-crimson">会場選択</span>
+                <span>Select Event</span>
+                <span className="text-crimson">種目選択</span>
               </div>
 
               <div className="py-1 space-y-1">
@@ -138,18 +138,13 @@ const Results = () => {
                     key={ev.eventId}
                     type="button"
                     onClick={() => handleJumpToEvent(ev.eventId)}
-                    className="w-full text-left p-2.5 hover:bg-bone/10 border border-transparent hover:border-bone/30 transition-colors cursor-pointer group flex flex-col"
+                    className="w-full text-left p-2.5 hover:bg-bone/10 border border-transparent hover:border-bone/30 transition-colors cursor-pointer group flex items-center justify-between"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-label font-bold text-xs uppercase tracking-wider text-bone group-hover:text-crimson">
-                        Event {ev.eventId} · {ev.name} ({ev.code})
-                      </span>
-                      <span className="font-mono text-[10px] text-crimson font-bold">
-                        &darr;
-                      </span>
-                    </div>
-                    <span className="font-mono text-[10px] text-bone-dim mt-0.5 flex items-center gap-1">
-                      <span className="text-crimson">Venue:</span> {ev.venue}
+                    <span className="font-label font-bold text-xs uppercase tracking-wider text-bone group-hover:text-crimson">
+                      Event {ev.eventId} · {ev.name} ({ev.code})
+                    </span>
+                    <span className="font-mono text-[10px] text-crimson font-bold">
+                      &darr;
                     </span>
                   </button>
                 ))}
@@ -189,15 +184,12 @@ const Results = () => {
                 id={`event-${event.eventId}`}
                 className="border-2 border-bone bg-ink-2/20 p-4 sm:p-6 scroll-mt-20"
               >
-                {/* Event Heading & Venue Badge */}
+                {/* Event Heading Badge */}
                 <div className="border-b-2 border-bone pb-3 mb-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi uppercase">
                         Event {event.eventId} · {event.code}
-                      </span>
-                      <span className="font-mono text-[11px] text-bone-dim border border-bone/40 px-2 py-0.5 uppercase flex items-center gap-1">
-                        <strong className="text-crimson">Venue:</strong> {event.venue}
                       </span>
                     </div>
 

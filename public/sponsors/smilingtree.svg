@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <rect width="800" height="200" fill="#8CB811"/>
+  
+  <!-- Sprout / Plant Icon on Left -->
+  <g transform="translate(30, 20)">
+    <defs>
+      <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFF9A6"/>
+        <stop offset="100%" stop-color="#F2E64A"/>
+      </linearGradient>
+    </defs>
+    <!-- Left Leaf -->
+    <path d="M 10,75 C -5,55 0,25 25,35 C 50,45 40,75 10,75 Z" fill="url(#leafGrad)"/>
+    <!-- Center / Top Leaf -->
+    <path d="M 50,45 C 55,10 90,0 95,25 C 100,55 75,65 50,45 Z" fill="url(#leafGrad)"/>
+    <!-- Stem / Right Sprout -->
+    <path d="M 40,140 C 45,100 55,60 52,48 C 50,45 42,48 40,65 C 38,78 30,105 32,140 Z" fill="url(#leafGrad)"/>
+    <!-- Small Leaf Accent -->
+    <path d="M 46,95 C 65,80 80,95 72,110 C 60,118 45,105 46,95 Z" fill="url(#leafGrad)"/>
+  </g>
+
+  <!-- Typography -->
+  <!-- Main Brand Title -->
+  <text x="175" y="105" font-family="'Inter', 'Montserrat', 'Segoe UI', Arial, sans-serif" font-weight="900" font-size="76" fill="#FFFFFF" letter-spacing="3">SMILING TREE</text>
+  
+  <!-- Subtitle Tagline -->
+  <text x="480" y="148" text-anchor="middle" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-weight="600" font-size="31" fill="#FFFFFF" letter-spacing="1">Because you care, and so do we!</text>
+  
+  <!-- Website URL -->
+  <text x="480" y="185" text-anchor="middle" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-weight="800" font-size="28" fill="#005A18" letter-spacing="1">www.smilingtree.in</text>
+</svg>
