@@ -14,7 +14,7 @@ const Format = () => {
     },
     {
       time: '11:30 – 12:15 P.M.',
-      programme: 'Break — Refreshments, institutional networking & delegate hospitality and Enjoy — Open showcase, minigame arcade expo, engineering exhibits & social interaction'
+      programme: 'Break — Refreshments, networking and Enjoy — Open showcase, minigame arcade expo & social interaction'
     },
     {
       time: '12:15 – 01:00 P.M.',
@@ -44,16 +44,11 @@ const Format = () => {
     },
     {
       num: '04',
-      title: 'Host School Status',
-      desc: 'DPS R.K. Puram teams participate on a non-competitive basis: they are judged for benchmarking but are ineligible for rankings, podium trophies or the Overall trophy.'
-    },
-    {
-      num: '05',
       title: 'Jury Sovereignty',
       desc: 'Scores and verdicts of juries, industry adjudicators and faculty observers are final and binding. Disrespect toward arbiters or marshals means immediate disqualification.'
     },
     {
-      num: '06',
+      num: '05',
       title: 'Overall Champions Rolling Trophy',
       desc: 'Awarded to the top institution with maximum cumulative points across the conclave. Eligibility requires official school entries in at least 5 of the 8 competitions.'
     }
@@ -134,7 +129,7 @@ const Format = () => {
                 <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Finalists announced for 5 hybrid events in non-ranked order. <Link to="/results" className="text-crimson underline hover:text-bone">View R1 Results &rarr;</Link></span>
               </div>
               <div>
-                <dt className="text-crimson font-bold uppercase mb-0.5">Rocketry / Prix / Jam Deadline</dt>
+                <dt className="text-crimson font-bold uppercase mb-0.5">Rocketry / Prix / Jam Registration Deadline</dt>
                 <dd className="text-bone border-b border-dotted border-bone/40 pb-1 font-bold">20 Oct · 11:59 PM IST</dd>
                 <span className="text-bone-dim/70 text-[9.5px] block mt-0.5">Technical specifications released beforehand. Portal locks.</span>
               </div>
@@ -186,10 +181,6 @@ const Format = () => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-crimson shrink-0 inline-block"></span>
             <span>Escort Teacher Lounge: refreshments &amp; workstations</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-crimson shrink-0 inline-block"></span>
-            <span>Bring your own Wi-Fi / internet connection</span>
           </div>
           <div className="flex items-center gap-2 w-full">
             <span className="w-2 h-2 bg-crimson shrink-0 inline-block"></span>
