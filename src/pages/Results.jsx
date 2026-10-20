@@ -278,7 +278,7 @@ const Results = () => {
             <span className="text-crimson font-bold shrink-0">02.</span>
             <div>
               <strong className="text-bone uppercase block mb-0.5">Uniform</strong>
-              <span><strong className="text-bone">School uniform</strong> is mandatory for all participating students.</span>
+              <span><strong className="text-bone">School uniform</strong> is mandatory for all participating students except for the participants of <strong>Aeross Theatre.</strong></span>
             </div>
           </li>
 
