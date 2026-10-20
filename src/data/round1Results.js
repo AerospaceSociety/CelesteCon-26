@@ -355,9 +355,9 @@ export const hybridEventsResults = [
       },
       {
         id: 'ATH-04',
-        schoolUID: 'C26-LH-0169',
-        teamName: 'DPS 98',
-        schoolName: 'Delhi Public School, Sector 98 Faridabad',
+        schoolUID: 'C26-ZZ-0123',
+        teamName: 'The Triumph Trio',
+        schoolName: 'Tagore International School, East of Kailash',
         category: 'Senior Track (Grades 9–12)'
       },
       {
