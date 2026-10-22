@@ -70,10 +70,10 @@ const EVENT_REQUIREMENTS = {
   '06': {
     code: 'CJAM',
     name: 'CelesteJam',
-    requiredKeys: ['buildUrl', 'videoUrl'],
+    requiredKeys: ['videoUrl'],
     keyLabels: {
-      buildUrl: 'Playable Game Build Link (.ZIP or WebGL Link)',
       videoUrl: 'Gameplay Traversal Video Link (60–90 Secs)',
+      buildUrl: 'Playable Game Build Link (.ZIP or WebGL Link) (Optional)',
       sourceCodeUrl: 'Source Code Repository Link (Optional)',
       gddUrl: 'Game Design Document (GDD) / Readme (Optional)',
       supplementaryUrl: 'Asset Credits & OST Audio Link (Optional)'

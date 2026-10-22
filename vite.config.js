@@ -195,7 +195,7 @@ function apiDevPlugin() {
                 '02': ['proposalUrl', 'cadPackageUrl'],
                 '04': ['proposalUrl', 'videoUrl'],
                 '05': ['videoUrl'],
-                '06': ['buildUrl', 'videoUrl'],
+                '06': ['videoUrl'],
                 '07': ['orkUrl', 'reportUrl'],
                 '08': ['dossierUrl', 'cadPackageUrl']
               };

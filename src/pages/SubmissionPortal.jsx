@@ -282,26 +282,26 @@ const EVENT_DELIVERABLE_SPECS = {
     discipline: 'Aerospace Game Development & Interactive Media',
     portalUrl: '/prompts/gamejam',
     deadline: '22 October 2026, 23:59:59 IST',
-    summary: 'Rapid-fire aerospace game sprint around official theme "RETROGRESSION". Playable game build and gameplay traversal video are mandatory.',
+    summary: 'Rapid-fire aerospace game sprint around official theme "RETROGRESSION". Gameplay traversal video is mandatory; playable game build and source code are optional.',
     mandatoryFields: [
-      {
-        key: 'buildUrl',
-        label: 'Playable Game Build Link (.ZIP or WebGL Link)',
-        badge: 'MANDATORY · REQUIRED 1 OF 2',
-        desc: 'Standalone executable (Windows 64-bit .ZIP on Google Drive/Dropbox) OR hosted WebGL link (itch.io / GitHub Pages).',
-        placeholder: 'https://drive.google.com/... or https://username.itch.io/game',
-        formatHelp: 'If password-protected on itch.io, include access key in Project Notes.'
-      },
       {
         key: 'videoUrl',
         label: 'Gameplay Traversal Video Link (60–90 Secs)',
-        badge: 'MANDATORY · REQUIRED 2 OF 2',
+        badge: 'MANDATORY · REQUIRED',
         desc: '60–90 second gameplay traversal recording highlighting player mechanics, physics simulation, audio design, and UI.',
         placeholder: 'https://youtu.be/... or https://drive.google.com/file/d/...',
         formatHelp: 'Unlisted YouTube link or Google Drive link.'
       }
     ],
     optionalFields: [
+      {
+        key: 'buildUrl',
+        label: 'Playable Game Build Link (.ZIP or WebGL Link) (Optional)',
+        badge: 'OPTIONAL',
+        desc: 'Standalone executable (Windows 64-bit .ZIP on Google Drive/Dropbox) OR hosted WebGL link (itch.io / GitHub Pages).',
+        placeholder: 'https://drive.google.com/... or https://username.itch.io/game',
+        formatHelp: 'Optional online upload. If password-protected on itch.io, include access key in Project Notes.'
+      },
       {
         key: 'sourceCodeUrl',
         label: 'Source Code Repository Link (Optional & Recommended)',
