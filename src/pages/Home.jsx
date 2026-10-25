@@ -63,54 +63,59 @@ const Home = () => {
               >
                 Brochure (PDF) ↗
               </a>
-              <Link
-                to="/format"
-                className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-bone hover:text-ink transition-colors cursor-pointer"
-              >
-                R1 Online // 13 Oct
-              </Link>
-              <Link
-                to="/format"
-                className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-bone hover:text-ink transition-colors cursor-pointer"
-              >
-                R2 Finale // 24 Oct
-              </Link>
+              <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap">
+                Concluded // 24 Oct
+              </span>
               <Link
                 to="/results"
                 className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-crimson bg-crimson text-bone-hi px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-ink hover:text-crimson transition-colors cursor-pointer flex items-center justify-center gap-1"
               >
-                <span>★ R1 Results Live</span>
+                <span>🏆 Winner: DPS Noida</span>
+              </Link>
+              <Link
+                to="/glimpses"
+                className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-bone hover:text-ink transition-colors cursor-pointer"
+              >
+                Glimpses ↗
               </Link>
               <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-bone text-bone px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap">
-                Est. 2009 // AEROSS
+                Back in 2027
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Round 1 Results Communiqué Announcement Banner */}
+      {/* Conclave Concluded Announcement Banner */}
       <div className="mb-6 border-2 border-crimson bg-crimson/10 p-3.5 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div className="flex items-center gap-3">
           <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-crimson text-bone-hi font-bold shrink-0">
-            COMMUNIQUÉ
+            CONCLAVE CONCLUDED
           </span>
           <div>
             <div className="font-label font-bold text-sm sm:text-base text-bone uppercase tracking-wider flex items-center gap-2 flex-wrap">
-              <span>Round 1 Results Declared</span>
-              <span className="text-crimson font-mono text-xs">[5 Hybrid Events]</span>
+              <span>CelesteCon 2026 Concluded — Overall Winner: DPS Noida</span>
+              <span className="text-crimson font-mono text-xs">[Results Live]</span>
             </div>
             <p className="font-mono text-[11px] text-bone-dim mt-0.5">
-              Qualified schools & teams published in non-ranked order. Finalists advance to the 24 Oct Grand Finale.
+              Official podium standings declared across all 12 events. CelesteCon will be back in 2027!
             </p>
           </div>
         </div>
-        <Link
-          to="/results"
-          className="px-4 py-1.5 bg-crimson text-bone-hi font-mono text-xs uppercase tracking-wider font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors whitespace-nowrap self-stretch sm:self-auto text-center"
-        >
-          View Results &rarr;
-        </Link>
+        <div className="flex items-center gap-2 self-stretch sm:self-auto">
+          <Link
+            to="/results"
+            className="px-4 py-1.5 bg-crimson text-bone-hi font-mono text-xs uppercase tracking-wider font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors whitespace-nowrap flex-1 sm:flex-initial text-center"
+          >
+            View Results &rarr;
+          </Link>
+          <Link
+            to="/glimpses"
+            className="px-4 py-1.5 bg-bone text-ink font-mono text-xs uppercase tracking-wider font-bold border-2 border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors whitespace-nowrap flex-1 sm:flex-initial text-center"
+          >
+            Glimpses &rarr;
+          </Link>
+        </div>
       </div>
 
       <HeroSignature />
@@ -260,34 +265,32 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Value Band / CTA */}
+      {/* Value Band / Conclave Concluded Summary */}
       <section className="bg-bone text-ink -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 sm:py-10 mt-6 sm:mt-10 mb-8 sm:mb-12 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between gap-2.5 font-mono text-[9px] sm:text-[9.5px] tracking-[0.18em] uppercase text-ink-3 font-bold flex-wrap">
-            <span>◆ ACTION REQUIRED</span>
-            <span>SEC. 00 // REGISTRATION</span>
+            <span>◆ CONCLAVE RECORD</span>
+            <span>SEC. 00 // CELESTECON 2026 CONCLUDED</span>
           </div>
           <h2 className="font-display uppercase text-2xl sm:text-4xl md:text-5xl leading-[1.02] tracking-[0.01em] mt-3 text-ink text-balance">
-            The grid is open. <span className="text-crimson [-webkit-text-stroke:0]">Assemble your delegation.</span>
+            Overall Champions: <span className="text-crimson [-webkit-text-stroke:0]">DPS Noida</span>
           </h2>
           <p className="font-label text-sm sm:text-base text-ink-2 mt-2 max-w-2xl leading-relaxed">
-            Register your official school contingent across 8 national aerospace competitions. Compete for division podiums and the coveted Overall Champions Rolling Trophy (minimum 5/8 competitions required).
+            Congratulations to Delhi Public School, Noida for lifting the prestigious Overall Champions Rolling Trophy. We salute all 180+ participating schools, jury members, and students across India. CelesteCon will be back in 2027!
           </p>
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-stretch sm:items-center flex-wrap">
-            <a
-              href="/celestecon_registration.html"
+            <Link
+              to="/results"
               className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-crimson text-bone-hi font-label font-bold text-base md:text-lg uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors text-center shadow-lg"
             >
-              School Contingent Registration &rarr;
-            </a>
-            <a
-              href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
+              View Full Results &amp; Podiums &rarr;
+            </Link>
+            <Link
+              to="/glimpses"
               className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-transparent text-ink font-label font-bold text-base md:text-lg uppercase tracking-widest border-2 border-ink hover:bg-ink hover:text-bone transition-colors text-center"
             >
-              Participant Brochure (PDF) ↗
-            </a>
+              Conclave Glimpses ↗
+            </Link>
           </div>
         </div>
       </section>

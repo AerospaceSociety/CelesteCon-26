@@ -210,49 +210,25 @@ const EventCard = ({ event, index, defaultExpanded = false }) => {
             )}
           </div>
 
-          {/* Registration & Portals CTA Footer inside card */}
+          {/* Status & Results Footer inside card */}
           <div className="pt-3 border-t border-bone/20 flex justify-between items-center flex-wrap gap-3">
-            <span className="font-mono text-[10px] tracking-widest uppercase text-bone-dim">
-              Event ID: CC26-E{event.id}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] tracking-widest uppercase text-bone-dim">
+                Event ID: CC26-E{event.id}
+              </span>
+              <span className="text-bone-dim/40">•</span>
+              <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-wider">
+                Event Concluded
+              </span>
+            </div>
             <div className="flex items-center gap-2 flex-wrap">
-              {event.portalUrl && (
-                event.portalUrl.endsWith('.html') ? (
-                  <a
-                    href={event.portalUrl}
-                    className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors flex items-center gap-1"
-                  >
-                    <span>Prompt</span>
-                    <span>&rarr;</span>
-                  </a>
-                ) : (
-                  <Link
-                    to={event.portalUrl}
-                    className="px-3 py-1.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors flex items-center gap-1"
-                  >
-                    <span>Prompt</span>
-                    <span>&rarr;</span>
-                  </Link>
-                )
-              )}
-              {!['01', '02', '03', '04', '05'].includes(event.id) ? (
-                <Link
-                  to="/submissions"
-                  className="px-3 py-1.5 bg-ink text-bone font-label font-bold text-xs uppercase tracking-widest border border-bone/40 hover:border-crimson hover:text-crimson transition-colors"
-                >
-                  Submit &rarr;
-                </Link>
-              ) : (
-                <span className="px-3 py-1.5 bg-ink text-bone-dim/50 font-label font-bold text-xs uppercase tracking-widest border border-bone/20">
-                  Closed
-                </span>
-              )}
-              <a
-                href="/celestecon_registration.html"
-                className="px-3 py-1.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors"
+              <Link
+                to="/results"
+                className="px-3 py-1.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1"
               >
-                Register Contingent ↗
-              </a>
+                <span>View Results</span>
+                <span>&rarr;</span>
+              </Link>
             </div>
           </div>
 
@@ -292,32 +268,32 @@ const Comps = () => {
     <div className="max-w-5xl">
       <SectionHeader section="03" title="The Comps" jp="競技一覧" />
 
-      {/* Prompts & Submission Action Hub Banner */}
-      <div className="mt-8 mb-6 border-2 border-bone bg-ink-2/80 p-4 sm:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-xl">
+      {/* Conclave Concluded & Results Action Hub Banner */}
+      <div className="mt-8 mb-6 border-2 border-crimson bg-crimson/10 p-4 sm:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-xl">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-crimson animate-pulse"></span>
             <span className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
-              Round 1 Problem Statements &amp; Submission Portals
+              CelesteCon 2026 Concluded // Official Results Declared
             </span>
           </div>
           <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed max-w-2xl">
-            Access Round 1 competition prompts, case guidelines, interactive simulators (Rocketry &amp; AEROSS Prix), and the digital deposit vault. Join the official Discord server for real-time announcements.
+            All 8 competitions have formally concluded. Congratulations to Overall Champions DPS Noida and all podium finishers. CelesteCon will be back in 2027!
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto shrink-0">
           <Link
-            to="/prompts"
-            className="flex-1 sm:flex-initial px-4 py-2.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border-2 border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors text-center inline-flex items-center justify-center gap-1.5"
+            to="/results"
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors text-center inline-flex items-center justify-center gap-1.5"
           >
-            <span>Prompts Page</span>
+            <span>View Results</span>
             <span>&rarr;</span>
           </Link>
           <Link
-            to="/submissions"
-            className="flex-1 sm:flex-initial px-4 py-2.5 bg-crimson text-bone-hi font-label font-bold text-xs uppercase tracking-widest border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors text-center inline-flex items-center justify-center gap-1.5"
+            to="/glimpses"
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-bone text-ink font-label font-bold text-xs uppercase tracking-widest border-2 border-bone hover:bg-crimson hover:text-bone-hi hover:border-crimson transition-colors text-center inline-flex items-center justify-center gap-1.5"
           >
-            <span>Submission Page</span>
+            <span>Glimpses</span>
             <span>&rarr;</span>
           </Link>
           <a
@@ -326,7 +302,7 @@ const Comps = () => {
             rel="noopener noreferrer"
             className="flex-1 sm:flex-initial px-4 py-2.5 bg-[#5865F2] text-white font-label font-bold text-xs uppercase tracking-widest border-2 border-[#5865F2] hover:bg-[#4752c4] hover:border-[#4752c4] transition-colors text-center inline-flex items-center justify-center gap-1.5"
           >
-            <span>Discord Server</span>
+            <span>Discord</span>
             <span>↗</span>
           </a>
         </div>
@@ -409,43 +385,34 @@ const Comps = () => {
         </p>
       </div>
 
-      {/* Footer Portal Gateway */}
+      {/* Footer Conclave Status Gateway */}
       <div className="mt-12 border-2 border-bone p-6 sm:p-7 bg-ink-2/80 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 shadow-2xl">
         <div className="space-y-1">
           <span className="font-mono text-[10px] tracking-[0.2em] text-crimson font-bold uppercase block">
-            Central Communications Gateway
+            Conclave Records // 審判記録
           </span>
           <h4 className="font-display text-xl sm:text-2xl text-bone uppercase">
-            Ready to review problem prompts or submit deliverables?
+            All 8 Competitions Concluded // Back in 2027
           </h4>
           <p className="font-label text-xs sm:text-sm text-bone-dim max-w-xl">
-            Access the Round 1 transmission terminal for countdown clocks, downloadable prompts, stability tools, and encrypted deposit vaults — or join our official Discord server for prompt briefings.
+            Explore the final podium positions, overall rolling trophy winners DPS Noida, and delegation medal tallies — or view conclave glimpses.
           </p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">
           <Link
-            to="/prompts"
-            className="flex-1 sm:flex-initial px-5 py-2.5 border-2 border-bone bg-bone text-ink hover:bg-crimson hover:text-bone-hi hover:border-crimson font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
+            to="/results"
+            className="flex-1 sm:flex-initial px-5 py-2.5 bg-crimson border-2 border-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
           >
-            <span>Prompts Page</span>
+            <span>View Results</span>
             <span>&rarr;</span>
           </Link>
           <Link
-            to="/submissions"
-            className="flex-1 sm:flex-initial px-5 py-2.5 bg-crimson border-2 border-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
+            to="/glimpses"
+            className="flex-1 sm:flex-initial px-5 py-2.5 border-2 border-bone bg-bone text-ink hover:bg-crimson hover:text-bone-hi hover:border-crimson font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
           >
-            <span>Submission Page</span>
+            <span>Conclave Glimpses</span>
             <span>&rarr;</span>
           </Link>
-          <a
-            href="https://discord.gg/5RAF4xVB3"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-initial px-5 py-2.5 bg-[#5865F2] border-2 border-[#5865F2] text-white hover:bg-[#4752c4] hover:border-[#4752c4] font-label text-xs font-bold uppercase tracking-widest transition-colors text-center inline-flex items-center justify-center gap-1.5"
-          >
-            <span>Discord Server</span>
-            <span>↗</span>
-          </a>
         </div>
       </div>
     </div>

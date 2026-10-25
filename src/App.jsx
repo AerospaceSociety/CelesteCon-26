@@ -13,6 +13,7 @@ import InternalRegistration from './pages/InternalRegistration';
 import RocketryPrompt from './pages/RocketryPrompt';
 import AerossPrixPrompt from './pages/AerossPrixPrompt';
 import Results from './pages/Results';
+import Glimpses from './pages/Glimpses';
 import {
   GenericPromptPortal,
   SettlementPrompt,
@@ -63,8 +64,8 @@ const Navbar = () => {
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About AEROSS' },
     { path: '/comps', label: 'The Comps' },
-    { path: '/results', label: 'Results', badge: 'R1' },
-    { path: '/format', label: 'Format & Dates' },
+    { path: '/results', label: 'Results', badge: 'Winners' },
+    { path: '/glimpses', label: 'Glimpses' },
     { path: '/sponsors', label: 'Sponsors' },
     { path: '/contact', label: 'Contact' }
   ];
@@ -95,88 +96,24 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex items-center gap-1.5 sm:gap-4">
-            {/* Desktop Registration Dropdown */}
-            <div className="relative hidden md:block">
-              <button
-                type="button"
-                onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
-                className="px-3 sm:px-4 py-1.5 bg-crimson text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer"
-                aria-haspopup="true"
-                aria-expanded={registerDropdownOpen}
+            {/* Desktop Direct Results CTA Button */}
+            <div className="hidden md:block">
+              <Link
+                to="/results"
+                className="px-3 sm:px-4 py-1.5 bg-crimson text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-widest border border-crimson hover:bg-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer shadow-md"
               >
-                <span>Register</span>
-                <svg className={`w-3.5 h-3.5 transition-transform ${registerDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-              </button>
-              {registerDropdownOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-72 bg-ink border-2 border-bone shadow-2xl p-2 z-50"
-                  onMouseLeave={() => setRegisterDropdownOpen(false)}
-                >
-                  <Link
-                    to="/results"
-                    onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left bg-crimson/10"
-                  >
-                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider flex items-center justify-between">
-                      <span>Round 1 Results</span>
-                      <span className="text-[9px] bg-crimson text-bone-hi px-1.5 py-0.5 font-mono font-bold">R1 QUALIFIERS</span>
-                    </div>
-                    <p className="font-label text-xs text-bone-dim mt-0.5">Qualified schools &amp; teams (non-ranked).</p>
-                  </Link>
-                  <a
-                    href="/celestecon_registration.html"
-                    onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
-                  >
-                    <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
-                      School Contingent
-                    </div>
-                    <p className="font-label text-xs text-bone-dim mt-0.5">Official school delegation entry portal.</p>
-                  </a>
-                  <Link
-                    to="/prompts"
-                    onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
-                  >
-                    <div className="font-label font-bold text-sm text-crimson uppercase tracking-wider">
-                      Prompts Portal
-                    </div>
-                    <p className="font-label text-xs text-bone-dim mt-0.5">Problem statements &amp; event dossiers.</p>
-                  </Link>
-                  <Link
-                    to="/submissions"
-                    onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors border-b border-bone/20 text-left"
-                  >
-                    <div className="font-label font-bold text-sm text-bone uppercase tracking-wider">
-                      Submission Portal
-                    </div>
-                    <p className="font-label text-xs text-bone-dim mt-0.5">Upload deliverables &amp; verify UID.</p>
-                  </Link>
-                  <a
-                    href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setRegisterDropdownOpen(false)}
-                    className="block p-2.5 hover:bg-bone/10 transition-colors text-left group"
-                  >
-                    <div className="font-label font-bold text-xs text-bone uppercase tracking-wider flex items-center justify-between group-hover:text-crimson">
-                      <span>Participant Brochure (PDF)</span>
-                      <span>↗</span>
-                    </div>
-                    <p className="font-label text-[11px] text-bone-dim mt-0.5">Complete guidelines, rules &amp; dossiers.</p>
-                  </a>
-                </div>
-              )}
+                <span>Results 2026</span>
+                <span className="font-mono text-xs">★</span>
+              </Link>
             </div>
 
-            {/* Mobile Direct Register Button */}
-            <a
-              href="/celestecon_registration.html"
+            {/* Mobile Direct Results Button */}
+            <Link
+              to="/results"
               className="md:hidden px-2.5 py-1 bg-crimson text-bone-hi font-label text-xs font-bold uppercase tracking-wider border border-crimson hover:bg-ink hover:text-crimson transition-colors"
             >
-              Register
-            </a>
+              Results
+            </Link>
 
             <button
               onClick={() => setIsLight(!isLight)}
@@ -231,38 +168,22 @@ const Navbar = () => {
 
             <div className="pt-4 border-t-2 border-bone/30 mt-6 flex flex-col gap-2.5 pb-6">
               <div className="font-mono text-[10px] text-bone-dim uppercase tracking-[0.2em] px-1 font-bold">
-                Registration &amp; Documents // 登録
+                Conclave Highlights // 記録
               </div>
               <Link
                 to="/results"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-sm font-label uppercase tracking-widest py-3 px-4 bg-crimson text-bone-hi font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
               >
-                <span>Round 1 Results (Qualifiers)</span>
+                <span>Final Results (DPS Noida 🏆)</span>
                 <span className="font-mono text-xs">★</span>
               </Link>
-              <a
-                href="/celestecon_registration.html"
+              <Link
+                to="/glimpses"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5"
               >
-                <span>School Contingent Registration</span>
-                <span>↗</span>
-              </a>
-              <Link
-                to="/prompts"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-bone/40 text-bone hover:border-crimson hover:text-crimson transition-colors flex justify-between items-center bg-bone/5"
-              >
-                <span>Prompts Portal</span>
-                <span>&rarr;</span>
-              </Link>
-              <Link
-                to="/submissions"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-label uppercase tracking-widest py-2.5 px-4 border border-crimson/60 text-crimson hover:border-crimson hover:bg-crimson hover:text-bone-hi transition-colors flex justify-between items-center bg-crimson/5 font-bold"
-              >
-                <span>Submission Portal</span>
+                <span>Glimpses (Coming Soon)</span>
                 <span>&rarr;</span>
               </Link>
               <a
@@ -335,13 +256,12 @@ const Footer = () => {
           <div>
             <h4 className="font-mono text-[10px] text-crimson-deep mb-2 tracking-[0.2em] font-bold uppercase">Quick Links</h4>
             <ul className="space-y-1.5 font-label text-sm uppercase tracking-widest font-semibold text-ink-2">
-              <li><Link to="/results" className="text-crimson font-bold hover:text-ink transition-colors border-b border-transparent hover:border-crimson">Round 1 Results (Finalists) ★</Link></li>
+              <li><Link to="/results" className="text-crimson font-bold hover:text-ink transition-colors border-b border-transparent hover:border-crimson">Final Results 2026 ★</Link></li>
               <li><Link to="/about" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">About AEROSS</Link></li>
               <li><Link to="/comps" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">The Comps</Link></li>
-              <li><Link to="/prompts" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Prompts Portal</Link></li>
-              <li><Link to="/submissions" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Submission Portal</Link></li>
-              <li><Link to="/format" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Format & Dates</Link></li>
-              <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors & Partners</Link></li>
+              <li><Link to="/glimpses" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Glimpses (Coming Soon)</Link></li>
+              <li><Link to="/sponsors" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Sponsors &amp; Partners</Link></li>
+              <li><Link to="/contact" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Contact Secretariat</Link></li>
               <li><a href="https://drive.google.com/file/d/182Nn4qDwSNomM5a5mVBkEI7Q_xTQBAWH/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-crimson transition-colors border-b border-transparent hover:border-crimson">Participant Brochure (PDF) ↗</a></li>
             </ul>
           </div>
@@ -428,7 +348,8 @@ function App() {
             <Route path="/comps" element={<Comps />} />
             <Route path="/format" element={<Format />} />
             <Route path="/sponsors" element={<Sponsors />} />
-            <Route path="/gallery" element={<Navigate to="/" replace />} />
+            <Route path="/glimpses" element={<Glimpses />} />
+            <Route path="/gallery" element={<Glimpses />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/results" element={<Results />} />
             <Route path="/round-1-results" element={<Results />} />

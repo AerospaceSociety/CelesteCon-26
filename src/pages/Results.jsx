@@ -1,37 +1,46 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  resultsMetadata,
-  hybridEventsResults
+  eventResults,
+  finalResultsMetadata,
+  schoolMedalLeaderboard
+} from '../data/finalResults';
+import {
+  hybridEventsResults,
+  resultsMetadata as round1Metadata
 } from '../data/round1Results';
 
 const Results = () => {
+  const [activeTab, setActiveTab] = useState('final'); // 'final' or 'round1'
   const [searchQuery, setSearchQuery] = useState('');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [filterDivision, setFilterDivision] = useState('ALL');
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  // Filter Final Event Results
+  const filteredFinalEvents = useMemo(() => {
+    return eventResults.filter(event => {
+      const matchesDivision =
+        filterDivision === 'ALL' ||
+        (filterDivision === 'SENIOR' && event.division.includes('Senior')) ||
+        (filterDivision === 'JUNIOR' && event.division.includes('Junior')) ||
+        (filterDivision === 'OPEN' && event.division.includes('Open'));
 
-  // Jump smoothly to a specific event section
-  const handleJumpToEvent = (eventId) => {
-    setDropdownOpen(false);
-    const target = document.getElementById(`event-${eventId}`);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+      if (!matchesDivision) return false;
 
-  // Filter qualifiers by search query across events
-  const filteredEvents = useMemo(() => {
+      if (!searchQuery.trim()) return true;
+
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        event.name.toLowerCase().includes(q) ||
+        event.discipline.toLowerCase().includes(q) ||
+        event.first.toLowerCase().includes(q) ||
+        event.second.toLowerCase().includes(q) ||
+        event.third.toLowerCase().includes(q)
+      );
+    });
+  }, [searchQuery, filterDivision]);
+
+  // Filter Round 1 Qualifiers (Archive)
+  const filteredRound1Events = useMemo(() => {
     if (!searchQuery.trim()) return hybridEventsResults;
 
     const query = searchQuery.toLowerCase().trim();
@@ -53,323 +62,492 @@ const Results = () => {
       {/* Page Header */}
       <header className="border-b-2 border-bone pb-4 sm:pb-6">
         <div className="flex flex-wrap justify-between items-baseline gap-2 mb-2 font-mono text-xs uppercase tracking-widest text-bone-dim">
-          <span>CelesteCon 2026 // AEROSS</span>
-          <span>Published: {resultsMetadata.publicationDate}</span>
+          <span>CelesteCon 2026 // AEROSS Conclave</span>
+          <span>Grand Finale Concluded: 24 Oct 2026</span>
         </div>
 
-        <h1 className="font-display text-3xl sm:text-5xl text-bone uppercase tracking-wide">
-          Round 1 Results <span className="text-crimson">(Finalists)</span>
-        </h1>
+        <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4">
+          <div>
+            <h1 className="font-display text-3xl sm:text-5xl text-bone uppercase tracking-wide">
+              Conclave Results <span className="text-crimson">[Official]</span>
+            </h1>
+            <p className="font-label text-sm sm:text-base text-bone-dim mt-2 leading-relaxed max-w-3xl">
+              Official podium standings declared for CelesteCon 2026. Held at Delhi Public School, R.K. Puram, uniting over 180 schools and 1,500+ participants nationwide.
+            </p>
+          </div>
 
-        <p className="font-label text-sm sm:text-base text-bone-dim mt-2 leading-relaxed">
-          Official list of qualified schools and teams advancing to the Round 2 Grand Finale on <strong className="text-bone">24 October 2026</strong> at Delhi Public School, R.K. Puram.
-        </p>
+          <div className="shrink-0">
+            <span className="font-jp text-xs sm:text-sm text-crimson font-bold tracking-[0.2em] block">
+              大会結果発表
+            </span>
+            <span className="font-mono text-[10px] text-bone-dim tracking-widest uppercase">
+              STATUS: ADJUDICATED
+            </span>
+          </div>
+        </div>
 
-        {/* Clear Unranked Order Notice */}
-        <div className="mt-4 p-3 bg-crimson/10 border-l-4 border-crimson font-mono text-xs text-bone">
-          <strong className="text-crimson uppercase tracking-wider block mb-0.5">
-            Important Notice // No Ranked Order
-          </strong>
-          <span>
-            All qualifying delegations below are listed in <strong>no ranked order (arranged alphabetically by school name)</strong>. S.No. is solely for indexing.
-          </span>
+        {/* Tab Switcher: Final Winners vs Round 1 Qualifiers Archive */}
+        <div className="flex items-center gap-2 mt-6 border-b-2 border-bone/30">
+          <button
+            type="button"
+            onClick={() => setActiveTab('final')}
+            className={`px-4 sm:px-6 py-2.5 font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border-b-4 -mb-[2px] cursor-pointer ${
+              activeTab === 'final'
+                ? 'border-crimson text-crimson bg-crimson/10 font-black'
+                : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/40'
+            }`}
+          >
+            <span>★ Final Results (Winners &amp; Podiums)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('round1')}
+            className={`px-4 sm:px-6 py-2.5 font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border-b-4 -mb-[2px] cursor-pointer ${
+              activeTab === 'round1'
+                ? 'border-crimson text-crimson bg-crimson/10 font-black'
+                : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/40'
+            }`}
+          >
+            <span>Round 1 Qualifiers Archive</span>
+          </button>
         </div>
       </header>
 
-      {/* Control Strip: Search Bar + Jump to Event Dropdown */}
-      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        {/* Search Bar */}
-        <div className="relative flex-1 max-w-md">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search school name, UID, or team..."
-            className="w-full px-3 py-2.5 bg-ink-2/60 border-2 border-bone text-bone font-mono text-xs placeholder:text-bone-dim/50 focus:outline-none focus:border-crimson"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-bone-dim hover:text-crimson text-xs font-mono"
-            >
-              ✕ Clear
-            </button>
-          )}
-        </div>
-
-        {/* PROPER DROPDOWN BUTTON: Choose Event to Jump */}
-        <div className="relative shrink-0" ref={dropdownRef}>
-          <button
-            type="button"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="w-full sm:w-auto px-4 py-2.5 bg-crimson hover:bg-ink text-bone-hi hover:text-crimson border-2 border-crimson font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-between sm:justify-start gap-2.5 shadow-md cursor-pointer"
-            aria-haspopup="true"
-            aria-expanded={dropdownOpen}
-          >
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Jump to Event</span>
+      {/* ========================================================
+          TAB 1: FINAL RESULTS (WINNERS, OVERALL CHAMPION, 2027)
+      ======================================================== */}
+      {activeTab === 'final' && (
+        <div className="space-y-8 animate-in fade-in duration-200">
+          {/* OVERALL CHAMPIONS HERO BANNER */}
+          <section className="border-4 border-crimson bg-gradient-to-br from-crimson/20 via-ink to-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
+            {/* Background Aesthetic Watermark */}
+            <div className="absolute -right-6 -bottom-10 select-none pointer-events-none opacity-10">
+              <span className="font-display text-[160px] leading-none text-crimson font-black">
+                DPS
+              </span>
             </div>
-            <svg
-              className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
 
-          {/* Dropdown Menu Popover */}
-          {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-full sm:w-80 bg-ink border-2 border-bone shadow-2xl z-50 p-1.5 animate-in fade-in duration-150">
-              <div className="px-3 py-1.5 font-mono text-[10px] text-bone-dim uppercase tracking-[0.16em] border-b border-bone/20 font-bold flex justify-between">
-                <span>Select Event</span>
-                <span className="text-crimson">種目選択</span>
+            <div className="relative z-10 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-crimson/40 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 bg-crimson text-bone-hi font-mono text-[10px] font-bold uppercase tracking-widest animate-pulse">
+                    🏆 OVERALL WINNER
+                  </span>
+                  <span className="font-mono text-xs text-bone-dim uppercase tracking-wider">
+                    CelesteCon 2026 Rolling Trophy
+                  </span>
+                </div>
+                <span className="font-jp text-xs text-crimson font-bold tracking-widest">
+                  総合優勝校
+                </span>
               </div>
 
-              <div className="py-1 space-y-1">
-                {hybridEventsResults.map(ev => (
-                  <button
-                    key={ev.eventId}
-                    type="button"
-                    onClick={() => handleJumpToEvent(ev.eventId)}
-                    className="w-full text-left p-2.5 hover:bg-bone/10 border border-transparent hover:border-bone/30 transition-colors cursor-pointer group flex items-center justify-between"
-                  >
-                    <span className="font-label font-bold text-xs uppercase tracking-wider text-bone group-hover:text-crimson">
-                      Event {ev.eventId} · {ev.name} ({ev.code})
-                    </span>
-                    <span className="font-mono text-[10px] text-crimson font-bold">
-                      &darr;
-                    </span>
-                  </button>
-                ))}
+              <div>
+                <span className="font-mono text-xs sm:text-sm text-crimson font-bold tracking-[0.2em] uppercase block mb-1">
+                  OVERALL CONCLAVE CHAMPIONS
+                </span>
+                <h2 className="font-display text-3xl sm:text-5xl md:text-6xl text-bone uppercase tracking-wide leading-tight">
+                  DPS Noida
+                </h2>
+                <p className="font-label text-base sm:text-lg text-bone-dim mt-2 max-w-3xl leading-relaxed">
+                  Delhi Public School, Noida claims the prestigious CelesteCon 2026 Overall Champions Rolling Trophy with an extraordinary display of aerospace excellence across both junior and senior divisions.
+                </p>
+              </div>
+
+              {/* Medals Breakdown Strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                <div className="bg-ink/80 border-2 border-bone/30 p-3">
+                  <div className="font-mono text-[10px] text-bone-dim uppercase tracking-wider">Total Podiums</div>
+                  <div className="font-display text-2xl sm:text-3xl text-bone font-bold">7</div>
+                </div>
+                <div className="bg-ink/80 border-2 border-amber-500/50 p-3">
+                  <div className="font-mono text-[10px] text-amber-400 uppercase tracking-wider">1st Positions (Gold)</div>
+                  <div className="font-display text-2xl sm:text-3xl text-amber-400 font-bold">4</div>
+                </div>
+                <div className="bg-ink/80 border-2 border-slate-300/50 p-3">
+                  <div className="font-mono text-[10px] text-slate-300 uppercase tracking-wider">2nd Positions (Silver)</div>
+                  <div className="font-display text-2xl sm:text-3xl text-slate-300 font-bold">2</div>
+                </div>
+                <div className="bg-ink/80 border-2 border-amber-700/50 p-3">
+                  <div className="font-mono text-[10px] text-amber-600 uppercase tracking-wider">3rd Positions (Bronze)</div>
+                  <div className="font-display text-2xl sm:text-3xl text-amber-600 font-bold">1</div>
+                </div>
               </div>
             </div>
-          )}
-        </div>
-      </div>
+          </section>
 
-      {/* Event Results Tables */}
-      {filteredEvents.length === 0 ? (
-        <div className="border border-dashed border-bone/40 p-8 text-center text-bone-dim font-mono text-xs">
-          No matching schools or teams found for "{searchQuery}".
-          <div className="mt-2">
-            <button
-              onClick={() => setSearchQuery('')}
-              className="text-crimson underline uppercase font-bold"
-            >
-              Clear search filter
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-10">
-          {filteredEvents.map(event => {
-            const hasDivisions = event.hasCategories;
-            const juniorQualifiers = hasDivisions
-              ? event.qualifiers.filter(q => q.category && q.category.toLowerCase().includes('junior'))
-              : [];
-            const seniorQualifiers = hasDivisions
-              ? event.qualifiers.filter(q => q.category && q.category.toLowerCase().includes('senior'))
-              : event.qualifiers;
-
-            return (
-              <section
-                key={event.eventId}
-                id={`event-${event.eventId}`}
-                className="border-2 border-bone bg-ink-2/20 p-4 sm:p-6 scroll-mt-20"
+          {/* CELESTECON WILL BE BACK IN 2027 BANNER */}
+          <section className="border-2 border-bone bg-bone text-ink p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl">
+            <div className="space-y-1.5 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-crimson text-bone-hi font-bold">
+                  NEXT RENDEZVOUS // 次回予告
+                </span>
+                <span className="font-mono text-xs text-ink-3 font-bold uppercase tracking-wider">
+                  Edition VII
+                </span>
+              </div>
+              <h3 className="font-display text-2xl sm:text-4xl uppercase tracking-tight text-ink">
+                CelesteCon will be back in 2027
+              </h3>
+              <p className="font-label text-sm sm:text-base text-ink-2 leading-relaxed">
+                Thank you to all 180+ participating schools, jury adjudicators, mentors, and the organizing secretariat of AEROSS. We look forward to welcoming the next generation of aerospace innovators back to campus in Autumn 2027.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0 w-full md:w-auto">
+              <Link
+                to="/glimpses"
+                className="px-5 py-2.5 bg-crimson text-bone-hi hover:bg-ink hover:text-crimson font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors text-center"
               >
-                {/* Event Heading Badge */}
-                <div className="border-b-2 border-bone pb-3 mb-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="font-mono text-xs font-bold px-2 py-0.5 bg-crimson text-bone-hi uppercase">
-                        Event {event.eventId} · {event.code}
-                      </span>
+                View Glimpses &rarr;
+              </Link>
+              <Link
+                to="/comps"
+                className="px-5 py-2.5 bg-ink text-bone hover:bg-crimson hover:text-bone-hi font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors text-center"
+              >
+                Explore The Comps &rarr;
+              </Link>
+            </div>
+          </section>
+
+          {/* Controls: Search & Division Filters */}
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 pt-2">
+            {/* Search Input */}
+            <div className="relative flex-1 max-w-md">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by school (e.g., DPS Noida, Tagore, BBPS) or event..."
+                className="w-full px-3 py-2.5 bg-ink-2/60 border-2 border-bone text-bone font-mono text-xs placeholder:text-bone-dim/50 focus:outline-none focus:border-crimson"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-bone-dim hover:text-crimson text-xs font-mono"
+                >
+                  ✕ Clear
+                </button>
+              )}
+            </div>
+
+            {/* Division Filters */}
+            <div className="flex gap-1.5 shrink-0">
+              {['ALL', 'SENIOR', 'JUNIOR', 'OPEN'].map((div) => (
+                <button
+                  key={div}
+                  type="button"
+                  onClick={() => setFilterDivision(div)}
+                  className={`px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider border transition-colors ${
+                    filterDivision === div
+                      ? 'bg-crimson text-bone-hi border-crimson'
+                      : 'bg-ink text-bone-dim border-bone/40 hover:border-bone hover:text-bone'
+                  }`}
+                >
+                  {div}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* EVENT-BY-EVENT RESULTS GRID */}
+          <section className="space-y-4">
+            <div className="flex justify-between items-baseline border-b-2 border-bone pb-2 font-mono text-xs uppercase tracking-widest text-bone-dim">
+              <span className="text-crimson font-bold">Podium Standings // All 12 Divisions</span>
+              <span>Showing {filteredFinalEvents.length} Events</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+              {filteredFinalEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="border-2 border-bone/60 bg-ink-2/40 hover:border-crimson transition-all duration-200 flex flex-col justify-between overflow-hidden shadow-lg"
+                >
+                  {/* Event Header */}
+                  <div className="p-3.5 sm:p-4 bg-bone/5 border-b border-bone/20 flex justify-between items-start gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs text-crimson font-bold">
+                          EVENT {event.eventNumber}
+                        </span>
+                        <span className="text-bone-dim/40">•</span>
+                        <span className="font-mono text-[10px] text-bone-dim uppercase tracking-wider">
+                          {event.division}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-lg sm:text-xl text-bone uppercase tracking-wide mt-0.5">
+                        {event.name}
+                      </h3>
+                      <p className="font-mono text-[11px] text-bone-dim mt-0.5">
+                        {event.discipline}
+                      </p>
                     </div>
 
-                    <h2 className="font-display text-2xl sm:text-3xl text-bone uppercase tracking-wide inline-block">
-                      {event.name}
-                    </h2>
-                    <span className="font-label text-xs sm:text-sm text-bone-dim ml-2 uppercase">
-                      ({event.discipline})
+                    <span className="px-2 py-0.5 border border-bone/30 font-mono text-[9px] uppercase tracking-wider text-bone-dim shrink-0">
+                      {event.eligibility}
                     </span>
                   </div>
 
-                  <span className="font-mono text-xs text-bone-dim uppercase">
+                  {/* Podium Standings (1st, 2nd, 3rd) */}
+                  <div className="p-4 space-y-2.5">
+                    {/* 1st Position */}
+                    <div className="p-2.5 bg-amber-500/10 border-l-4 border-amber-500 flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-6 h-6 rounded-full bg-amber-500 text-ink font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                          1
+                        </div>
+                        <div className="min-w-0">
+                          <span className="font-mono text-[9px] text-amber-400 uppercase tracking-widest font-bold block">
+                            1st Position // First Place
+                          </span>
+                          <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
+                            {event.first}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-amber-400 font-mono text-sm shrink-0">★</span>
+                    </div>
+
+                    {/* 2nd Position */}
+                    <div className={`p-2.5 border-l-4 flex items-start justify-between gap-3 ${
+                      event.second === '—'
+                        ? 'bg-bone/5 border-bone/20 opacity-60'
+                        : 'bg-slate-300/10 border-slate-300'
+                    }`}>
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-6 h-6 rounded-full bg-slate-300 text-ink font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                          2
+                        </div>
+                        <div className="min-w-0">
+                          <span className="font-mono text-[9px] text-slate-300 uppercase tracking-widest font-bold block">
+                            2nd Position // Second Place
+                          </span>
+                          <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
+                            {event.second === '—' ? 'Not Awarded' : event.second}
+                          </span>
+                        </div>
+                      </div>
+                      {event.second !== '—' && (
+                        <span className="text-slate-300 font-mono text-sm shrink-0">★</span>
+                      )}
+                    </div>
+
+                    {/* 3rd Position */}
+                    <div className={`p-2.5 border-l-4 flex items-start justify-between gap-3 ${
+                      event.third === '—'
+                        ? 'bg-bone/5 border-bone/20 opacity-60'
+                        : 'bg-amber-700/10 border-amber-600'
+                    }`}>
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-6 h-6 rounded-full bg-amber-700 text-bone-hi font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                          3
+                        </div>
+                        <div className="min-w-0">
+                          <span className="font-mono text-[9px] text-amber-600 uppercase tracking-widest font-bold block">
+                            3rd Position // Third Place
+                          </span>
+                          <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
+                            {event.third === '—' ? 'Not Awarded' : event.third}
+                          </span>
+                        </div>
+                      </div>
+                      {event.third !== '—' && (
+                        <span className="text-amber-600 font-mono text-sm shrink-0">★</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Card Bottom Technical Tag */}
+                  <div className="px-4 py-2 border-t border-bone/10 bg-bone/[0.02] flex justify-between items-center font-mono text-[9px] text-bone-dim">
+                    <span>RECORD VERIFIED // AEROSS JURY</span>
+                    <span className="text-crimson">OFFICIAL PODIUM</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {filteredFinalEvents.length === 0 && (
+              <div className="p-12 text-center border-2 border-bone/40 font-mono text-bone-dim">
+                No events or schools found matching "{searchQuery}". Try searching for another school name or clearing filters.
+              </div>
+            )}
+          </section>
+
+          {/* LEADERBOARD & MEDAL TALLY TABLE */}
+          <section className="border-2 border-bone p-4 sm:p-6 bg-ink-2/30 space-y-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-2 border-b-2 border-bone pb-2">
+              <div>
+                <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-widest block">
+                  LEADERBOARD // 集計表
+                </span>
+                <h3 className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wide">
+                  Conclave Delegation Medal Summary
+                </h3>
+              </div>
+              <span className="font-mono text-xs text-bone-dim">
+                DPS Noida: 2026 Conclave Champions
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left font-mono text-xs">
+                <thead>
+                  <tr className="border-b-2 border-bone/40 text-bone-dim uppercase tracking-wider text-[10px]">
+                    <th className="py-2.5 px-3">School Delegation</th>
+                    <th className="py-2.5 px-3 text-center text-amber-400">1st (Gold)</th>
+                    <th className="py-2.5 px-3 text-center text-slate-300">2nd (Silver)</th>
+                    <th className="py-2.5 px-3 text-center text-amber-600">3rd (Bronze)</th>
+                    <th className="py-2.5 px-3 text-center font-bold text-bone">Total Podiums</th>
+                    <th className="py-2.5 px-3 text-right">Standing</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-bone/10">
+                  {schoolMedalLeaderboard.map((row, idx) => (
+                    <tr
+                      key={row.school}
+                      className={
+                        idx === 0
+                          ? 'bg-crimson/15 font-bold text-bone'
+                          : 'hover:bg-bone/5 text-bone-dim hover:text-bone transition-colors'
+                      }
+                    >
+                      <td className="py-2.5 px-3 font-label text-sm uppercase tracking-wide">
+                        <span className="font-mono text-crimson text-xs mr-2">0{idx + 1}.</span>
+                        {row.school}
+                      </td>
+                      <td className="py-2.5 px-3 text-center font-bold text-amber-400">
+                        {row.first}
+                      </td>
+                      <td className="py-2.5 px-3 text-center font-bold text-slate-300">
+                        {row.second}
+                      </td>
+                      <td className="py-2.5 px-3 text-center font-bold text-amber-600">
+                        {row.third}
+                      </td>
+                      <td className="py-2.5 px-3 text-center font-bold text-bone">
+                        {row.total}
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono text-[10px] uppercase tracking-wider text-crimson">
+                        {row.status}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* CELESTECON 2027 DETAILED NOTICE */}
+          <div className="border-2 border-crimson/80 bg-crimson/10 p-6 sm:p-8 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 bg-crimson inline-block animate-pulse"></span>
+              <span className="font-mono text-xs uppercase tracking-widest text-crimson font-bold">
+                COMMUNIQUÉ // CELESTECON 2027
+              </span>
+            </div>
+            <h4 className="font-display text-2xl sm:text-3xl text-bone uppercase">
+              CelesteCon will be back in 2027.
+            </h4>
+            <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-3xl">
+              The seventh edition of CelesteCon will launch in Autumn 2027 with new aerospace briefs, expanded simulator runs, and high-altitude flight trials. Directives, rules, and school invitation dispatches will be circulated to affiliated institutions in mid-2027.
+            </p>
+            <div className="pt-2 font-mono text-xs text-bone-dim">
+              For inquiries regarding conclave archives, certificates, or participation records, contact{' '}
+              <a href="mailto:aeross@dpsrkp.net" className="text-crimson hover:underline font-bold">
+                aeross@dpsrkp.net
+              </a>.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================
+          TAB 2: ROUND 1 QUALIFIERS ARCHIVE (HISTORICAL)
+      ======================================================== */}
+      {activeTab === 'round1' && (
+        <div className="space-y-8 animate-in fade-in duration-200">
+          <div className="p-4 bg-bone/5 border-l-4 border-bone font-mono text-xs text-bone-dim">
+            <span className="text-bone font-bold block mb-1 uppercase tracking-wider">
+              Historical Record // Round 1 Qualifiers
+            </span>
+            <span>
+              This archive records all non-ranked delegations who cleared the Round 1 proposal scrutiny to compete in the Round 2 Grand Finale.
+            </span>
+          </div>
+
+          {/* Search Bar for Round 1 Archive */}
+          <div className="relative max-w-md">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search school name, UID, or team in Round 1..."
+              className="w-full px-3 py-2.5 bg-ink-2/60 border-2 border-bone text-bone font-mono text-xs placeholder:text-bone-dim/50 focus:outline-none focus:border-crimson"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-bone-dim hover:text-crimson text-xs font-mono"
+              >
+                ✕ Clear
+              </button>
+            )}
+          </div>
+
+          <div className="space-y-8">
+            {filteredRound1Events.map((event) => (
+              <section key={event.eventId} className="border-2 border-bone/70 bg-ink-2/20">
+                <div className="bg-bone text-ink p-3 sm:p-4 flex flex-wrap justify-between items-center gap-2 border-b-2 border-bone">
+                  <div>
+                    <span className="font-mono text-[10px] tracking-widest uppercase text-crimson font-bold block">
+                      EVENT {event.eventId} · {event.code}
+                    </span>
+                    <h3 className="font-display text-lg sm:text-xl uppercase tracking-wide">
+                      {event.name}
+                    </h3>
+                  </div>
+                  <span className="font-mono text-xs font-bold uppercase tracking-widest bg-ink text-bone px-2.5 py-1">
                     {event.qualifiers.length} Qualified Teams
                   </span>
                 </div>
 
-                {hasDivisions ? (
-                  /* Two Tables for Junior & Senior Divisions */
-                  <div className="space-y-6">
-                    {/* Junior Division Table */}
-                    {juniorQualifiers.length > 0 && (
-                      <div>
-                        <h3 className="font-label font-bold text-sm uppercase tracking-wider text-crimson mb-2 flex items-center justify-between">
-                          <span>Junior Division (Grades 6–8)</span>
-                          <span className="font-mono text-xs text-bone-dim font-normal">
-                            {juniorQualifiers.length} Teams
-                          </span>
-                        </h3>
-                        <ResultTable qualifiers={juniorQualifiers} />
+                <div className="divide-y divide-bone/20">
+                  {event.qualifiers.map((q, idx) => (
+                    <div
+                      key={q.id}
+                      className="p-3 sm:p-4 hover:bg-bone/5 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                    >
+                      <div className="flex items-start sm:items-center gap-3">
+                        <span className="font-mono text-xs text-crimson font-bold shrink-0 w-6">
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                        <div>
+                          <div className="font-label font-bold text-sm sm:text-base text-bone tracking-wide uppercase">
+                            {q.schoolName}
+                          </div>
+                          <div className="font-mono text-[11px] text-bone-dim flex items-center gap-2 flex-wrap">
+                            <span>UID: <strong className="text-bone">{q.schoolUID}</strong></span>
+                            <span>•</span>
+                            <span>Team: {q.teamName}</span>
+                          </div>
+                        </div>
                       </div>
-                    )}
 
-                    {/* Senior Division Table */}
-                    {seniorQualifiers.length > 0 && (
-                      <div>
-                        <h3 className="font-label font-bold text-sm uppercase tracking-wider text-crimson mb-2 flex items-center justify-between">
-                          <span>Senior Division (Grades 9–12)</span>
-                          <span className="font-mono text-xs text-bone-dim font-normal">
-                            {seniorQualifiers.length} Teams
-                          </span>
-                        </h3>
-                        <ResultTable qualifiers={seniorQualifiers} />
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  /* Single Table for Events without Division Split */
-                  <ResultTable qualifiers={event.qualifiers} />
-                )}
+                      {q.category && (
+                        <span className="font-mono text-[10px] text-bone-dim uppercase border border-bone/30 px-2 py-0.5 self-start sm:self-auto shrink-0">
+                          {q.category}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </section>
-            );
-          })}
+            ))}
+          </div>
         </div>
       )}
-
-      {/* Onsite Grand Finale Guidelines & Regulations */}
-      <footer className="border-2 border-bone bg-ink p-5 sm:p-6 font-mono text-xs text-bone-dim space-y-4">
-        <div className="border-b border-bone/30 pb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <div className="text-bone font-bold uppercase tracking-wider text-base flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-crimson rounded-full animate-pulse"></span>
-            <span>Round 2 Grand Finale Guidelines // 会場規程</span>
-          </div>
-          <span className="text-[11px] text-crimson font-bold uppercase tracking-wider">
-            DPS R.K. Puram · 24 Oct 2026
-          </span>
-        </div>
-
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
-          <li className="border border-bone/20 p-3 bg-bone/5 flex items-start gap-2.5">
-            <span className="text-crimson font-bold shrink-0">01.</span>
-            <div>
-              <strong className="text-bone uppercase block mb-0.5">Event Date &amp; Registration</strong>
-              <span>Event DATE: <strong className="text-bone">24th Oct</strong>. Registration starts at <strong className="text-bone">07:45 AM</strong> at Delhi Public School, Sector 12, R.K. Puram, New Delhi — 110022.</span>
-            </div>
-          </li>
-
-          <li className="border border-bone/20 p-3 bg-bone/5 flex items-start gap-2.5">
-            <span className="text-crimson font-bold shrink-0">02.</span>
-            <div>
-              <strong className="text-bone uppercase block mb-0.5">Uniform</strong>
-              <span><strong className="text-bone">School uniform</strong> is mandatory for all participating students except for the participants of <strong>Aeross Theatre.</strong></span>
-            </div>
-          </li>
-
-          <li className="border border-bone/20 p-3 bg-bone/5 flex items-start gap-2.5">
-            <span className="text-crimson font-bold shrink-0">03.</span>
-            <div>
-              <strong className="text-bone uppercase block mb-0.5">Mobile Phones &amp; Laptops Policy</strong>
-              <span>Students are <strong className="text-bone">not allowed to bring their mobile phone</strong>. They may bring their <strong className="text-bone">Laptop</strong> if their event requires it.</span>
-            </div>
-          </li>
-
-          <li className="border border-bone/20 p-3 bg-bone/5 flex items-start gap-2.5">
-            <span className="text-crimson font-bold shrink-0">04.</span>
-            <div>
-              <strong className="text-bone uppercase block mb-0.5">Teacher In-Charge</strong>
-              <span>The School should send <strong className="text-bone">only one teacher in charge</strong> for all the competitions.</span>
-            </div>
-          </li>
-
-          <li className="border border-bone/20 p-3 bg-bone/5 flex items-start gap-2.5">
-            <span className="text-crimson font-bold shrink-0">05.</span>
-            <div>
-              <strong className="text-bone uppercase block mb-0.5">Refreshments</strong>
-              <span><strong className="text-bone">Refreshment would be provided by the school</strong> for delegates and accompanying faculty.</span>
-            </div>
-          </li>
-        </ul>
-
-        <div className="pt-3 border-t border-bone/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px]">
-          <span>
-            For queries, join the official{' '}
-            <a
-              href={resultsMetadata.discordUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-crimson underline hover:text-bone font-bold"
-            >
-              Discord Server
-            </a>{' '}
-            or email{' '}
-            <a
-              href={`mailto:${resultsMetadata.supportEmail}`}
-              className="text-crimson underline hover:text-bone font-bold"
-            >
-              {resultsMetadata.supportEmail}
-            </a>.
-          </span>
-          <span className="text-bone-dim/60 uppercase">
-            AEROSS // DPS R.K. PURAM
-          </span>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-// Simple, Clean Result Table Component strictly with the 4 columns requested
-const ResultTable = ({ qualifiers }) => {
-  const sortedQualifiers = useMemo(() => {
-    return [...qualifiers].sort((a, b) =>
-      a.schoolName.localeCompare(b.schoolName, undefined, { sensitivity: 'base' })
-    );
-  }, [qualifiers]);
-
-  return (
-    <div className="overflow-x-auto border border-bone/60">
-      <table className="w-full text-left font-mono text-xs">
-        <thead className="bg-bone text-ink font-bold uppercase text-[11px] border-b-2 border-bone">
-          <tr>
-            <th className="p-2.5 w-16 text-center">S.No.</th>
-            <th className="p-2.5">Name of the School</th>
-            <th className="p-2.5 w-36 whitespace-nowrap">School UID</th>
-            <th className="p-2.5 w-48 sm:w-64">Team Name</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-bone/20 bg-ink">
-          {sortedQualifiers.map((item, index) => (
-            <tr
-              key={item.id || index}
-              className="hover:bg-bone/10 transition-colors"
-            >
-              <td className="p-2.5 text-center text-bone-dim font-bold">
-                {index + 1}
-              </td>
-              <td className="p-2.5">
-                <span className="font-label font-bold text-sm text-bone uppercase tracking-wide block">
-                  {item.schoolName}
-                </span>
-              </td>
-              <td className="p-2.5 font-bold text-crimson whitespace-nowrap">
-                {item.schoolUID}
-              </td>
-              <td className="p-2.5 font-bold text-bone">
-                {item.teamName}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 };
