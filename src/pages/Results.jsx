@@ -161,7 +161,7 @@ const Results = () => {
                 CelesteCon will be back in 2027
               </h3>
               <p className="font-label text-sm sm:text-base text-ink-2 leading-relaxed">
-                Thank you to all 180+ participating schools, jury adjudicators, mentors, and the organizing secretariat of AEROSS. We look forward to welcoming the next generation of aerospace innovators back to campus in Autumn 2027.
+                Thank you to all participating schools, jury adjudicators, mentors, and the organizing secretariat of AEROSS. We look forward to welcoming the next generation of aerospace innovators back to campus in 2027.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0 w-full md:w-auto">
@@ -346,10 +346,10 @@ const Results = () => {
               CelesteCon will be back in 2027.
             </h4>
             <p className="font-label text-sm sm:text-base text-bone-dim leading-relaxed max-w-3xl">
-              The seventh edition of CelesteCon will launch in Autumn 2027 with new aerospace briefs, expanded simulator runs, and high-altitude flight trials. Directives, rules, and school invitation dispatches will be circulated to affiliated institutions in mid-2027.
+              The seventh edition of CelesteCon will launch in 2027 with new aerospace briefs, expanded simulator runs, and high-altitude flight trials.
             </p>
             <div className="pt-2 font-mono text-xs text-bone-dim">
-              For inquiries regarding conclave archives, certificates, or participation records, contact{' '}
+              For inquiries regarding archives, certificates, or participation records, contact{' '}
               <a href="mailto:aeross@dpsrkp.net" className="text-crimson hover:underline font-bold">
                 aeross@dpsrkp.net
               </a>.
