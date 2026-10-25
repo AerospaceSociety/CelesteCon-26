@@ -71,7 +71,7 @@ const Results = () => {
               Conclave Results <span className="text-crimson">[Official]</span>
             </h1>
             <p className="font-label text-sm sm:text-base text-bone-dim mt-2 leading-relaxed max-w-3xl">
-              Official podium standings declared for CelesteCon 2026. Held at Delhi Public School, R.K. Puram, uniting over 180 schools and 1,500+ participants nationwide.
+              Official podium standings declared for CelesteCon 2026. Held at Delhi Public School, R.K. Puram.
             </p>
           </div>
 
@@ -90,22 +90,20 @@ const Results = () => {
           <button
             type="button"
             onClick={() => setActiveTab('final')}
-            className={`px-4 sm:px-6 py-2.5 font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border-b-4 -mb-[2px] cursor-pointer ${
-              activeTab === 'final'
-                ? 'border-crimson text-crimson bg-crimson/10 font-black'
-                : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/40'
-            }`}
+            className={`px-4 sm:px-6 py-2.5 font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border-b-4 -mb-[2px] cursor-pointer ${activeTab === 'final'
+              ? 'border-crimson text-crimson bg-crimson/10 font-black'
+              : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/40'
+              }`}
           >
             <span>★ Final Results (Winners &amp; Podiums)</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('round1')}
-            className={`px-4 sm:px-6 py-2.5 font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border-b-4 -mb-[2px] cursor-pointer ${
-              activeTab === 'round1'
-                ? 'border-crimson text-crimson bg-crimson/10 font-black'
-                : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/40'
-            }`}
+            className={`px-4 sm:px-6 py-2.5 font-label text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border-b-4 -mb-[2px] cursor-pointer ${activeTab === 'round1'
+              ? 'border-crimson text-crimson bg-crimson/10 font-black'
+              : 'border-transparent text-bone-dim hover:text-bone hover:border-bone/40'
+              }`}
           >
             <span>Round 1 Qualifiers Archive</span>
           </button>
@@ -211,11 +209,10 @@ const Results = () => {
                   key={div}
                   type="button"
                   onClick={() => setFilterDivision(div)}
-                  className={`px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider border transition-colors ${
-                    filterDivision === div
-                      ? 'bg-crimson text-bone-hi border-crimson'
-                      : 'bg-ink text-bone-dim border-bone/40 hover:border-bone hover:text-bone'
-                  }`}
+                  className={`px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider border transition-colors ${filterDivision === div
+                    ? 'bg-crimson text-bone-hi border-crimson'
+                    : 'bg-ink text-bone-dim border-bone/40 hover:border-bone hover:text-bone'
+                    }`}
                 >
                   {div}
                 </button>
@@ -264,13 +261,13 @@ const Results = () => {
                   {/* Podium Standings (1st, 2nd, 3rd) */}
                   <div className="p-4 space-y-2.5">
                     {/* 1st Position */}
-                    <div className="p-2.5 bg-amber-500/10 border-l-4 border-amber-500 flex items-start justify-between gap-3">
+                    <div className="p-2.5 podium-gold-box border-l-4 flex items-start justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-6 h-6 rounded-full bg-amber-500 text-ink font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                        <div className="w-6 h-6 rounded-full podium-gold-badge font-mono font-bold text-xs flex items-center justify-center shrink-0">
                           1
                         </div>
                         <div className="min-w-0">
-                          <span className="font-mono text-[9px] text-amber-400 uppercase tracking-widest font-bold block">
+                          <span className="font-mono text-[9px] podium-gold-text uppercase tracking-widest font-bold block">
                             1st Position // First Place
                           </span>
                           <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
@@ -278,18 +275,18 @@ const Results = () => {
                           </span>
                         </div>
                       </div>
-                      <span className="text-amber-400 font-mono text-sm shrink-0">★</span>
+                      <span className="podium-gold-text font-mono text-sm shrink-0">★</span>
                     </div>
 
                     {/* 2nd Position */}
                     {event.second && event.second !== '—' && (
-                      <div className="p-2.5 bg-slate-300/10 border-l-4 border-slate-300 flex items-start justify-between gap-3">
+                      <div className="p-2.5 podium-silver-box border-l-4 flex items-start justify-between gap-3">
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-6 h-6 rounded-full bg-slate-300 text-ink font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                          <div className="w-6 h-6 rounded-full podium-silver-badge font-mono font-bold text-xs flex items-center justify-center shrink-0">
                             2
                           </div>
                           <div className="min-w-0">
-                            <span className="font-mono text-[9px] text-slate-300 uppercase tracking-widest font-bold block">
+                            <span className="font-mono text-[9px] podium-silver-text uppercase tracking-widest font-bold block">
                               2nd Position // Second Place
                             </span>
                             <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
@@ -297,19 +294,19 @@ const Results = () => {
                             </span>
                           </div>
                         </div>
-                        <span className="text-slate-300 font-mono text-sm shrink-0">★</span>
+                        <span className="podium-silver-text font-mono text-sm shrink-0">★</span>
                       </div>
                     )}
 
                     {/* 3rd Position */}
                     {event.third && event.third !== '—' && (
-                      <div className="p-2.5 bg-amber-700/10 border-l-4 border-amber-600 flex items-start justify-between gap-3">
+                      <div className="p-2.5 podium-bronze-box border-l-4 flex items-start justify-between gap-3">
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-6 h-6 rounded-full bg-amber-700 text-bone-hi font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                          <div className="w-6 h-6 rounded-full podium-bronze-badge font-mono font-bold text-xs flex items-center justify-center shrink-0">
                             3
                           </div>
                           <div className="min-w-0">
-                            <span className="font-mono text-[9px] text-amber-600 uppercase tracking-widest font-bold block">
+                            <span className="font-mono text-[9px] podium-bronze-text uppercase tracking-widest font-bold block">
                               3rd Position // Third Place
                             </span>
                             <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
@@ -317,14 +314,13 @@ const Results = () => {
                             </span>
                           </div>
                         </div>
-                        <span className="text-amber-600 font-mono text-sm shrink-0">★</span>
+                        <span className="podium-bronze-text font-mono text-sm shrink-0">★</span>
                       </div>
                     )}
                   </div>
 
                   {/* Card Bottom Technical Tag */}
                   <div className="px-4 py-2 border-t border-bone/10 bg-bone/[0.02] flex justify-between items-center font-mono text-[9px] text-bone-dim">
-                    <span>RECORD VERIFIED // AEROSS JURY</span>
                     <span className="text-crimson">OFFICIAL PODIUM</span>
                   </div>
                 </div>
@@ -369,7 +365,7 @@ const Results = () => {
         <div className="space-y-8 animate-in fade-in duration-200">
           <div className="p-4 bg-bone/5 border-l-4 border-bone font-mono text-xs text-bone-dim">
             <span className="text-bone font-bold block mb-1 uppercase tracking-wider">
-              Historical Record // Round 1 Qualifiers
+              Round 1 Qualifiers
             </span>
             <span>
               This archive records all non-ranked delegations who cleared the Round 1 proposal scrutiny to compete in the Round 2 Grand Finale.

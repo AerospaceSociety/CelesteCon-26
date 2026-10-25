@@ -15,21 +15,21 @@ export const EXECUTIVES = [
     id: 'anant',
     name: 'Anant Jha',
     role: 'Executive Leadership',
-    division: 'Event Operations & Logistics',
+    division: 'Technical Competitions',
     email: 'v09759anant@dpsrkp.net',
     image: '/execs/anant.png?v=6',
     placeholder: '/execs/placeholder_silhouette.svg',
-    focus: 'On-ground Execution & Logistics'
+    focus: 'Competition Scrutiny & Tech Infrastructure'
   },
   {
     id: 'farzooque',
     name: 'Farzooque Hasan',
     role: 'Executive Leadership',
-    division: 'Technical Competitions',
+    division: 'Event Operations & Logistics',
     email: 'r25246farzooque@dpsrkp.net',
     image: '/execs/farzooque.png?v=8',
     placeholder: '/execs/placeholder_silhouette.svg',
-    focus: 'Competition Scrutiny & Tech Infrastructure'
+    focus: 'Tech Infrastructure & On-ground Execution & Logistics'
   },
   {
     id: 'tarushi',

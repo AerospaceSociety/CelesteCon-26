@@ -84,3 +84,77 @@
 :root:not([data-theme="light"]) .sponsor-logo-light {
   display: none !important;
 }
+
+/* Theme-adaptive Podium Standings (Gold, Silver, Bronze) */
+.podium-gold-box {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-left-color: #f59e0b;
+}
+.podium-gold-text {
+  color: #fbbf24;
+}
+.podium-gold-badge {
+  background-color: #f59e0b;
+  color: #161310;
+}
+
+.podium-silver-box {
+  background-color: rgba(203, 213, 225, 0.12);
+  border-left-color: #94a3b8;
+}
+.podium-silver-text {
+  color: #cbd5e1;
+}
+.podium-silver-badge {
+  background-color: #cbd5e1;
+  color: #161310;
+}
+
+.podium-bronze-box {
+  background-color: rgba(180, 83, 9, 0.1);
+  border-left-color: #d97706;
+}
+.podium-bronze-text {
+  color: #d97706;
+}
+.podium-bronze-badge {
+  background-color: #b45309;
+  color: #ffffff;
+}
+
+/* Light mode overrides for high contrast and legibility */
+:root[data-theme="light"] .podium-gold-box {
+  background-color: rgba(217, 119, 6, 0.12);
+  border-left-color: #d97706;
+}
+:root[data-theme="light"] .podium-gold-text {
+  color: #b45309;
+}
+:root[data-theme="light"] .podium-gold-badge {
+  background-color: #d97706;
+  color: #ffffff;
+}
+
+:root[data-theme="light"] .podium-silver-box {
+  background-color: rgba(71, 85, 105, 0.12);
+  border-left-color: #475569;
+}
+:root[data-theme="light"] .podium-silver-text {
+  color: #334155;
+}
+:root[data-theme="light"] .podium-silver-badge {
+  background-color: #475569;
+  color: #ffffff;
+}
+
+:root[data-theme="light"] .podium-bronze-box {
+  background-color: rgba(146, 64, 14, 0.12);
+  border-left-color: #92400e;
+}
+:root[data-theme="light"] .podium-bronze-text {
+  color: #92400e;
+}
+:root[data-theme="light"] .podium-bronze-badge {
+  background-color: #92400e;
+  color: #ffffff;
+}

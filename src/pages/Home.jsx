@@ -198,14 +198,14 @@ const Home = () => {
         </div>
         <div className="bg-bone text-ink p-3 sm:p-[clamp(12px,1.8vw,20px)] relative border-r-2 border-ink min-w-0">
           <span className="absolute top-1.5 right-2 font-mono text-[8px] sm:text-[8.5px] text-ink-3 tracking-[0.15em] font-bold">A/03</span>
-          <div className="font-display text-3xl sm:text-4xl md:text-5xl leading-[0.95] tracking-wide text-ink">1,500<em className="not-italic text-crimson">+</em></div>
+          <div className="font-display text-3xl sm:text-4xl md:text-5xl leading-[0.95] tracking-wide text-ink">500<em className="not-italic text-crimson">+</em></div>
           <div className="font-label font-bold text-[10px] sm:text-[11px] tracking-[0.14em] uppercase mt-2 leading-tight">Student Participants</div>
-          <div className="font-jp font-black text-[8.5px] sm:text-[9px] tracking-[0.16em] text-ink-3 mt-1 truncate">参加者・全国から</div>
+          <div className="font-jp font-black text-[8.5px] sm:text-[9px] tracking-[0.16em] text-ink-3 mt-1 truncate">(2026)</div>
         </div>
         <div className="bg-bone text-ink p-3 sm:p-[clamp(12px,1.8vw,20px)] relative min-w-0">
           <span className="absolute top-1.5 right-2 font-mono text-[8px] sm:text-[8.5px] text-ink-3 tracking-[0.15em] font-bold">A/04</span>
-          <div className="font-display text-3xl sm:text-4xl md:text-5xl leading-[0.95] tracking-wide text-ink">180<em className="not-italic text-crimson">+</em></div>
-          <div className="font-label font-bold text-[10px] sm:text-[11px] tracking-[0.14em] uppercase mt-2 leading-tight">Schools Represented</div>
+          <div className="font-display text-3xl sm:text-4xl md:text-5xl leading-[0.95] tracking-wide text-ink">100<em className="not-italic text-crimson">+</em></div>
+          <div className="font-label font-bold text-[10px] sm:text-[11px] tracking-[0.14em] uppercase mt-2 leading-tight">Schools Invited</div>
           <div className="font-jp font-black text-[8.5px] sm:text-[9px] tracking-[0.16em] text-ink-3 mt-1 truncate">参加校・インド全土</div>
         </div>
       </section>

@@ -68,7 +68,7 @@ export const eventResults = [
     displayName: 'In Pursuit of Dispute',
     division: 'Senior Track',
     eligibility: 'Grades 9–12',
-    discipline: 'Aerospace Policy & Debate / Quiz',
+    discipline: 'Debate',
     first: 'Delhi Public School, Faridabad',
     second: 'Hindu Vidyapeeth, Sonepat',
     third: 'Bal Bharti Public School, Noida'
