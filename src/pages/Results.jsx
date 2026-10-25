@@ -2,8 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   eventResults,
-  finalResultsMetadata,
-  schoolMedalLeaderboard
+  finalResultsMetadata
 } from '../data/finalResults';
 import {
   hybridEventsResults,
@@ -120,13 +119,6 @@ const Results = () => {
         <div className="space-y-8 animate-in fade-in duration-200">
           {/* OVERALL CHAMPIONS HERO BANNER */}
           <section className="border-4 border-crimson bg-gradient-to-br from-crimson/20 via-ink to-ink p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-            {/* Background Aesthetic Watermark */}
-            <div className="absolute -right-6 -bottom-10 select-none pointer-events-none opacity-10">
-              <span className="font-display text-[160px] leading-none text-crimson font-black">
-                DPS
-              </span>
-            </div>
-
             <div className="relative z-10 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-crimson/40 pb-3">
                 <div className="flex items-center gap-2">
@@ -147,31 +139,11 @@ const Results = () => {
                   OVERALL CONCLAVE CHAMPIONS
                 </span>
                 <h2 className="font-display text-3xl sm:text-5xl md:text-6xl text-bone uppercase tracking-wide leading-tight">
-                  DPS Noida
+                  Delhi Public School, Noida
                 </h2>
                 <p className="font-label text-base sm:text-lg text-bone-dim mt-2 max-w-3xl leading-relaxed">
                   Delhi Public School, Noida claims the prestigious CelesteCon 2026 Overall Champions Rolling Trophy with an extraordinary display of aerospace excellence across both junior and senior divisions.
                 </p>
-              </div>
-
-              {/* Medals Breakdown Strip */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                <div className="bg-ink/80 border-2 border-bone/30 p-3">
-                  <div className="font-mono text-[10px] text-bone-dim uppercase tracking-wider">Total Podiums</div>
-                  <div className="font-display text-2xl sm:text-3xl text-bone font-bold">7</div>
-                </div>
-                <div className="bg-ink/80 border-2 border-amber-500/50 p-3">
-                  <div className="font-mono text-[10px] text-amber-400 uppercase tracking-wider">1st Positions (Gold)</div>
-                  <div className="font-display text-2xl sm:text-3xl text-amber-400 font-bold">4</div>
-                </div>
-                <div className="bg-ink/80 border-2 border-slate-300/50 p-3">
-                  <div className="font-mono text-[10px] text-slate-300 uppercase tracking-wider">2nd Positions (Silver)</div>
-                  <div className="font-display text-2xl sm:text-3xl text-slate-300 font-bold">2</div>
-                </div>
-                <div className="bg-ink/80 border-2 border-amber-700/50 p-3">
-                  <div className="font-mono text-[10px] text-amber-600 uppercase tracking-wider">3rd Positions (Bronze)</div>
-                  <div className="font-display text-2xl sm:text-3xl text-amber-600 font-bold">1</div>
-                </div>
               </div>
             </div>
           </section>
@@ -218,7 +190,7 @@ const Results = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by school (e.g., DPS Noida, Tagore, BBPS) or event..."
+                placeholder="Search by school (e.g., Delhi Public School, Tagore, BBPS) or event..."
                 className="w-full px-3 py-2.5 bg-ink-2/60 border-2 border-bone text-bone font-mono text-xs placeholder:text-bone-dim/50 focus:outline-none focus:border-crimson"
               />
               {searchQuery && (
@@ -310,52 +282,44 @@ const Results = () => {
                     </div>
 
                     {/* 2nd Position */}
-                    <div className={`p-2.5 border-l-4 flex items-start justify-between gap-3 ${
-                      event.second === '—'
-                        ? 'bg-bone/5 border-bone/20 opacity-60'
-                        : 'bg-slate-300/10 border-slate-300'
-                    }`}>
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-6 h-6 rounded-full bg-slate-300 text-ink font-mono font-bold text-xs flex items-center justify-center shrink-0">
-                          2
+                    {event.second && event.second !== '—' && (
+                      <div className="p-2.5 bg-slate-300/10 border-l-4 border-slate-300 flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="w-6 h-6 rounded-full bg-slate-300 text-ink font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                            2
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-mono text-[9px] text-slate-300 uppercase tracking-widest font-bold block">
+                              2nd Position // Second Place
+                            </span>
+                            <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
+                              {event.second}
+                            </span>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <span className="font-mono text-[9px] text-slate-300 uppercase tracking-widest font-bold block">
-                            2nd Position // Second Place
-                          </span>
-                          <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
-                            {event.second === '—' ? 'Not Awarded' : event.second}
-                          </span>
-                        </div>
-                      </div>
-                      {event.second !== '—' && (
                         <span className="text-slate-300 font-mono text-sm shrink-0">★</span>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     {/* 3rd Position */}
-                    <div className={`p-2.5 border-l-4 flex items-start justify-between gap-3 ${
-                      event.third === '—'
-                        ? 'bg-bone/5 border-bone/20 opacity-60'
-                        : 'bg-amber-700/10 border-amber-600'
-                    }`}>
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-6 h-6 rounded-full bg-amber-700 text-bone-hi font-mono font-bold text-xs flex items-center justify-center shrink-0">
-                          3
+                    {event.third && event.third !== '—' && (
+                      <div className="p-2.5 bg-amber-700/10 border-l-4 border-amber-600 flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="w-6 h-6 rounded-full bg-amber-700 text-bone-hi font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                            3
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-mono text-[9px] text-amber-600 uppercase tracking-widest font-bold block">
+                              3rd Position // Third Place
+                            </span>
+                            <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
+                              {event.third}
+                            </span>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <span className="font-mono text-[9px] text-amber-600 uppercase tracking-widest font-bold block">
-                            3rd Position // Third Place
-                          </span>
-                          <span className="font-label font-bold text-sm sm:text-base text-bone tracking-wide block truncate">
-                            {event.third === '—' ? 'Not Awarded' : event.third}
-                          </span>
-                        </div>
-                      </div>
-                      {event.third !== '—' && (
                         <span className="text-amber-600 font-mono text-sm shrink-0">★</span>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Card Bottom Technical Tag */}
@@ -372,70 +336,6 @@ const Results = () => {
                 No events or schools found matching "{searchQuery}". Try searching for another school name or clearing filters.
               </div>
             )}
-          </section>
-
-          {/* LEADERBOARD & MEDAL TALLY TABLE */}
-          <section className="border-2 border-bone p-4 sm:p-6 bg-ink-2/30 space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-2 border-b-2 border-bone pb-2">
-              <div>
-                <span className="font-mono text-[10px] text-crimson font-bold uppercase tracking-widest block">
-                  LEADERBOARD // 集計表
-                </span>
-                <h3 className="font-display text-xl sm:text-2xl text-bone uppercase tracking-wide">
-                  Conclave Delegation Medal Summary
-                </h3>
-              </div>
-              <span className="font-mono text-xs text-bone-dim">
-                DPS Noida: 2026 Conclave Champions
-              </span>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left font-mono text-xs">
-                <thead>
-                  <tr className="border-b-2 border-bone/40 text-bone-dim uppercase tracking-wider text-[10px]">
-                    <th className="py-2.5 px-3">School Delegation</th>
-                    <th className="py-2.5 px-3 text-center text-amber-400">1st (Gold)</th>
-                    <th className="py-2.5 px-3 text-center text-slate-300">2nd (Silver)</th>
-                    <th className="py-2.5 px-3 text-center text-amber-600">3rd (Bronze)</th>
-                    <th className="py-2.5 px-3 text-center font-bold text-bone">Total Podiums</th>
-                    <th className="py-2.5 px-3 text-right">Standing</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-bone/10">
-                  {schoolMedalLeaderboard.map((row, idx) => (
-                    <tr
-                      key={row.school}
-                      className={
-                        idx === 0
-                          ? 'bg-crimson/15 font-bold text-bone'
-                          : 'hover:bg-bone/5 text-bone-dim hover:text-bone transition-colors'
-                      }
-                    >
-                      <td className="py-2.5 px-3 font-label text-sm uppercase tracking-wide">
-                        <span className="font-mono text-crimson text-xs mr-2">0{idx + 1}.</span>
-                        {row.school}
-                      </td>
-                      <td className="py-2.5 px-3 text-center font-bold text-amber-400">
-                        {row.first}
-                      </td>
-                      <td className="py-2.5 px-3 text-center font-bold text-slate-300">
-                        {row.second}
-                      </td>
-                      <td className="py-2.5 px-3 text-center font-bold text-amber-600">
-                        {row.third}
-                      </td>
-                      <td className="py-2.5 px-3 text-center font-bold text-bone">
-                        {row.total}
-                      </td>
-                      <td className="py-2.5 px-3 text-right font-mono text-[10px] uppercase tracking-wider text-crimson">
-                        {row.status}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </section>
 
           {/* CELESTECON 2027 DETAILED NOTICE */}

@@ -278,7 +278,7 @@ const Comps = () => {
             </span>
           </div>
           <p className="font-label text-xs sm:text-sm text-bone-dim leading-relaxed max-w-2xl">
-            All 8 competitions have formally concluded. Congratulations to Overall Champions DPS Noida and all podium finishers. CelesteCon will be back in 2027!
+            All 8 competitions have formally concluded. Official division results and podium standings have been published. CelesteCon will be back in 2027!
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto shrink-0">
@@ -395,7 +395,7 @@ const Comps = () => {
             All 8 Competitions Concluded // Back in 2027
           </h4>
           <p className="font-label text-xs sm:text-sm text-bone-dim max-w-xl">
-            Explore the final podium positions, overall rolling trophy winners DPS Noida, and delegation medal tallies — or view conclave glimpses.
+            Explore the final podium positions and overall rolling trophy winners — or view conclave glimpses.
           </p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">

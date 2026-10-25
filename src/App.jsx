@@ -175,7 +175,7 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-sm font-label uppercase tracking-widest py-3 px-4 bg-crimson text-bone-hi font-bold border-2 border-crimson hover:bg-ink hover:text-crimson transition-colors flex justify-between items-center"
               >
-                <span>Final Results (DPS Noida 🏆)</span>
+                <span>Final Results 2026</span>
                 <span className="font-mono text-xs">★</span>
               </Link>
               <Link

@@ -70,7 +70,7 @@ const Home = () => {
                 to="/results"
                 className="font-mono text-[9px] sm:text-[10px] tracking-[0.14em] uppercase border-2 border-crimson bg-crimson text-bone-hi px-2 sm:px-2.5 py-1 font-bold text-center sm:text-left whitespace-nowrap hover:bg-ink hover:text-crimson transition-colors cursor-pointer flex items-center justify-center gap-1"
               >
-                <span>🏆 Winner: DPS Noida</span>
+                <span>★ Results</span>
               </Link>
               <Link
                 to="/glimpses"
@@ -94,11 +94,11 @@ const Home = () => {
           </span>
           <div>
             <div className="font-label font-bold text-sm sm:text-base text-bone uppercase tracking-wider flex items-center gap-2 flex-wrap">
-              <span>CelesteCon 2026 Concluded — Overall Winner: DPS Noida</span>
+              <span>CelesteCon 2026 Concluded — Results</span>
               <span className="text-crimson font-mono text-xs">[Results Live]</span>
             </div>
             <p className="font-mono text-[11px] text-bone-dim mt-0.5">
-              Official podium standings declared across all 12 events. CelesteCon will be back in 2027!
+              Official podium standings declared across all events. CelesteCon will be back in 2027!
             </p>
           </div>
         </div>
@@ -273,10 +273,10 @@ const Home = () => {
             <span>SEC. 00 // CELESTECON 2026 CONCLUDED</span>
           </div>
           <h2 className="font-display uppercase text-2xl sm:text-4xl md:text-5xl leading-[1.02] tracking-[0.01em] mt-3 text-ink text-balance">
-            Overall Champions: <span className="text-crimson [-webkit-text-stroke:0]">DPS Noida</span>
+            Conclave <span className="text-crimson [-webkit-text-stroke:0]">Results Declared</span>
           </h2>
           <p className="font-label text-sm sm:text-base text-ink-2 mt-2 max-w-2xl leading-relaxed">
-            Congratulations to Delhi Public School, Noida for lifting the prestigious Overall Champions Rolling Trophy. We salute all 180+ participating schools, jury members, and students across India. CelesteCon will be back in 2027!
+            The official results and division podiums for CelesteCon 2026 have been published. We salute all participating schools, jury members, and students across India. CelesteCon will be back in 2027!
           </p>
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-stretch sm:items-center flex-wrap">
             <Link
