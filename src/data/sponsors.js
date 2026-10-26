@@ -171,7 +171,7 @@ export const currentSponsors = [
     tier: 'Gold',
     tierTitle: 'Gold Tier Sponsor & Technology Partner',
     tierJp: '協賛企業 · ゴールドパートナー',
-    url: 'https://thewhales.io',
+    url: 'https://thewhalesindia.fhasan.me',
     tagline: 'Enterprise IT Solutions & Scalable Digital Architecture',
     summary: 'TheWhales India is a technology solutions company providing scalable IT architecture, digital infrastructure, enterprise software development, and technical consulting. They specialize in modern full-stack development, cloud computing environments, and mission-critical systems.',
     philosophy: 'Committed to technological empowerment and digital agility, TheWhales India enables modern organizations and student platforms to engineer resilient digital infrastructures that adapt and scale effortlessly.',
